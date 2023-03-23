@@ -8,15 +8,12 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
-      perSystem = { pkgs, lib, config, ... }:
-        let
-          terraformProviders = pkgs.terraform-providers.actualProviders;
-        in
+      perSystem = { pkgs, config, ... }:
         {
-          legacyPackages.generateSchema = providerFn: pkgs.callPackage (import ./generator.nix (providerFn terraformProviders)) { };
+          legacyPackages.generateSchema = pkgs.callPackage ./generator.nix { };
 
-          packages = builtins.mapAttrs (name: p: config.legacyPackages.generateSchema (_: { ${name} = p; })) terraformProviders // {
-            all-schemas = config.legacyPackages.generateSchema (p: lib.genAttrs (builtins.attrNames terraformProviders) (name: p.${name}));
+          packages = builtins.mapAttrs (provider: _: config.legacyPackages.generateSchema [ provider ]) pkgs.terraform-providers.actualProviders // {
+            all-schemas = config.legacyPackages.generateSchema (builtins.attrNames pkgs.terraform-providers.actualProviders);
           };
         };
     };

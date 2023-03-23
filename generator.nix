@@ -1,7 +1,7 @@
+{ lib, runCommand, formats, terraform, terraform-providers, jq }:
 providers:
-{ lib, runCommand, formats, terraform, jq }:
 let
-  required_providers = providers: lib.mapAttrs
+  required_providers = providers: builtins.mapAttrs
     (_: p: {
       inherit (p) version;
       source = lib.toLower p.provider-source-address;
@@ -24,7 +24,7 @@ let
 in
 runCommand "schemas" { } ''
   mkdir "$out"
-  ${lib.concatLines (lib.mapAttrsToList (name: provider: 
-  "ln -s ${retrieveProviderSchema name provider} $out/${name}.json") 
+  ${lib.concatLines (map (name:
+  "ln -s ${retrieveProviderSchema name terraform-providers.actualProviders.${name}} $out/${name}.json")
   providers)}
 ''
