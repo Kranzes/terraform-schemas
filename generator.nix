@@ -1,5 +1,5 @@
 providers:
-{ lib, runCommand, formats, terraform }:
+{ lib, runCommand, formats, terraform, jq }:
 let
   required_providers = providers: lib.mapAttrs
     (_: p: {
@@ -17,9 +17,9 @@ let
       terraform-with-plugins = terraform.withPlugins (_: [ provider ]);
     in
     runCommand "${name}.json" { } ''
-      cp ${mainJson} main.tf.json
+      ln -s ${mainJson} main.tf.json
       ${terraform-with-plugins}/bin/terraform init
-      ${terraform-with-plugins}/bin/terraform providers schema -json >$out
+      ${terraform-with-plugins}/bin/terraform providers schema -json | ${lib.getExe jq} . > "$out"
     '';
 in
 runCommand "schemas" { } ''
