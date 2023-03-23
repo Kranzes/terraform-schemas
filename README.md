@@ -9,3 +9,5 @@ If instead you want to get the schemas for all the providers available in nixpkg
 ```console
 nix build github:kranzes/terraform-schemas#all-schemas
 ```
+Tip:
+If you don't want to get the JSON schemas via a `nix build` to avoid IFD you can also get them from the [schemas](https://github.com/Kranzes/terraform-schemas/tree/schemas) branch.
