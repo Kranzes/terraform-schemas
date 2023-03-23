@@ -1,1 +1,808 @@
-/nix/store/2gqz32zm80akhjgpdzvl8c8iyqqlmbrk-vpsadmin.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/vpsfreecz/vpsadmin": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "api_url": {
+              "type": "string",
+              "description": "The URL to use for the vpsAdmin API.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "auth_token": {
+              "type": "string",
+              "description": "The authentication token for API operations.",
+              "description_kind": "markdown",
+              "required": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "vpsadmin_dataset": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "atime": {
+                "type": "bool",
+                "description": "Enabled atime",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "avail": {
+                "type": "number",
+                "description": "Available space, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "compression": {
+                "type": "bool",
+                "description": "Compression enabled",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_dataset": {
+                "type": "bool",
+                "description": "Export dataset over NFS",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "export_enable": {
+                "type": "bool",
+                "description": "Enable the NFS server",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "export_id": {
+                "type": "number",
+                "description": "Export ID",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_ip_address": {
+                "type": "string",
+                "description": "IP address of the NFS server",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_path": {
+                "type": "string",
+                "description": "Path to mount from the NFS server",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_read_write": {
+                "type": "bool",
+                "description": "Read-write access by default",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "export_root_squash": {
+                "type": "bool",
+                "description": "Enable root squash on the export",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "export_sync": {
+                "type": "bool",
+                "description": "Server will reply only after changes were committed",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "full_name": {
+                "type": "string",
+                "description": "Full dataset name",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Dataset name",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "quota": {
+                "type": "number",
+                "description": "Quota, in MiB",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "recordsize": {
+                "type": "number",
+                "description": "Record size, in bytes",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "referenced": {
+                "type": "number",
+                "description": "Referenced space, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "refquota": {
+                "type": "number",
+                "description": "Reference quota, in MiB",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "relatime": {
+                "type": "bool",
+                "description": "Enabled relatime",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "sync": {
+                "type": "string",
+                "description": "Sync mode",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "used": {
+                "type": "number",
+                "description": "Used space, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "\nRepresents a ZFS dataset, either on NAS (Network-Attached Storage) or a VPS\nsubdataset.\n\nNAS datasets can have *quota*, whereas VPS subdatasets use *refquota*\nattribute. NAS datasets can be exported over NFS using *export_dataset*\nand then mounted inside the container. VPS subdatasets are mounted using\nthe *vpsadmin_mount* resource.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "vpsadmin_mount": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "dataset": {
+                "type": "number",
+                "description": "ID of the mounted dataset",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "enable": {
+                "type": "bool",
+                "description": "Whether the mount is enabled",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Read-write or read-only mode",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "mountpoint": {
+                "type": "string",
+                "description": "Mountpoint inside the VPS",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "on_start_fail": {
+                "type": "string",
+                "description": "Action for when the mount fails during VPS start",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "vps": {
+                "type": "number",
+                "description": "VPS ID",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Mount VPS subdatasets into VPS.",
+            "description_kind": "markdown"
+          }
+        },
+        "vpsadmin_ssh_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_add": {
+                "type": "bool",
+                "description": "Automatically add this key to new VPS",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "Comment from the public key",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description": "Key fingerprint",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "Public key",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "label": {
+                "type": "string",
+                "description": "Public key label",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vpsadmin_vps": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "cpu": {
+                "type": "number",
+                "description": "Number of CPU cores",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "diskspace": {
+                "type": "number",
+                "description": "Root dataset's size in MB",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "dns_resolver": {
+                "type": "string",
+                "description": "DNS resolver used by the VPS if managed by vpsAdmin",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "feature_fuse": {
+                "type": "bool",
+                "description": "Allow access to FUSE filesystems",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "feature_kvm": {
+                "type": "bool",
+                "description": "Allow access to /dev/kvm for hardware virtualization",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "feature_lxc": {
+                "type": "bool",
+                "description": "Enable support for LXC/LXD containers",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "feature_ppp": {
+                "type": "bool",
+                "description": "Allow access to /dev/ppp",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "feature_tun": {
+                "type": "bool",
+                "description": "Allow access to /dev/net/tun, e.g. for VPNs",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "VPS hostname managed by vpsAdmin",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "install_os_template": {
+                "type": "string",
+                "description": "OS template which is installed to the VPS",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "installed_os_template": {
+                "type": "string",
+                "description": "OS template which corresponds to the VPS at the moment",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description": "Location label",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "manage_dns_resolver": {
+                "type": "bool",
+                "description": "Manage DNS resolver by vpsAdmin if true, manually if false",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "manage_hostname": {
+                "type": "bool",
+                "description": "Manage hostname by vpsAdmin if true, manually if false",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Available memory in MB",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "node": {
+                "type": "string",
+                "description": "Read-only node name",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "private_ipv4_address": {
+                "type": "string",
+                "description": "Primary private IPv4 address",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "private_ipv4_count": {
+                "type": "number",
+                "description": "Number of private IPv4 addresses to add when the VPS is created",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "public_ipv4_address": {
+                "type": "string",
+                "description": "Primary public IPv4 address",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "public_ipv4_count": {
+                "type": "number",
+                "description": "Number of public IPv4 addresses to add when the VPS is created",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "public_ipv6_address": {
+                "type": "string",
+                "description": "Primary public IPv6 address",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "public_ipv6_count": {
+                "type": "number",
+                "description": "Number of public IPv6 addresses to add when the VPS is created",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "real_hostname": {
+                "type": "string",
+                "description": "VPS hostname as reported by the VPS",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "ssh_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of SSH key IDs to append to /root/.ssh_authorized_keys",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "start_menu_timeout": {
+                "type": "number",
+                "description": "Start menu timeout before the VPS is started, in seconds",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "swap": {
+                "type": "number",
+                "description": "Available swap in MB",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "\nRepresents a virtual server instance. To create a VPS, you need to have\na sufficient amount of resources assigned to your account in vpsAdmin. Contact\nsupport in case you need more.\n",
+            "description_kind": "markdown"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "vpsadmin_dataset": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "atime": {
+                "type": "bool",
+                "description": "Enabled atime",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "avail": {
+                "type": "number",
+                "description": "Available space, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "compression": {
+                "type": "bool",
+                "description": "Compression enabled",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_dataset": {
+                "type": "bool",
+                "description": "Export dataset over NFS",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_enable": {
+                "type": "bool",
+                "description": "Enable the NFS server",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_id": {
+                "type": "number",
+                "description": "Export ID",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_ip_address": {
+                "type": "string",
+                "description": "IP address of the NFS server",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_path": {
+                "type": "string",
+                "description": "Path to mount from the NFS server",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_read_write": {
+                "type": "bool",
+                "description": "Read-write access by default",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_root_squash": {
+                "type": "bool",
+                "description": "Enable root squash on the export",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "export_sync": {
+                "type": "bool",
+                "description": "Server will reply only after changes were committed",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "full_name": {
+                "type": "string",
+                "description": "Full dataset name",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Dataset name",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "quota": {
+                "type": "number",
+                "description": "Quota, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "recordsize": {
+                "type": "number",
+                "description": "Record size, in bytes",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "referenced": {
+                "type": "number",
+                "description": "Referenced space, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "refquota": {
+                "type": "number",
+                "description": "Reference quota, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "relatime": {
+                "type": "bool",
+                "description": "Enabled relatime",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "sync": {
+                "type": "string",
+                "description": "Sync mode",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "used": {
+                "type": "number",
+                "description": "Used space, in MiB",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vpsadmin_mount": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "dataset": {
+                "type": "number",
+                "description": "ID of the mounted dataset",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "enable": {
+                "type": "bool",
+                "description": "Whether the mount is enabled",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Read-write or read-only mode",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "mount_id": {
+                "type": "number",
+                "description": "Mount ID",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "mountpoint": {
+                "type": "string",
+                "description": "Mountpoint inside the VPS",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "on_start_fail": {
+                "type": "string",
+                "description": "Action for when the mount fails during VPS start",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "vps": {
+                "type": "number",
+                "description": "VPS ID",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vpsadmin_ssh_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_add": {
+                "type": "bool",
+                "description": "Automatically add this key to new VPS",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "Comment from the public key",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description": "Key fingerprint",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "Public key",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "label": {
+                "type": "string",
+                "description": "Public key label",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vpsadmin_vps": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "cpu": {
+                "type": "number",
+                "description": "Number of CPU cores",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "diskspace": {
+                "type": "number",
+                "description": "Root dataset's size in MB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "dns_resolver": {
+                "type": "string",
+                "description": "DNS resolver used by the VPS",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "feature_fuse": {
+                "type": "bool",
+                "description": "Allow access to FUSE filesystems",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "feature_kvm": {
+                "type": "bool",
+                "description": "Allow access to /dev/kvm for hardware virtualization",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "feature_lxc": {
+                "type": "bool",
+                "description": "Enable support for LXC/LXD containers",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "feature_ppp": {
+                "type": "bool",
+                "description": "Allow access to /dev/ppp",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "feature_tun": {
+                "type": "bool",
+                "description": "Allow access to /dev/net/tun, e.g. for VPNs",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "VPS hostname managed by vpsAdmin",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description": "Location label",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "manage_hostname": {
+                "type": "bool",
+                "description": "Hostname managed by vpsAdmin if true",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Available memory in MB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "node": {
+                "type": "string",
+                "description": "Read-only node name",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "os_template": {
+                "type": "string",
+                "description": "OS template to base this VPS on",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "private_ipv4_address": {
+                "type": "string",
+                "description": "Primary private IPv4 address",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "public_ipv4_address": {
+                "type": "string",
+                "description": "Primary public IPv4 address",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "public_ipv6_address": {
+                "type": "string",
+                "description": "Primary public IPv6 address",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "start_menu_timeout": {
+                "type": "number",
+                "description": "Start menu timeout before the VPS is started, in seconds",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "swap": {
+                "type": "number",
+                "description": "Available swap in MB",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "vps_id": {
+                "type": "number",
+                "description": "VPS ID",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

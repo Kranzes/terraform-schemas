@@ -1,1 +1,1645 @@
-/nix/store/h30fk0z9qsk1hlcdkpkvnr8mnv3zrrwl-sentry.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/jianyuan/sentry": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "base_url": {
+              "type": "string",
+              "description": "The target Sentry Base API URL in the format `https://[hostname]/api/`. The default value is `https://sentry.io/api/`. The value must be provided when working with Sentry On-Premise. The value can be sourced from the `SENTRY_BASE_URL` environment variable.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "token": {
+              "type": "string",
+              "description": "The authentication token used to connect to Sentry. The value can be sourced from the `SENTRY_AUTH_TOKEN` environment variable.",
+              "description_kind": "markdown",
+              "optional": true,
+              "sensitive": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "sentry_dashboard": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this dashboard.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the dashboard belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Dashboard title.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "widget": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "display_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "interval": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "limit": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "title": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "widget_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "layout": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "h": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "min_h": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "w": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "x": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "y": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    },
+                    "query": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "aggregates": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "columns": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "conditions": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "field_aliases": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "fields": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "order_by": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1
+                    }
+                  },
+                  "description": "Dashboard widgets.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Sentry Dashboard resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_issue_alert": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "action_match": {
+                "type": "string",
+                "description": "Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "actions": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of actions.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "conditions": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of conditions.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "Perform issue alert in a specific environment.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "filter_match": {
+                "type": "string",
+                "description": "Trigger actions if `all`, `any`, or `none` of the specified filters match.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "filters": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of filters.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "frequency": {
+                "type": "number",
+                "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this issue alert.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The issue alert name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the issue alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project to create the issue alert for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "projects": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Use `project` (singular) instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "computed": true
+              }
+            },
+            "description": "Sentry Issue Alert resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an issue alert on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules). Since v0.11.2, you should also omit the name property of each condition, filter, and action.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "dsn_csp": {
+                "type": "string",
+                "description": "DSN for the Content Security Policy (CSP) for the key.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "dsn_public": {
+                "type": "string",
+                "description": "DSN for the key.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "dsn_secret": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_active": {
+                "type": "bool",
+                "description": "Flag indicating the key is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the key.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the key should be created for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project the key should be created for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project_id": {
+                "type": "number",
+                "description": "The ID of the project that the key belongs to.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "public": {
+                "type": "string",
+                "description": "Public key portion of the client key.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "rate_limit_count": {
+                "type": "number",
+                "description": "Number of events that can be reported within the rate limit window.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "rate_limit_window": {
+                "type": "number",
+                "description": "Length of time that will be considered when checking the rate limit.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "Secret key portion of the client key.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Sentry Key resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_metric_alert": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aggregate": {
+                "type": "string",
+                "description": "The aggregation criteria to apply",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "dataset": {
+                "type": "string",
+                "description": "The Sentry Alert category",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "Perform Alert rule in a specific environment",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "event_types": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The events type of dataset.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this metric alert.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The metric alert name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the metric alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "owner": {
+                "type": "string",
+                "description": "Specifies the owner id of this Alert rule",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project to create the metric alert for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "query": {
+                "type": "string",
+                "description": "The query filter to apply",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "resolve_threshold": {
+                "type": "number",
+                "description": "The value at which the Alert rule resolves",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "threshold_type": {
+                "type": "number",
+                "description": "The type of threshold",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "time_window": {
+                "type": "number",
+                "description": "The period to evaluate the Alert rule in minutes",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "trigger": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "alert_threshold": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resolve_threshold": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "threshold_type": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "action": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "integration_id": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "target_identifier": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "target_type": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description": "Sentry Metric Alert resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "agree_terms": {
+                "type": "bool",
+                "description": "You agree to the applicable terms of service and privacy policy.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this organization.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The human readable name for the organization.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The unique URL slug for this organization.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "Sentry Organization resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_organization_code_mapping": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_branch": {
+                "type": "string",
+                "description": "Default branch of your code we fall back to if you do not have commit tracking set up.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "integration_id": {
+                "type": "string",
+                "description": "Sentry Organization Integration ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the code mapping is under.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Sentry Project ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "repository_id": {
+                "type": "string",
+                "description": "Sentry Organization Repository ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "source_root": {
+                "type": "string",
+                "description": "https://docs.sentry.io/product/integrations/source-code-mgmt/github/#stack-trace-linking",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "stack_root": {
+                "type": "string",
+                "description": "https://docs.sentry.io/product/integrations/source-code-mgmt/github/#stack-trace-linking",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Sentry Organization Code Mapping resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_organization_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "email": {
+                "type": "string",
+                "description": "The email of the organization member.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "expired": {
+                "type": "bool",
+                "description": "The invite has expired.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this organization membership.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the user should be invited to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "pending": {
+                "type": "bool",
+                "description": "The invite is pending.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "role": {
+                "type": "string",
+                "description": "This is the role of the organization member.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "teams": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The teams the organization member should be added to.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "sentry_organization_repository_github": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "identifier": {
+                "type": "string",
+                "description": "The repo identifier. For Github it is {github_org}/{github_repo}.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "integration_id": {
+                "type": "string",
+                "description": "The organization integration ID for Github.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this organization repository.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the Sentry organization this resource belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Sentry Github Organization Repository resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_plugin": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Plugin config.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the project belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "plugin": {
+                "type": "string",
+                "description": "Plugin ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project to create the plugin for.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Sentry Plugin resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "color": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "digests_max_delay": {
+                "type": "number",
+                "description": "The maximum amount of time (in seconds) to wait between scheduling digests for delivery.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "digests_min_delay": {
+                "type": "number",
+                "description": "The minimum amount of time (in seconds) to wait between scheduling digests for delivery after the initial scheduling.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "features": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this project.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_bookmarked": {
+                "type": "bool",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "is_public": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name for the project.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the project belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "platform": {
+                "type": "string",
+                "description": "The optional platform for this project.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Use `internal_id` instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "computed": true
+              },
+              "resolve_age": {
+                "type": "number",
+                "description": "Hours in which an issue is automatically resolve if not seen after this amount of time.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The optional slug for this project.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "team": {
+                "type": "string",
+                "description": "The slug of the team to create the project for. **Deprecated** Use `teams` instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "optional": true
+              },
+              "teams": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The slugs of the teams to create the project for.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Sentry Project resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_rule": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "action_match": {
+                "type": "string",
+                "description": "Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "actions": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of actions.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "conditions": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of conditions.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "Perform issue alert in a specific environment.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "filter_match": {
+                "type": "string",
+                "description": "Trigger actions if `all`, `any`, or `none` of the specified filters match.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "filters": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of filters.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "frequency": {
+                "type": "number",
+                "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this issue alert.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The issue alert name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the issue alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project to create the issue alert for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "projects": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Use `project` (singular) instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "computed": true
+              }
+            },
+            "description": "> **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `sentry_issue_alert` resource instead.",
+            "description_kind": "markdown",
+            "deprecated": true
+          }
+        },
+        "sentry_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "has_access": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_member": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_pending": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the team.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the team should be created for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The optional slug for this team.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "team_id": {
+                "type": "string",
+                "description": "Use `internal_id` instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "computed": true
+              }
+            },
+            "description": "Sentry Team resource.",
+            "description_kind": "markdown"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "sentry_dashboard": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this dashboard.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the dashboard belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Dashboard title.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "widget": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "display_type": "string",
+                      "id": "string",
+                      "interval": "string",
+                      "layout": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "h": "number",
+                            "min_h": "number",
+                            "w": "number",
+                            "x": "number",
+                            "y": "number"
+                          }
+                        ]
+                      ],
+                      "limit": "number",
+                      "query": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "aggregates": [
+                              "set",
+                              "string"
+                            ],
+                            "columns": [
+                              "set",
+                              "string"
+                            ],
+                            "conditions": "string",
+                            "field_aliases": [
+                              "list",
+                              "string"
+                            ],
+                            "fields": [
+                              "list",
+                              "string"
+                            ],
+                            "id": "string",
+                            "name": "string",
+                            "order_by": "string"
+                          }
+                        ]
+                      ],
+                      "title": "string",
+                      "widget_type": "string"
+                    }
+                  ]
+                ],
+                "description": "Dashboard widgets.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "sentry_issue_alert": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "action_match": {
+                "type": "string",
+                "description": "Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "actions": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of actions.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "conditions": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of conditions.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "Perform issue alert in a specific environment.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "filter_match": {
+                "type": "string",
+                "description": "Trigger actions if `all`, `any`, or `none` of the specified filters match.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "filters": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of filters.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "frequency": {
+                "type": "number",
+                "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this issue alert.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The issue alert name.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the issue alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project the issue alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "dsn_csp": {
+                "type": "string",
+                "description": "DSN for the Content Security Policy (CSP) for the key.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "dsn_public": {
+                "type": "string",
+                "description": "DSN for the key.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "dsn_secret": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "first": {
+                "type": "bool",
+                "description": "Boolean flag indicating that we want the first key of the returned keys.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_active": {
+                "type": "bool",
+                "description": "Flag indicating the key is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the key to retrieve.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the key should be created for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project the key should be created for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project_id": {
+                "type": "number",
+                "description": "The ID of the project that the key belongs to.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "public": {
+                "type": "string",
+                "description": "Public key portion of the client key.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "rate_limit_count": {
+                "type": "number",
+                "description": "Number of events that can be reported within the rate limit window.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "rate_limit_window": {
+                "type": "number",
+                "description": "Length of time that will be considered when checking the rate limit.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "Secret key portion of the client key.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Sentry Key data source.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_metric_alert": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aggregate": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dataset": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "environment": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "event_types": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The events type of dataset.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this metric alert.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The metric alert name.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the metric alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "owner": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project the metric alert belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "query": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resolve_threshold": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "threshold_type": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "time_window": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "trigger": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "action": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "id": "string",
+                            "integration_id": "number",
+                            "target_identifier": "string",
+                            "target_type": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "alert_threshold": "number",
+                      "id": "string",
+                      "label": "string",
+                      "resolve_threshold": "number",
+                      "threshold_type": "number"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "sentry_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this organization.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The human readable name for this organization.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The unique URL slug for this organization.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Sentry Organization data source.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_organization_integration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this organization integration.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the organization integration.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the integration belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "provider_key": {
+                "type": "string",
+                "description": "The key of the organization integration provider.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Sentry Organization Integration data source.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "has_access": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_member": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_pending": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The human readable name for this organization.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the team should be created for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The unique URL slug for this team.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Sentry Team data source.",
+            "description_kind": "markdown"
+          }
+        }
+      }
+    }
+  }
+}

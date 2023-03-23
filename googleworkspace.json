@@ -1,1 +1,3538 @@
-/nix/store/21zadjdz7814hlh0lhis3q2p7r93gsif-googleworkspace.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/hashicorp/googleworkspace": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "access_token": {
+              "type": "string",
+              "description": "A temporary [OAuth 2.0 access token] obtained from the Google Authorization server, i.e. the `Authorization: Bearer` token used to authenticate HTTP requests to Google Admin SDK APIs. This is an alternative to `credentials`, and ignores the `oauth_scopes` field. If both are specified, `access_token` will be used over the `credentials` field.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "credentials": {
+              "type": "string",
+              "description": "Either the path to or the contents of a service account key file in JSON format you can manage key files using the Cloud Console).  If not provided, the application default credentials will be used.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "customer_id": {
+              "type": "string",
+              "description": "The customer id provided with your Google Workspace subscription. It is found in the admin console under Account Settings.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "impersonated_user_email": {
+              "type": "string",
+              "description": "The impersonated user's email with access to the Admin APIs can access the Admin SDK Directory API. `impersonated_user_email` is required for all services except group and user management.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "oauth_scopes": {
+              "type": [
+                "list",
+                "string"
+              ],
+              "description": "The list of the scopes required for your application (for a list of possible scopes, see [Authorize requests](https://developers.google.com/admin-sdk/directory/v1/guides/authorizing))",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "service_account": {
+              "type": "string",
+              "description": "The service account used to create the provided `access_token` if authenticating using the `access_token` method and needing to impersonate a user. This service account will require the GCP role `Service Account Token Creator` if needing to impersonate a user.",
+              "description_kind": "markdown",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "googleworkspace_chrome_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "org_unit_id": {
+                "type": "string",
+                "description": "The target org unit on which this policy is applied.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "policies": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "schema_name": {
+                      "type": "string",
+                      "description": "The full qualified name of the policy schema.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "schema_values": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "JSON encoded map that represents key/value pairs that correspond to the given schema.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Policies to set for the org unit",
+                  "description_kind": "markdown"
+                },
+                "min_items": 1
+              }
+            },
+            "description": "Chrome Policy resource in the Terraform Googleworkspace provider. Currently only supports policies not requiring additionalTargetKeys. Chrome Policy Schema resides under the `https://www.googleapis.com/auth/chrome.management.policy` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation_time": {
+                "type": "number",
+                "description": "Creation time of the domain. Expressed in Unix time format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of domain alias objects.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the customer.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_primary": {
+                "type": "bool",
+                "description": "Indicates if the domain is a primary domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "verified": {
+                "type": "bool",
+                "description": "Indicates the verification state of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Domain resource manages Google Workspace Domains. Domain resides under the `https://www.googleapis.com/auth/admin.directory.domain` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_domain_alias": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation_time": {
+                "type": "number",
+                "description": "Creation time of the domain alias.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_alias_name": {
+                "type": "string",
+                "description": "The domain alias name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_domain_name": {
+                "type": "string",
+                "description": "The parent domain name that the domain alias is associated with. This can either be a primary or secondary domain name within a customer.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "verified": {
+                "type": "bool",
+                "description": "Indicates the verification state of a domain alias.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Domain Alias resource manages Google Workspace Domain Aliases. Domain Alias resides under the `https://www.googleapis.com/auth/admin.directory.domain` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_gmail_send_as_alias": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "display_name": {
+                "type": "string",
+                "description": "A name that appears in the 'From:' header for mail sent using this alias. For custom 'from' addresses, when this is empty, Gmail will populate the 'From:' header with the name that is used for the primary address associated with the account. If the admin has disabled the ability for users to update their name format, requests to update this field for the primary login will silently fail.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_default": {
+                "type": "bool",
+                "description": "Whether this address is selected as the default 'From:' address in situations such as composing a new message or sending a vacation auto-reply. Every Gmail account has exactly one default send-as address, so the only legal value that clients may write to this field is true. Changing this from false to true for an address will result in this field becoming false for the other previous default address. Toggling an existing alias' default to false is not possible, another alias must be added/imported and toggled to true to remove the default from an existing alias. To avoid drift with Terraform, please change the previous default's config to false AFTER a new default is applied and perform a refresh to synchronize with remote state.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "is_primary": {
+                "type": "bool",
+                "description": "Whether this address is the primary address used to login to the account. Every Gmail account has exactly one primary address, and it cannot be deleted from the collection of send-as aliases.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "primary_email": {
+                "type": "string",
+                "description": "User's primary email address.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "reply_to_address": {
+                "type": "string",
+                "description": "An optional email address that is included in a 'Reply-To:' header for mail sent using this alias. If this is empty, Gmail will not generate a 'Reply-To:' header.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "send_as_email": {
+                "type": "string",
+                "description": "The email address that appears in the 'From:' header for mail sent using this alias.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "signature": {
+                "type": "string",
+                "description": "An optional HTML signature that is included in messages composed with this alias in the Gmail web UI. This signature is added to new emails only.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "treat_as_alias": {
+                "type": "bool",
+                "description": "Defaults to `true`. Whether Gmail should treat this address as an alias for the user's primary email address. This setting only applies to custom 'from' aliases. See https://support.google.com/a/answer/1710338 for help on making this decision",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "verification_status": {
+                "type": "string",
+                "description": "Indicates whether this address has been verified for use as a send-as alias.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "smtp_msa": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description": "The hostname of the SMTP service.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "The password that will be used for authentication with the SMTP service. This is a write-only field that can be specified in requests to create or update SendAs settings; it is never populated in responses.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "sensitive": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "The port of the SMTP service.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "security_mode": {
+                      "type": "string",
+                      "description": "Defaults to `securityModeUnspecified`. The protocol that will be used to secure communication with the SMTP service.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username that will be used for authentication with the SMTP service. This is a write-only field that can be specified in requests to create or update SendAs settings; it is never populated in responses.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "An optional SMTP service that will be used as an outbound relay for mail sent using this alias. If this is empty, outbound mail will be sent directly from Gmail's servers to the destination SMTP service. This setting only applies to custom 'from' aliases.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "Gmail Send As Alias resource in the Terraform Googleworkspace provider. Please ensure the Gmail API is enabled for your workspace and that the user being configured has a Gmail license. Gmail Send As Alias resides under the `https://www.googleapis.com/auth/gmail.settings` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admin_created": {
+                "type": "bool",
+                "description": "Value is true if this group was created by an administrator rather than a user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of group's email addresses.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "An extended description to help users determine the purpose of a group.For example, you can include information about who should join the group,the types of messages to send to the group, links to FAQs about the group, or related groups.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "direct_members_count": {
+                "type": "number",
+                "description": "The number of users that are direct members of the group.If a group is a member (child) of this group (the parent),members of the child group are not counted in the directMembersCount property of the parent group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The group's email address. If your account has multiple domains,select the appropriate domain for the email address. The email must be unique.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The unique ID of a group. A group id can be used as a group request URI's groupKey.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The group's display name.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "non_editable_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of the group's non-editable alias email addresses that are outside of the account's primary domain or subdomains. These are functioning email addresses used by the group.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Group resource manages Google Workspace Groups. Group resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "delivery_settings": {
+                "type": "string",
+                "description": "Defaults to `ALL_MAIL`. Defines mail delivery preferences of member. Acceptable values are: \n\t- `ALL_MAIL`: All messages, delivered as soon as they arrive.\n\t- `DAILY`: No more than one message a day.\n\t- `DIGEST`: Up to 25 messages bundled into a single message.\n\t- `DISABLED`: Remove subscription.\n\t- `NONE`: No messages.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The member's email address. A member can be a user or another group. This property is required when adding a member to a group. The email must be unique and cannot be an alias of another group. If the email address is changed, the API automatically reflects the email address changes.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "group_id": {
+                "type": "string",
+                "description": "Identifies the group in the API request. The value can be the group's email address, group alias, or the unique group ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "member_id": {
+                "type": "string",
+                "description": "The unique ID of the group member. A member id can be used as a member request URI's memberKey.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "role": {
+                "type": "string",
+                "description": "Defaults to `MEMBER`. The member's role in a group. The API returns an error for cycles in group memberships. For example, if group1 is a member of group2, group2 cannot be a member of group1. Acceptable values are:\n\t- `MANAGER`: This role is only available if the Google Groups for Business is enabled using the Admin Console. A `MANAGER` role can do everything done by an `OWNER` role except make a member an `OWNER` or delete the group. A group can have multiple `MANAGER` members. \n\t- `MEMBER`: This role can subscribe to a group, view discussion archives, and view the group's membership list.\n\t- `OWNER`: This role can send messages to the group, add or remove members, change member roles, change group's settings, and delete the group. An OWNER must be a member of the group. A group can have more than one OWNER.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of member.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Defaults to `USER`. The type of group member. Acceptable values are: \n\t- `CUSTOMER`: The member represents all users in a domain. An email address is not returned and the ID returned is the customer ID. \n\t- `GROUP`: The member is another group. \n\t- `USER`: The member is a user.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Group Member resource manages Google Workspace Groups Members. Group Member resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group_members": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "group_id": {
+                "type": "string",
+                "description": "Identifies the group in the API request. The value can be the group's email address, group alias, or the unique group ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "members": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "delivery_settings": {
+                      "type": "string",
+                      "description": "Defaults to `ALL_MAIL`. Defines mail delivery preferences of member. Acceptable values are:\n\t- `ALL_MAIL`: All messages, delivered as soon as they arrive. \n\t- `DAILY`: No more than one message a day. \n\t- `DIGEST`: Up to 25 messages bundled into a single message. \n\t- `DISABLED`: Remove subscription. \n\t- `NONE`: No messages.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The member's email address. A member can be a user or another group. This property isrequired when adding a member to a group. The email must be unique and cannot be an alias of another group. If the email address is changed, the API automatically reflects the email address changes.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The unique ID of the group member. A member id can be used as a member request URI's memberKey.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "role": {
+                      "type": "string",
+                      "description": "Defaults to `MEMBER`. The member's role in a group. The API returns an error for cycles in group memberships. For example, if group1 is a member of group2, group2 cannot be a member of group1. Acceptable values are: \n\t- `MANAGER`: This role is only available if the Google Groups for Business is enabled using the Admin Console. A `MANAGER` role can do everything done by an `OWNER` role except make a member an `OWNER` or delete the group. A group can have multiple `MANAGER` members. \n\t- `MEMBER`: This role can subscribe to a group, view discussion archives, and view the group's membership list. \n\t- `OWNER`: This role can send messages to the group, add or remove members, change member roles, change group's settings, and delete the group. An OWNER must be a member of the group. A group can have more than one OWNER.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Status of member.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Defaults to `USER`. The type of group member. Acceptable values are: \n\t- `CUSTOMER`: The member represents all users in a domain. An email address is not returned and the ID returned is the customer ID. \n\t- `GROUP`: The member is another group. \n\t- `USER`: The member is a user.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "The members of the group",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Group Members resource manages Google Workspace Groups Members. Group Members resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allow_external_members": {
+                "type": "bool",
+                "description": "Defaults to `false`. Identifies whether members external to your organization can join the group. If true, Google Workspace users external to your organization can become members of this group. If false, users not belonging to the organization are not allowed to become members of this group.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "allow_web_posting": {
+                "type": "bool",
+                "description": "Defaults to `true`. Allows posting from web. If true, allows any member to post to the group forum. If false, Members only use Gmail to communicate with the group.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "archive_only": {
+                "type": "bool",
+                "description": "Defaults to `false`. Allows the group to be archived only. If true, Group is archived and the group is inactive. New messages to this group are rejected. The older archived messages are browsable and searchable. If true, the `who_can_post_message` property is set to `NONE_CAN_POST`. If reverted from true to false, `who_can_post_message` is set to `ALL_MANAGERS_CAN_POST`. If false, The group is active and can receive messages. When false, updating `who_can_post_message` to `NONE_CAN_POST`, results in an error.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "custom_footer_text": {
+                "type": "string",
+                "description": "Set the content of custom footer text. The maximum number of characters is 1,000.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "custom_reply_to": {
+                "type": "string",
+                "description": "An email address used when replying to a message if the `reply_to` property is set to `REPLY_TO_CUSTOM`. This address is defined by an account administrator. When the group's `reply_to` property is set to `REPLY_TO_CUSTOM`, the `custom_reply_to` property holds a custom email address used when replying to a message, the `custom_reply_to` property must have a text value or an error is returned.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "custom_roles_enabled_for_settings_to_be_merged": {
+                "type": "bool",
+                "description": "Specifies whether the group has a custom role that's included in one of the settings being merged.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "default_message_deny_notification_text": {
+                "type": "string",
+                "description": "When a message is rejected, this is text for the rejection notification sent to the message's author. By default, this property is empty and has no value in the API's response body. The maximum notification text size is 10,000 characters. Requires `send_message_deny_notification` property to be true.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the group. The maximum group description is no more than 300 characters.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The group's email address.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "enable_collaborative_inbox": {
+                "type": "bool",
+                "description": "Defaults to `false`. Specifies whether a collaborative inbox will remain turned on for the group.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "include_custom_footer": {
+                "type": "bool",
+                "description": "Defaults to `false`. Whether to include custom footer.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "include_in_global_address_list": {
+                "type": "bool",
+                "description": "Defaults to `true`. Enables the group to be included in the Global Address List. If true, the group is included in the Global Address List. If false, it is not included in the Global Address List.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "is_archived": {
+                "type": "bool",
+                "description": "Defaults to `false`. Allows the Group contents to be archived. If true, archive messages sent to the group. If false, Do not keep an archive of messages sent to this group. If false, previously archived messages remain in the archive.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "members_can_post_as_the_group": {
+                "type": "bool",
+                "description": "Defaults to `false`. Enables members to post messages as the group. If true, group member can post messages using the group's email address instead of their own email address. Message appear to originate from the group itself. Any message moderation settings on individual users or new members do not apply to posts made on behalf of the group. If false, members can not post in behalf of the group's email address.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "message_moderation_level": {
+                "type": "string",
+                "description": "Defaults to `MODERATE_NONE`. Moderation level of incoming messages. Possible values are: \n\t- `MODERATE_ALL_MESSAGES`: All messages are sent to the group owner's email address for approval. If approved, the message is sent to the group. \n\t- `MODERATE_NON_MEMBERS`: All messages from non group members are sent to the group owner's email address for approval. If approved, the message is sent to the group. \n\t- `MODERATE_NEW_MEMBERS`: All messages from new members are sent to the group owner's email address for approval. If approved, the message is sent to the group. \n\t- `MODERATE_NONE`: No moderator approval is required. Messages are delivered directly to the group.\n\tNote: When the `who_can_post_message` is set to `ANYONE_CAN_POST`, we recommend the `message_moderation_level` be set to `MODERATE_NON_MEMBERS` to protect the group from possible spam.When `member_can_post_as_the_group` is true, any message moderation settings on individual users or new members will not apply to posts made on behalf of the group.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the group, which has a maximum size of 75 characters.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "primary_language": {
+                "type": "string",
+                "description": "The primary language for group. For a group's primary language use the language tags from the Google Workspace languages found at Google Workspace Email Settings API Email Language Tags.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "reply_to": {
+                "type": "string",
+                "description": "Defaults to `REPLY_TO_IGNORE`. Specifies who receives the default reply. Possible values are: \n\t- `REPLY_TO_CUSTOM`: For replies to messages, use the group's custom email address. When set to `REPLY_TO_CUSTOM`, the `custom_reply_to` property holds the custom email address used when replying to a message, the customReplyTo property must have a value. Otherwise an error is returned. \n\t- `REPLY_TO_SENDER`: The reply sent to author of message. \n\t- `REPLY_TO_LIST`: This reply message is sent to the group. \n\t- `REPLY_TO_OWNER`: The reply is sent to the owner(s) of the group. This does not include the group's managers. \n\t- `REPLY_TO_IGNORE`: Group users individually decide where the message reply is sent. \n\t- `REPLY_TO_MANAGERS`: This reply message is sent to the group's managers, which includes all managers and the group owner.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "send_message_deny_notification": {
+                "type": "bool",
+                "description": "Defaults to `false`. Allows a member to be notified if the member's message to the group is denied by the group owner. If true, when a message is rejected, send the deny message notification to the message author. The `default_message_deny_notification_text` property is dependent on the `send_message_deny_notification` property being true. If false, when a message is rejected, no notification is sent.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "spam_moderation_level": {
+                "type": "string",
+                "description": "Defaults to `MODERATE`. Specifies moderation levels for messages detected as spam. Possible values are: \n\t- `ALLOW`: Post the message to the group. \n\t- `MODERATE`: Send the message to the moderation queue. This is the default. \n\t- `SILENTLY_MODERATE`: Send the message to the moderation queue, but do not send notification to moderators. \n\t- `REJECT`: Immediately reject the message.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_assist_content": {
+                "type": "string",
+                "description": "Defaults to `NONE`. Specifies who can moderate metadata. Possible values are: \n\t- `ALL_MEMBERS`\n\t- `OWNERS_AND_MANAGERS`\n\t- `MANAGERS_ONLY`\n\t- `OWNERS_ONLY`\n\t- `NONE`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_contact_owner": {
+                "type": "string",
+                "description": "Defaults to `ANYONE_CAN_CONTACT`. Permission to contact owner of the group via web UI. Possible values are: \n\t- `ALL_IN_DOMAIN_CAN_CONTACT`\n\t- `ALL_MANAGERS_CAN_CONTACT`\n\t- `ALL_MEMBERS_CAN_CONTACT`\n\t- `ANYONE_CAN_CONTACT`\n\t- `ALL_OWNERS_CAN_CONTACT`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_discover_group": {
+                "type": "string",
+                "description": "Defaults to `ALL_IN_DOMAIN_CAN_DISCOVER`. Specifies the set of users for whom this group is discoverable. Possible values are: \n\t- `ANYONE_CAN_DISCOVER`\n\t- `ALL_IN_DOMAIN_CAN_DISCOVER`\n\t- `ALL_MEMBERS_CAN_DISCOVER`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_join": {
+                "type": "string",
+                "description": "Defaults to `CAN_REQUEST_TO_JOIN`. Permission to join group. Possible values are: \n\t- `ANYONE_CAN_JOIN`: Any Internet user, both inside and outside your domain, can join the group. \n\t- `ALL_IN_DOMAIN_CAN_JOIN`: Anyone in the account domain can join. This includes accounts with multiple domains. \n\t- `INVITED_CAN_JOIN`: Candidates for membership can be invited to join. \n\t- `CAN_REQUEST_TO_JOIN`: Non members can request an invitation to join.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_leave_group": {
+                "type": "string",
+                "description": "Defaults to `ALL_MEMBERS_CAN_LEAVE`. Permission to leave the group. Possible values are:\n\t- `ALL_MANAGERS_CAN_LEAVE`\n\t- `ALL_MEMBERS_CAN_LEAVE`\n\t- `NONE_CAN_LEAVE`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_moderate_content": {
+                "type": "string",
+                "description": "Defaults to `OWNERS_AND_MANAGERS`. Specifies who can moderate content. Possible values are: \n\t- `ALL_MEMBERS`\n\t- `OWNERS_AND_MANAGERS`\n\t- `OWNERS_ONLY`\n\t- `NONE`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_moderate_members": {
+                "type": "string",
+                "description": "Defaults to `OWNERS_AND_MANAGERS`. Specifies who can manage members. Possible values are: \n\t- `ALL_MEMBERS`\n\t- `OWNERS_AND_MANAGERS`\n\t- `OWNERS_ONLY`\n\t- `NONE`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_post_message": {
+                "type": "string",
+                "description": "Permissions to post messages. Possible values are: \n\t- `NONE_CAN_POST`: The group is disabled and archived. No one can post a message to this group. * When archiveOnly is false, updating whoCanPostMessage to NONE_CAN_POST, results in an error. * If archiveOnly is reverted from true to false, whoCanPostMessages is set to ALL_MANAGERS_CAN_POST. \n\t- `ALL_MANAGERS_CAN_POST`: Managers, including group owners, can post messages. \n\t- `ALL_MEMBERS_CAN_POST`: Any group member can post a message. \n\t- `ALL_OWNERS_CAN_POST`: Only group owners can post a message. \n\t- `ALL_IN_DOMAIN_CAN_POST`: Anyone in the account can post a message. \n\t- `ANYONE_CAN_POST`: Any Internet user who outside your account can access your Google Groups service and post a message. \n\t*Note: When `who_can_post_message` is set to `ANYONE_CAN_POST`, we recommend the`message_moderation_level` be set to `MODERATE_NON_MEMBERS` to protect the group from possible spam. Users not belonging to the organization are not allowed to become members of this group.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "who_can_view_group": {
+                "type": "string",
+                "description": "Defaults to `ALL_MEMBERS_CAN_VIEW`. Permissions to view group messages. Possible values are: \n\t- `ANYONE_CAN_VIEW`: Any Internet user can view the group's messages. \n\t- `ALL_IN_DOMAIN_CAN_VIEW`: Anyone in your account can view this group's messages. \n\t- `ALL_MEMBERS_CAN_VIEW`: All group members can view the group's messages. \n\t- `ALL_MANAGERS_CAN_VIEW`: Any group manager can view this group's messages. \n\t- `ALL_OWNERS_CAN_VIEW`: The group owners can view this group's messages.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "who_can_view_membership": {
+                "type": "string",
+                "description": "Defaults to `ALL_MEMBERS_CAN_VIEW`. Permissions to view membership. Possible values are: \n\t- `ALL_IN_DOMAIN_CAN_VIEW`: Anyone in the account can view the group members list. If a group already has external members, those members can still send email to this group. \n\t- `ALL_MEMBERS_CAN_VIEW`: The group members can view the group members list. \n\t- `ALL_MANAGERS_CAN_VIEW`: The group managers can view group members list. \n\t- `ALL_OWNERS_CAN_VIEW`: The group owners can view group members list.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Group Settings resource manages Google Workspace Groups Setting. Group Settings requires the `https://www.googleapis.com/auth/apps.groups.settings` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_org_unit": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "block_inheritance": {
+                "type": "bool",
+                "description": "Defaults to `false`. Determines if a sub-organizational unit can inherit the settings of the parent organization. False means a sub-organizational unit inherits the settings of the nearest parent organizational unit. For more information on inheritance and users in an organization structure, see the [administration help center](https://support.google.com/a/answer/4352075).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the organizational unit.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The organizational unit's path name. For example, an organizational unit's name within the /corp/support/sales_support parent path is sales_support.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "org_unit_id": {
+                "type": "string",
+                "description": "The unique ID of the organizational unit.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "org_unit_path": {
+                "type": "string",
+                "description": "The full path to the organizational unit. The orgUnitPath is a derived property. When listed, it is derived from parentOrgunitPath and organizational unit's name. For example, for an organizational unit named 'apps' under parent organization '/engineering', the orgUnitPath is '/engineering/apps'. In order to edit an orgUnitPath, either update the name of the organization or the parentOrgunitPath. A user's organizational unit determines which Google Workspace services the user has access to. If the user is moved to a new organization, the user's access changes. For more information about organization structures, see the [administration help center](https://support.google.com/a/answer/4352075). For more information about moving a user to a different organization, see [chromeosdevices.update a user](https://developers.google.com/admin-sdk/directory/v1/guides/manage-users#update_user).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_org_unit_id": {
+                "type": "string",
+                "description": "The unique ID of the parent organizational unit.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "parent_org_unit_path": {
+                "type": "string",
+                "description": "The organizational unit's parent path. For example, /corp/sales is the parent path for /corp/sales/sales_support organizational unit.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "OrgUnit resource manages Google Workspace OrgUnits. Org Unit resides under the `https://www.googleapis.com/auth/admin.directory.orgunit` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "A short description of the role.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of the role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_super_admin_role": {
+                "type": "bool",
+                "description": "Returns true if the role is a super admin role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_system_role": {
+                "type": "bool",
+                "description": "Returns true if this is a pre-defined system role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the role.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "privileges": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "privilege_name": {
+                      "type": "string",
+                      "description": "The name of the privilege.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "service_id": {
+                      "type": "string",
+                      "description": "The obfuscated ID of the service this privilege is for.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "The set of privileges that are granted to this role.",
+                  "description_kind": "markdown"
+                },
+                "min_items": 1
+              }
+            },
+            "description": "Role resource in the Terraform Googleworkspace provider. Role resides under the `https://www.googleapis.com/auth/admin.directory.rolemanagement` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_role_assignment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "assigned_to": {
+                "type": "string",
+                "description": "The unique ID of the user this role is assigned to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of this roleAssignment.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "org_unit_id": {
+                "type": "string",
+                "description": "If the role is restricted to an organization unit, this contains the ID for the organization unit the exercise of this role is restricted to.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "role_id": {
+                "type": "string",
+                "description": "The ID of the role that is assigned.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "scope_type": {
+                "type": "string",
+                "description": "Defaults to `CUSTOMER`. The scope in which this role is assigned. Valid values are :\n\t- `CUSTOMER`\n\t- `ORG_UNIT`",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Role Assignment resource in the Terraform Googleworkspace provider. Role Assignment resides under the `https://www.googleapis.com/auth/admin.directory.rolemanagement` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_schema": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "display_name": {
+                "type": "string",
+                "description": "Display name for the schema.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "schema_id": {
+                "type": "string",
+                "description": "The unique identifier of the schema.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "schema_name": {
+                "type": "string",
+                "description": "The schema's name.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "fields": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "display_name": {
+                      "type": "string",
+                      "description": "Display Name of the field.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "etag": {
+                      "type": "string",
+                      "description": "The ETag of the field.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "field_id": {
+                      "type": "string",
+                      "description": "The unique identifier of the field.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "field_name": {
+                      "type": "string",
+                      "description": "The name of the field.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "field_type": {
+                      "type": "string",
+                      "description": "The type of the field. Acceptable values are: \n\t- `BOOL`\n\t- `DATE`\n\t- `DOUBLE`\n\t- `EMAIL`\n\t- `INT64`\n\t- `PHONE`\n\t- `STRING`",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "indexed": {
+                      "type": "bool",
+                      "description": "Defaults to `true`. Boolean specifying whether the field is indexed or not.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "multi_valued": {
+                      "type": "bool",
+                      "description": "Defaults to `false`. A boolean specifying whether this is a multi-valued field or not.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "read_access_type": {
+                      "type": "string",
+                      "description": "Defaults to `ALL_DOMAIN_USERS`. Specifies who can view values of this field. See Retrieve users as a non-administrator for more information. Acceptable values are: \n\t- `ADMINS_AND_SELF`\n\t- `ALL_DOMAIN_USERS`\n\tNote: It may take up to 24 hours for changes to this field to be reflected.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "numeric_indexing_spec": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "max_value": {
+                            "type": "number",
+                            "description": "Maximum value of this field. This is meant to be indicative rather than enforced. Values outside this range will still be indexed, but search may not be as performant.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "min_value": {
+                            "type": "number",
+                            "description": "Minimum value of this field. This is meant to be indicative rather than enforced. Values outside this range will still be indexed, but search may not be as performant.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "Indexing spec for a numeric field. By default, only exact match queries will be supported for numeric fields. Setting the numericIndexingSpec allows range queries to be supported.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "A list of fields in the schema.",
+                  "description_kind": "markdown"
+                },
+                "min_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Schema resource manages Google Workspace Schemas. Schema resides under the `https://www.googleapis.com/auth/admin.directory.userschema` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "agreed_to_terms": {
+                "type": "bool",
+                "description": "This property is true if the user has completed an initial login and accepted the Terms of Service agreement.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of the user's alias email addresses.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "archived": {
+                "type": "bool",
+                "description": "Indicates if user is archived.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "change_password_at_next_login": {
+                "type": "bool",
+                "description": "Indicates if the user is forced to change their password at next login. This setting doesn't apply when the user signs in via a third-party identity provider.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "creation_time": {
+                "type": "string",
+                "description": "The time the user's account was created. The value is in ISO 8601 date and time format. The time is the complete date plus hours, minutes, and seconds in the form YYYY-MM-DDThh:mm:ssTZD. For example, 2010-04-05T17:30:04+01:00.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "customer_id": {
+                "type": "string",
+                "description": "The customer ID to retrieve all account users. You can use the alias my_customer to represent your account's customerId. As a reseller administrator, you can use the resold customer account's customerId. To get a customerId, use the account's primary domain in the domain parameter of a users.list request.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "deletion_time": {
+                "type": "string",
+                "description": "The time the user's account was deleted. The value is in ISO 8601 date and time format The time is the complete date plus hours, minutes, and seconds in the form YYYY-MM-DDThh:mm:ssTZD. For example 2010-04-05T17:30:04+01:00.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "hash_function": {
+                "type": "string",
+                "description": "Stores the hash format of the password property. We recommend sending the password property value as a base 16 bit hexadecimal-encoded hash value. Set the hashFunction values as either the SHA-1, MD5, or crypt hash format.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The unique ID for the user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "include_in_global_address_list": {
+                "type": "bool",
+                "description": "Defaults to `true`. Indicates if the user's profile is visible in the Google Workspace global address list when the contact sharing feature is enabled for the domain.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "ip_allowlist": {
+                "type": "bool",
+                "description": "If true, the user's IP address is added to the allow list.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "is_admin": {
+                "type": "bool",
+                "description": "Indicates a user with super admininistrator privileges.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "is_delegated_admin": {
+                "type": "bool",
+                "description": "Indicates if the user is a delegated administrator.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_enforced_in_2_step_verification": {
+                "type": "bool",
+                "description": "Is 2-step verification enforced.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_enrolled_in_2_step_verification": {
+                "type": "bool",
+                "description": "Is enrolled in 2-step verification.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_mailbox_setup": {
+                "type": "bool",
+                "description": "Indicates if the user's Google mailbox is created. This property is only applicable if the user has been assigned a Gmail license.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "last_login_time": {
+                "type": "string",
+                "description": "The last time the user logged into the user's account. The value is in ISO 8601 date and time format. The time is the complete date plus hours, minutes, and seconds in the form YYYY-MM-DDThh:mm:ssTZD. For example, 2010-04-05T17:30:04+01:00.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "non_editable_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of the user's non-editable alias email addresses. These are typically outside the account's primary domain or sub-domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "org_unit_path": {
+                "type": "string",
+                "description": "The full path of the parent organization associated with the user. If the parent organization is the top-level, it is represented as a forward slash (/).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "Stores the password for the user account. A password can contain any combination of ASCII characters. A minimum of 8 characters is required. The maximum length is 100 characters. As the API does not return the value of password, this field is write-only, and the value stored in the state will be what is provided in the configuration. The field is required on create and will be empty on import.",
+                "description_kind": "markdown",
+                "optional": true,
+                "sensitive": true
+              },
+              "primary_email": {
+                "type": "string",
+                "description": "The user's primary email address. The primaryEmail must be unique and cannot be an alias of another user.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "recovery_email": {
+                "type": "string",
+                "description": "Recovery email of the user.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "recovery_phone": {
+                "type": "string",
+                "description": "Recovery phone of the user. The phone number must be in the E.164 format, starting with the plus sign (+). Example: +16506661212.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "suspended": {
+                "type": "bool",
+                "description": "Indicates if user is suspended.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "suspension_reason": {
+                "type": "string",
+                "description": "Has the reason a user account is suspended either by the administrator or by Google at the time of suspension. The property is returned only if the suspended property is true.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "thumbnail_photo_etag": {
+                "type": "string",
+                "description": "ETag of the user's photo",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "thumbnail_photo_url": {
+                "type": "string",
+                "description": "Photo Url of the user.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "addresses": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "country": {
+                      "type": "string",
+                      "description": "Country",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "country_code": {
+                      "type": "string",
+                      "description": "The country code. Uses the ISO 3166-1 standard.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the address type is custom, this property contains the custom value.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "extended_address": {
+                      "type": "string",
+                      "description": "For extended addresses, such as an address that includes a sub-region.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "formatted": {
+                      "type": "string",
+                      "description": "A full and unstructured postal address. This is not synced with the structured address fields.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "locality": {
+                      "type": "string",
+                      "description": "The town or city of the address.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "po_box": {
+                      "type": "string",
+                      "description": "The post office box, if present.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "postal_code": {
+                      "type": "string",
+                      "description": "The ZIP or postal code, if applicable.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "If this is the user's primary address. The addresses list may contain only one primary address.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "The abbreviated province or state.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "source_is_structured": {
+                      "type": "bool",
+                      "description": "Indicates if the user-supplied address was formatted. Formatted addresses are not currently supported.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "street_address": {
+                      "type": "string",
+                      "description": "The street address, such as 1600 Amphitheatre Parkway. Whitespace within the string is ignored; however, newlines are significant.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The address type. Acceptable values: `custom`, `home`, `other`, `work`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's addresses. The maximum allowed data size is 10Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "custom_schemas": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "schema_name": {
+                      "type": "string",
+                      "description": "The name of the schema.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "schema_values": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "JSON encoded map that represents key/value pairs that correspond to the given schema.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Custom fields of the user.",
+                  "description_kind": "markdown"
+                }
+              },
+              "emails": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "The user's email address. Also serves as the email ID. This value can be the user's primary email address or an alias.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the value of type is custom, this property contains the custom type string.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "Defaults to `false`. Indicates if this is the user's primary email. Only one entry can be marked as primary.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of the email account. Acceptable values: `custom`, `home`, `other`, `work`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's email addresses. The maximum allowed data size is 10Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "external_ids": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the external ID type is custom, this property contains the custom value and must be set.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of external ID. If set to custom, customType must also be set. Acceptable values: `account`, `custom`, `customer`, `login_id`, `network`, `organization`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the ID.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of external IDs for the user, such as an employee or network ID. The maximum allowed data size is 2Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "ims": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_protocol": {
+                      "type": "string",
+                      "description": "If the protocol value is custom_protocol, this property holds the custom protocol's string.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the IM type is custom, this property holds the custom type string.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "im": {
+                      "type": "string",
+                      "description": "The user's IM network ID.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "If this is the user's primary IM. Only one entry in the IM list can have a value of true.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "An IM protocol identifies the IM network. The value can be a custom network or the standard network. Acceptable values: `aim`, `custom_protocol`, `gtalk`, `icq`, `jabber`, `msn`, `net_meeting`, `qq`, `skype`, `yahoo`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Acceptable values: `custom`, `home`, `other`, `work`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "The user's Instant Messenger (IM) accounts. A user account can have multiple ims properties. But, only one of these ims properties can be the primary IM contact. The maximum allowed data size is 2Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "keywords": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_type": {
+                      "type": "string",
+                      "description": "Custom Type.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Each entry can have a type which indicates standard type of that entry. For example, keyword could be of type occupation or outlook. In addition to the standard type, an entry can have a custom type and can give it any name. Such types should have the CUSTOM value as type and also have a customType value. Acceptable values: `custom`, `mission`, `occupation`, `outlook`",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Keyword.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's keywords. The maximum allowed data size is 1Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "languages": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_language": {
+                      "type": "string",
+                      "description": "Other language. A user can provide their own language name if there is no corresponding Google III language code. If this is set, LanguageCode can't be set.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "language_code": {
+                      "type": "string",
+                      "description": "Defaults to `en`. Language Code. Should be used for storing Google III LanguageCode string representation for language. Illegal values cause SchemaException.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "preference": {
+                      "type": "string",
+                      "description": "Defaults to `preferred`. If present, controls whether the specified languageCode is the user's preferred language. Allowed values are `preferred` and `not_preferred`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "A list of the user's languages. The maximum allowed data size is 1Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "locations": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "area": {
+                      "type": "string",
+                      "description": "Textual location. This is most useful for display purposes to concisely describe the location. For example, Mountain View, CA or Near Seattle.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "building_id": {
+                      "type": "string",
+                      "description": "Building identifier.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the location type is custom, this property contains the custom value.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "desk_code": {
+                      "type": "string",
+                      "description": "Most specific textual code of individual desk location.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "floor_name": {
+                      "type": "string",
+                      "description": "Floor name/number.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "floor_section": {
+                      "type": "string",
+                      "description": "Floor section. More specific location within the floor. For example, if a floor is divided into sections A, B, and C, this field would identify one of those values.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The location type. Acceptable values: `custom`, `default`, `desk`",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's locations. The maximum allowed data size is 10Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "name": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "family_name": {
+                      "type": "string",
+                      "description": "The user's last name.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "full_name": {
+                      "type": "string",
+                      "description": "The user's full name formed by concatenating the first and last name values.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "given_name": {
+                      "type": "string",
+                      "description": "The user's first name.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Holds the given and family names of the user, and the read-only fullName value. The maximum number of characters in the givenName and in the familyName values is 60. In addition, name values support unicode/UTF-8 characters, and can contain spaces, letters (a-z), numbers (0-9), dashes (-), forward slashes (/), and periods (.). Maximum allowed data size for this field is 1Kb.",
+                  "description_kind": "markdown"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "organizations": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cost_center": {
+                      "type": "string",
+                      "description": "The cost center of the user's organization.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the value of type is custom, this property contains the custom value.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "department": {
+                      "type": "string",
+                      "description": "Specifies the department within the organization, such as sales or engineering.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The description of the organization.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "domain": {
+                      "type": "string",
+                      "description": "The domain the organization belongs to.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "full_time_equivalent": {
+                      "type": "number",
+                      "description": "The full-time equivalent millipercent within the organization (100000 = 100%)",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "location": {
+                      "type": "string",
+                      "description": "The physical location of the organization. This does not need to be a fully qualified address.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the organization.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "Indicates if this is the user's primary organization. A user may only have one primary organization.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "symbol": {
+                      "type": "string",
+                      "description": "Text string symbol of the organization. For example, the text symbol for Google is GOOG.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "The user's title within the organization. For example, member or engineer.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of organization. Acceptable values: `domain_only`, `school`, `unknown`, `work`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of organizations the user belongs to. The maximum allowed data size is 10Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "phones": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the phone number type is custom, this property contains the custom value and must be set.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "Indicates if this is the user's primary phone number. A user may only have one primary phone number.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of phone number. Acceptable values: `assistant`, `callback`, `car`, `company_main` , `custom`, `grand_central`, `home`, `home_fax`, `isdn`, `main`, `mobile`, `other`, `other_fax`, `pager`, `radio`, `telex`, `tty_tdd`, `work`, `work_fax`, `work_mobile`, `work_pager`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "A human-readable phone number. It may be in any telephone number format.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's phone numbers. The maximum allowed data size is 1Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "posix_accounts": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "account_id": {
+                      "type": "string",
+                      "description": "A POSIX account field identifier.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "gecos": {
+                      "type": "string",
+                      "description": "The GECOS (user information) for this account.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "gid": {
+                      "type": "string",
+                      "description": "The default group ID.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "home_directory": {
+                      "type": "string",
+                      "description": "The path to the home directory for this account.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "operating_system_type": {
+                      "type": "string",
+                      "description": "The operating system type for this account. Acceptable values: `linux`, `unspecified`, `windows`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "If this is user's primary account within the SystemId.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "shell": {
+                      "type": "string",
+                      "description": "The path to the login shell for this account.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "system_id": {
+                      "type": "string",
+                      "description": "System identifier for which account Username or Uid apply to.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "uid": {
+                      "type": "string",
+                      "description": "The POSIX compliant user ID.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username of the account.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "A list of POSIX account information for the user.",
+                  "description_kind": "markdown"
+                }
+              },
+              "relations": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_type": {
+                      "type": "string",
+                      "description": "If the value of type is custom, this property contains the custom type string.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of relation. Acceptable values: `admin_assistant`, `assistant`, `brother`, `child`, `custom`, `domestic_partner`, `dotted_line_manager`, `exec_assistant`, `father`, `friend`, `manager`, `mother`, `parent`, `partner`, `referred_by`, `relative`, `sister`, `spouse`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The name of the person the user is related to.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's relationships to other users. The maximum allowed data size for this field is 2Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "ssh_public_keys": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "expiration_time_usec": {
+                      "type": "string",
+                      "description": "An expiration time in microseconds since epoch.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "fingerprint": {
+                      "type": "string",
+                      "description": "A SHA-256 fingerprint of the SSH public key.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "An SSH public key.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of SSH public keys. The maximum allowed data size is 10Kb.",
+                  "description_kind": "markdown"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "websites": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "custom_type": {
+                      "type": "string",
+                      "description": "The custom type. Only used if the type is custom.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "If this is user's primary website or not.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type or purpose of the website. For example, a website could be labeled as home or blog. Alternatively, an entry can have a custom type Custom types must have a customType value. Acceptable values: `app_install_page`, `blog`, `custom`, `ftp` , `home`, `home_page`, `other`, `profile`, `reservations`, `resume`, `work`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The URL of the website.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of the user's websites. The maximum allowed data size is 2Kb.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "User resource manages Google Workspace Users. User resides under the `https://www.googleapis.com/auth/admin.directory.user` client scope.",
+            "description_kind": "markdown"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "googleworkspace_chrome_policy_schema": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_restrictions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specific access restrictions related to this policy.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "additional_target_key_names": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "key": "string",
+                      "key_description": "string"
+                    }
+                  ]
+                ],
+                "description": "Additional key names that will be used to identify the target of the policy value. When specifying a policyTargetKey, each of the additional keys specified here will have to be included in the additionalTargetKeys map.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "definition": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "enum_type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "value": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "name": "string",
+                                  "number": "number"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "message_type": "string",
+                      "name": "string",
+                      "package": "string",
+                      "syntax": "string"
+                    }
+                  ]
+                ],
+                "description": "Schema definition using proto descriptor.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "field_descriptions": {
+                "type": "string",
+                "description": "Detailed description of each field that is part of the schema, represented as a JSON string.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "notices": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "acknowledgement_required": "bool",
+                      "field": "string",
+                      "notice_message": "string",
+                      "notice_value": "string"
+                    }
+                  ]
+                ],
+                "description": "Special notice messages related to setting certain values in certain fields in the schema.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "policy_description": {
+                "type": "string",
+                "description": "Description about the policy schema for user consumption.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "schema_name": {
+                "type": "string",
+                "description": "The full qualified name of the policy schema",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "support_uri": {
+                "type": "string",
+                "description": "URI to related support article for this schema.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Chrome Policy Schema data source in the Terraform Googleworkspace provider. Chrome Policy Schema resides under the `https://www.googleapis.com/auth/chrome.management.policy` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation_time": {
+                "type": "number",
+                "description": "Creation time of the domain. Expressed in Unix time format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of domain alias objects.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the customer.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_primary": {
+                "type": "bool",
+                "description": "Indicates if the domain is a primary domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "verified": {
+                "type": "bool",
+                "description": "Indicates the verification state of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Domain data source in the Terraform Googleworkspace provider. Domain resides under the `https://www.googleapis.com/auth/admin.directory.domain` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_domain_alias": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation_time": {
+                "type": "number",
+                "description": "Creation time of the domain alias.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_alias_name": {
+                "type": "string",
+                "description": "The domain alias name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_domain_name": {
+                "type": "string",
+                "description": "The parent domain name that the domain alias is associated with. This can either be a primary or secondary domain name within a customer.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "verified": {
+                "type": "bool",
+                "description": "Indicates the verification state of a domain alias.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Domain Alias data source in the Terraform Googleworkspace provider. Domain Alias resides under the `https://www.googleapis.com/auth/admin.directory.domain` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admin_created": {
+                "type": "bool",
+                "description": "Value is true if this group was created by an administrator rather than a user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of group's email addresses.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "An extended description to help users determine the purpose of a group.For example, you can include information about who should join the group,the types of messages to send to the group, links to FAQs about the group, or related groups.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "direct_members_count": {
+                "type": "number",
+                "description": "The number of users that are direct members of the group.If a group is a member (child) of this group (the parent),members of the child group are not counted in the directMembersCount property of the parent group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The group's email address. If your account has multiple domains,select the appropriate domain for the email address. The email must be unique.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The unique ID of a group. A group id can be used as a group request URI's groupKey.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The group's display name.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "non_editable_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of the group's non-editable alias email addresses that are outside of the account's primary domain or subdomains. These are functioning email addresses used by the group.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Group data source in the Terraform Googleworkspace provider. Group resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "delivery_settings": {
+                "type": "string",
+                "description": "Defines mail delivery preferences of member. Acceptable values are: \n\t- `ALL_MAIL`: All messages, delivered as soon as they arrive.\n\t- `DAILY`: No more than one message a day.\n\t- `DIGEST`: Up to 25 messages bundled into a single message.\n\t- `DISABLED`: Remove subscription.\n\t- `NONE`: No messages.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The member's email address. A member can be a user or another group. This property is required when adding a member to a group. The email must be unique and cannot be an alias of another group. If the email address is changed, the API automatically reflects the email address changes.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "group_id": {
+                "type": "string",
+                "description": "Identifies the group in the API request. The value can be the group's email address, group alias, or the unique group ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "member_id": {
+                "type": "string",
+                "description": "The unique ID of the group member. A member id can be used as a member request URI's memberKey.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The member's role in a group. The API returns an error for cycles in group memberships. For example, if group1 is a member of group2, group2 cannot be a member of group1. Acceptable values are:\n\t- `MANAGER`: This role is only available if the Google Groups for Business is enabled using the Admin Console. A `MANAGER` role can do everything done by an `OWNER` role except make a member an `OWNER` or delete the group. A group can have multiple `MANAGER` members. \n\t- `MEMBER`: This role can subscribe to a group, view discussion archives, and view the group's membership list.\n\t- `OWNER`: This role can send messages to the group, add or remove members, change member roles, change group's settings, and delete the group. An OWNER must be a member of the group. A group can have more than one OWNER.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of member.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of group member. Acceptable values are: \n\t- `CUSTOMER`: The member represents all users in a domain. An email address is not returned and the ID returned is the customer ID. \n\t- `GROUP`: The member is another group. \n\t- `USER`: The member is a user.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Group Member data source in the Terraform Googleworkspace provider. Group Member resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group_members": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "group_id": {
+                "type": "string",
+                "description": "Identifies the group in the API request. The value can be the group's email address, group alias, or the unique group ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "include_derived_membership": {
+                "type": "bool",
+                "description": "If true, lists indirect group memberships",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "members": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "delivery_settings": "string",
+                      "email": "string",
+                      "id": "string",
+                      "role": "string",
+                      "status": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "The members of the group",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Group Members data source in the Terraform Googleworkspace provider. Group Members resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_group_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allow_external_members": {
+                "type": "bool",
+                "description": "Identifies whether members external to your organization can join the group. If true, Google Workspace users external to your organization can become members of this group. If false, users not belonging to the organization are not allowed to become members of this group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "allow_web_posting": {
+                "type": "bool",
+                "description": "Allows posting from web. If true, allows any member to post to the group forum. If false, Members only use Gmail to communicate with the group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "archive_only": {
+                "type": "bool",
+                "description": "Allows the group to be archived only. If true, Group is archived and the group is inactive. New messages to this group are rejected. The older archived messages are browsable and searchable. If true, the `who_can_post_message` property is set to `NONE_CAN_POST`. If reverted from true to false, `who_can_post_message` is set to `ALL_MANAGERS_CAN_POST`. If false, The group is active and can receive messages. When false, updating `who_can_post_message` to `NONE_CAN_POST`, results in an error.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "custom_footer_text": {
+                "type": "string",
+                "description": "Set the content of custom footer text. The maximum number of characters is 1,000.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "custom_reply_to": {
+                "type": "string",
+                "description": "An email address used when replying to a message if the `reply_to` property is set to `REPLY_TO_CUSTOM`. This address is defined by an account administrator. When the group's `reply_to` property is set to `REPLY_TO_CUSTOM`, the `custom_reply_to` property holds a custom email address used when replying to a message, the `custom_reply_to` property must have a text value or an error is returned.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "custom_roles_enabled_for_settings_to_be_merged": {
+                "type": "bool",
+                "description": "Specifies whether the group has a custom role that's included in one of the settings being merged.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "default_message_deny_notification_text": {
+                "type": "string",
+                "description": "When a message is rejected, this is text for the rejection notification sent to the message's author. By default, this property is empty and has no value in the API's response body. The maximum notification text size is 10,000 characters. Requires `send_message_deny_notification` property to be true.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the group. The maximum group description is no more than 300 characters.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The group's email address.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "enable_collaborative_inbox": {
+                "type": "bool",
+                "description": "Specifies whether a collaborative inbox will remain turned on for the group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "include_custom_footer": {
+                "type": "bool",
+                "description": "Whether to include custom footer.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "include_in_global_address_list": {
+                "type": "bool",
+                "description": "Enables the group to be included in the Global Address List. If true, the group is included in the Global Address List. If false, it is not included in the Global Address List.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_archived": {
+                "type": "bool",
+                "description": "Allows the Group contents to be archived. If true, archive messages sent to the group. If false, Do not keep an archive of messages sent to this group. If false, previously archived messages remain in the archive.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "members_can_post_as_the_group": {
+                "type": "bool",
+                "description": "Enables members to post messages as the group. If true, group member can post messages using the group's email address instead of their own email address. Message appear to originate from the group itself. Any message moderation settings on individual users or new members do not apply to posts made on behalf of the group. If false, members can not post in behalf of the group's email address.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "message_moderation_level": {
+                "type": "string",
+                "description": "Moderation level of incoming messages. Possible values are: \n\t- `MODERATE_ALL_MESSAGES`: All messages are sent to the group owner's email address for approval. If approved, the message is sent to the group. \n\t- `MODERATE_NON_MEMBERS`: All messages from non group members are sent to the group owner's email address for approval. If approved, the message is sent to the group. \n\t- `MODERATE_NEW_MEMBERS`: All messages from new members are sent to the group owner's email address for approval. If approved, the message is sent to the group. \n\t- `MODERATE_NONE`: No moderator approval is required. Messages are delivered directly to the group.\n\tNote: When the `who_can_post_message` is set to `ANYONE_CAN_POST`, we recommend the `message_moderation_level` be set to `MODERATE_NON_MEMBERS` to protect the group from possible spam.When `member_can_post_as_the_group` is true, any message moderation settings on individual users or new members will not apply to posts made on behalf of the group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the group, which has a maximum size of 75 characters.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "primary_language": {
+                "type": "string",
+                "description": "The primary language for group. For a group's primary language use the language tags from the Google Workspace languages found at Google Workspace Email Settings API Email Language Tags.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "reply_to": {
+                "type": "string",
+                "description": "Specifies who receives the default reply. Possible values are: \n\t- `REPLY_TO_CUSTOM`: For replies to messages, use the group's custom email address. When set to `REPLY_TO_CUSTOM`, the `custom_reply_to` property holds the custom email address used when replying to a message, the customReplyTo property must have a value. Otherwise an error is returned. \n\t- `REPLY_TO_SENDER`: The reply sent to author of message. \n\t- `REPLY_TO_LIST`: This reply message is sent to the group. \n\t- `REPLY_TO_OWNER`: The reply is sent to the owner(s) of the group. This does not include the group's managers. \n\t- `REPLY_TO_IGNORE`: Group users individually decide where the message reply is sent. \n\t- `REPLY_TO_MANAGERS`: This reply message is sent to the group's managers, which includes all managers and the group owner.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "send_message_deny_notification": {
+                "type": "bool",
+                "description": "Allows a member to be notified if the member's message to the group is denied by the group owner. If true, when a message is rejected, send the deny message notification to the message author. The `default_message_deny_notification_text` property is dependent on the `send_message_deny_notification` property being true. If false, when a message is rejected, no notification is sent.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "spam_moderation_level": {
+                "type": "string",
+                "description": "Specifies moderation levels for messages detected as spam. Possible values are: \n\t- `ALLOW`: Post the message to the group. \n\t- `MODERATE`: Send the message to the moderation queue. This is the default. \n\t- `SILENTLY_MODERATE`: Send the message to the moderation queue, but do not send notification to moderators. \n\t- `REJECT`: Immediately reject the message.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_assist_content": {
+                "type": "string",
+                "description": "Specifies who can moderate metadata. Possible values are: \n\t- `ALL_MEMBERS`\n\t- `OWNERS_AND_MANAGERS`\n\t- `MANAGERS_ONLY`\n\t- `OWNERS_ONLY`\n\t- `NONE`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_contact_owner": {
+                "type": "string",
+                "description": "Permission to contact owner of the group via web UI. Possible values are: \n\t- `ALL_IN_DOMAIN_CAN_CONTACT`\n\t- `ALL_MANAGERS_CAN_CONTACT`\n\t- `ALL_MEMBERS_CAN_CONTACT`\n\t- `ANYONE_CAN_CONTACT`\n\t- `ALL_OWNERS_CAN_CONTACT`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_discover_group": {
+                "type": "string",
+                "description": "Specifies the set of users for whom this group is discoverable. Possible values are: \n\t- `ANYONE_CAN_DISCOVER`\n\t- `ALL_IN_DOMAIN_CAN_DISCOVER`\n\t- `ALL_MEMBERS_CAN_DISCOVER`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_join": {
+                "type": "string",
+                "description": "Permission to join group. Possible values are: \n\t- `ANYONE_CAN_JOIN`: Any Internet user, both inside and outside your domain, can join the group. \n\t- `ALL_IN_DOMAIN_CAN_JOIN`: Anyone in the account domain can join. This includes accounts with multiple domains. \n\t- `INVITED_CAN_JOIN`: Candidates for membership can be invited to join. \n\t- `CAN_REQUEST_TO_JOIN`: Non members can request an invitation to join.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_leave_group": {
+                "type": "string",
+                "description": "Permission to leave the group. Possible values are:\n\t- `ALL_MANAGERS_CAN_LEAVE`\n\t- `ALL_MEMBERS_CAN_LEAVE`\n\t- `NONE_CAN_LEAVE`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_moderate_content": {
+                "type": "string",
+                "description": "Specifies who can moderate content. Possible values are: \n\t- `ALL_MEMBERS`\n\t- `OWNERS_AND_MANAGERS`\n\t- `OWNERS_ONLY`\n\t- `NONE`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_moderate_members": {
+                "type": "string",
+                "description": "Specifies who can manage members. Possible values are: \n\t- `ALL_MEMBERS`\n\t- `OWNERS_AND_MANAGERS`\n\t- `OWNERS_ONLY`\n\t- `NONE`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_post_message": {
+                "type": "string",
+                "description": "Permissions to post messages. Possible values are: \n\t- `NONE_CAN_POST`: The group is disabled and archived. No one can post a message to this group. * When archiveOnly is false, updating whoCanPostMessage to NONE_CAN_POST, results in an error. * If archiveOnly is reverted from true to false, whoCanPostMessages is set to ALL_MANAGERS_CAN_POST. \n\t- `ALL_MANAGERS_CAN_POST`: Managers, including group owners, can post messages. \n\t- `ALL_MEMBERS_CAN_POST`: Any group member can post a message. \n\t- `ALL_OWNERS_CAN_POST`: Only group owners can post a message. \n\t- `ALL_IN_DOMAIN_CAN_POST`: Anyone in the account can post a message. \n\t- `ANYONE_CAN_POST`: Any Internet user who outside your account can access your Google Groups service and post a message. \n\t*Note: When `who_can_post_message` is set to `ANYONE_CAN_POST`, we recommend the`message_moderation_level` be set to `MODERATE_NON_MEMBERS` to protect the group from possible spam. Users not belonging to the organization are not allowed to become members of this group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_view_group": {
+                "type": "string",
+                "description": "Permissions to view group messages. Possible values are: \n\t- `ANYONE_CAN_VIEW`: Any Internet user can view the group's messages. \n\t- `ALL_IN_DOMAIN_CAN_VIEW`: Anyone in your account can view this group's messages. \n\t- `ALL_MEMBERS_CAN_VIEW`: All group members can view the group's messages. \n\t- `ALL_MANAGERS_CAN_VIEW`: Any group manager can view this group's messages. \n\t- `ALL_OWNERS_CAN_VIEW`: The group owners can view this group's messages.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "who_can_view_membership": {
+                "type": "string",
+                "description": "Permissions to view membership. Possible values are: \n\t- `ALL_IN_DOMAIN_CAN_VIEW`: Anyone in the account can view the group members list. If a group already has external members, those members can still send email to this group. \n\t- `ALL_MEMBERS_CAN_VIEW`: The group members can view the group members list. \n\t- `ALL_MANAGERS_CAN_VIEW`: The group managers can view group members list. \n\t- `ALL_OWNERS_CAN_VIEW`: The group owners can view group members list.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Group Settings data source in the Terraform Googleworkspace provider. Group Settings resides under the `https://www.googleapis.com/auth/apps.groups.settings` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_groups": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "groups": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "admin_created": "bool",
+                      "aliases": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "string",
+                      "direct_members_count": "number",
+                      "email": "string",
+                      "etag": "string",
+                      "id": "string",
+                      "name": "string",
+                      "non_editable_aliases": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "A list of Group resources.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "Groups data source in the Terraform Googleworkspace provider. Groups resides under the `https://www.googleapis.com/auth/admin.directory.group` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_org_unit": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "block_inheritance": {
+                "type": "bool",
+                "description": "Determines if a sub-organizational unit can inherit the settings of the parent organization. False means a sub-organizational unit inherits the settings of the nearest parent organizational unit. For more information on inheritance and users in an organization structure, see the [administration help center](https://support.google.com/a/answer/4352075).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the organizational unit.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The organizational unit's path name. For example, an organizational unit's name within the /corp/support/sales_support parent path is sales_support.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "org_unit_id": {
+                "type": "string",
+                "description": "The unique ID of the organizational unit.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "org_unit_path": {
+                "type": "string",
+                "description": "The full path to the organizational unit. The orgUnitPath is a derived property. When listed, it is derived from parentOrgunitPath and organizational unit's name. For example, for an organizational unit named 'apps' under parent organization '/engineering', the orgUnitPath is '/engineering/apps'. In order to edit an orgUnitPath, either update the name of the organization or the parentOrgunitPath. A user's organizational unit determines which Google Workspace services the user has access to. If the user is moved to a new organization, the user's access changes. For more information about organization structures, see the [administration help center](https://support.google.com/a/answer/4352075). For more information about moving a user to a different organization, see [chromeosdevices.update a user](https://developers.google.com/admin-sdk/directory/v1/guides/manage-users#update_user).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "parent_org_unit_id": {
+                "type": "string",
+                "description": "The unique ID of the parent organizational unit.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_org_unit_path": {
+                "type": "string",
+                "description": "The organizational unit's parent path. For example, /corp/sales is the parent path for /corp/sales/sales_support organizational unit.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Org Unit data source in the Terraform Googleworkspace provider. Org Unit resides under the `https://www.googleapis.com/auth/admin.directory.orgunit` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_privileges": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "items": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "etag": "string",
+                      "is_org_unit_scopable": "bool",
+                      "privilege_name": "string",
+                      "service_id": "string",
+                      "service_name": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of Privilege resources. The API returns a tree-like structure with parent-child privileges, the provider flattens this list.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Privileges data source in the Terraform Googleworkspace provider. Privileges resides under the `https://www.googleapis.com/auth/admin.directory.rolemanagement` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "A short description of the role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of the role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_super_admin_role": {
+                "type": "bool",
+                "description": "Returns true if the role is a super admin role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_system_role": {
+                "type": "bool",
+                "description": "Returns true if this is a pre-defined system role.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the role.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "privileges": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "privilege_name": "string",
+                      "service_id": "string"
+                    }
+                  ]
+                ],
+                "description": "The set of privileges that are granted to this role.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Role data source in the Terraform Googleworkspace provider. Role resides under the `https://www.googleapis.com/auth/admin.directory.rolemanagement` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_schema": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "display_name": {
+                "type": "string",
+                "description": "Display name for the schema.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "fields": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "display_name": "string",
+                      "etag": "string",
+                      "field_id": "string",
+                      "field_name": "string",
+                      "field_type": "string",
+                      "indexed": "bool",
+                      "multi_valued": "bool",
+                      "numeric_indexing_spec": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "max_value": "number",
+                            "min_value": "number"
+                          }
+                        ]
+                      ],
+                      "read_access_type": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of fields in the schema.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "schema_id": {
+                "type": "string",
+                "description": "The unique identifier of the schema.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "schema_name": {
+                "type": "string",
+                "description": "The schema's name.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "Schema data source in the Terraform Googleworkspace provider. Schema resides under the `https://www.googleapis.com/auth/admin.directory.userschema` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "addresses": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "country": "string",
+                      "country_code": "string",
+                      "custom_type": "string",
+                      "extended_address": "string",
+                      "formatted": "string",
+                      "locality": "string",
+                      "po_box": "string",
+                      "postal_code": "string",
+                      "primary": "bool",
+                      "region": "string",
+                      "source_is_structured": "bool",
+                      "street_address": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's addresses. The maximum allowed data size is 10Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "agreed_to_terms": {
+                "type": "bool",
+                "description": "This property is true if the user has completed an initial login and accepted the Terms of Service agreement.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of the user's alias email addresses.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "archived": {
+                "type": "bool",
+                "description": "Indicates if user is archived.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "change_password_at_next_login": {
+                "type": "bool",
+                "description": "Indicates if the user is forced to change their password at next login. This setting doesn't apply when the user signs in via a third-party identity provider.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "creation_time": {
+                "type": "string",
+                "description": "The time the user's account was created. The value is in ISO 8601 date and time format. The time is the complete date plus hours, minutes, and seconds in the form YYYY-MM-DDThh:mm:ssTZD. For example, 2010-04-05T17:30:04+01:00.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "custom_schemas": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "schema_name": "string",
+                      "schema_values": [
+                        "map",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Custom fields of the user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "customer_id": {
+                "type": "string",
+                "description": "The customer ID to retrieve all account users. You can use the alias my_customer to represent your account's customerId. As a reseller administrator, you can use the resold customer account's customerId. To get a customerId, use the account's primary domain in the domain parameter of a users.list request.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "deletion_time": {
+                "type": "string",
+                "description": "The time the user's account was deleted. The value is in ISO 8601 date and time format The time is the complete date plus hours, minutes, and seconds in the form YYYY-MM-DDThh:mm:ssTZD. For example 2010-04-05T17:30:04+01:00.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "emails": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "address": "string",
+                      "custom_type": "string",
+                      "primary": "bool",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's email addresses. The maximum allowed data size is 10Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "ETag of the resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "external_ids": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_type": "string",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of external IDs for the user, such as an employee or network ID. The maximum allowed data size is 2Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "hash_function": {
+                "type": "string",
+                "description": "Stores the hash format of the password property. We recommend sending the password property value as a base 16 bit hexadecimal-encoded hash value. Set the hashFunction values as either the SHA-1, MD5, or crypt hash format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The unique ID for the user.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "ims": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_protocol": "string",
+                      "custom_type": "string",
+                      "im": "string",
+                      "primary": "bool",
+                      "protocol": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "The user's Instant Messenger (IM) accounts. A user account can have multiple ims properties. But, only one of these ims properties can be the primary IM contact. The maximum allowed data size is 2Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "include_in_global_address_list": {
+                "type": "bool",
+                "description": "Indicates if the user's profile is visible in the Google Workspace global address list when the contact sharing feature is enabled for the domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "ip_allowlist": {
+                "type": "bool",
+                "description": "If true, the user's IP address is added to the allow list.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_admin": {
+                "type": "bool",
+                "description": "Indicates a user with super admininistrator privileges.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_delegated_admin": {
+                "type": "bool",
+                "description": "Indicates if the user is a delegated administrator.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_enforced_in_2_step_verification": {
+                "type": "bool",
+                "description": "Is 2-step verification enforced.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_enrolled_in_2_step_verification": {
+                "type": "bool",
+                "description": "Is enrolled in 2-step verification.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_mailbox_setup": {
+                "type": "bool",
+                "description": "Indicates if the user's Google mailbox is created. This property is only applicable if the user has been assigned a Gmail license.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "keywords": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_type": "string",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's keywords. The maximum allowed data size is 1Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "languages": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_language": "string",
+                      "language_code": "string",
+                      "preference": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's languages. The maximum allowed data size is 1Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "last_login_time": {
+                "type": "string",
+                "description": "The last time the user logged into the user's account. The value is in ISO 8601 date and time format. The time is the complete date plus hours, minutes, and seconds in the form YYYY-MM-DDThh:mm:ssTZD. For example, 2010-04-05T17:30:04+01:00.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "locations": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "area": "string",
+                      "building_id": "string",
+                      "custom_type": "string",
+                      "desk_code": "string",
+                      "floor_name": "string",
+                      "floor_section": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's locations. The maximum allowed data size is 10Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "family_name": "string",
+                      "full_name": "string",
+                      "given_name": "string"
+                    }
+                  ]
+                ],
+                "description": "Holds the given and family names of the user, and the read-only fullName value. The maximum number of characters in the givenName and in the familyName values is 60. In addition, name values support unicode/UTF-8 characters, and can contain spaces, letters (a-z), numbers (0-9), dashes (-), forward slashes (/), and periods (.). Maximum allowed data size for this field is 1Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "non_editable_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "asps.list of the user's non-editable alias email addresses. These are typically outside the account's primary domain or sub-domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "org_unit_path": {
+                "type": "string",
+                "description": "The full path of the parent organization associated with the user. If the parent organization is the top-level, it is represented as a forward slash (/).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organizations": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cost_center": "string",
+                      "custom_type": "string",
+                      "department": "string",
+                      "description": "string",
+                      "domain": "string",
+                      "full_time_equivalent": "number",
+                      "location": "string",
+                      "name": "string",
+                      "primary": "bool",
+                      "symbol": "string",
+                      "title": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of organizations the user belongs to. The maximum allowed data size is 10Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "Stores the password for the user account. A password can contain any combination of ASCII characters. A minimum of 8 characters is required. The maximum length is 100 characters. As the API does not return the value of password, this field is write-only, and the value stored in the state will be what is provided in the configuration. The field is required on create and will be empty on import.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "phones": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_type": "string",
+                      "primary": "bool",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's phone numbers. The maximum allowed data size is 1Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "posix_accounts": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "account_id": "string",
+                      "gecos": "string",
+                      "gid": "string",
+                      "home_directory": "string",
+                      "operating_system_type": "string",
+                      "primary": "bool",
+                      "shell": "string",
+                      "system_id": "string",
+                      "uid": "string",
+                      "username": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of POSIX account information for the user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "primary_email": {
+                "type": "string",
+                "description": "The user's primary email address. The primaryEmail must be unique and cannot be an alias of another user.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "recovery_email": {
+                "type": "string",
+                "description": "Recovery email of the user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "recovery_phone": {
+                "type": "string",
+                "description": "Recovery phone of the user. The phone number must be in the E.164 format, starting with the plus sign (+). Example: +16506661212.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "relations": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_type": "string",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's relationships to other users. The maximum allowed data size for this field is 2Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "ssh_public_keys": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "expiration_time_usec": "string",
+                      "fingerprint": "string",
+                      "key": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of SSH public keys. The maximum allowed data size is 10Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "suspended": {
+                "type": "bool",
+                "description": "Indicates if user is suspended.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "suspension_reason": {
+                "type": "string",
+                "description": "Has the reason a user account is suspended either by the administrator or by Google at the time of suspension. The property is returned only if the suspended property is true.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "thumbnail_photo_etag": {
+                "type": "string",
+                "description": "ETag of the user's photo",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "thumbnail_photo_url": {
+                "type": "string",
+                "description": "Photo Url of the user.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "websites": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_type": "string",
+                      "primary": "bool",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of the user's websites. The maximum allowed data size is 2Kb.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "User data source in the Terraform Googleworkspace provider. User resides under the `https://www.googleapis.com/auth/admin.directory.user` client scope.",
+            "description_kind": "markdown"
+          }
+        },
+        "googleworkspace_users": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "users": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "addresses": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "country": "string",
+                            "country_code": "string",
+                            "custom_type": "string",
+                            "extended_address": "string",
+                            "formatted": "string",
+                            "locality": "string",
+                            "po_box": "string",
+                            "postal_code": "string",
+                            "primary": "bool",
+                            "region": "string",
+                            "source_is_structured": "bool",
+                            "street_address": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "agreed_to_terms": "bool",
+                      "aliases": [
+                        "list",
+                        "string"
+                      ],
+                      "archived": "bool",
+                      "change_password_at_next_login": "bool",
+                      "creation_time": "string",
+                      "custom_schemas": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "schema_name": "string",
+                            "schema_values": [
+                              "map",
+                              "string"
+                            ]
+                          }
+                        ]
+                      ],
+                      "customer_id": "string",
+                      "deletion_time": "string",
+                      "emails": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "address": "string",
+                            "custom_type": "string",
+                            "primary": "bool",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "etag": "string",
+                      "external_ids": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_type": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "hash_function": "string",
+                      "id": "string",
+                      "ims": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_protocol": "string",
+                            "custom_type": "string",
+                            "im": "string",
+                            "primary": "bool",
+                            "protocol": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "include_in_global_address_list": "bool",
+                      "ip_allowlist": "bool",
+                      "is_admin": "bool",
+                      "is_delegated_admin": "bool",
+                      "is_enforced_in_2_step_verification": "bool",
+                      "is_enrolled_in_2_step_verification": "bool",
+                      "is_mailbox_setup": "bool",
+                      "keywords": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_type": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "languages": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_language": "string",
+                            "language_code": "string",
+                            "preference": "string"
+                          }
+                        ]
+                      ],
+                      "last_login_time": "string",
+                      "locations": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "area": "string",
+                            "building_id": "string",
+                            "custom_type": "string",
+                            "desk_code": "string",
+                            "floor_name": "string",
+                            "floor_section": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "name": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "family_name": "string",
+                            "full_name": "string",
+                            "given_name": "string"
+                          }
+                        ]
+                      ],
+                      "non_editable_aliases": [
+                        "list",
+                        "string"
+                      ],
+                      "org_unit_path": "string",
+                      "organizations": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "cost_center": "string",
+                            "custom_type": "string",
+                            "department": "string",
+                            "description": "string",
+                            "domain": "string",
+                            "full_time_equivalent": "number",
+                            "location": "string",
+                            "name": "string",
+                            "primary": "bool",
+                            "symbol": "string",
+                            "title": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "password": "string",
+                      "phones": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_type": "string",
+                            "primary": "bool",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "posix_accounts": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "account_id": "string",
+                            "gecos": "string",
+                            "gid": "string",
+                            "home_directory": "string",
+                            "operating_system_type": "string",
+                            "primary": "bool",
+                            "shell": "string",
+                            "system_id": "string",
+                            "uid": "string",
+                            "username": "string"
+                          }
+                        ]
+                      ],
+                      "primary_email": "string",
+                      "recovery_email": "string",
+                      "recovery_phone": "string",
+                      "relations": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_type": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "ssh_public_keys": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "expiration_time_usec": "string",
+                            "fingerprint": "string",
+                            "key": "string"
+                          }
+                        ]
+                      ],
+                      "suspended": "bool",
+                      "suspension_reason": "string",
+                      "thumbnail_photo_etag": "string",
+                      "thumbnail_photo_url": "string",
+                      "websites": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom_type": "string",
+                            "primary": "bool",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "A list of User resources.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Users data source in the Terraform Googleworkspace provider. Users resides under the `https://www.googleapis.com/auth/admin.directory.user` client scope.",
+            "description_kind": "markdown"
+          }
+        }
+      }
+    }
+  }
+}

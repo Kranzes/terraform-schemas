@@ -1,1 +1,127 @@
-/nix/store/b2fr44mm5fz12mr3x1a4g9hp2r2k1kx3-namecheap.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/namecheap/namecheap": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "api_key": {
+              "type": "string",
+              "description": "The namecheap API key",
+              "description_kind": "plain",
+              "required": true
+            },
+            "api_user": {
+              "type": "string",
+              "description": "A registered api user for namecheap",
+              "description_kind": "plain",
+              "required": true
+            },
+            "client_ip": {
+              "type": "string",
+              "description": "Client IP address",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "use_sandbox": {
+              "type": "bool",
+              "description": "Use sandbox API endpoints",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "user_name": {
+              "type": "string",
+              "description": "A registered user name for namecheap",
+              "description_kind": "plain",
+              "required": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "namecheap_domain_records": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain": {
+                "type": "string",
+                "description": "Purchased available domain name on your account",
+                "description_kind": "plain",
+                "required": true
+              },
+              "email_type": {
+                "type": "string",
+                "description": "Possible values: NONE, MXE, MX, FWD, OX, GMAIL",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Possible values: MERGE (default), OVERWRITE",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nameservers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "record": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "Possible values are URL or IP address. The value for this parameter is based on record type",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "hostname": {
+                      "type": "string",
+                      "description": "Sub-domain/hostname to create the record for",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mx_pref": {
+                      "type": "number",
+                      "description": "MX preference for host. Applicable for MX records only",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ttl": {
+                      "type": "number",
+                      "description": "Time to live for all record types. Possible values: any value between 60 to 60000",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Possible values: A, AAAA, ALIAS, CAA, CNAME, MX, MXE, NS, TXT, URL, URL301, FRAME",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

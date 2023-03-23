@@ -1,1 +1,2245 @@
-/nix/store/5a2nkzx676yknrryiaskicl1r21bl2ar-nomad.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/hashicorp/nomad": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "address": {
+              "type": "string",
+              "description": "URL of the root of the target Nomad agent.",
+              "description_kind": "plain",
+              "required": true
+            },
+            "ca_file": {
+              "type": "string",
+              "description": "A path to a PEM-encoded certificate authority used to verify the remote agent's certificate.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "ca_pem": {
+              "type": "string",
+              "description": "PEM-encoded certificate authority used to verify the remote agent's certificate.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "cert_file": {
+              "type": "string",
+              "description": "A path to a PEM-encoded certificate provided to the remote agent; requires use of key_file or key_pem.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "cert_pem": {
+              "type": "string",
+              "description": "PEM-encoded certificate provided to the remote agent; requires use of key_file or key_pem.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "consul_token": {
+              "type": "string",
+              "description": "Consul token to validate Consul Connect Service Identity policies specified in the job file.",
+              "description_kind": "plain",
+              "optional": true,
+              "sensitive": true
+            },
+            "http_auth": {
+              "type": "string",
+              "description": "HTTP basic auth configuration.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "ignore_env_vars": {
+              "type": [
+                "map",
+                "bool"
+              ],
+              "description": "A set of environment variables that are ignored by the provider when configuring the Nomad API client.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "key_file": {
+              "type": "string",
+              "description": "A path to a PEM-encoded private key, required if cert_file or cert_pem is specified.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "key_pem": {
+              "type": "string",
+              "description": "PEM-encoded private key, required if cert_file or cert_pem is specified.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "region": {
+              "type": "string",
+              "description": "Region of the target Nomad agent.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "secret_id": {
+              "type": "string",
+              "description": "ACL token secret for API requests.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "vault_token": {
+              "type": "string",
+              "description": "Vault token if policies are specified in the job file.",
+              "description_kind": "plain",
+              "optional": true,
+              "sensitive": true
+            }
+          },
+          "block_types": {
+            "headers": {
+              "nesting_mode": "list",
+              "block": {
+                "attributes": {
+                  "name": {
+                    "type": "string",
+                    "description": "The header name",
+                    "description_kind": "plain",
+                    "required": true
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The header value",
+                    "description_kind": "plain",
+                    "required": true
+                  }
+                },
+                "description": "The headers to send with each Nomad request.",
+                "description_kind": "plain"
+              }
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "nomad_acl_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this policy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this policy.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "rules_hcl": {
+                "type": "string",
+                "description": "HCL or JSON representation of the rules to enforce on this policy. Use file() to specify a file as input.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this ACL role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this ACL role.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "policy": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the ACL policy to link.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The policies that should be applied to the role. It may be used multiple times.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "accessor_id": {
+                "type": "string",
+                "description": "Nomad-generated ID for this token.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "create_time": {
+                "type": "string",
+                "description": "The timestamp the token was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expiration_time": {
+                "type": "string",
+                "description": "The point after which a token is considered expired and eligible for destruction.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expiration_ttl": {
+                "type": "string",
+                "description": "Provides a TTL for the token in the form of a time duration such as \"5m\" or \"1h\".",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "global": {
+                "type": "bool",
+                "description": "Whether the token should be replicated to all regions or not.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Human-readable name for this token.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "policies": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The ACL policies to associate with the token, if it's a 'client' type.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret_id": {
+                "type": "string",
+                "description": "The value that grants access to Nomad.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of token to create, 'client' or 'management'.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "role": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the ACL role to link.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the ACL role linked.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The roles that should be applied to the token. It may be used multiple times.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_external_volume": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "capacity_max": {
+                "type": "string",
+                "description": "Defines how large the volume can be. The storage provider may return a volume that is smaller than this value.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "capacity_min": {
+                "type": "string",
+                "description": "Defines how small the volume can be. The storage provider may return a volume that is larger than this value.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "clone_id": {
+                "type": "string",
+                "description": "The volume ID to clone when creating this volume. Storage provider must support cloning. Conflicts with 'snapshot_id'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "controller_required": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The display name of the volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The namespace in which to create the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nodes_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "parameters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings passed directly to the CSI plugin to configure the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_id": {
+                "type": "string",
+                "description": "The ID of the CSI plugin that manages this volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugin_provider": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plugin_provider_version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schedulable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings used as credentials for publishing and unpublishing volumes.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "snapshot_id": {
+                "type": "string",
+                "description": "The snapshot ID to restore when creating this volume. Storage provider must support snapshots. Conflicts with 'clone_id'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "topologies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "segments": [
+                        "map",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the volume. Currently, only 'csi' is supported.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "volume_id": {
+                "type": "string",
+                "description": "The unique ID of the volume, how jobs will refer to the volume.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "capability": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_mode": {
+                      "type": "string",
+                      "description": "Defines whether a volume should be available concurrently.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "attachment_mode": {
+                      "type": "string",
+                      "description": "The storage API that will be used by the volume.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Capabilities intended to be used in a job. At least one capability must be provided.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "mount_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fs_type": {
+                      "type": "string",
+                      "description": "The file system type.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mount_flags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The flags passed to mount.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Options for mounting 'block-device' volumes without a pre-formatted file system.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "topology_request": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "preferred": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "topology": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "segments": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Define the attributes for the topology request.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "Defines the location for the volume.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Preferred topologies indicate that the volume should be created in a location accessible from some of the listed topologies.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "required": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "topology": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "segments": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Define the attributes for the topology request.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "Defines the location for the volume.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Required topologies indicate that the volume must be created in a location accessible from all the listed topologies.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specify locations (region, zone, rack, etc.) where the provisioned volume is accessible from.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_job": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allocation_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The IDs for allocations associated with this job.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "consul_token": {
+                "type": "string",
+                "description": "The Consul token used to submit this job.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "datacenters": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The target datacenters for the job, as derived from the jobspec.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deployment_id": {
+                "type": "string",
+                "description": "If detach = false, the ID for the deployment associated with the last job create/update, if one exists.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deployment_status": {
+                "type": "string",
+                "description": "If detach = false, the status for the deployment associated with the last job create/update, if one exists.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deregister_on_destroy": {
+                "type": "bool",
+                "description": "If true, the job will be deregistered on destroy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deregister_on_id_change": {
+                "type": "bool",
+                "description": "If true, the job will be deregistered when the job ID changes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "detach": {
+                "type": "bool",
+                "description": "If true, the provider will return immediately after creating or updating, instead of monitoring.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "jobspec": {
+                "type": "string",
+                "description": "Job specification. If you want to point to a file use the file() function.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "json": {
+                "type": "bool",
+                "description": "If true, the `jobspec` will be parsed as json instead of HCL.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "modify_index": {
+                "type": "string",
+                "description": "Integer that increments for each change. Used to detect any changes between plan and apply.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the job, as derived from the jobspec.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The namespace of the job, as derived from the jobspec.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "policy_override": {
+                "type": "bool",
+                "description": "Override any soft-mandatory Sentinel policies that fail.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "purge_on_destroy": {
+                "type": "bool",
+                "description": "Whether to purge the job when the resource is destroyed.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The target region for the job, as derived from the jobspec.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "task_groups": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "count": "number",
+                      "meta": [
+                        "map",
+                        "string"
+                      ],
+                      "name": "string",
+                      "task": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "driver": "string",
+                            "meta": [
+                              "map",
+                              "string"
+                            ],
+                            "name": "string",
+                            "volume_mounts": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "destination": "string",
+                                  "read_only": "bool",
+                                  "volume": "string"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "volumes": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "read_only": "bool",
+                            "source": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the job, as derived from the jobspec.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vault_token": {
+                "type": "string",
+                "description": "The Vault token used to submit this job.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              }
+            },
+            "block_types": {
+              "hcl2": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "allow_fs": {
+                      "type": "bool",
+                      "description": "If true, HCL2 file system functions will be enabled when parsing the `jobspec`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enabled": {
+                      "type": "bool",
+                      "description": "If true, the `jobspec` will be parsed as HCL2 instead of HCL.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vars": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Additional variables to use when templating the job with HCL2",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Configuration for the HCL2 jobspec parser.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_namespace": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this namespace.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Metadata associated with the namespace.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this namespace.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "quota": {
+                "type": "string",
+                "description": "Quota to set for this namespace.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "capabilities": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "disabled_task_drivers": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Disabled task drivers for the namespace.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enabled_task_drivers": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Enabled task drivers for the namespace.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Capabilities of the namespace.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_quota_specification": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this quota specification.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this quota specification.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "limits": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "region": {
+                      "type": "string",
+                      "description": "Region in which this limit has affect.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "region_limit": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "cpu": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_mb": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "The limit applied to this region.",
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Limits encapsulated by this quota specification.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_scheduler_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "memory_oversubscription_enabled": {
+                "type": "bool",
+                "description": "When true, tasks may exceed their reserved memory limit.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "preemption_config": {
+                "type": [
+                  "map",
+                  "bool"
+                ],
+                "description": "Options to enable preemption for various schedulers.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scheduler_algorithm": {
+                "type": "string",
+                "description": "Specifies whether scheduler binpacks or spreads allocations on available nodes.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_sentinel_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this policy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enforcement_level": {
+                "type": "string",
+                "description": "Specifies the enforcement level of the policy.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this policy.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "policy": {
+                "type": "string",
+                "description": "The Sentinel policy.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "scope": {
+                "type": "string",
+                "description": "Specifies the scope for this policy. Only 'submit-job' is currently supported.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_volume": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "access_mode": {
+                "type": "string",
+                "description": "Defines whether a volume should be available concurrently.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "attachment_mode": {
+                "type": "string",
+                "description": "The storage API that will be used by the volume.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "context": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings passed directly to the CSI plugin to validate the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "controller_required": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deregister_on_destroy": {
+                "type": "bool",
+                "description": "If true, the volume will be deregistered on destroy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "The ID of the physical volume from the storage provider.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The display name of the volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The namespace in which to create the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nodes_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "parameters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings passed directly to the CSI plugin to configure the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_id": {
+                "type": "string",
+                "description": "The ID of the CSI plugin that manages this volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugin_provider": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plugin_provider_version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schedulable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings used as credentials for publishing and unpublishing volumes.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "topologies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "segments": [
+                        "map",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the volume. Currently, only 'csi' is supported.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "volume_id": {
+                "type": "string",
+                "description": "The unique ID of the volume, how jobs will refer to the volume.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "capability": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_mode": {
+                      "type": "string",
+                      "description": "Defines whether a volume should be available concurrently.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "attachment_mode": {
+                      "type": "string",
+                      "description": "The storage API that will be used by the volume.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Capabilities intended to be used in a job. At least one capability must be provided.",
+                  "description_kind": "plain"
+                }
+              },
+              "mount_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fs_type": {
+                      "type": "string",
+                      "description": "The file system type.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mount_flags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The flags passed to mount.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Options for mounting 'block-device' volumes without a pre-formatted file system.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "topology_request": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "required": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "topology": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "segments": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Define attributes for the topology request.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "Defines the location for the volume.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Required topologies indicate that the volume must be created in a location accessible from all the listed topologies.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specify locations (region, zone, rack, etc.) where the provisioned volume is accessible from.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "nomad_acl_policies": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "ACL Policies",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "prefix": {
+                "type": "string",
+                "description": "ACL Policy Name Prefix",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "rules": {
+                "type": "string",
+                "description": "ACL Rules in HCL format",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for the ACL role.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ACL Role unique identifier.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name of the ACL role.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "policies": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "The list of policies applied to the role.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_roles": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acl_roles": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "id": "string",
+                      "name": "string",
+                      "policies": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "prefix": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "accessor_id": {
+                "type": "string",
+                "description": "Non-sensitive identifier for this token.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "create_time": {
+                "type": "string",
+                "description": "Date and time the token was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expiration_time": {
+                "type": "string",
+                "description": "The point after which a token is considered revoked and eligible for destruction.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expiration_ttl": {
+                "type": "string",
+                "description": "The expiration TTL for the token.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "global": {
+                "type": "bool",
+                "description": "Whether the token is replicated to all regions, or if it will only be used in the region it was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Human-friendly name of the ACL token.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "policies": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of policy names associated with this token.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "roles": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "The roles that are applied to the token.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secret_id": {
+                "type": "string",
+                "description": "The token value itself.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the token.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_tokens": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acl_tokens": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "accessor_id": "string",
+                      "create_time": "string",
+                      "expiration_time": "string",
+                      "global": "bool",
+                      "name": "string",
+                      "policies": [
+                        "list",
+                        "string"
+                      ],
+                      "roles": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "string",
+                            "name": "string"
+                          }
+                        ]
+                      ],
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "prefix": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_datacenters": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "datacenters": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The list of datacenters.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ignore_down_nodes": {
+                "type": "bool",
+                "description": "If enabled, this flag will ignore nodes that are down when listing datacenters.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Prefix value used for filtering results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_deployments": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "deployments": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "Deployments",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_job": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "all_at_once": {
+                "type": "bool",
+                "description": "Job All At Once",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "constraints": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "ltarget": "string",
+                      "operand": "string",
+                      "rtarget": "string"
+                    }
+                  ]
+                ],
+                "description": "Job Constraints",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "create_index": {
+                "type": "number",
+                "description": "Create Index",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "datacenters": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Job Datacenters",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "job_id": {
+                "type": "string",
+                "description": "Job ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "job_modify_index": {
+                "type": "number",
+                "description": "Job Modify Index",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "modify_index": {
+                "type": "number",
+                "description": "Modify Index",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Job Name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Job Namespace",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "Job Parent ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "periodic_config": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "enabled": "bool",
+                      "prohibit_overlap": "bool",
+                      "spec": "string",
+                      "spec_type": "string",
+                      "timezone": "string"
+                    }
+                  ]
+                ],
+                "description": "Job Periodic Configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "priority": {
+                "type": "number",
+                "description": "Job Priority",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Job Region",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "stable": {
+                "type": "bool",
+                "description": "Job Stable",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Deployment Status",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status_description": {
+                "type": "string",
+                "description": "Deployment Status Description",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "stop": {
+                "type": "bool",
+                "description": "Job Stopped",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "submit_time": {
+                "type": "number",
+                "description": "Job Submit Time",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "task_groups": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "count": "number",
+                      "meta": [
+                        "map",
+                        "string"
+                      ],
+                      "name": "string",
+                      "task": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "driver": "string",
+                            "meta": [
+                              "map",
+                              "string"
+                            ],
+                            "name": "string",
+                            "volume_mounts": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "destination": "string",
+                                  "read_only": "bool",
+                                  "volume": "string"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "volumes": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "read_only": "bool",
+                            "source": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Job Type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "version": {
+                "type": "number",
+                "description": "Job Version",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_job_parser": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "canonicalize": {
+                "type": "bool",
+                "description": "Flag to enable setting any unset fields to their default values.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hcl": {
+                "type": "string",
+                "description": "Specifies the HCL definition of the job encoded in a JSON string.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "json": {
+                "type": "string",
+                "description": "The parsed job as JSON string.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_namespace": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "capabilities": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "disabled_task_drivers": [
+                        "list",
+                        "string"
+                      ],
+                      "enabled_task_drivers": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "quota": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_namespaces": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "namespaces": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_plugin": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "controller_required": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "nodes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "healthy": "bool",
+                      "healthy_description": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "Available nodes for this plugin",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plugin_id": {
+                "type": "string",
+                "description": "Plugin ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugin_provider": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plugin_provider_version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "wait_for_healthy": {
+                "type": "bool",
+                "description": "Wait for to be backed by a specified number of controllers",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "wait_for_registration": {
+                "type": "bool",
+                "description": "Wait for the plugin to be registered in Noamd",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_plugins": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plugins": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "Registered plugins",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Volume Type (currently only 'csi')",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_regions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "regions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_scaling_policies": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "job_id": {
+                "type": "string",
+                "description": "Job ID to use to filter scaling policies.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "policies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "enabled": "bool",
+                      "id": "string",
+                      "target": [
+                        "map",
+                        "string"
+                      ],
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "The list of policies that match the search criteria.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Scaling policy type used to filter scaling policies.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_scaling_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Whether or not the scaling policy is enabled.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The scaling policy ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "max": {
+                "type": "number",
+                "description": "The maximum value defined in the scaling policy.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "min": {
+                "type": "number",
+                "description": "The minimum value defined in the scaling policy.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "policy": {
+                "type": "string",
+                "description": "The policy defined in the scaling policy as a JSON string.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "The scaling policy target.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The scaling policy type.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_scheduler_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "memory_oversubscription_enabled": {
+                "type": "bool",
+                "description": "When true, tasks may exceed their reserved memory limit.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "preemption_config": {
+                "type": [
+                  "map",
+                  "bool"
+                ],
+                "description": "Options to enable preemption for various schedulers.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "scheduler_algorithm": {
+                "type": "string",
+                "description": "Specifies whether scheduler binpacks or spreads allocations on available nodes.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_volumes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Volume namespace filter",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "node_id": {
+                "type": "string",
+                "description": "Volume node filter",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_id": {
+                "type": "string",
+                "description": "Plugin ID filter",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Volume Type (currently only 'csi')",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "volumes": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "Volumes",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

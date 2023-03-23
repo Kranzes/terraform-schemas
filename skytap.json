@@ -1,1 +1,767 @@
-/nix/store/6617w36z4gmy0sgx3hibfla4gz9jcbsm-skytap.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/skytap/skytap": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "api_token": {
+              "type": "string",
+              "description": "The Skytap API token. May also be specified by the `SKYTAP_API_TOKEN` shell environment variable",
+              "description_kind": "plain",
+              "required": true
+            },
+            "username": {
+              "type": "string",
+              "description": "The Skytap username. May also be specified by the `SKYTAP_USERNAME` shell environment variable",
+              "description_kind": "plain",
+              "required": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "skytap_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "User-defined description of the environment. Limited to 1000 characters. UTF-8 character type",
+                "description_kind": "plain",
+                "required": true
+              },
+              "disable_internet": {
+                "type": "bool",
+                "description": "If true, outbound internet is disabled for VMs in this environment",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-defined name of the environment. Limited to 255 characters. UTF-8 character type",
+                "description_kind": "plain",
+                "required": true
+              },
+              "outbound_traffic": {
+                "type": "bool",
+                "description": "Indicates whether networks in the environment can send outbound traffic",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "routable": {
+                "type": "bool",
+                "description": "Indicates whether networks within the environment can route traffic to one another",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "shutdown_at_time": {
+                "type": "string",
+                "description": "The date and time that the environment will be automatically shut down. Format: yyyy/mm/dd hh:mm:ss. By default, the suspend time uses the UTC offset for the time zone defined in your user account settings. Optionally, a different UTC offset can be supplied (for example: 2018/07/20 14:20:00 -0000). The value in the API response is converted to your time zone",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "shutdown_on_idle": {
+                "type": "number",
+                "description": "The number of seconds an environment can be idle before it is automatically shut down. Valid range: 300 to 86400 seconds (5 minutes to 1 day)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "suspend_at_time": {
+                "type": "string",
+                "description": "The date and time that the environment will be automatically suspended. Format: yyyy/mm/dd hh:mm:ss. By default, the suspend time uses the UTC offset for the time zone defined in your user account settings. Optionally, a different UTC offset can be supplied (for example: 2018/07/20 14:20:00 -0000). The value in the API response is converted to your time zone",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "suspend_on_idle": {
+                "type": "number",
+                "description": "The number of seconds an environment can be idle before it is automatically suspended. Valid range: 300 to 86400 seconds (5 minutes to 1 day)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of environment tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "template_id": {
+                "type": "string",
+                "description": "ID of the template you want to create the environment from. If updated with a new ID, the environment will be recreated",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_data": {
+                "type": "string",
+                "description": "Environment user data, available from the metadata server and the Skytap API",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "label": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "category": {
+                      "type": "string",
+                      "description": "Label category that provides contextual meaning",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Label valueto be used for reporting",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Set of labels for the instance",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "skytap_icnr_tunnel": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "source": {
+                "type": "number",
+                "description": "Source network from where the connection is initiated. This network does not need to be 'tunnelable' (visible to other networks)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target": {
+                "type": "number",
+                "description": "Target network to which the connection is made. The network does need to be 'tunnelable' (visible to other networks)",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "skytap_label_category": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The user-defined label category name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "single_value": {
+                "type": "bool",
+                "description": "Whether labels must have a single value for the category, or if they may have multiple values",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "skytap_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain": {
+                "type": "string",
+                "description": "Domain name for the Skytap network. This field can be changed only when all virtual machines in the environment are stopped (not suspended or running)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "environment_id": {
+                "type": "string",
+                "description": "ID of the environment you want to attach the network to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "gateway": {
+                "type": "string",
+                "description": "Gateway IP address",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-defined name of the network",
+                "description_kind": "plain",
+                "required": true
+              },
+              "subnet": {
+                "type": "string",
+                "description": "Defines the subnet address and subnet mask size in CIDR format (for example, 10.0.0.0/24). IP addresses for the VMs are assigned from this subnet and standard network services (DNS resolution, CIFS share, routes to Internet) are defined appropriately for it",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tunnelable": {
+                "type": "bool",
+                "description": "Whether or not this network can be connected to other networks",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "skytap_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_add_role_name": {
+                "type": "string",
+                "description": "If this field is set to `viewer`, `participant`, `editor`, or `manager`, new users added to your Skytap account are automatically added to this project with the specified project role. Existing users aren’t affected by this setting. For additional details, see [Automatically adding new users to a project](https://help.skytap.com/csh-project-automatic-role.html)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "environment_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of environments to add to the project",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-defined project name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "show_project_members": {
+                "type": "bool",
+                "description": "Whether project members can view a list of other project members",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "summary": {
+                "type": "string",
+                "description": "User-defined description of the project",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "skytap_vm": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cpus": {
+                "type": "number",
+                "description": "Number of CPUs allocated to this virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "environment_id": {
+                "type": "string",
+                "description": "ID of the environment you want to add the VM to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_cpus": {
+                "type": "number",
+                "description": "Maximum settable CPUs for the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "max_ram": {
+                "type": "number",
+                "description": "Maximum amount of RAM that can be allocated to the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-defined name of the VM",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "os_disk_size": {
+                "type": "number",
+                "description": "The size of the OS disk. The disk size is in MiB; it will be converted to GiB in the Skytap UI. The maximum disk size is 2,096,128 MiB (1.999 TiB)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ram": {
+                "type": "number",
+                "description": "Amount of RAM allocated to the VM",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "service_ips": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Map of external IP addresses. The key is the name of a published service - as defined in the `published_service` block",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_ports": {
+                "type": [
+                  "map",
+                  "number"
+                ],
+                "description": "Map of external IP addresses. The key is the name of a published service - as defined in the `published_service` block",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_id": {
+                "type": "string",
+                "description": "ID of the template you want to create the VM from",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_data": {
+                "type": "string",
+                "description": "VM user data, available from the metadata server and the Skytap API",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vm_id": {
+                "type": "string",
+                "description": "ID of the VM within the template that you want to create the VM from",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "disk": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "controller": {
+                      "type": "string",
+                      "description": "The disk controller",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "lun": {
+                      "type": "string",
+                      "description": "The logical unit number (LUN) of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "A unique name for the disk",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description": "The size of the disk specified in MiB. The minimum disk size is 2048 MiB; the maximum is 2,096,128 MiB (1.999 TiB)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "Set of virtual disks within the VM",
+                  "description_kind": "plain"
+                }
+              },
+              "label": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "category": {
+                      "type": "string",
+                      "description": "Label category that provides contextual meaning",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Label value used for reporting",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Set of labels for the instance",
+                  "description_kind": "plain"
+                }
+              },
+              "network_interface": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "hostname": {
+                      "type": "string",
+                      "description": "Hostname of the VM",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "interface_type": {
+                      "type": "string",
+                      "description": "Type of network that this network adapter is attached to",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description": "The IP address (for example, 10.1.0.37). Skytap will not assign the same IP address to multiple interfaces on the same network",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "network_id": {
+                      "type": "string",
+                      "description": "ID of the network that this network adapter is attached to",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "published_service": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "external_ip": {
+                            "type": "string",
+                            "description": "The published service's external IP",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "external_port": {
+                            "type": "number",
+                            "description": "The published service's external port",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "internal_port": {
+                            "type": "number",
+                            "description": "The port that is exposed on the interface",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "A unique name for the published service",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "A binding of a port on a network interface to an IP and port that is routable and accessible from the public Internet. This mechanism is used to selectively expose ports on the guest to the public Internet",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Set of virtualized network interface cards (also known as a network adapters)",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "skytap_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_add_role_name": {
+                "type": "string",
+                "description": "The role automatically assigned to every new user added to the project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "environment_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "IDs of the environments within the project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "show_project_members": {
+                "type": "bool",
+                "description": "Whether project members can view a list of the other project members",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "summary": {
+                "type": "string",
+                "description": "The summary description of the project",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "skytap_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "most_recent": {
+                "type": "bool",
+                "description": "Use the most recently created template from the returned list",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A regex expression for the name of the template",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

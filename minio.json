@@ -1,1 +1,813 @@
-/nix/store/zn4n5w327h0kkc78yxc8wgk81rl03ql3-minio.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/aminueza/minio": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "minio_access_key": {
+              "type": "string",
+              "description": "Minio Access Key",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "minio_api_version": {
+              "type": "string",
+              "description": "Minio API Version (type: string, options: v2 or v4, default: v4)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_cacert_file": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_cert_file": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_insecure": {
+              "type": "bool",
+              "description": "Disable SSL certificate verification (default: false)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_key_file": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_password": {
+              "type": "string",
+              "description": "Minio Password",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_region": {
+              "type": "string",
+              "description": "Minio Region (default: us-east-1)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_secret_key": {
+              "type": "string",
+              "description": "Minio Secret Key",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "minio_server": {
+              "type": "string",
+              "description": "Minio Host and Port",
+              "description_kind": "plain",
+              "required": true
+            },
+            "minio_session_token": {
+              "type": "string",
+              "description": "Minio Session Token",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_ssl": {
+              "type": "bool",
+              "description": "Minio SSL enabled (default: false)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "minio_user": {
+              "type": "string",
+              "description": "Minio User",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "minio_iam_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "disable_group": {
+                "type": "bool",
+                "description": "Disable group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_destroy": {
+                "type": "bool",
+                "description": "Delete group even if it has non-Terraform-managed members",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_group_membership": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group": {
+                "type": "string",
+                "description": "Group name to add users",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of group membership",
+                "description_kind": "plain",
+                "required": true
+              },
+              "users": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Add user or list of users such as a group membership",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_group_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_prefix": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "policy": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_group_policy_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_group_user_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "user_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_prefix": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "policy": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_service_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "disable_user": {
+                "type": "bool",
+                "description": "Disable service account",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secret_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target_user": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "update_secret": {
+                "type": "bool",
+                "description": "rotate secret key",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "disable_user": {
+                "type": "bool",
+                "description": "Disable user",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_destroy": {
+                "type": "bool",
+                "description": "Delete user even if it has non-Terraform-managed IAM access keys",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "secret": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "update_secret": {
+                "type": "bool",
+                "description": "Rotate Minio User Secret Key",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_iam_user_policy_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_ilm_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "rule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "expiration": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "filter": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "tags": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description": "`minio_ilm_policy` handles lifecycle settings for a given `minio_s3_bucket`.",
+            "description_kind": "plain"
+          }
+        },
+        "minio_s3_bucket": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acl": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "arn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "bucket_domain_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bucket_prefix": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_destroy": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "quota": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_s3_bucket_notification": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "queue": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "events": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "filter_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "filter_suffix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "queue_arn": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_s3_bucket_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_s3_bucket_versioning": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "versioning_configuration": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "exclude_folders": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "excluded_prefixes": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "minio_s3_object": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "content": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "content_base64": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "content_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "etag": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "object_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "source": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "version_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "minio_iam_policy_document": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "json": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "override_json": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_json": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "version": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "statement": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "principal": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sid": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "condition": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "test": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "values": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "variable": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

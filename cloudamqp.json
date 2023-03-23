@@ -1,1 +1,1872 @@
-/nix/store/mh187fcxa2xlml28lvxii0z8pf1ggsr0-cloudamqp.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/cloudamqp/cloudamqp": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "apikey": {
+              "type": "string",
+              "description": "Key used to authentication to the CloudAMQP Customer API",
+              "description_kind": "plain",
+              "required": true
+            },
+            "baseurl": {
+              "type": "string",
+              "description": "Base URL to CloudAMQP Customer website",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "cloudamqp_alarm": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Enable or disable an alarm",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "message_type": {
+                "type": "string",
+                "description": "Message types (total, unacked, ready) of the queue to trigger the alarm",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "queue_regex": {
+                "type": "string",
+                "description": "Regex for which queues to check",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "recipients": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "Identifiers for recipients to be notified.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "reminder_interval": {
+                "type": "number",
+                "description": "The reminder interval (in seconds) to resend the alarm if not resolved. Set to 0 for no reminders. The Default is 0.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "time_threshold": {
+                "type": "number",
+                "description": "For how long (in seconds) the value_threshold should be active before trigger alarm",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the alarm, valid options are: cpu, memory, disk_usage, queue_length, connection_count, consumers_count, net_split",
+                "description_kind": "plain",
+                "required": true
+              },
+              "value_calculation": {
+                "type": "string",
+                "description": "Disk value threshold calculation. Fixed or percentage of disk space remaining",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "value_threshold": {
+                "type": "number",
+                "description": "What value to trigger the alarm for",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vhost_regex": {
+                "type": "string",
+                "description": "Regex for which vhost the queues are in",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_custom_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "hostname": {
+                "type": "string",
+                "description": "The custom hostname.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_extra_disk_size": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "extra_disk_size": {
+                "type": "number",
+                "description": "Extra disk size in GB",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "apikey": {
+                "type": "string",
+                "description": "API key for the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "dedicated": {
+                "type": "bool",
+                "description": "Is the instance hosted on a dedicated server",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "host": {
+                "type": "string",
+                "description": "External hostname for the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "host_internal": {
+                "type": "string",
+                "description": "Internal hostname for the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "keep_associated_vpc": {
+                "type": "bool",
+                "description": "Keep associated VPC when deleting instance",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "no_default_alarms": {
+                "type": "bool",
+                "description": "Set to true to not create default alarms",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "nodes": {
+                "type": "number",
+                "description": "Number of nodes in cluster (plan must support it)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "Name of the plan, see documentation for valid plans",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ready": {
+                "type": "bool",
+                "description": "Flag describing if the resource is ready",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Name of the region you want to create your instance in",
+                "description_kind": "plain",
+                "required": true
+              },
+              "rmq_version": {
+                "type": "string",
+                "description": "RabbitMQ version",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tag the instances with optional tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "url": {
+                "type": "string",
+                "description": "URL of the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "vhost": {
+                "type": "string",
+                "description": "The virtual host",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "number",
+                "description": "The ID of the VPC to create your instance in",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vpc_subnet": {
+                "type": "string",
+                "description": "Dedicated VPC subnet, shouldn't overlap with your current VPC's subnet",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_integration_aws_eventbridge": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aws_account_id": {
+                "type": "string",
+                "description": "The 12 digit AWS Account ID where you want the events to be sent to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "aws_region": {
+                "type": "string",
+                "description": "The AWS region where you the events to be sent to. (e.g. us-west-1, us-west-2, ..., etc.)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "queue": {
+                "type": "string",
+                "description": "A (durable) queue on your RabbitMQ instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Always set to null, unless there is an error starting the EventBridge",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vhost": {
+                "type": "string",
+                "description": "The VHost the queue resides in.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "with_headers": {
+                "type": "bool",
+                "description": "Include message headers in the event data.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_integration_log": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_key_id": {
+                "type": "string",
+                "description": "AWS access key identifier. (Cloudwatch)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "api_key": {
+                "type": "string",
+                "description": "The API key for the integration service. (Datadog)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "client_email": {
+                "type": "string",
+                "description": "The client email. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "credentials": {
+                "type": "string",
+                "description": "Base64Encoded credentials. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "host": {
+                "type": "string",
+                "description": "The host information. (Scalyr)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "host_port": {
+                "type": "string",
+                "description": "Destination to send the logs. (Splunk)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier used to make proxy calls",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of log integration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "private_key": {
+                "type": "string",
+                "description": "The private key. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "private_key_id": {
+                "type": "string",
+                "description": "Private key identifier. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Project ID. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region hosting integration service. (Cloudwatch, Datadog)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret_access_key": {
+                "type": "string",
+                "description": "AWS secret access key. (Cloudwatch)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "sourcetype": {
+                "type": "string",
+                "description": "Assign source type to the data exported, eg. generic_single_line. (Splunk)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": "string",
+                "description": "(optional) tags. E.g. env=prod,region=europe. (Datadog)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token": {
+                "type": "string",
+                "description": "The token used for authentication. (Loggly, Logentries, Splunk, Scalyr)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The URL to push the logs to. (Papertrail)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_integration_metric": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_key_id": {
+                "type": "string",
+                "description": "AWS access key identifier. (Cloudwatch)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "api_key": {
+                "type": "string",
+                "description": "The API key for the integration service. (Librato)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "client_email": {
+                "type": "string",
+                "description": "The client email. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "credentials": {
+                "type": "string",
+                "description": "Base64Encoded credentials. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The email address registred for the integration service. (Librato)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "license_key": {
+                "type": "string",
+                "description": "The license key registred for the integration service. (New Relic)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of metrics integration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "private_key": {
+                "type": "string",
+                "description": "The private key. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "private_key_id": {
+                "type": "string",
+                "description": "Private key identifier. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Project ID. (Stackdriver)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "queue_allowlist": {
+                "type": "string",
+                "description": "(optional) allowlist using regular expression",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "queue_whitelist": {
+                "type": "string",
+                "description": "**Deprecated**",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "region": {
+                "type": "string",
+                "description": "AWS region for Cloudwatch and [US/EU] for Data dog/New relic. (Cloudwatch, Data Dog, New Relic)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret_access_key": {
+                "type": "string",
+                "description": "AWS secret key. (Cloudwatch)",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "tags": {
+                "type": "string",
+                "description": "(optional) tags. E.g. env=prod,region=europe",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vhost_allowlist": {
+                "type": "string",
+                "description": "(optional) allowlist using regular expression",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vhost_whitelist": {
+                "type": "string",
+                "description": "**Deprecated**",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_node_actions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description": "The action to perform on the node",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "node_name": {
+                "type": "string",
+                "description": "The name of the node",
+                "description_kind": "plain",
+                "required": true
+              },
+              "running": {
+                "type": "bool",
+                "description": "If the node is running",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_notification": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Optional display name of the recipient",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Optional key-value pair options parameters",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the notification, valid options are: email, webhook, pagerduty, victorops, opsgenie, opsgenie-eu, slack, teams",
+                "description_kind": "plain",
+                "required": true
+              },
+              "value": {
+                "type": "string",
+                "description": "Notification endpoint, where to send the notifcation",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_plugin": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the plugin",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "If the plugin is enabled",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the plugin",
+                "description_kind": "plain",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "The version of the plugin",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_plugin_community": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the plugin",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "If the plugin is enabled",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the plugin",
+                "description_kind": "plain",
+                "required": true
+              },
+              "require": {
+                "type": "string",
+                "description": "Required version of RabbitMQ",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_privatelink_aws": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active_zones": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Covering availability zones used when creating an Endpoint from other VPC",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "allowed_principals": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Allowed principals to access the endpoint service",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "The CloudAMQP instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Service name of the PrivateLink, needed when creating the endpoint",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep in seconds between retries when enable PrivateLink",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the PrivateLink [enabled, pending, disabled]",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout in seconds when enable PrivateLink",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_privatelink_azure": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "approved_subscriptions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Approved subscriptions to access the endpoint service",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "The CloudAMQP instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "server_name": {
+                "type": "string",
+                "description": "Name of the server having the PrivateLink enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Service name (alias) of the PrivateLink, needed when creating the endpoint",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep in seconds between retries when enable PrivateLink",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the PrivateLink [enabled, pending, disabled]",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout in seconds when enable PrivateLink",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_rabbitmq_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "channel_max": {
+                "type": "number",
+                "description": "Set the maximum permissible number of channels per connection. 0 means unlimited",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "connection_max": {
+                "type": "number",
+                "description": "Set the maximum permissible number of connection, -1 means infinity.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "consumer_timeout": {
+                "type": "number",
+                "description": "A consumer that has recevied a message and does not acknowledge that message within the timeout in milliseconds",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "heartbeat": {
+                "type": "number",
+                "description": "Set the server AMQP 0-9-1 heartbeat timeout in seconds.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "log_exchange_level": {
+                "type": "string",
+                "description": "Log level for the logger used for log integrations and the CloudAMQP Console log view. Does not affect the file logger. Requires a RabbitMQ restart to be applied.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_message_size": {
+                "type": "number",
+                "description": "The largest allowed message payload size in bytes.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "queue_index_embed_msgs_below": {
+                "type": "number",
+                "description": "Size in bytes below which to embed messages in the queue index.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep time in seconds between retries for RabbitMQ configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time in seconds for RabbitMQ configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vm_memory_high_watermark": {
+                "type": "number",
+                "description": "When the server will enter memory based flow-control as relative to the maximum available memory.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_security_firewall": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep time in seconds between retries for firewall configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time in seconds for firewall configuration",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "rules": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "Naming descripton e.g. 'Default'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description": "CIDR address: IP address with CIDR notation (e.g. 10.56.72.0/24)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ports": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description": "Custom ports between 0 - 65554",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "services": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Pre-defined services 'AMQP', 'AMQPS', 'HTTPS', 'MQTT', 'MQTTS', 'STOMP', 'STOMPS', 'STREAM', 'STREAM_SSL'",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_upgrade_rabbitmq": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "The CloudAMQP instance identifier",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_vpc": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the VPC instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The hosted region for the standalone VPC instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "subnet": {
+                "type": "string",
+                "description": "The VPC subnet",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tag the VPC instance with optional tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vpc_name": {
+                "type": "string",
+                "description": "VPC name given when hosted at the cloud provider",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_vpc_gcp_peering": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_create_routes": {
+                "type": "bool",
+                "description": "VPC peering auto created routes",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "peer_network_uri": {
+                "type": "string",
+                "description": "VPC network uri",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "VPC peering state",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "state_details": {
+                "type": "string",
+                "description": "VPC peering state details",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "VPC instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_vpc_peering": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "peering_id": {
+                "type": "string",
+                "description": "VPC peering identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep time in seconds between retries for accepting or removing peering",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "VPC peering status",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time in seconds for accepting or removing peering",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "VPC instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_webhook": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "concurrency": {
+                "type": "number",
+                "description": "How many times the request will be made if previous call fails",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "queue": {
+                "type": "string",
+                "description": "The queue that should be forwarded, must be a durable queue!",
+                "description_kind": "plain",
+                "required": true
+              },
+              "retry_interval": {
+                "type": "number",
+                "description": "How often push of a message will retry if the previous call fails. In seconds",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vhost": {
+                "type": "string",
+                "description": "The name of the virtual host",
+                "description_kind": "plain",
+                "required": true
+              },
+              "webhook_uri": {
+                "type": "string",
+                "description": "A POST request will be made for each message in the queue to this endpoint",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "cloudamqp_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instances": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "name": "string",
+                      "plan": "string",
+                      "region": "string",
+                      "tags": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_account_vpcs": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vpcs": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "name": "string",
+                      "region": "string",
+                      "subnet": "string",
+                      "tags": [
+                        "list",
+                        "string"
+                      ],
+                      "vpc_name": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_alarm": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "alarm_id": {
+                "type": "number",
+                "description": "Alarm identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Enable or disable an alarm",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "message_type": {
+                "type": "string",
+                "description": "Message types (total, unacked, ready) of the queue to trigger the alarm",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "queue_regex": {
+                "type": "string",
+                "description": "Regex for which queues to check",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "recipients": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "Identifiers for recipients to be notified.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "reminder_interval": {
+                "type": "number",
+                "description": "The reminder interval (in seconds) to resend the alarm if not resolved. Set to 0 for no reminders",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "time_threshold": {
+                "type": "number",
+                "description": "For how long (in seconds) the value_threshold should be active before trigger alarm",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the alarm",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "value_calculation": {
+                "type": "string",
+                "description": "Disk value threshold calculation. Fixed or percentage of disk space remaining",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "value_threshold": {
+                "type": "number",
+                "description": "What value to trigger the alarm for",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vhost_regex": {
+                "type": "string",
+                "description": "Regex for which vhost the queues are in",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_credentials": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "username": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "apikey": {
+                "type": "string",
+                "description": "API key for the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "dedicated": {
+                "type": "bool",
+                "description": "Is the instance hosted on a dedicated server",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "host": {
+                "type": "string",
+                "description": "External hostname for the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "host_internal": {
+                "type": "string",
+                "description": "Internal hostname for the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Identifier for the instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the instance",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "no_default_alarms": {
+                "type": "bool",
+                "description": "If default alarms set or not for the instance",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes": {
+                "type": "number",
+                "description": "Number of nodes in cluster (plan must support it)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "Name of the plan, see documentation for valid plans",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ready": {
+                "type": "bool",
+                "description": "Flag describing if the resource is ready",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Name of the region you want to create your instance in",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rmq_version": {
+                "type": "string",
+                "description": "RabbitMQ version",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tag the instances with optional tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "url": {
+                "type": "string",
+                "description": "URL of the CloudAMQP instance",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "vhost": {
+                "type": "string",
+                "description": "The virtual host",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "number",
+                "description": "The ID of the VPC to create your instance in",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_subnet": {
+                "type": "string",
+                "description": "Dedicated VPC subnet, shouldn't overlap with your current VPC's subnet",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_nodes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nodes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "additional_disk_size": "number",
+                      "configured": "bool",
+                      "disk_size": "number",
+                      "erlang_version": "string",
+                      "hipe": "bool",
+                      "hostname": "string",
+                      "name": "string",
+                      "rabbitmq_version": "string",
+                      "running": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_notification": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Optional display name of the recipient",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "recipient_id": {
+                "type": "number",
+                "description": "Recipient identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the notification, valid options are: email, webhook, pagerduty, victorops, opsgenie, opsgenie-eu, slack",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "value": {
+                "type": "string",
+                "description": "Notification endpoint, where to send the notifcation",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_plugins": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugins": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "enabled": "bool",
+                      "name": "string",
+                      "version": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_plugins_community": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugins": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "name": "string",
+                      "require": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_upgradable_versions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "new_erlang_version": {
+                "type": "string",
+                "description": "Latest possible upgradable Erlang version",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "new_rabbitmq_version": {
+                "type": "string",
+                "description": "Latest possible upgradable RabbitMQ version",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_vpc_gcp_info": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "VPC name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network": {
+                "type": "string",
+                "description": "VPC network uri",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "VPC instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vpc_subnet": {
+                "type": "string",
+                "description": "VPC subnet",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "cloudamqp_vpc_info": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "VPC name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "owner_id": {
+                "type": "string",
+                "description": "Owner identifier",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "security_group_id": {
+                "type": "string",
+                "description": "The security group identifier",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "VPC instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vpc_subnet": {
+                "type": "string",
+                "description": "VPC subnet",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

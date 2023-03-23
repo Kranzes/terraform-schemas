@@ -1,1 +1,426 @@
-/nix/store/j00vyvinw8gzgsx5hn229s6pqw4ian69-tailscale.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/tailscale/tailscale": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "api_key": {
+              "type": "string",
+              "description": "The API key to use for authenticating requests to the API. Can be set via the TAILSCALE_API_KEY environment variable.",
+              "description_kind": "plain",
+              "optional": true,
+              "sensitive": true
+            },
+            "base_url": {
+              "type": "string",
+              "description": "The base URL of the Tailscale API. Defaults to https://api.tailscale.com. Can be set via the TAILSCALE_BASE_URL environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "tailnet": {
+              "type": "string",
+              "description": "The Tailnet to perform actions in. Can be set via the TAILSCALE_TAILNET environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "tailscale_acl": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acl": {
+                "type": "string",
+                "description": "The JSON-based policy that defines which devices and users are allowed to connect in your network",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The acl resource allows you to configure a Tailscale ACL. See https://tailscale.com/kb/1018/acls for more information. Note that this resource will completely overwrite existing ACL contents for a given tailnet.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_device_authorization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "authorized": {
+                "type": "bool",
+                "description": "Whether or not the device is authorized",
+                "description_kind": "plain",
+                "required": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "The device to set as authorized",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The device_authorization resource is used to approve new devices before they can join the tailnet. See https://tailscale.com/kb/1099/device-authorization/ for more details.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_device_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description": "The device to update the key properties of",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key_expiry_disabled": {
+                "type": "bool",
+                "description": "Determines whether or not the device's key will expire",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "The device_key resource allows you to update the properties of a device's key",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_device_subnet_routes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description": "The device to set subnet routes for",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "routes": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The subnet routes that are enabled to be routed by a device",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The device_subnet_routes resource allows you to configure subnet routes for your Tailscale devices. See https://tailscale.com/kb/1019/subnets for more information.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_device_tags": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description": "The device to set tags for",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The tags to apply to the device",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The device_tags resource is used to apply tags to Tailscale devices. See https://tailscale.com/kb/1068/acl-tags/ for more details.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_dns_nameservers": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "nameservers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Devices on your network will use these nameservers to resolve DNS names. IPv4 or IPv6 addresses are accepted.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The dns_nameservers resource allows you to configure DNS nameservers for your Tailscale network. See https://tailscale.com/kb/1054/dns for more information.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_dns_preferences": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "magic_dns": {
+                "type": "bool",
+                "description": "Whether or not to enable magic DNS",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The dns_preferences resource allows you to configure DNS preferences for your Tailscale network. See https://tailscale.com/kb/1054/dns for more information.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_dns_search_paths": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "search_paths": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Devices on your network will use these domain suffixes to resolve DNS names.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The dns_nameservers resource allows you to configure DNS nameservers for your Tailscale network. See https://tailscale.com/kb/1054/dns for more information.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_tailnet_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ephemeral": {
+                "type": "bool",
+                "description": "Indicates if the key is ephemeral.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "expiry": {
+                "type": "number",
+                "description": "The expiry of the key in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The authentication key",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "preauthorized": {
+                "type": "bool",
+                "description": "Determines whether or not the machines authenticated by the key will be authorized for the tailnet by default.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "reusable": {
+                "type": "bool",
+                "description": "Indicates if the key is reusable or single-use.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of tags to apply to the machines authenticated by the key.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "The tailnet_key resource allows you to create pre-authentication keys that can register new nodes without needing to sign in via a web browser. See https://tailscale.com/kb/1085/auth-keys for more information",
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "tailscale_4via6": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The IPv4 CIDR to map",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ipv6": {
+                "type": "string",
+                "description": "The 4via6 mapped address",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "site": {
+                "type": "number",
+                "description": "Site ID (between 0 and 255)",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The 4via6 data source is calculates an IPv6 prefix for a given site ID and IPv4 CIDR. See Tailscale documentation for [4via6 subnets](https://tailscale.com/kb/1201/4via6-subnets/) for more details.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_device": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "addresses": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The list of device's IPs",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the device",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The tags applied to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user": {
+                "type": "string",
+                "description": "The user associated with the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "wait_for": {
+                "type": "string",
+                "description": "If specified, the provider will make multiple attempts to obtain the data source until the wait_for duration is reached. Retries are made every second so this value should be greater than 1s",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "The device data source describes a single device in a tailnet",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_devices": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "devices": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "addresses": [
+                        "list",
+                        "string"
+                      ],
+                      "id": "string",
+                      "name": "string",
+                      "tags": [
+                        "set",
+                        "string"
+                      ],
+                      "user": "string"
+                    }
+                  ]
+                ],
+                "description": "The list of devices in the tailnet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_prefix": {
+                "type": "string",
+                "description": "Filters the device list to elements whose name has the provided prefix",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "The devices data source describes a list of devices in a tailnet",
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,3148 @@
-/nix/store/zv886dc1lz21v1yswirziqdj04w609dd-docker.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/kreuzwerker/docker": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "ca_material": {
+              "type": "string",
+              "description": "PEM-encoded content of Docker host CA certificate",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "cert_material": {
+              "type": "string",
+              "description": "PEM-encoded content of Docker client certificate",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "cert_path": {
+              "type": "string",
+              "description": "Path to directory with Docker TLS config",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "host": {
+              "type": "string",
+              "description": "The Docker daemon address",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "key_material": {
+              "type": "string",
+              "description": "PEM-encoded content of Docker client private key",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "ssh_opts": {
+              "type": [
+                "list",
+                "string"
+              ],
+              "description": "Additional SSH option flags to be appended when using `ssh://` protocol",
+              "description_kind": "markdown",
+              "optional": true
+            }
+          },
+          "block_types": {
+            "registry_auth": {
+              "nesting_mode": "set",
+              "block": {
+                "attributes": {
+                  "address": {
+                    "type": "string",
+                    "description": "Address of the registry",
+                    "description_kind": "markdown",
+                    "required": true
+                  },
+                  "auth_disabled": {
+                    "type": "bool",
+                    "description": "Setting this to `true` will tell the provider that this registry does not need authentication. Due to the docker internals, the provider will use dummy credentials (see https://github.com/kreuzwerker/terraform-provider-docker/issues/470 for more information). Defaults to `false`.",
+                    "description_kind": "markdown",
+                    "optional": true
+                  },
+                  "config_file": {
+                    "type": "string",
+                    "description": "Path to docker json file for registry auth. Defaults to `~/.docker/config.json`. If `DOCKER_CONFIG` is set, the value of `DOCKER_CONFIG` is used as the path. `config_file` has predencen over all other options.",
+                    "description_kind": "markdown",
+                    "optional": true
+                  },
+                  "config_file_content": {
+                    "type": "string",
+                    "description": "Plain content of the docker json file for registry auth. `config_file_content` has precedence over username/password.",
+                    "description_kind": "markdown",
+                    "optional": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password for the registry. Defaults to `DOCKER_REGISTRY_PASS` env variable if set.",
+                    "description_kind": "markdown",
+                    "optional": true,
+                    "sensitive": true
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Username for the registry. Defaults to `DOCKER_REGISTRY_USER` env variable if set.",
+                    "description_kind": "markdown",
+                    "optional": true
+                  }
+                },
+                "description_kind": "plain"
+              }
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "docker_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "data": {
+                "type": "string",
+                "description": "Base64-url-safe-encoded config data",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-defined name of the config",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Manages the configs of a Docker service in a swarm.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_container": {
+          "version": 2,
+          "block": {
+            "attributes": {
+              "attach": {
+                "type": "bool",
+                "description": "If `true` attach to the container after its creation and waits the end of its execution. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "bridge": {
+                "type": "string",
+                "description": "The network bridge of the container as read from its NetworkSettings.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "cgroupns_mode": {
+                "type": "string",
+                "description": "Cgroup namespace mode to use for the container. Possible values are: `private`, `host`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "command": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The command to use to start the container. For example, to run `/usr/bin/myprogram -f baz.conf` set the command to be `[\"/usr/bin/myprogram\",\"-f\",\"baz.con\"]`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "container_logs": {
+                "type": "string",
+                "description": "The logs of the container if its execution is done (`attach` must be disabled).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "container_read_refresh_timeout_milliseconds": {
+                "type": "number",
+                "description": "The total number of milliseconds to wait for the container to reach status 'running'",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "cpu_set": {
+                "type": "string",
+                "description": "A comma-separated list or hyphen-separated range of CPUs a container can use, e.g. `0-1`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "cpu_shares": {
+                "type": "number",
+                "description": "CPU shares (relative weight) for the container.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "destroy_grace_seconds": {
+                "type": "number",
+                "description": "If defined will attempt to stop the container before destroying. Container will be destroyed after `n` seconds or on successful stop.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "dns": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "DNS servers to use.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "dns_opts": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "DNS options used by the DNS provider(s), see `resolv.conf` documentation for valid list of options.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "dns_search": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "DNS search domains that are used when bare unqualified hostnames are used inside of the container.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "domainname": {
+                "type": "string",
+                "description": "Domain name of the container.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "entrypoint": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The command to use as the Entrypoint for the container. The Entrypoint allows you to configure a container to run as an executable. For example, to run `/usr/bin/myprogram` when starting a container, set the entrypoint to be `\"/usr/bin/myprogra\"]`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "env": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Environment variables to set in the form of `KEY=VALUE`, e.g. `DEBUG=0`",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "exit_code": {
+                "type": "number",
+                "description": "The exit code of the container if its execution is done (`must_run` must be disabled).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "gpus": {
+                "type": "string",
+                "description": "GPU devices to add to the container. Currently, only the value `all` is supported. Passing any other value will result in unexpected behavior.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "group_add": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Additional groups for the container user",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "Hostname of the container.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "image": {
+                "type": "string",
+                "description": "The ID of the image to back this container. The easiest way to get this value is to use the `docker_image` resource as is shown in the example.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "init": {
+                "type": "bool",
+                "description": "Configured whether an init process should be injected for this container. If unset this will default to the `dockerd` defaults.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "ipc_mode": {
+                "type": "string",
+                "description": "IPC sharing mode for the container. Possible values are: `none`, `private`, `shareable`, `container:<name|id>` or `host`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "log_driver": {
+                "type": "string",
+                "description": "The logging driver to use for the container.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "log_opts": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Key/value pairs to use as options for the logging driver.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "logs": {
+                "type": "bool",
+                "description": "Save the container logs (`attach` must be enabled). Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "max_retry_count": {
+                "type": "number",
+                "description": "The maximum amount of times to an attempt a restart when `restart` is set to 'on-failure'.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "The memory limit for the container in MBs.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "memory_swap": {
+                "type": "number",
+                "description": "The total memory limit (memory + swap) for the container in MBs. This setting may compute to `-1` after `terraform apply` if the target host doesn't support memory swap, when that is the case docker will use a soft limitation.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "must_run": {
+                "type": "bool",
+                "description": "If `true`, then the Docker container will be kept running. If `false`, then as long as the container exists, Terraform assumes it is successful. Defaults to `true`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the container.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "network_data": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "gateway": "string",
+                      "global_ipv6_address": "string",
+                      "global_ipv6_prefix_length": "number",
+                      "ip_address": "string",
+                      "ip_prefix_length": "number",
+                      "ipv6_gateway": "string",
+                      "mac_address": "string",
+                      "network_name": "string"
+                    }
+                  ]
+                ],
+                "description": "The data of the networks the container is connected to.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "network_mode": {
+                "type": "string",
+                "description": "Network mode of the container.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "pid_mode": {
+                "type": "string",
+                "description": "he PID (Process) Namespace mode for the container. Either `container:<name|id>` or `host`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "privileged": {
+                "type": "bool",
+                "description": "If `true`, the container runs in privileged mode.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "publish_all_ports": {
+                "type": "bool",
+                "description": "Publish all ports of the container.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "read_only": {
+                "type": "bool",
+                "description": "If `true`, the container will be started as readonly. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "remove_volumes": {
+                "type": "bool",
+                "description": "If `true`, it will remove anonymous volumes associated with the container. Defaults to `true`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "restart": {
+                "type": "string",
+                "description": "The restart policy for the container. Must be one of 'no', 'on-failure', 'always', 'unless-stopped'. Defaults to `no`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "rm": {
+                "type": "bool",
+                "description": "If `true`, then the container will be automatically removed when it exits. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "runtime": {
+                "type": "string",
+                "description": "Runtime to use for the container.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "security_opts": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of string values to customize labels for MLS systems, such as SELinux. See https://docs.docker.com/engine/reference/run/#security-configuration.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "shm_size": {
+                "type": "number",
+                "description": "Size of `/dev/shm` in MBs.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "start": {
+                "type": "bool",
+                "description": "If `true`, then the Docker container will be started after creation. If `false`, then the container is only created. Defaults to `true`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "stdin_open": {
+                "type": "bool",
+                "description": "If `true`, keep STDIN open even if not attached (`docker run -i`). Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "stop_signal": {
+                "type": "string",
+                "description": "Signal to stop a container (default `SIGTERM`).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "stop_timeout": {
+                "type": "number",
+                "description": "Timeout (in seconds) to stop a container.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "storage_opts": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Key/value pairs for the storage driver options, e.g. `size`: `120G`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "sysctls": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of kernel parameters (sysctls) to set in the container.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "tmpfs": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of container directories which should be replaced by `tmpfs mounts`, and their corresponding mount options.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "tty": {
+                "type": "bool",
+                "description": "If `true`, allocate a pseudo-tty (`docker run -t`). Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "user": {
+                "type": "string",
+                "description": "User used for run the first process. Format is `user` or `user:group` which user and group can be passed literraly or by name.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "userns_mode": {
+                "type": "string",
+                "description": "Sets the usernamespace mode for the container when usernamespace remapping option is enabled.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "wait": {
+                "type": "bool",
+                "description": "If `true`, then the Docker container is waited for being healthy state after creation. If `false`, then the container health state is not checked. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "wait_timeout": {
+                "type": "number",
+                "description": "The timeout in seconds to wait the container to be healthy after creation. Defaults to `60`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "working_dir": {
+                "type": "string",
+                "description": "The working directory for commands to run in.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "capabilities": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "add": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of linux capabilities to add.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "drop": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of linux capabilities to drop.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Add or drop certrain linux capabilities.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "devices": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "container_path": {
+                      "type": "string",
+                      "description": "The path in the container where the device will be bound.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "host_path": {
+                      "type": "string",
+                      "description": "The path on the host where the device is located.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "permissions": {
+                      "type": "string",
+                      "description": "The cgroup permissions given to the container to access the device. Defaults to `rwm`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Bind devices to the container.",
+                  "description_kind": "markdown"
+                }
+              },
+              "healthcheck": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "interval": {
+                      "type": "string",
+                      "description": "Time between running the check (ms|s|m|h). Defaults to `0s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "retries": {
+                      "type": "number",
+                      "description": "Consecutive failures needed to report unhealthy. Defaults to `0`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "start_period": {
+                      "type": "string",
+                      "description": "Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "test": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Command to run to check health. For example, to run `curl -f localhost/health` set the command to be `[\"CMD\", \"curl\", \"-f\", \"localhost/health\"]`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "timeout": {
+                      "type": "string",
+                      "description": "Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "A test to perform to check that the container is healthy",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "host": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description": "Hostname to add",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description": "IP address this hostname should resolve to.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Additional hosts to add to the container.",
+                  "description_kind": "markdown"
+                }
+              },
+              "labels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "label": {
+                      "type": "string",
+                      "description": "Name of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "User-defined key/value metadata",
+                  "description_kind": "markdown"
+                }
+              },
+              "mounts": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "read_only": {
+                      "type": "bool",
+                      "description": "Whether the mount should be read-only.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "Mount source (e.g. a volume name, a host path).",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "target": {
+                      "type": "string",
+                      "description": "Container path",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The mount type",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "bind_options": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "propagation": {
+                            "type": "string",
+                            "description": "A propagation mode with the value.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "Optional configuration for the bind type.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "tmpfs_options": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "mode": {
+                            "type": "number",
+                            "description": "The permission mode for the tmpfs mount in an integer.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "size_bytes": {
+                            "type": "number",
+                            "description": "The size for the tmpfs mount in bytes.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "Optional configuration for the tmpfs type.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "volume_options": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "driver_name": {
+                            "type": "string",
+                            "description": "Name of the driver to use to create the volume.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "driver_options": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "key/value map of driver specific options.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "no_copy": {
+                            "type": "bool",
+                            "description": "Populate volume with data from the target.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "labels": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "label": {
+                                  "type": "string",
+                                  "description": "Name of the label",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "Value of the label",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description": "User-defined key/value metadata.",
+                              "description_kind": "markdown"
+                            }
+                          }
+                        },
+                        "description": "Optional configuration for the volume type.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specification for mounts to be added to containers created as part of the service.",
+                  "description_kind": "markdown"
+                }
+              },
+              "networks_advanced": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "aliases": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The network aliases of the container in the specific network.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "ipv4_address": {
+                      "type": "string",
+                      "description": "The IPV4 address of the container in the specific network.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "ipv6_address": {
+                      "type": "string",
+                      "description": "The IPV6 address of the container in the specific network.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name or id of the network to use. You can use `name` or `id` attribute from a `docker_network` resource.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "The networks the container is attached to",
+                  "description_kind": "markdown"
+                }
+              },
+              "ports": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "external": {
+                      "type": "number",
+                      "description": "Port exposed out of the container. If not given a free random port `>= 32768` will be used.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "internal": {
+                      "type": "number",
+                      "description": "Port within the container.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description": "IP address/mask that can access this port. Defaults to `0.0.0.0`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Protocol that can be used over this port. Defaults to `tcp`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Publish a container's port(s) to the host.",
+                  "description_kind": "markdown"
+                }
+              },
+              "ulimit": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "hard": {
+                      "type": "number",
+                      "description": "The hard limit",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the ulimit",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "soft": {
+                      "type": "number",
+                      "description": "The soft limit",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Ulimit options to add.",
+                  "description_kind": "markdown"
+                }
+              },
+              "upload": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "content": {
+                      "type": "string",
+                      "description": "Literal string value to use as the object content, which will be uploaded as UTF-8-encoded text. Conflicts with `content_base64` & `source`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "content_base64": {
+                      "type": "string",
+                      "description": "Base64-encoded data that will be decoded and uploaded as raw bytes for the object content. This allows safely uploading non-UTF8 binary data, but is recommended only for larger binary content such as the result of the `base64encode` interpolation function. See [here](https://github.com/terraform-providers/terraform-provider-docker/issues/48#issuecomment-374174588) for the reason. Conflicts with `content` & `source`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "executable": {
+                      "type": "bool",
+                      "description": "If `true`, the file will be uploaded with user executable permission. Defaults to `false`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "file": {
+                      "type": "string",
+                      "description": "Path to the file in the container where is upload goes to",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "A filename that references a file which will be uploaded as the object content. This allows for large file uploads that do not get stored in state. Conflicts with `content` & `content_base64`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "source_hash": {
+                      "type": "string",
+                      "description": "If using `source`, this will force an update if the file content has updated but the filename has not. ",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies files to upload to the container before starting it. Only one of `content` or `content_base64` can be set and at least one of them has to be set.",
+                  "description_kind": "markdown"
+                }
+              },
+              "volumes": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "container_path": {
+                      "type": "string",
+                      "description": "The path in the container where the volume will be mounted.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "from_container": {
+                      "type": "string",
+                      "description": "The container where the volume is coming from.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "host_path": {
+                      "type": "string",
+                      "description": "The path on the host where the volume is coming from.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "read_only": {
+                      "type": "bool",
+                      "description": "If `true`, this volume will be readonly. Defaults to `false`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "volume_name": {
+                      "type": "string",
+                      "description": "The name of the docker volume which should be mounted.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Spec for mounting volumes in the container.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Manages the lifecycle of a Docker container.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "force_remove": {
+                "type": "bool",
+                "description": "If true, then the image is removed forcibly when the resource is destroyed.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for this resource. This is not the image ID, but the ID of the resource in the Terraform state. This is used to identify the resource in the Terraform state. To reference the correct image ID, use the `image_id` attribute.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "image_id": {
+                "type": "string",
+                "description": "The ID of the image (as seen when executing `docker inspect` on the image). Can be used to reference the image via its ID in other resources.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "keep_locally": {
+                "type": "bool",
+                "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker image, including any tags or SHA256 repo digests.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "platform": {
+                "type": "string",
+                "description": "The platform to use when pulling the image. Defaults to the platform of the current machine.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "pull_triggers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of values which cause an image pull when changed. This is used to store the image digest from the registry when using the [docker_registry_image](../data-sources/registry_image.md).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "repo_digest": {
+                "type": "string",
+                "description": "The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "triggers": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of arbitrary strings that, when changed, will force the `docker_image` resource to be replaced. This can be used to rebuild an image when contents of source code folders change",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "build": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "build_arg": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Set build-time variables",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "build_args": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Pairs for build-time variables in the form TODO",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "build_id": {
+                      "type": "string",
+                      "description": "BuildID is an optional identifier that can be passed together with the build request. The same identifier can be used to gracefully cancel the build with the cancel request.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cache_from": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Images to consider as cache sources",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cgroup_parent": {
+                      "type": "string",
+                      "description": "Optional parent cgroup for the container",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "context": {
+                      "type": "string",
+                      "description": "Value to specify the build context. Currently, only a `PATH` context is supported. You can use the helper function '${path.cwd}/context-dir'. Please see https://docs.docker.com/build/building/context/ for more information about build contexts.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "cpu_period": {
+                      "type": "number",
+                      "description": "The length of a CPU period in microseconds",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cpu_quota": {
+                      "type": "number",
+                      "description": "Microseconds of CPU time that the container can get in a CPU period",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cpu_set_cpus": {
+                      "type": "string",
+                      "description": "CPUs in which to allow execution (e.g., `0-3`, `0`, `1`)",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cpu_set_mems": {
+                      "type": "string",
+                      "description": "MEMs in which to allow execution (`0-3`, `0`, `1`)",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cpu_shares": {
+                      "type": "number",
+                      "description": "CPU shares (relative weight)",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "dockerfile": {
+                      "type": "string",
+                      "description": "Name of the Dockerfile. Defaults to `Dockerfile`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "extra_hosts": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of hostnames/IP mappings to add to the container’s /etc/hosts file. Specified in the form [\"hostname:IP\"]",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "force_remove": {
+                      "type": "bool",
+                      "description": "Always remove intermediate containers",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "isolation": {
+                      "type": "string",
+                      "description": "Isolation represents the isolation technology of a container. The supported values are ",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "label": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Set metadata for an image",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "labels": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "User-defined key/value metadata",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "memory": {
+                      "type": "number",
+                      "description": "Set memory limit for build",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "memory_swap": {
+                      "type": "number",
+                      "description": "Total memory (memory + swap), -1 to enable unlimited swap",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "network_mode": {
+                      "type": "string",
+                      "description": "Set the networking mode for the RUN instructions during build",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "no_cache": {
+                      "type": "bool",
+                      "description": "Do not use the cache when building the image",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "platform": {
+                      "type": "string",
+                      "description": "Set platform if server is multi-platform capable",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "pull_parent": {
+                      "type": "bool",
+                      "description": "Attempt to pull the image even if an older image exists locally",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "remote_context": {
+                      "type": "string",
+                      "description": "A Git repository URI or HTTP/HTTPS context URI",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "remove": {
+                      "type": "bool",
+                      "description": "Remove intermediate containers after a successful build. Defaults to `true`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "security_opt": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The security options",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "session_id": {
+                      "type": "string",
+                      "description": "Set an ID for the build session",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "shm_size": {
+                      "type": "number",
+                      "description": "Size of /dev/shm in bytes. The size must be greater than 0",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "squash": {
+                      "type": "bool",
+                      "description": "If true the new layers are squashed into a new image with a single new layer",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "suppress_output": {
+                      "type": "bool",
+                      "description": "Suppress the build output and print image ID on success",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Name and optionally a tag in the 'name:tag' format",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "target": {
+                      "type": "string",
+                      "description": "Set the target build stage to build",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "Version of the underlying builder to use",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "auth_config": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "auth": {
+                            "type": "string",
+                            "description": "the auth token",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "the user emal",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "host_name": {
+                            "type": "string",
+                            "description": "hostname of the registry",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_token": {
+                            "type": "string",
+                            "description": "the identity token",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "password": {
+                            "type": "string",
+                            "description": "the registry password",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "registry_token": {
+                            "type": "string",
+                            "description": "the registry token",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "server_address": {
+                            "type": "string",
+                            "description": "the server address",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "user_name": {
+                            "type": "string",
+                            "description": "the registry user name",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "The configuration for the authentication",
+                        "description_kind": "markdown"
+                      }
+                    },
+                    "ulimit": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "hard": {
+                            "type": "number",
+                            "description": "soft limit",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "type of ulimit, e.g. `nofile`",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "soft": {
+                            "type": "number",
+                            "description": "hard limit",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description": "Configuration for ulimits",
+                        "description_kind": "markdown"
+                      }
+                    }
+                  },
+                  "description": "Configuration to build an image. Please see [docker build command reference](https://docs.docker.com/engine/reference/commandline/build/#options) too.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "Pulls a Docker image to a given Docker host from a Docker Registry.\n This resource will *not* pull new layers of the image automatically unless used in conjunction with [docker_registry_image](registry_image.md) data source to update the `pull_triggers` field.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_network": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "attachable": {
+                "type": "bool",
+                "description": "Enable manual container attachment to the network.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "check_duplicate": {
+                "type": "bool",
+                "description": "Requests daemon to check for networks with same name.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "driver": {
+                "type": "string",
+                "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ingress": {
+                "type": "bool",
+                "description": "Create swarm routing-mesh network. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "internal": {
+                "type": "bool",
+                "description": "Whether the network is internal.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "ipam_driver": {
+                "type": "string",
+                "description": "Driver used by the custom IP scheme of the network. Defaults to `default`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "ipam_options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Provide explicit options to the IPAM driver. Valid options vary with `ipam_driver` and refer to that driver's documentation for more details.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "ipv6": {
+                "type": "bool",
+                "description": "Enable IPv6 networking. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker network.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "scope": {
+                "type": "string",
+                "description": "Scope of the network. One of `swarm`, `global`, or `local`.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "ipam_config": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "aux_address": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Auxiliary IPv4 or IPv6 addresses used by Network driver",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "gateway": {
+                      "type": "string",
+                      "description": "The IP address of the gateway",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "ip_range": {
+                      "type": "string",
+                      "description": "The ip range in CIDR form",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "subnet": {
+                      "type": "string",
+                      "description": "The subnet in CIDR form",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "The IPAM configuration options",
+                  "description_kind": "markdown"
+                }
+              },
+              "labels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "label": {
+                      "type": "string",
+                      "description": "Name of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "User-defined key/value metadata",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "`docker_network` provides a docker network resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_plugin": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "alias": {
+                "type": "string",
+                "description": "Docker Plugin alias",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "enable_timeout": {
+                "type": "number",
+                "description": "HTTP client timeout to enable the plugin",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "If `true` the plugin is enabled. Defaults to `true`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "env": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "force_destroy": {
+                "type": "bool",
+                "description": "If true, then the plugin is destroyed forcibly",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "force_disable": {
+                "type": "bool",
+                "description": "If true, then the plugin is disabled forcibly",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "grant_all_permissions": {
+                "type": "bool",
+                "description": "If true, grant all permissions necessary to run the plugin",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Docker Plugin name",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "plugin_reference": {
+                "type": "string",
+                "description": "Docker Plugin Reference",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "grant_permissions": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the permission",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value of the permission",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Grant specific permissions only",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Manages the lifecycle of a Docker plugin.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_registry_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "insecure_skip_verify": {
+                "type": "bool",
+                "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "keep_remotely": {
+                "type": "bool",
+                "description": "If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker registry on destroy operation. Defaults to `false`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker image.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "sha256_digest": {
+                "type": "string",
+                "description": "The sha256 digest of the image.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "triggers": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of arbitrary strings that, when changed, will force the `docker_registry_image` resource to be replaced. This can be used to repush a local image",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Manages the lifecycle of docker image in a registry. You can upload images to a registry (= `docker push`) and also delete them again",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_secret": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "data": {
+                "type": "string",
+                "description": "Base64-url-safe-encoded secret data",
+                "description_kind": "markdown",
+                "required": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-defined name of the secret",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "labels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "label": {
+                      "type": "string",
+                      "description": "Name of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "User-defined key/value metadata",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Manages the secrets of a Docker service in a swarm.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_service": {
+          "version": 2,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the service",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "auth": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "password": {
+                      "type": "string",
+                      "description": "The password",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "sensitive": true
+                    },
+                    "server_address": {
+                      "type": "string",
+                      "description": "The address of the server for the authentication",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Configuration for the authentication for pulling the images of the service",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "converge_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "delay": {
+                      "type": "string",
+                      "description": "The interval to check if the desired state is reached `(ms|s)`. Defaults to `7s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "timeout": {
+                      "type": "string",
+                      "description": "The timeout of the service to reach the desired state `(s|m)`. Defaults to `3m`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "A configuration to ensure that a service converges aka reaches the desired that of all task up and running",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "endpoint_spec": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "mode": {
+                      "type": "string",
+                      "description": "The mode of resolution to use for internal load balancing between tasks",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "ports": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "A random name for the port",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "Rrepresents the protocol of a port: `tcp`, `udp` or `sctp`. Defaults to `tcp`.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "publish_mode": {
+                            "type": "string",
+                            "description": "Represents the mode in which the port is to be published: 'ingress' or 'host'. Defaults to `ingress`.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "published_port": {
+                            "type": "number",
+                            "description": "The port on the swarm hosts",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "target_port": {
+                            "type": "number",
+                            "description": "The port inside the container",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description": "List of exposed ports that this service is accessible on from the outside. Ports can only be provided if 'vip' resolution mode is used",
+                        "description_kind": "markdown"
+                      }
+                    }
+                  },
+                  "description": "Properties that can be configured to access and load balance a service",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "labels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "label": {
+                      "type": "string",
+                      "description": "Name of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "User-defined key/value metadata",
+                  "description_kind": "markdown"
+                }
+              },
+              "mode": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "global": {
+                      "type": "bool",
+                      "description": "The global service mode. Defaults to `false`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "replicated": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "replicas": {
+                            "type": "number",
+                            "description": "The amount of replicas of the service. Defaults to `1`",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "The replicated service mode",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Scheduling mode for the service",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "rollback_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "delay": {
+                      "type": "string",
+                      "description": "Delay between task rollbacks (ns|us|ms|s|m|h). Defaults to `0s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "failure_action": {
+                      "type": "string",
+                      "description": "Action on rollback failure: pause | continue. Defaults to `pause`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "max_failure_ratio": {
+                      "type": "string",
+                      "description": "Failure rate to tolerate during a rollback. Defaults to `0.0`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "monitor": {
+                      "type": "string",
+                      "description": "Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "order": {
+                      "type": "string",
+                      "description": "Rollback order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "parallelism": {
+                      "type": "number",
+                      "description": "Maximum number of tasks to be rollbacked in one iteration. Defaults to `1`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specification for the rollback strategy of the service",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "task_spec": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "force_update": {
+                      "type": "number",
+                      "description": "A counter that triggers an update even if no relevant parameters have been changed. See the [spec](https://github.com/docker/swarmkit/blob/master/api/specs.proto#L126).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "runtime": {
+                      "type": "string",
+                      "description": "Runtime is the type of runtime specified for the task executor. See the [types](https://github.com/moby/moby/blob/master/api/types/swarm/runtime.go).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "container_spec": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "args": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Arguments to the command",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "command": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The command/entrypoint to be run in the image. According to the [docker cli](https://github.com/docker/cli/blob/v20.10.7/cli/command/service/opts.go#L705) the override of the entrypoint is also passed to the `command` property and there is no `entrypoint` attribute in the `ContainerSpec` of the service.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "dir": {
+                            "type": "string",
+                            "description": "The working directory for commands to run in",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "env": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "A list of environment variables in the form VAR=\"value\"",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "groups": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "A list of additional groups that the container process will run as",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "hostname": {
+                            "type": "string",
+                            "description": "The hostname to use for the container, as a valid RFC 1123 hostname",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "image": {
+                            "type": "string",
+                            "description": "The image name to use for the containers of the service, like `nginx:1.17.6`. Also use the data-source or resource of `docker_image` with the `repo_digest` or `docker_registry_image` with the `name` attribute for this, as shown in the examples.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "isolation": {
+                            "type": "string",
+                            "description": "Isolation technology of the containers running the service. (Windows only). Defaults to `default`.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "read_only": {
+                            "type": "bool",
+                            "description": "Mount the container's root filesystem as read only",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "stop_grace_period": {
+                            "type": "string",
+                            "description": "Amount of time to wait for the container to terminate before forcefully removing it (ms|s|m|h). If not specified or '0s' the destroy will not check if all tasks/containers of the service terminate.",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "stop_signal": {
+                            "type": "string",
+                            "description": "Signal to stop the container",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "sysctl": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Sysctls config (Linux only)",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "user": {
+                            "type": "string",
+                            "description": "The user inside the container",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "configs": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "config_id": {
+                                  "type": "string",
+                                  "description": "ID of the specific config that we're referencing",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "config_name": {
+                                  "type": "string",
+                                  "description": "Name of the config that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "file_gid": {
+                                  "type": "string",
+                                  "description": "Represents the file GID. Defaults to `0`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "file_mode": {
+                                  "type": "number",
+                                  "description": "Represents represents the FileMode of the file. Defaults to `0o444`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "file_name": {
+                                  "type": "string",
+                                  "description": "Represents the final filename in the filesystem",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "file_uid": {
+                                  "type": "string",
+                                  "description": "Represents the file UID. Defaults to `0`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "description": "References to zero or more configs that will be exposed to the service",
+                              "description_kind": "markdown"
+                            }
+                          },
+                          "dns_config": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "nameservers": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "The IP addresses of the name servers",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "options": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "A list of internal resolver variables to be modified (e.g., `debug`, `ndots:3`, etc.)",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "search": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "A search list for host-name lookup",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specification for DNS related configurations in resolver configuration file (`resolv.conf`)",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
+                          "healthcheck": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "interval": {
+                                  "type": "string",
+                                  "description": "Time between running the check (ms|s|m|h). Defaults to `0s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "retries": {
+                                  "type": "number",
+                                  "description": "Consecutive failures needed to report unhealthy. Defaults to `0`",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "start_period": {
+                                  "type": "string",
+                                  "description": "Start period for the container to initialize before counting retries towards unstable (ms|s|m|h). Defaults to `0s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "test": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "The test to perform as list",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "timeout": {
+                                  "type": "string",
+                                  "description": "Maximum time to allow one check to run (ms|s|m|h). Defaults to `0s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "description": "A test to perform to check that the container is healthy",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
+                          "hosts": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "host": {
+                                  "type": "string",
+                                  "description": "The name of the host",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "ip": {
+                                  "type": "string",
+                                  "description": "The ip of the host",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description": "A list of hostname/IP mappings to add to the container's hosts file",
+                              "description_kind": "markdown"
+                            }
+                          },
+                          "labels": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "label": {
+                                  "type": "string",
+                                  "description": "Name of the label",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "Value of the label",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description": "User-defined key/value metadata",
+                              "description_kind": "markdown"
+                            }
+                          },
+                          "mounts": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "read_only": {
+                                  "type": "bool",
+                                  "description": "Whether the mount should be read-only",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "source": {
+                                  "type": "string",
+                                  "description": "Mount source (e.g. a volume name, a host path)",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "target": {
+                                  "type": "string",
+                                  "description": "Container path",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "description": "The mount type",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "bind_options": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "propagation": {
+                                        "type": "string",
+                                        "description": "Bind propagation refers to whether or not mounts created within a given bind-mount or named volume can be propagated to replicas of that mount. See the [docs](https://docs.docker.com/storage/bind-mounts/#configure-bind-propagation) for details. Defaults to `rprivate`",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Optional configuration for the bind type",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                },
+                                "tmpfs_options": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "mode": {
+                                        "type": "number",
+                                        "description": "The permission mode for the tmpfs mount in an integer",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "size_bytes": {
+                                        "type": "number",
+                                        "description": "The size for the tmpfs mount in bytes",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Optional configuration for the tmpfs type",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                },
+                                "volume_options": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "driver_name": {
+                                        "type": "string",
+                                        "description": "Name of the driver to use to create the volume",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "driver_options": {
+                                        "type": [
+                                          "map",
+                                          "string"
+                                        ],
+                                        "description": "key/value map of driver specific options",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "no_copy": {
+                                        "type": "bool",
+                                        "description": "Populate volume with data from the target",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "labels": {
+                                        "nesting_mode": "set",
+                                        "block": {
+                                          "attributes": {
+                                            "label": {
+                                              "type": "string",
+                                              "description": "Name of the label",
+                                              "description_kind": "markdown",
+                                              "required": true
+                                            },
+                                            "value": {
+                                              "type": "string",
+                                              "description": "Value of the label",
+                                              "description_kind": "markdown",
+                                              "required": true
+                                            }
+                                          },
+                                          "description": "User-defined key/value metadata",
+                                          "description_kind": "markdown"
+                                        }
+                                      }
+                                    },
+                                    "description": "Optional configuration for the volume type",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description": "Specification for mounts to be added to containers created as part of the service",
+                              "description_kind": "markdown"
+                            }
+                          },
+                          "privileges": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "credential_spec": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "file": {
+                                        "type": "string",
+                                        "description": "Load credential spec from this file",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "registry": {
+                                        "type": "string",
+                                        "description": "Load credential spec from this value in the Windows registry",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "CredentialSpec for managed service account (Windows only)",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                },
+                                "se_linux_context": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "disable": {
+                                        "type": "bool",
+                                        "description": "Disable SELinux",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "level": {
+                                        "type": "string",
+                                        "description": "SELinux level label",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "role": {
+                                        "type": "string",
+                                        "description": "SELinux role label",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "description": "SELinux type label",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "user": {
+                                        "type": "string",
+                                        "description": "SELinux user label",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "SELinux labels of the container",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description": "Security options for the container",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
+                          "secrets": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "file_gid": {
+                                  "type": "string",
+                                  "description": "Represents the file GID. Defaults to `0`",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "file_mode": {
+                                  "type": "number",
+                                  "description": "Represents represents the FileMode of the file. Defaults to `0o444`",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "file_name": {
+                                  "type": "string",
+                                  "description": "Represents the final filename in the filesystem",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "file_uid": {
+                                  "type": "string",
+                                  "description": "Represents the file UID. Defaults to `0`",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "secret_id": {
+                                  "type": "string",
+                                  "description": "ID of the specific secret that we're referencing",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "secret_name": {
+                                  "type": "string",
+                                  "description": "Name of the secret that this references, but this is just provided for lookup/display purposes. The config in the reference will be identified by its ID",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "description": "References to zero or more secrets that will be exposed to the service",
+                              "description_kind": "markdown"
+                            }
+                          }
+                        },
+                        "description": "The spec for each container",
+                        "description_kind": "markdown"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    },
+                    "log_driver": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "The logging driver to use",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "options": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "The options for the logging driver",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies the log driver to use for tasks created from this spec. If not present, the default one for the swarm will be used, finally falling back to the engine default if not specified",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "networks_advanced": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "aliases": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "The network aliases of the container in the specific network.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "driver_opts": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "An array of driver options for the network, e.g. `opts1=value`",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name/id of the network.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description": "The networks the container is attached to",
+                        "description_kind": "markdown"
+                      }
+                    },
+                    "placement": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "constraints": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "An array of constraints. e.g.: `node.role==manager`",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "max_replicas": {
+                            "type": "number",
+                            "description": "Maximum number of replicas for per node (default value is `0`, which is unlimited)",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "prefs": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "Preferences provide a way to make the scheduler aware of factors such as topology. They are provided in order from highest to lowest precedence, e.g.: `spread=node.role.manager`",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "platforms": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "architecture": {
+                                  "type": "string",
+                                  "description": "The architecture, e.g. `amd64`",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                },
+                                "os": {
+                                  "type": "string",
+                                  "description": "The operation system, e.g. `linux`",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description": "Platforms stores all the platforms that the service's image can run on",
+                              "description_kind": "markdown"
+                            }
+                          }
+                        },
+                        "description": "The placement preferences",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "resources": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "limits": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "memory_bytes": {
+                                  "type": "number",
+                                  "description": "The amounf of memory in bytes the container allocates",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "nano_cpus": {
+                                  "type": "number",
+                                  "description": "CPU shares in units of `1/1e9` (or `10^-9`) of the CPU. Should be at least `1000000`",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Describes the resources which can be advertised by a node and requested by a task",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
+                          "reservation": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "memory_bytes": {
+                                  "type": "number",
+                                  "description": "The amounf of memory in bytes the container allocates",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "nano_cpus": {
+                                  "type": "number",
+                                  "description": "CPU shares in units of 1/1e9 (or 10^-9) of the CPU. Should be at least `1000000`",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "generic_resources": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "discrete_resources_spec": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description": "The Integer resources",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "named_resources_spec": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description": "The String resources",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, GPU=UUID1)",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description": "An object describing the resources which can be advertised by a node and requested by a task",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Resource requirements which apply to each individual container created as part of the service",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "restart_policy": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "condition": {
+                            "type": "string",
+                            "description": "Condition for restart",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "delay": {
+                            "type": "string",
+                            "description": "Delay between restart attempts (ms|s|m|h)",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "max_attempts": {
+                            "type": "number",
+                            "description": "Maximum attempts to restart a given container before giving up (default value is `0`, which is ignored)",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "window": {
+                            "type": "string",
+                            "description": "The time window used to evaluate the restart policy (default value is `0`, which is unbounded) (ms|s|m|h)",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specification for the restart policy which applies to containers created as part of this service.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "User modifiable task configuration",
+                  "description_kind": "markdown"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "update_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "delay": {
+                      "type": "string",
+                      "description": "Delay between task updates `(ns|us|ms|s|m|h)`. Defaults to `0s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "failure_action": {
+                      "type": "string",
+                      "description": "Action on update failure: `pause`, `continue` or `rollback`. Defaults to `pause`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "max_failure_ratio": {
+                      "type": "string",
+                      "description": "Failure rate to tolerate during an update. Defaults to `0.0`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "monitor": {
+                      "type": "string",
+                      "description": "Duration after each task update to monitor for failure (ns|us|ms|s|m|h). Defaults to `5s`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "order": {
+                      "type": "string",
+                      "description": "Update order: either 'stop-first' or 'start-first'. Defaults to `stop-first`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "parallelism": {
+                      "type": "number",
+                      "description": "Maximum number of tasks to be updated in one iteration. Defaults to `1`",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specification for the update strategy of the service",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "This resource manages the lifecycle of a Docker service. By default, the creation, update and delete of services are detached.\n With the [Converge Config](#convergeconfig) the behavior of the `docker cli` is imitated to guarantee tha for example, all tasks of a service are running or successfully updated or to inform `terraform` that a service could no be updated and was successfully rolled back.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_tag": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "source_image": {
+                "type": "string",
+                "description": "Name of the source image.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "source_image_id": {
+                "type": "string",
+                "description": "ImageID of the source image in the format of `sha256:<<ID>>`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "target_image": {
+                "type": "string",
+                "description": "Name of the target image.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Creates a docker tag. It has the exact same functionality as the `docker tag` command. Deleting the resource will neither delete the source nor target images. The source image must exist on the machine running the docker daemon.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_volume": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "driver": {
+                "type": "string",
+                "description": "Driver type for the volume. Defaults to `local`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "driver_opts": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Options specific to the driver.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mountpoint": {
+                "type": "string",
+                "description": "The mountpoint of the volume.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker volume (will be generated if not provided).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "labels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "label": {
+                      "type": "string",
+                      "description": "Name of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of the label",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "User-defined key/value metadata",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Creates and destroys a volume in Docker. This can be used alongside [docker_container](container.md) to prepare volumes that can be shared across containers.",
+            "description_kind": "markdown"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "docker_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker image, including any tags or SHA256 repo digests.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "repo_digest": {
+                "type": "string",
+                "description": "The image sha256 digest in the form of `repo[:tag]@sha256:<hash>`. It may be empty in the edge case where the local image was pulled from a repo, tagged locally, and then referred to in the data source by that local name/tag.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "`docker_image` provides details about a specific Docker Image which need to be presend on the Docker Host",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_logs": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "details": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "discard_headers": {
+                "type": "bool",
+                "description": "Discard headers that docker appends to each log entry",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "follow": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "logs_list_string": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of container logs, each element is a line.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "logs_list_string_enabled": {
+                "type": "bool",
+                "description": "If true populate computed value `logs_list_string`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker Container",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "show_stderr": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "show_stdout": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "since": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tail": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timestamps": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "until": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "`docker_logs` provides logs from specific container",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_network": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "driver": {
+                "type": "string",
+                "description": "The driver of the Docker network. Possible values are `bridge`, `host`, `overlay`, `macvlan`. See [network docs](https://docs.docker.com/network/#network-drivers) for more details.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "internal": {
+                "type": "bool",
+                "description": "If `true`, the network is internal.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "ipam_config": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "aux_address": [
+                        "map",
+                        "string"
+                      ],
+                      "gateway": "string",
+                      "ip_range": "string",
+                      "subnet": "string"
+                    }
+                  ]
+                ],
+                "description": "The IPAM configuration options",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker network.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Only available with bridge networks. See [bridge options docs](https://docs.docker.com/engine/reference/commandline/network_create/#bridge-driver-options) for more details.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "scope": {
+                "type": "string",
+                "description": "Scope of the network. One of `swarm`, `global`, or `local`.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "`docker_network` provides details about a specific Docker Network.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_plugin": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "alias": {
+                "type": "string",
+                "description": "The alias of the Docker plugin. If the tag is omitted, `:latest` is complemented to the attribute value.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "If `true` the plugin is enabled",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "env": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The environment variables in the form of `KEY=VALUE`, e.g. `DEBUG=0`",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "grant_all_permissions": {
+                "type": "bool",
+                "description": "If true, grant all permissions necessary to run the plugin",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the plugin, which has precedence over the `alias` of both are given",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The plugin name. If the tag is omitted, `:latest` is complemented to the attribute value.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "plugin_reference": {
+                "type": "string",
+                "description": "The Docker Plugin Reference",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Reads the local Docker plugin. The plugin must be installed locally.",
+            "description_kind": "markdown"
+          }
+        },
+        "docker_registry_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "insecure_skip_verify": {
+                "type": "bool",
+                "description": "If `true`, the verification of TLS certificates of the server/registry is disabled. Defaults to `false`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Docker image, including any tags. e.g. `alpine:latest`",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "sha256_digest": {
+                "type": "string",
+                "description": "The content digest of the image, as stored in the registry.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Reads the image metadata from a Docker Registry. Used in conjunction with the [docker_image](../resources/image.md) resource to keep an image up to date on the latest available version of the tag.",
+            "description_kind": "markdown"
+          }
+        }
+      }
+    }
+  }
+}

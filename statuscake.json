@@ -1,1 +1,861 @@
-/nix/store/klf5jqkwp0x9nmzdz7k52p7ar6nvv9lg-statuscake.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/statuscakedev/statuscake": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "api_token": {
+              "type": "string",
+              "description": "The API token for operations. This can also be provided as an environment variable `STATUSCAKE_API_TOKEN`",
+              "description_kind": "plain",
+              "required": true
+            },
+            "max_backoff": {
+              "type": "number",
+              "description": "Maximum backoff period in seconds after failed API calls. This can also be provided as an environment variable `STATUSCAKE_MAX_BACKOFF`",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "min_backoff": {
+              "type": "number",
+              "description": "Minimum backoff period in seconds after failed API calls. This can also be provided as an environment variable `STATUSCAKE_MIN_BACKOFF`",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "retries": {
+              "type": "number",
+              "description": "Maximum number of retries to perform when an API request fails. This can also be provided as an environment variable `STATUSCAKE_RETRIES`",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "rps": {
+              "type": "number",
+              "description": "RPS limit to apply when making calls to the API. This can also be provided as an environment variable `STATUSCAKE_RPS`",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "statuscake_custom_endpoint": {
+              "type": "string",
+              "description": "Custom endpoint to which request will be made. This can also be provided as an environment variable `STATUCAKE_CUSTOM_ENDPOINT`",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "statuscake_contact_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "email_addresses": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of email addresses",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "integrations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of integration IDs",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mobile_numbers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of international format mobile phone numbers",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the contact group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ping_url": {
+                "type": "string",
+                "description": "URL or IP address of an endpoint to push uptime events. Currently this only supports HTTP GET endpoints",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "statuscake_maintenance_window": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "end": {
+                "type": "string",
+                "description": "End of the maintenance window (RFC3339 format)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the maintenance window",
+                "description_kind": "plain",
+                "required": true
+              },
+              "repeat_interval": {
+                "type": "string",
+                "description": "How often the maintenance window should occur",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "start": {
+                "type": "string",
+                "description": "Start of the maintenance window (RFC3339 format)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of tags used to include matching uptime checks in this maintenance window",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tests": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of uptime check IDs explicitly included in this maintenance window",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timezone": {
+                "type": "string",
+                "description": "Standard timezone associated with this maintenance window",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "statuscake_pagespeed_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "check_interval": {
+                "type": "number",
+                "description": "Number of seconds between checks",
+                "description_kind": "plain",
+                "required": true
+              },
+              "contact_groups": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of contact group IDs",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description": "Assigned monitoring location on which checks will be run",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the check",
+                "description_kind": "plain",
+                "required": true
+              },
+              "paused": {
+                "type": "bool",
+                "description": "Whether the check should be run",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region on which to run checks",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "alert_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "alert_bigger": {
+                      "type": "number",
+                      "description": "An alert will be sent if the size of the page is larger than this value (kb).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "alert_slower": {
+                      "type": "number",
+                      "description": "An alert will be sent if the load time of the page exceeds this value (ms).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "alert_smaller": {
+                      "type": "number",
+                      "description": "An alert will be sent if the size of the page is smaller than this value (kb).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Alert configuration block. Omitting this block disabled all alerts",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "monitored_resource": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "URL or IP address of the website under test",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Monitored resource configuration block. The describes server under test",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "statuscake_ssl_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "check_interval": {
+                "type": "number",
+                "description": "Number of seconds between checks",
+                "description_kind": "plain",
+                "required": true
+              },
+              "contact_groups": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of contact group IDs",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "follow_redirects": {
+                "type": "bool",
+                "description": "Whether to follow redirects when testing. Disabled by default",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "paused": {
+                "type": "bool",
+                "description": "Whether the check should be run",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user_agent": {
+                "type": "string",
+                "description": "Custom user agent string set when testing",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "alert_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "alert_at": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "List representing when alerts should be sent (days). Must be exactly 3 numerical values",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "on_broken": {
+                      "type": "bool",
+                      "description": "Whether to enable alerts when SSL certificate issues are found",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "on_expiry": {
+                      "type": "bool",
+                      "description": "Whether to enable alerts when the SSL certificate is to expire",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "on_mixed": {
+                      "type": "bool",
+                      "description": "Whether to enable alerts when mixed content is found",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "on_reminder": {
+                      "type": "bool",
+                      "description": "Whether to enable alert reminders",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Alert configuration block",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "monitored_resource": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "URL of the server under test",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "hostname": {
+                      "type": "string",
+                      "description": "Hostname of the server under test",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Monitored resource configuration block. The describes server under test",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "statuscake_uptime_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "check_interval": {
+                "type": "number",
+                "description": "Number of seconds between checks",
+                "description_kind": "plain",
+                "required": true
+              },
+              "confirmation": {
+                "type": "number",
+                "description": "Number of confirmation servers to confirm downtime before an alert is triggered",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "contact_groups": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of contact group IDs",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "locations": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "ipv4": "string",
+                      "ipv6": "string",
+                      "region": "string",
+                      "region_code": "string",
+                      "status": "string"
+                    }
+                  ]
+                ],
+                "description": "List of assigned monitoring locations on which to run checks",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the check",
+                "description_kind": "plain",
+                "required": true
+              },
+              "paused": {
+                "type": "bool",
+                "description": "Whether the check should be run",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "regions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of regions on which to run checks. The values required for this parameter can be retrieved from the `GET /v1/uptime-locations` endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "trigger_rate": {
+                "type": "number",
+                "description": "The number of minutes to wait before sending an alert",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "dns_check": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "dns_ips": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of IP addresses to compare against returned DNS records",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "dns_server": {
+                      "type": "string",
+                      "description": "FQDN or IP address of the nameserver to query",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "DNS check configuration block. Only one of `dns_check`, `http_check`, `icmp_check`, and `tcp_check` may be specified",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "http_check": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enable_cookies": {
+                      "type": "bool",
+                      "description": "Whether to enable cookie storage",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "final_endpoint": {
+                      "type": "string",
+                      "description": "Specify where the redirect chain should end",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "follow_redirects": {
+                      "type": "bool",
+                      "description": "Whether to follow redirects when testing. Disabled by default",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "request_headers": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Represents headers to be sent when making requests",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "request_method": {
+                      "type": "string",
+                      "description": "Type of HTTP check. Either HTTP, or HEAD",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "request_payload": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Payload submitted with the request. Setting this updates the check to use the HTTP POST verb. Only one of `request_payload` or `request_payload_raw` may be specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "request_payload_raw": {
+                      "type": "string",
+                      "description": "Raw payload submitted with the request. Setting this updates the check to use the HTTP POST verb. Only one of `request_payload` or `request_payload_raw` may be specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "status_codes": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of status codes that trigger an alert",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "timeout": {
+                      "type": "number",
+                      "description": "The number of seconds to wait to receive the first byte",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_agent": {
+                      "type": "string",
+                      "description": "Custom user agent string set when testing",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "validate_ssl": {
+                      "type": "bool",
+                      "description": "Whether to send an alert if the SSL certificate is soon to expire",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "basic_authentication": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "password": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true,
+                            "sensitive": true
+                          },
+                          "username": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Basic Authentication (RFC7235) configuration block",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "content_matchers": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "content": {
+                            "type": "string",
+                            "description": "String to look for within the response. Considered down if not found",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "include_headers": {
+                            "type": "bool",
+                            "description": "Include header content in string match search",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "matcher": {
+                            "type": "string",
+                            "description": "Whether to consider the check as down if the content is present within the response",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Content matcher configuration block. This is used to assert values within the response of the request",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "HTTP check configuration block. Only one of `dns_check`, `http_check`, `icmp_check`, and `tcp_check` may be specified",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "icmp_check": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Dummy attribute to allow for a nested block. This field should not be changed",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "ICMP check configuration block. Only one of `dns_check`, `http_check`, `icmp_check`, and `tcp_check` may be specified",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "monitored_resource": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "URL, FQDN, or IP address of the server under test",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "Name of the hosting provider",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Monitored resource configuration block. The describes server under test",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "tcp_check": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "port": {
+                      "type": "number",
+                      "description": "Destination port for TCP checks",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Type of TCP check. Either SMTP, SSH or TCP",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "timeout": {
+                      "type": "number",
+                      "description": "The number of seconds to wait to receive the first byte",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "authentication": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "password": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true,
+                            "sensitive": true
+                          },
+                          "username": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Authentication configuration block",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "TCP check configuration block. Only one of `dns_check`, `http_check`, `icmp_check`, and `tcp_check` may be specified",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "statuscake_contact_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "email_addresses": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of email addresses",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contact group ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "integrations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of integration IDs",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mobile_numbers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of international format mobile phone numbers",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the contact group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ping_url": {
+                "type": "string",
+                "description": "URL or IP address of an endpoint to push uptime events. Currently this only supports HTTP GET endpoints",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "statuscake_pagespeed_monitoring_locations": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "locations": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "ipv4": "string",
+                      "ipv6": "string",
+                      "region": "string",
+                      "region_code": "string",
+                      "status": "string"
+                    }
+                  ]
+                ],
+                "description": "List of monitoring locations",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region_code": {
+                "type": "string",
+                "description": "Location region code",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "statuscake_uptime_monitoring_locations": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "locations": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "ipv4": "string",
+                      "ipv6": "string",
+                      "region": "string",
+                      "region_code": "string",
+                      "status": "string"
+                    }
+                  ]
+                ],
+                "description": "List of monitoring locations",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region_code": {
+                "type": "string",
+                "description": "Location region code",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

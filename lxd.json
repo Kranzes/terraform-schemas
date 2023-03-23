@@ -1,1 +1,887 @@
-/nix/store/hw9rkcmssr3pvmra5v6jswgrlm9cflrg-lxd.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/terraform-lxd/lxd": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "accept_remote_certificate": {
+              "type": "bool",
+              "description": "Accept the server certificate",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "address": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "config_dir": {
+              "type": "string",
+              "description": "The directory to look for existing LXD configuration. default = $HOME/.config/lxc",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "generate_client_certificates": {
+              "type": "bool",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "port": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "project": {
+              "type": "string",
+              "description": "The project where project-scoped resources will be created. Can be overridden in individual resources. default = default",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "refresh_interval": {
+              "type": "string",
+              "description": "How often to poll during state changes (default 10s)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "remote": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "remote_password": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true,
+              "sensitive": true
+            },
+            "scheme": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "block_types": {
+            "lxd_remote": {
+              "nesting_mode": "list",
+              "block": {
+                "attributes": {
+                  "address": {
+                    "type": "string",
+                    "description": "The FQDN or IP where the LXD daemon can be contacted. default = empty (read from lxc config)",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "default": {
+                    "type": "bool",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the LXD remote. Required when lxd_scheme set to https, to enable locating server certificate.",
+                    "description_kind": "plain",
+                    "required": true
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The password for the remote.",
+                    "description_kind": "plain",
+                    "optional": true,
+                    "sensitive": true
+                  },
+                  "port": {
+                    "type": "string",
+                    "description": "Port LXD Daemon API is listening on. default = 8443.",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "scheme": {
+                    "type": "string",
+                    "description": "unix or https. default = unix",
+                    "description_kind": "plain",
+                    "optional": true
+                  }
+                },
+                "description_kind": "plain"
+              }
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "lxd_cached_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "architecture": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "copied_aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "copy_aliases": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "created_at": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_image": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "source_remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_container": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ephemeral": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "image": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ip_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ipv4_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ipv6_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "limits": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mac_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "privileged": {
+                "type": "bool",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "profiles": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "start_container": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "wait_for_network": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "device": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "properties": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "file": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "content": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "create_directories": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gid": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mode": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "target_file": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "uid": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_container_file": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "append": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "container_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "content": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "create_directories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target_file": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uid": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "managed": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "device": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "properties": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_publish_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "compression_algorithm": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "container": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "filename": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "properties": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "public": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "triggers": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of arbitrary strings that, when changed, will force the resource to be replaced.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_snapshot": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "container_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "creation_date": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "stateful": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_storage_pool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "driver": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_volume": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "expanded_config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "pool": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "lxd_volume_container_attach": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "container_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "required": true
+              },
+              "device_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "path": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "required": true
+              },
+              "pool": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "required": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "volume_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "deprecated": true,
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

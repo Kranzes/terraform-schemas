@@ -1,1 +1,3973 @@
-/nix/store/4hfb3spnvd5dh7y3kixdn0i37hh2fqdi-metal.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/equinix/metal": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "auth_token": {
+              "type": "string",
+              "description": "The API auth key for API operations.",
+              "description_kind": "plain",
+              "required": true
+            },
+            "max_retries": {
+              "type": "number",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "max_retry_wait_seconds": {
+              "type": "number",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "metal_bgp_session": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address_family": {
+                "type": "string",
+                "description": "ipv4 or ipv6",
+                "description_kind": "plain",
+                "required": true
+              },
+              "default_route": {
+                "type": "bool",
+                "description": "Boolean flag to set the default route policy. False by default",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "ID of device",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the session - up or down",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_connection": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of the connection resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility where the connection will be created",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro where the connection will be created",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Mode for connections in IBX facilities with the dedicated type - standard or tunnel",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the connection resource",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "ID of the organization responsible for the connection. Applicable with type \"dedicated\"",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ports": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "link_status": "string",
+                      "name": "string",
+                      "role": "string",
+                      "speed": "number",
+                      "status": "string",
+                      "virtual_circuit_ids": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "List of connection ports - primary (`ports[0]`) and secondary (`ports[1]`)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of the project where the connection is scoped to. Required with type \"shared\"",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "redundancy": {
+                "type": "string",
+                "description": "Connection redundancy - redundant or primary",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_token_type": {
+                "type": "string",
+                "description": "Only used with shared connection. Type of service token to use for the connection, a_side or z_side",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_tokens": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "expires_at": "string",
+                      "id": "string",
+                      "max_allowed_speed": "string",
+                      "role": "string",
+                      "state": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Only used with shared connection. List of service tokens to use for the connection.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "speed": {
+                "type": "string",
+                "description": "Port speed. Allowed values are 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps",
+                "description_kind": "plain",
+                "required": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the connection resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tags attached to the connection",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token": {
+                "type": "string",
+                "description": "Fabric Token from the [Equinix Fabric Portal](https://ecxfabric.equinix.com/dashboard)",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Connection type - dedicated or shared",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vlans": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "Only used with shared connection. VLANs to attach. Pass one vlan for Primary/Single connection and two vlans for Redundant connection",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_device": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_private_ipv4": {
+                "type": "string",
+                "description": "The ipv4 private IP assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "access_public_ipv4": {
+                "type": "string",
+                "description": "The ipv4 maintenance IP assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "access_public_ipv6": {
+                "type": "string",
+                "description": "The ipv6 maintenance IP assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "always_pxe": {
+                "type": "bool",
+                "description": "If true, a device with OS custom_ipxe will",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "billing_cycle": {
+                "type": "string",
+                "description": "monthly or hourly",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created": {
+                "type": "string",
+                "description": "The timestamp for when the device was created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "custom_data": {
+                "type": "string",
+                "description": "A string of the desired Custom Data for the device",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "deployed_facility": {
+                "type": "string",
+                "description": "The facility where the device is deployed",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deployed_hardware_reservation_id": {
+                "type": "string",
+                "description": "ID of hardware reservation where this device was deployed. It is useful when using the next-available hardware reservation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description string for the device",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "facilities": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of facility codes with deployment preferences. Equinix Metal API will go through the list and will deploy your device to first facility with free capacity. List items must be facility codes or any (a wildcard). To find the facility code, visit [Facilities API docs](https://metal.equinix.com/developers/api/facilities/), set your API auth token in the top of the page and see JSON from the API response. Conflicts with metro",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_detach_volumes": {
+                "type": "bool",
+                "description": "Delete device even if it has volumes attached. Only applies for destroy action",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hardware_reservation_id": {
+                "type": "string",
+                "description": "The UUID of the hardware reservation where you want this device deployed, or next-available if you want to pick your next available reservation automatically",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "The device hostname used in deployments taking advantage of Layer3 DHCP or metadata service configuration.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ipxe_script_url": {
+                "type": "string",
+                "description": "URL pointing to a hosted iPXE script. More",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "locked": {
+                "type": "bool",
+                "description": "Whether the device is locked",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro area for the new device. Conflicts with facilities",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "network": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "address": "string",
+                      "cidr": "number",
+                      "family": "number",
+                      "gateway": "string",
+                      "public": "bool"
+                    }
+                  ]
+                ],
+                "description": "The device's private and public IP (v4 and v6) network details. When a device is run without any special network configuration, it will have 3 addresses: public ipv4, private ipv4 and ipv6",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_type": {
+                "type": "string",
+                "description": "Network type of a device, used in [Layer 2 networking](https://metal.equinix.com/developers/docs/networking/layer2/). Will be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "operating_system": {
+                "type": "string",
+                "description": "The operating system slug. To find the slug, or visit [Operating Systems API docs](https://metal.equinix.com/developers/api/operatingsystems), set your API auth token in the top of the page and see JSON from the API response",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "The device plan slug. To find the plan slug, visit [Device plans API docs](https://metal.equinix.com/developers/api/plans), set your auth token in the top of the page and see JSON from the API response",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ports": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "bonded": "bool",
+                      "id": "string",
+                      "mac": "string",
+                      "name": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Ports assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "The ID of the project in which to create the device",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_ssh_key_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Array of IDs of the project SSH keys which should be added to the device. If you omit this, SSH keys of all the members of the parent project will be added to the device. If you specify this array, only the listed project SSH keys will be added. Project SSH keys can be created with the [metal_project_ssh_key](project_ssh_key.md) resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "root_password": {
+                "type": "string",
+                "description": "Root password to the server (disabled after 24 hours)",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "ssh_key_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IDs of SSH keys deployed in the device, can be both user and project SSH keys",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "state": {
+                "type": "string",
+                "description": "The status of the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "storage": {
+                "type": "string",
+                "description": "JSON for custom partitioning. Only usable on reserved hardware. More information in in the [Custom Partitioning and RAID](https://metal.equinix.com/developers/docs/servers/custom-partitioning-raid/) doc",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tags attached to the device",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "termination_time": {
+                "type": "string",
+                "description": "Timestamp for device termination. For example \"2021-09-03T16:32:00+03:00\". If you don't supply timezone info, timestamp is assumed to be in UTC.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The timestamp for the last time the device was updated",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_data": {
+                "type": "string",
+                "description": "A string of the desired User Data for the device",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "wait_for_reservation_deprovision": {
+                "type": "bool",
+                "description": "Only used for devices in reserved hardware. If set, the deletion of this device will block until the hardware reservation is marked provisionable (about 4 minutes in August 2019)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "ip_address": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cidr": {
+                      "type": "number",
+                      "description": "CIDR suffix for IP block assigned to this device",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "reservation_ids": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "IDs of reservations to pick the blocks from",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "one of public_ipv4,private_ipv4,public_ipv6",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "A list of IP address types for the device (structure is documented below)",
+                  "description_kind": "plain"
+                }
+              },
+              "reinstall": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "deprovision_fast": {
+                      "type": "bool",
+                      "description": "Whether the OS disk should be filled with `00h` bytes before reinstall",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Whether the device should be reinstalled instead of destroyed",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "preserve_data": {
+                      "type": "bool",
+                      "description": "Whether the non-OS disks should be kept or wiped during reinstall",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_device_network_type": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description": "The ID of the device on which the network type should be set",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Network type to set. Must be one of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_gateway": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_reservation_id": {
+                "type": "string",
+                "description": "UUID of the Public or VRF IP Reservation to associate, must be in the same metro as the VLAN",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "private_ipv4_subnet_size": {
+                "type": "number",
+                "description": "Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "UUID of the Project where the Gateway is scoped to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Status of the gateway resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "UUID of the VLAN to associate",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description": "UUID of the VRF associated with the IP Reservation",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_ip_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "address_family": {
+                "type": "number",
+                "description": "Address family as integer (4 or 6)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cidr": {
+                "type": "number",
+                "description": "Length of CIDR prefix of the block as integer",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cidr_notation": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "device_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "gateway": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "global": {
+                "type": "bool",
+                "description": "Flag indicating whether IP block is global, i.e. assignable in any location",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manageable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "management": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "netmask": {
+                "type": "string",
+                "description": "Mask in decimal notation, e.g. 255.255.255.0",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network": {
+                "type": "string",
+                "description": "Network IP address portion of the block specification",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "public": {
+                "type": "bool",
+                "description": "Flag indicating whether IP block is addressable from the Internet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "logo": {
+                "type": "string",
+                "description": "Logo URL",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Organization",
+                "description_kind": "plain",
+                "required": true
+              },
+              "twitter": {
+                "type": "string",
+                "description": "Twitter handle",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "updated": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "website": {
+                "type": "string",
+                "description": "Website link",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "address": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "Postal address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "city": {
+                      "type": "string",
+                      "description": "City name",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "Two letter country code (ISO 3166-1 alpha-2), e.g. US",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "State name",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "zip_code": {
+                      "type": "string",
+                      "description": "Zip Code",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Address information block",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_port": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bond_id": {
+                "type": "string",
+                "description": "UUID of the bond port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bond_name": {
+                "type": "string",
+                "description": "Name of the bond port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bonded": {
+                "type": "bool",
+                "description": "Flag indicating whether the port should be bonded",
+                "description_kind": "plain",
+                "required": true
+              },
+              "disbond_supported": {
+                "type": "bool",
+                "description": "Flag indicating whether the port can be removed from a bond",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "layer2": {
+                "type": "bool",
+                "description": "Flag indicating whether the port is in layer2 (or layer3) mode",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mac": {
+                "type": "string",
+                "description": "MAC address of the port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the port to look up, e.g. bond0, eth1",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "native_vlan_id": {
+                "type": "string",
+                "description": "UUID of native VLAN of the port",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "network_type": {
+                "type": "string",
+                "description": "One of layer2-bonded, layer2-individual, layer3, hybrid and hybrid-bonded. This attribute is only set on bond ports.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "port_id": {
+                "type": "string",
+                "description": "UUID of the port to lookup",
+                "description_kind": "plain",
+                "required": true
+              },
+              "reset_on_delete": {
+                "type": "bool",
+                "description": "Behavioral setting to reset the port to default settings. For a bond port it means layer3 without vlans attached, eth ports will be bonded without native vlan and vlans attached",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Port type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlan_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "UUIDs VLANs to attach. To avoid jitter, use the UUID and not the VXLAN",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vxlan_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "VLAN VXLAN ids to attach (example: [1000])",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_port_vlan_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description": "ID of device to be assigned to the VLAN",
+                "description_kind": "plain",
+                "required": true
+              },
+              "force_bond": {
+                "type": "bool",
+                "description": "Add port back to the bond when this resource is removed. Default is false",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "native": {
+                "type": "bool",
+                "description": "Mark this VLAN a native VLAN on the port. This can be used only if this assignment assigns second or further VLAN to the port. To ensure that this attachment is not first on a port, you can use depends_on pointing to another metal_port_vlan_attachment, just like in the layer2-individual example above",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "port_id": {
+                "type": "string",
+                "description": "UUID of device port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "port_name": {
+                "type": "string",
+                "description": "Name of network port to be assigned to the VLAN",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "UUID of VLAN API resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlan_vnid": {
+                "type": "number",
+                "description": "VXLAN Network Identifier, integer",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backend_transfer": {
+                "type": "bool",
+                "description": "Enable or disable [Backend Transfer](https://metal.equinix.com/developers/docs/networking/backend-transfer/), default is false",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "created": {
+                "type": "string",
+                "description": "The timestamp for when the project was created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The UUID of organization under which you want to create the project. If you leave it out, the project will be create under your the default organization of your account",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "payment_method_id": {
+                "type": "string",
+                "description": "The UUID of payment method for this project. The payment method and the project need to belong to the same organization (passed with organization_id, or default)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The timestamp for the last time the project was updated",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "bgp_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "asn": {
+                      "type": "number",
+                      "description": "Autonomous System Number for local BGP deployment",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "deployment_type": {
+                      "type": "string",
+                      "description": "\"local\" or \"global\", the local is likely to be usable immediately, the global will need to be review by Equinix Metal engineers",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "max_prefix": {
+                      "type": "number",
+                      "description": "The maximum number of route filters allowed per server",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "md5": {
+                      "type": "string",
+                      "description": "Password for BGP session in plaintext (not a checksum)",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "sensitive": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Status of BGP configuration in the project",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "Optional BGP settings. Refer to [Equinix Metal guide for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_project_api_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description string for the API key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "UUID of project which the new API key is scoped to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "read_only": {
+                "type": "bool",
+                "description": "Flag indicating whether the API key shoud be read-only",
+                "description_kind": "plain",
+                "required": true
+              },
+              "token": {
+                "type": "string",
+                "description": "API token for API clients",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_project_ssh_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description": "The timestamp for when the SSH key was created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description": "The fingerprint of the SSH key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the SSH key for identification",
+                "description_kind": "plain",
+                "required": true
+              },
+              "owner_id": {
+                "type": "string",
+                "description": "The UUID of the Equinix Metal API User who owns this key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "The ID of parent project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "public_key": {
+                "type": "string",
+                "description": "The public key. If this is a file, it",
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The timestamp for the last time the SSH key was updated",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_reserved_ip_block": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "address_family": {
+                "type": "number",
+                "description": "Address family as integer (4 or 6)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cidr": {
+                "type": "number",
+                "description": "the size of the network to reserve from an existing vrf ip_range. `cidr` can only be specified with `vrf_id`. Minimum range is 22-29, with 30-31 supported and necessary for virtual-circuits",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cidr_notation": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "custom_data": {
+                "type": "string",
+                "description": "Custom Data is an arbitrary object (submitted in Terraform as serialized JSON) to assign to the IP Reservation. This may be helpful for self-managed IPAM. The object must be valid JSON.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Arbitrary description",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with metro",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gateway": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "global": {
+                "type": "bool",
+                "description": "Flag indicating whether IP block is global, i.e. assignable in any location",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manageable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "management": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro where to allocate the public IP address block, makes sense only for type==public_ipv4, must be empty for type==global_ipv4, conflicts with facility",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "netmask": {
+                "type": "string",
+                "description": "Mask in decimal notation, e.g. 255.255.255.0",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network": {
+                "type": "string",
+                "description": "an unreserved network address from an existing vrf ip_range. `network` can only be specified with vrf_id",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "The metal project ID where to allocate the address block",
+                "description_kind": "plain",
+                "required": true
+              },
+              "public": {
+                "type": "bool",
+                "description": "Flag indicating whether IP block is addressable from the Internet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "quantity": {
+                "type": "number",
+                "description": "The number of allocated /32 addresses, a power of 2",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags attached to the reserved block",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Either global_ipv4, public_ipv4, or vrf. Defaults to public_ipv4.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description": "VRF ID for type=vrf reservations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "wait_for_state": {
+                "type": "string",
+                "description": "Wait for the IP reservation block to reach a desired state on resource creation. One of: `pending`, `created`. The `created` state is default and recommended if the addresses are needed within the configuration. An error will be returned if a timeout or the `denied` state is encountered.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_spot_market_request": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "devices_max": {
+                "type": "number",
+                "description": "Maximum number devices to be created",
+                "description_kind": "plain",
+                "required": true
+              },
+              "devices_min": {
+                "type": "number",
+                "description": "Miniumum number devices to be created",
+                "description_kind": "plain",
+                "required": true
+              },
+              "facilities": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Facility IDs where devices should be created",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_bid_price": {
+                "type": "number",
+                "description": "Maximum price user is willing to pay per hour per device",
+                "description_kind": "plain",
+                "required": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro where devices should be created",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Project ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "wait_for_devices": {
+                "type": "bool",
+                "description": "On resource creation - wait until all desired devices are active, on resource destruction - wait until devices are removed",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "instance_parameters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "always_pxe": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "billing_cycle": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "customdata": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "features": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "hostname": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ipxe_script_url": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "locked": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "operating_system": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "plan": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "project_ssh_keys": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "termintation_time": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "user_ssh_keys": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "userdata": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Parameters for devices provisioned from this request. You can find the parameter description from the [metal_device doc](device.md)",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_ssh_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description": "The timestamp for when the SSH key was created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description": "The fingerprint of the SSH key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the SSH key for identification",
+                "description_kind": "plain",
+                "required": true
+              },
+              "owner_id": {
+                "type": "string",
+                "description": "The UUID of the Equinix Metal API User who owns this key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "public_key": {
+                "type": "string",
+                "description": "The public key. If this is a file, it",
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The timestamp for the last time the SSH key was updated",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_user_api_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description string for the API key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "read_only": {
+                "type": "bool",
+                "description": "Flag indicating whether the API key shoud be read-only",
+                "description_kind": "plain",
+                "required": true
+              },
+              "token": {
+                "type": "string",
+                "description": "API token for API clients",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "user_id": {
+                "type": "string",
+                "description": "UUID of user owning this key",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_virtual_circuit": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connection_id": {
+                "type": "string",
+                "description": "UUID of Connection where the VC is scoped to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "customer_ip": {
+                "type": "string",
+                "description": "The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the Virtual Circuit resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "md5": {
+                "type": "string",
+                "description": "The password that can be set for the VRF BGP peer",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "metal_ip": {
+                "type": "string",
+                "description": "The Metal IP address for the SVI (Switch Virtual Interface) of the VirtualCircuit. Will default to the first usable IP in the subnet.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Virtual Circuit resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nni_vlan": {
+                "type": "number",
+                "description": "Equinix Metal network-to-network VLAN ID (optional when the connection has mode=tunnel)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nni_vnid": {
+                "type": "number",
+                "description": "Nni VLAN ID parameter, see https://metal.equinix.com/developers/docs/networking/fabric/",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "peer_asn": {
+                "type": "number",
+                "description": "The BGP ASN of the peer. The same ASN may be the used across several VCs, but it cannot be the same as the local_asn of the VRF.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "port_id": {
+                "type": "string",
+                "description": "UUID of the Connection Port where the VC is scoped to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "UUID of the Project where the VC is scoped to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "speed": {
+                "type": "string",
+                "description": "Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the virtual circuit resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "subnet": {
+                "type": "string",
+                "description": "A subnet from one of the IP blocks associated with the VRF that we will help create an IP reservation for. Can only be either a /30 or /31.\n\t\t\t\t * For a /31 block, it will only have two IP addresses, which will be used for the metal_ip and customer_ip.\n\t\t\t\t * For a /30 block, it will have four IP addresses, but the first and last IP addresses are not usable. We will default to the first usable IP address for the metal_ip.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tags attached to the virtual circuit",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "UUID of the VLAN to associate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vnid": {
+                "type": "number",
+                "description": "VNID VLAN parameter, see https://metal.equinix.com/developers/docs/networking/fabric/",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description": "UUID of the VRF to associate",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_vlan": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility where to create the VLAN",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of parent project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vxlan": {
+                "type": "number",
+                "description": "VLAN ID, must be unique in metro",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_volume": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "attachments": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "href": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "billing_cycle": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "facility": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "locked": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "size": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "snapshot_policies": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "snapshot_count": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "snapshot_frequency": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_volume_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "volume_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_vrf": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of the VRF",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_ranges": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local_asn": {
+                "type": "number",
+                "description": "The 4-byte ASN set on the VRF.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro Code",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-supplied name of the VRF, unique to the project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Project ID",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        }
+      },
+      "data_source_schemas": {
+        "metal_connection": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connection_id": {
+                "type": "string",
+                "description": "ID of the connection to lookup",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the connection resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility which the connection is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro which the connection is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Connection mode - standard or tunnel",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the connection resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "ID of organization to which the connection is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ports": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "link_status": "string",
+                      "name": "string",
+                      "role": "string",
+                      "speed": "number",
+                      "status": "string",
+                      "virtual_circuit_ids": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "List of connection ports - primary (`ports[0]`) and secondary (`ports[1]`)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of project to which the connection belongs",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "redundancy": {
+                "type": "string",
+                "description": "Connection redundancy - redundant or primary",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_token_type": {
+                "type": "string",
+                "description": "Only used with shared connection. Type of service token to use for the connection, a_side or z_side.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_tokens": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "expires_at": "string",
+                      "id": "string",
+                      "max_allowed_speed": "string",
+                      "role": "string",
+                      "state": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Only used with shared connection. List of service tokens to use for the connection.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "speed": {
+                "type": "string",
+                "description": "Port speed. Possible values are 50Mbps, 200Mbps, 500Mbps, 1Gbps, 2Gbps, 5Gbps, 10Gbps",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the connection resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tags attached to the connection",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "token": {
+                "type": "string",
+                "description": "Fabric Token for the [Equinix Fabric Portal](https://ecxfabric.equinix.com/dashboard)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Connection type - dedicated or shared",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlans": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "Attached vlans, only in shared connection.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_device": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_private_ipv4": {
+                "type": "string",
+                "description": "The ipv4 private IP assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "access_public_ipv4": {
+                "type": "string",
+                "description": "The ipv4 management IP assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "access_public_ipv6": {
+                "type": "string",
+                "description": "The ipv6 management IP assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "always_pxe": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "billing_cycle": {
+                "type": "string",
+                "description": "The billing cycle of the device (monthly or hourly)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description string for the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Device ID",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "The facility where the device is deployed",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hardware_reservation_id": {
+                "type": "string",
+                "description": "The id of hardware reservation which this device occupies",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "The device name",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ipxe_script_url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "The metro where the device is deployed",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "address": "string",
+                      "cidr": "number",
+                      "family": "number",
+                      "gateway": "string",
+                      "public": "bool"
+                    }
+                  ]
+                ],
+                "description": "The device's private and public IP (v4 and v6) network details. When a device is run without any special network configuration, it will have 3 networks: ublic IPv4 at metal_device.name.network.0, IPv6 at metal_device.name.network.1 and private IPv4 at metal_device.name.network.2. Elastic addresses then stack by type - an assigned public IPv4 will go after the management public IPv4 (to index 1), and will then shift the indices of the IPv6 and private IPv4. Assigned private IPv4 will go after the management private IPv4 (to the end of the network list).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_type": {
+                "type": "string",
+                "description": "L2 network type of the device, one oflayer3, hybrid, layer2-individual, layer2-bonded",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "operating_system": {
+                "type": "string",
+                "description": "The operating system running on the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "The hardware config of the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ports": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "bonded": "bool",
+                      "id": "string",
+                      "mac": "string",
+                      "name": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Ports assigned to the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "The id of the project in which the devices exists",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "root_password": {
+                "type": "string",
+                "description": "Root password to the server (if still available)",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "ssh_key_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IDs of SSH keys deployed in the device, can be both user or project SSH keys",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "state": {
+                "type": "string",
+                "description": "The state of the device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "storage": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tags attached to the device",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_device_bgp_neighbors": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bgp_neighbors": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "address_family": "number",
+                      "customer_as": "number",
+                      "customer_ip": "string",
+                      "md5_enabled": "bool",
+                      "md5_password": "string",
+                      "multihop": "bool",
+                      "peer_as": "number",
+                      "peer_ips": [
+                        "list",
+                        "string"
+                      ],
+                      "routes_in": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "exact": "bool",
+                            "route": "string"
+                          }
+                        ]
+                      ],
+                      "routes_out": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "exact": "bool",
+                            "route": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Array of BGP neighbor records",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "UUID of BGP-enabled device whose neighbors to list",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_facility": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "code": {
+                "type": "string",
+                "description": "The code of the Facility to match",
+                "description_kind": "plain",
+                "required": true
+              },
+              "features": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The features of this Facility.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "features_required": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Features which the facility needs to have.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "This facility's metro code.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of this Facility.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "capacity": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "plan": {
+                      "type": "string",
+                      "description": "Plan which has to be available in selected location",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Optional capacity specification",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_gateway": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "gateway_id": {
+                "type": "string",
+                "description": "UUID of the Metal Gateway to fetch",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_reservation_id": {
+                "type": "string",
+                "description": "UUID of the IP Reservation to associate, must be in the same metro as the VLAN",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "private_ipv4_subnet_size": {
+                "type": "number",
+                "description": "Size of the private IPv4 subnet to create for this gateway, one of [8 16 32 64 128]",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "UUID of the Project where the Gateway is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Status of the virtual circuit resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "UUID of the VLAN to associate",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description": "UUID of the VRF associated with the IP Reservation",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_hardware_reservation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_id": {
+                "type": "string",
+                "description": "UUID of device occupying the reservation",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Plan type for the reservation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of the hardware reservation to look up",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "Plan type for the reservation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "UUID of project this reservation is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "provisionable": {
+                "type": "bool",
+                "description": "Flag indicating whether the reserved server is provisionable or not. Spare devices can't be provisioned unless they are activated first",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "short_id": {
+                "type": "string",
+                "description": "Reservation short ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "spare": {
+                "type": "bool",
+                "description": "Flag indicating whether the Hardware Reservation is a spare. Spare Hardware Reservations are used when a Hardware Reservations requires service from Metal Equinix",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "switch_uuid": {
+                "type": "string",
+                "description": "Switch short ID, can be used to determine if two devices are connected to the same switch",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_ip_block_ranges": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "facility": {
+                "type": "string",
+                "description": "Facility code filtering the IP blocks. Global IPv4 blcoks will be listed anyway. If you omit this and metro, all the block from the project will be listed",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "global_ipv4": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of CIDR expressions for Global IPv4 blocks in the project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ipv6": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of CIDR expressions for IPv6 blocks in the project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro code filtering the IP blocks. Global IPv4 blcoks will be listed anyway. If you omit this and facility, all the block from the project will be listed",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "private_ipv4": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of CIDR expressions for Private IPv4 blocks in the project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of the project from which to list the blocks",
+                "description_kind": "plain",
+                "required": true
+              },
+              "public_ipv4": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of CIDR expressions for Public IPv4 blocks in the project",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_metro": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "code": {
+                "type": "string",
+                "description": "The code of the Metro to match",
+                "description_kind": "plain",
+                "required": true
+              },
+              "country": {
+                "type": "string",
+                "description": "The country of this Metro.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Metro.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of this Metro.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "capacity": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "plan": {
+                      "type": "string",
+                      "description": "Plan which has to be available in selected location",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Optional capacity specification",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_operating_system": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "distro": {
+                "type": "string",
+                "description": "Name of the OS distribution",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name or part of the name of the distribution. Case insensitive",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "provisionable_on": {
+                "type": "string",
+                "description": "Plan name",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "Operating system slug (same as id)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "version": {
+                "type": "string",
+                "description": "Version of the distribution",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "address": "string",
+                      "city": "string",
+                      "country": "string",
+                      "state": "string",
+                      "zip_code": "string"
+                    }
+                  ]
+                ],
+                "description": "Business' address",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "logo": {
+                "type": "string",
+                "description": "Logo URL",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The organization name",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The UUID of the organization resource",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "UUIDs of project resources which belong to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "twitter": {
+                "type": "string",
+                "description": "Twitter handle",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "website": {
+                "type": "string",
+                "description": "Website link",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_plans": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plans": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "available_in": [
+                        "set",
+                        "string"
+                      ],
+                      "available_in_metros": [
+                        "set",
+                        "string"
+                      ],
+                      "class": "string",
+                      "deployment_types": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "string",
+                      "id": "string",
+                      "legacy": "bool",
+                      "line": "string",
+                      "name": "string",
+                      "pricing_hour": "number",
+                      "pricing_month": "number",
+                      "slug": "string"
+                    }
+                  ]
+                ],
+                "description": "Sorted list of available server plans that match the specified filters",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "all": {
+                      "type": "bool",
+                      "description": "If is set to true, the values are joined with an AND, and the requests returns only the results that match all specified values",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "attribute": {
+                      "type": "string",
+                      "description": "The attribute used to filter. Filter attributes are case-sensitive",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to apply. One of: in (default), re, substring, less_than, less_than_or_equal, greater_than, greater_than_or_equal",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The filter values. Filter values are case-sensitive. If you specify multiple values for a filter, the values are joined with an OR by default, and the request returns all results that match any of the specified values",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "One or more attribute/values pairs on which to filter results",
+                  "description_kind": "plain"
+                }
+              },
+              "sort": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "attribute": {
+                      "type": "string",
+                      "description": "The attribute used to sort the results. Sort attributes are case-sensitive",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "direction": {
+                      "type": "string",
+                      "description": "Sort results in ascending or descending order. Strings are sorted in alphabetical order. One of: asc, desc",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "One or more attribute/direction pairs on which to sort results. If multiple sorts are provided, they will be applied in order",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_port": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bond_id": {
+                "type": "string",
+                "description": "UUID of the bond port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bond_name": {
+                "type": "string",
+                "description": "Name of the bond port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bonded": {
+                "type": "bool",
+                "description": "Flag indicating whether the port is bonded",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Device UUID where to lookup the port",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "disbond_supported": {
+                "type": "bool",
+                "description": "Flag indicating whether the port can be removed from a bond",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "layer2": {
+                "type": "bool",
+                "description": "Flag indicating whether the port is in layer2 (or layer3) mode",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac": {
+                "type": "string",
+                "description": "MAC address of the port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the port to look up, e.g. bond0, eth1",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "native_vlan_id": {
+                "type": "string",
+                "description": "UUID of native VLAN of the port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_type": {
+                "type": "string",
+                "description": "One of layer3, hybrid, hybrid-bonded, layer2-individual, layer2-bonded",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "port_id": {
+                "type": "string",
+                "description": "UUID of the port to lookup",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Port type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlan_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "UUIDs of attached VLANs",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vxlan_ids": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "UUIDs of attached VLANs",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_precreated_ip_block": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "address_family": {
+                "type": "number",
+                "description": "4 or 6, depending on which block you are looking for.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cidr": {
+                "type": "number",
+                "description": "Length of CIDR prefix of the block as integer",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cidr_notation": {
+                "type": "string",
+                "description": "CIDR notation of the looked up block.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility of the searched block. (for non-global blocks).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gateway": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "global": {
+                "type": "bool",
+                "description": "Whether to look for global block. Default is false for backward compatibility.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manageable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "management": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro of the searched block (for non-global blocks).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "netmask": {
+                "type": "string",
+                "description": "Mask in decimal notation, e.g. 255.255.255.0",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network": {
+                "type": "string",
+                "description": "Network IP address portion of the block specification",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of the project where the searched block should be.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "public": {
+                "type": "bool",
+                "description": "Whether to look for public or private block.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "quantity": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backend_transfer": {
+                "type": "bool",
+                "description": "Whether Backend Transfer is enabled for this project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bgp_config": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "asn": "number",
+                      "deployment_type": "string",
+                      "max_prefix": "number",
+                      "md5": "string",
+                      "status": "string"
+                    }
+                  ]
+                ],
+                "description": "Optional BGP settings. Refer to [Equinix Metal guide for BGP](https://metal.equinix.com/developers/docs/networking/local-global-bgp/)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "created": {
+                "type": "string",
+                "description": "The timestamp for when the project was created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name which is used to look up the project",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The UUID of this project's parent organization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "payment_method_id": {
+                "type": "string",
+                "description": "The UUID of payment method for this project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "The UUID by which to look up the project",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The timestamp for the last time the project was updated",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of UUIDs of user accounts which belong to this project",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_project_ssh_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The id of the SSH Key",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The label of the Equinix Metal SSH Key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "owner_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "The Equinix Metal project id of the Equinix Metal SSH Key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "public_key": {
+                "type": "string",
+                "description": "The public SSH key that will be authorized for SSH access on Equinix Metal devices provisioned with this key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "search": {
+                "type": "string",
+                "description": "The name, fingerprint, id, or public_key of the SSH Key to search for in the Equinix Metal project",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "updated": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_reserved_ip_block": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "address_family": {
+                "type": "number",
+                "description": "4 or 6",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cidr": {
+                "type": "number",
+                "description": "Length of CIDR prefix of the block as integer",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cidr_notation": {
+                "type": "string",
+                "description": "CIDR notation of the looked up block",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility of the block. (for non-global blocks)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gateway": {
+                "type": "string",
+                "description": "IP address of gateway for the block",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "global": {
+                "type": "bool",
+                "description": "Addresses from block are attachable in all locations",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of the block to look up",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_address": {
+                "type": "string",
+                "description": "Find block containing this IP address in given project",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "manageable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "management": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro of the block (for non-global blocks)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "netmask": {
+                "type": "string",
+                "description": "Mask in decimal notation, e.g. 255.255.255.0",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network": {
+                "type": "string",
+                "description": "Network IP address portion of the block specification",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of the project where the searched block should be",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "public": {
+                "type": "bool",
+                "description": "Addresses from public block are routeable from the Internet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "quantity": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Address type, one of public_ipv4, public_ipv6, private_ipv4, global_ipv4, and vrf",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "number",
+                "description": "VRF ID of the block when type=vrf",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_spot_market_price": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "facility": {
+                "type": "string",
+                "description": "Name of the facility",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Name of the metro",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "Name of the plan",
+                "description_kind": "plain",
+                "required": true
+              },
+              "price": {
+                "type": "number",
+                "description": "Current spot market price for given plan in given facility",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_spot_market_request": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "device_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IDs of devices spawned by the referenced Spot Market Request",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "devices_max": {
+                "type": "number",
+                "description": "Maximum number devices to be created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "devices_min": {
+                "type": "number",
+                "description": "Miniumum number devices to be created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "end_at": {
+                "type": "string",
+                "description": "Date and time When the spot market request will be ended.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "facilities": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Facility IDs where devices should be created",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_bid_price": {
+                "type": "number",
+                "description": "Maximum price user is willing to pay per hour per device",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro where devices should be created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description": "The device plan slug.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Project ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "request_id": {
+                "type": "string",
+                "description": "The id of the Spot Market Request",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_virtual_circuit": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connection_id": {
+                "type": "string",
+                "description": "UUID of Connection where the VC is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "customer_ip": {
+                "type": "string",
+                "description": "The Customer IP address which the CSR switch will peer with. Will default to the other usable IP in the subnet.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the virtual circuit",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "md5": {
+                "type": "string",
+                "description": "The password that can be set for the VRF BGP peer",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "metal_ip": {
+                "type": "string",
+                "description": "The Metal IP address for the SVI (Switch Virtual Interface) of the VirtualCircuit. Will default to the first usable IP in the subnet.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the virtual circuit",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nni_vlan": {
+                "type": "number",
+                "description": "Nni VLAN parameter, see https://metal.equinix.com/developers/docs/networking/fabric/",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nni_vnid": {
+                "type": "number",
+                "description": "Nni VLAN ID parameter, see https://metal.equinix.com/developers/docs/networking/fabric/",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "peer_asn": {
+                "type": "number",
+                "description": "The BGP ASN of the peer. The same ASN may be the used across several VCs, but it cannot be the same as the local_asn of the VRF.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "port_id": {
+                "type": "string",
+                "description": "UUID of the Connection Port where the VC is scoped to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of the projct to which the virtual circuit belongs",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "speed": {
+                "type": "string",
+                "description": "Description of the Virtual Circuit speed. This is for information purposes and is computed when the connection type is shared.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the virtual circuit",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "subnet": {
+                "type": "string",
+                "description": "A subnet from one of the IP blocks associated with the VRF that we will help create an IP reservation for. Can only be either a /30 or /31.\n\t\t\t\t * For a /31 block, it will only have two IP addresses, which will be used for the metal_ip and customer_ip.\n\t\t\t\t * For a /30 block, it will have four IP addresses, but the first and last IP addresses are not usable. We will default to the first usable IP address for the metal_ip.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Tags attached to the virtual circuit",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "virtual_circuit_id": {
+                "type": "string",
+                "description": "ID of the virtual circuit to lookup",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "UUID of the associated VLAN",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vnid": {
+                "type": "number",
+                "description": "VNID VLAN parameter, see https://metal.equinix.com/developers/docs/networking/fabric/",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description": "UUID of the associated VRF",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_vlan": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "assigned_devices_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of device IDs to which this VLAN is assigned",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "VLAN description text",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description": "Facility where the VLAN is deployed",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro where the VLAN is deployed",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "ID of parent project of the VLAN. Use together with vxlan and metro or facility",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "Metal UUID of the VLAN resource",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vxlan": {
+                "type": "number",
+                "description": "VXLAN numner of the VLAN. Unique in a project and facility or metro. Use with project_id",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_volume": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "billing_cycle": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "created": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "facility": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "locked": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plan": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "size": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "snapshot_policies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "snapshot_count": "number",
+                      "snapshot_frequency": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "state": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "volume_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "metal_vrf": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of the VRF",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_ranges": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "All IPv4 and IPv6 Ranges that will be available to BGP Peers. IPv4 addresses must be /8 or smaller with a minimum size of /29. IPv6 must be /56 or smaller with a minimum size of /64. Ranges must not overlap other ranges within the VRF.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "local_asn": {
+                "type": "number",
+                "description": "The 4-byte ASN set on the VRF.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metro": {
+                "type": "string",
+                "description": "Metro Code",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "User-supplied name of the VRF, unique to the project",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description": "Project ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vrf_id": {
+                "type": "string",
+                "description": "ID of the VRF to lookup",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        }
+      }
+    }
+  }
+}

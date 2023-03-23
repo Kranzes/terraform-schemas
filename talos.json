@@ -1,1 +1,474 @@
-/nix/store/fnac9gyapzmciwr230yhfwplpskxj7xf-talos.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/siderolabs/talos": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "talos_client_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster in the generated config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "endpoints": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "endpoints to set in the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "machine_secrets": {
+                "type": "string",
+                "description": "The machine secrets for the cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nodes": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "nodes to set in the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "talos_config": {
+                "type": "string",
+                "description": "The generated talos config",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description": "Generate client configuration for a Talos cluster",
+            "description_kind": "plain"
+          }
+        },
+        "talos_cluster_kubeconfig": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "endpoint": {
+                "type": "string",
+                "description": "machine endpoint",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kube_config": {
+                "type": "string",
+                "description": "The retrieved Kubeconfig",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "node": {
+                "type": "string",
+                "description": "node to use",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_config": {
+                "type": "string",
+                "description": "talos client configuration for authentication",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Retrieve Kubeconfig for a Talos cluster",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_bootstrap": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "endpoint": {
+                "type": "string",
+                "description": "machine endpoint",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "node": {
+                "type": "string",
+                "description": "node to bootstrap",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_config": {
+                "type": "string",
+                "description": "talos client configuration for authentication",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Applies machine configuration to a Talos node.",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_configuration_apply": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config_patches": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "config patches to apply to the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "endpoint": {
+                "type": "string",
+                "description": "machine endpoint",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "machine_configuration": {
+                "type": "string",
+                "description": "machine configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "The mode to apply the configuration in.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "node": {
+                "type": "string",
+                "description": "node to apply the config against",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_config": {
+                "type": "string",
+                "description": "talos client configuration for authentication",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Applies machine configuration to a Talos node.",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_configuration_controlplane": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_endpoint": {
+                "type": "string",
+                "description": "The endpoint of the Talos cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster in the generated config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "config_patches": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "config patches to apply to the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "config_version": {
+                "type": "string",
+                "description": "the desired machine config version to generate (the `version` field of the generated config, currently `v1alpha1`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "docs_enabled": {
+                "type": "bool",
+                "description": "whether to render all machine configs adding the documentation for each field",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "examples_enabled": {
+                "type": "bool",
+                "description": "whether to render all machine configs with the commented examples",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kubernetes_version": {
+                "type": "string",
+                "description": "desired kubernetes version to run",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "machine_config": {
+                "type": "string",
+                "description": "the generated control plane config",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "machine_secrets": {
+                "type": "string",
+                "description": "The machine secrets for the cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_version": {
+                "type": "string",
+                "description": "The version of Talos for which to generate configs. **Note**: This parameter defines the desired Talos schema version of configuration generated for backwards compatibility. To change the version of Talos installed, please use a config patch.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Generate machine configuration for a Talos control plane node.",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_configuration_worker": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_endpoint": {
+                "type": "string",
+                "description": "The endpoint of the Talos cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster in the generated config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "config_patches": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "config patches to apply to the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "config_version": {
+                "type": "string",
+                "description": "the desired machine config version to generate (the `version` field of the generated config, currently `v1alpha1`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "docs_enabled": {
+                "type": "bool",
+                "description": "whether to render all machine configs adding the documentation for each field",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "examples_enabled": {
+                "type": "bool",
+                "description": "whether to render all machine configs with the commented examples",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kubernetes_version": {
+                "type": "string",
+                "description": "desired kubernetes version to run",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "machine_config": {
+                "type": "string",
+                "description": "the generated worker config",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "machine_secrets": {
+                "type": "string",
+                "description": "The machine secrets for the cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_version": {
+                "type": "string",
+                "description": "The version of Talos for which to generate configs. **Note**: This parameter defines the desired Talos schema version of configuration generated for backwards compatibility. To change the version of Talos installed, please use a config patch.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Generate machine configuration for a Talos worker node.",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_secrets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "machine_secrets": {
+                "type": "string",
+                "description": "The generated talos cluster secrets",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "talos_version": {
+                "type": "string",
+                "description": "The version of Talos for which to generate secrets",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Generate machine secrets for a Talos cluster",
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "talos_client_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the cluster in the generated config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "endpoints": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "endpoints to set in the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "machine_secrets": {
+                "type": "string",
+                "description": "The machine secrets for the cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nodes": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "nodes to set in the generated config",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "talos_config": {
+                "type": "string",
+                "description": "The generated talos config",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description": "Generate client configuration for a Talos cluster",
+            "description_kind": "plain"
+          }
+        },
+        "talos_cluster_kubeconfig": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "endpoint": {
+                "type": "string",
+                "description": "machine endpoint",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kube_config": {
+                "type": "string",
+                "description": "The retrieved Kubeconfig",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "node": {
+                "type": "string",
+                "description": "node to use",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_config": {
+                "type": "string",
+                "description": "talos client configuration for authentication",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Retrieve Kubeconfig for a Talos cluster",
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

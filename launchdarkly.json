@@ -1,1 +1,3406 @@
-/nix/store/8xq4m8sfc2s89n25hvqm4kicws80lhcw-launchdarkly.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/launchdarkly/launchdarkly": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "access_token": {
+              "type": "string",
+              "description": "The LaunchDarkly API key",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "api_host": {
+              "type": "string",
+              "description": "The LaunchDarkly host address, e.g. https://app.launchdarkly.com",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "oauth_token": {
+              "type": "string",
+              "description": "The LaunchDarkly OAuth token",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "launchdarkly_access_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "custom_roles": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of custom role IDs to use as access limits for the access token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_api_version": {
+                "type": "number",
+                "description": "The default API version for this token",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "expire": {
+                "type": "number",
+                "description": "Replace the computed token secret with a new value. The expired secret will no longer be able to authorize usage of the LaunchDarkly API. Should be an expiration time for the current token secret, expressed as a Unix epoch time in milliseconds. Setting this to a negative value will expire the existing token immediately. To reset the token value again, change 'expire' to a new value. Setting this field at resource creation time WILL NOT set an expiration time for the token.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-friendly name for the access token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The default built-in role for the token. Available options are \"reader\", \"writer\", and \"admin\"",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_token": {
+                "type": "bool",
+                "description": "Whether the token is a service token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token": {
+                "type": "string",
+                "description": "The access token used to authorize usage of the LaunchDarkly API",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "block_types": {
+              "inline_roles": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "An array of statements represented as config blocks with 3 attributes: effect, resources, actions. May be used in place of a built-in or custom role.",
+                  "description_kind": "plain"
+                }
+              },
+              "policy_statements": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "An array of statements represented as config blocks with 3 attributes: effect, resources, actions. May be used in place of a built-in or custom role.",
+                  "description_kind": "plain",
+                  "deprecated": true
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_audit_log_subscription": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "integration_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "on": {
+                "type": "bool",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "statements": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_custom_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "base_permissions": {
+                "type": "string",
+                "description": "The base permission level - either reader or no_access. Defaults to reader",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the custom role",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A unique key that will be used to reference the custom role in your code",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A name for the custom role",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "policy": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "deprecated": true
+                }
+              },
+              "policy_statements": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_destination": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "The destination-specific configuration object corresponding to your data export kind - see documentation for required fields for each kind",
+                "description_kind": "plain",
+                "required": true
+              },
+              "env_key": {
+                "type": "string",
+                "description": "The LaunchDarkly environment key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kind": {
+                "type": "string",
+                "description": "The data export destination type. Available choices are 'kinesis', 'google-pubsub', 'segment', 'azure-event-hubs', and 'mparticle'",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for your data export destination",
+                "description_kind": "plain",
+                "required": true
+              },
+              "on": {
+                "type": "bool",
+                "description": "Whether the data export destination is on or not",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "client_side_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "color": {
+                "type": "string",
+                "description": "A color swatch (as an RGB hex value with no leading '#', e.g. C8C8C8)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "confirm_changes": {
+                "type": "bool",
+                "description": "Whether or not to require confirmation for flag and segment changes in this environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_track_events": {
+                "type": "bool",
+                "description": "Whether or not to default to sending data export events for flags created in the environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_ttl": {
+                "type": "number",
+                "description": "The TTL for the environment. This must be between 0 and 60 minutes. The TTL setting only applies to environments using the PHP SDK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A project-unique key for the new environment",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mobile_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the new environment",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "require_comments": {
+                "type": "bool",
+                "description": "Whether or not to require comments for flag and segment changes in this environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secure_mode": {
+                "type": "bool",
+                "description": "Whether or not to use secure mode. Secure mode ensures a user of the client-side SDK cannot impersonate another user",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "approval_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "can_apply_declined_changes": {
+                      "type": "bool",
+                      "description": "Whether changes can be applied as long as minNumApprovals is met, regardless of whether any reviewers have declined a request. Defaults to true",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "can_review_own_request": {
+                      "type": "bool",
+                      "description": "Whether requesters can approve or decline their own request. They may always comment.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "min_num_approvals": {
+                      "type": "number",
+                      "description": "The number of approvals required before an approval request can be applied.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required": {
+                      "type": "bool",
+                      "description": "Whether any changes to flags in this environment will require approval. You may only set required or requiredApprovalTags, not both.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required_approval_tags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An array of tags used to specify which flags with those tags require approval. You may only set requiredApprovalTags or required, not both.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_feature_flag": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "archived": {
+                "type": "bool",
+                "description": "Whether to archive the flag",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A short description of what the flag will be used for",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "include_in_snippet": {
+                "type": "bool",
+                "description": "Whether or not this flag should be made available to the client-side JavaScript SDK",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A unique key that will be used to reference the flag in your code",
+                "description_kind": "plain",
+                "required": true
+              },
+              "maintainer_id": {
+                "type": "string",
+                "description": "The LaunchDarkly id of the user who will maintain the flag. If not set, the API will automatically apply the member associated with your Terraform API key or the most recently set maintainer",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-friendly name for the feature flag",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "temporary": {
+                "type": "bool",
+                "description": "Whether or not the flag is a temporary flag",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "variation_type": {
+                "type": "string",
+                "description": "The uniform type for all variations. Can be either \"boolean\", \"string\", \"number\", or \"json\".",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "client_side_availability": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "using_environment_id": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "using_mobile_key": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "custom_properties": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 64
+              },
+              "defaults": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "off_variation": {
+                      "type": "number",
+                      "description": "The index of the variation served when the flag is off for new environments",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "on_variation": {
+                      "type": "number",
+                      "description": "The index of the variation served when the flag is on for new environments",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The default variations used for this flag in new environments. If omitted, the first and last variation will be used",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "variations": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "A description for the variation",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "A name for the variation",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the flag for this variation",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "An array of possible variations for the flag",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_feature_flag_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "env_key": {
+                "type": "string",
+                "description": "The LaunchDarkly environment key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "flag_id": {
+                "type": "string",
+                "description": "The global feature flag's unique id in the format `<project_key>/<flag_key>`",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "off_variation": {
+                "type": "number",
+                "description": "The index of the variation to serve if targeting is disabled",
+                "description_kind": "plain",
+                "required": true
+              },
+              "on": {
+                "type": "bool",
+                "description": "Whether targeting is enabled",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "track_events": {
+                "type": "bool",
+                "description": "Whether to send event data back to LaunchDarkly",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "context_targets": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind on which the flag should target in this environment. If the context_kind has not been previously specified at the project level, it will be automatically created on the project. User targets should be specified as targets attribute blocks.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of user strings to target",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "Index of the variation to serve if a user_target is matched",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Set of nested blocks describing the individual targets for non-user context kinds for each variation.",
+                  "description_kind": "plain"
+                }
+              },
+              "fallthrough": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_by": {
+                      "type": "string",
+                      "description": "Group percentage rollout by a custom attribute. This argument is only valid if rollout_weights is also specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with the specified rollout. This argument is only valid if rollout_weights is also specified. If omitted, defaults to 'user'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rollout_weights": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "The integer variation index to serve in case of fallthrough",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Nested block describing the default variation to serve if no prerequisites, user_target, or rules apply. You must specify either variation or rollout_weights",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "prerequisites": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "flag_key": {
+                      "type": "string",
+                      "description": "The prerequisite feature flag's key",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "The index of the prerequisite feature flag's variation to target",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of nested blocks describing prerequisite feature flags rules",
+                  "description_kind": "plain"
+                }
+              },
+              "rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_by": {
+                      "type": "string",
+                      "description": "Group percentage rollout by a custom attribute. This argument is only valid if rollout_weights is also specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A human-readable description of the targeting rule",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rollout_weights": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "The integer variation index to serve if the rule clauses evaluate to true. This argument is only valid if clauses are also specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "clauses": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "attribute": {
+                            "type": "string",
+                            "description": "The user attribute to operate on",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "context_kind": {
+                            "type": "string",
+                            "description": "The context kind associated with this rule clause. If omitted, defaults to user",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "Whether to negate the rule clause",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "op": {
+                            "type": "string",
+                            "description": "The operator associated with the rule clause. Available options are in, endsWith, startsWith, matches, contains, lessThan, lessThanOrEqual, greaterThanOrEqual, before, after, segmentMatch, semVerEqual, semVerLessThan, and semVerGreaterThan",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value_type": {
+                            "type": "string",
+                            "description": "The type for each of the clause's values. Available types are boolean, string, and number. If omitted, value_type defaults to string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "values": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The list of values associated with the rule clause",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of nested blocks specifying the logical clauses to evaluate",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "List of logical targeting rules. You must specify either clauses or rollout weights",
+                  "description_kind": "plain"
+                }
+              },
+              "targets": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of user strings to target",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "Index of the variation to serve if a user_target is matched",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Set of nested blocks describing the individual user targets for each variation.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_flag_trigger": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the trigger is currently active or not. This property defaults to true upon creation",
+                "description_kind": "plain",
+                "required": true
+              },
+              "env_key": {
+                "type": "string",
+                "description": "The LaunchDarkly environment key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "flag_key": {
+                "type": "string",
+                "description": "The key of the feature flag the trigger acts upon",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "integration_key": {
+                "type": "string",
+                "description": "The unique identifier of the integration you intend to set your trigger up with. \"generic-trigger\" should be used for integrations not explicitly supported.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "maintainer_id": {
+                "type": "string",
+                "description": "The LaunchDarkly ID of the member who maintains the trigger. The API will automatically apply the member associated with your Terraform API key or the most recently-set maintainer",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "trigger_url": {
+                "type": "string",
+                "description": "The unique trigger URL",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "block_types": {
+              "instructions": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "kind": {
+                      "type": "string",
+                      "description": "The action to perform when triggering. Currently supported flag actions are \"turnFlagOn\" and \"turnFlagOff\".",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Instructions containing the action to perform when triggering. Currently supported flag actions are \"turnFlagOn\" and \"turnFlagOff\".",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_metric": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "A short description of what the metric will be used for",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "event_key": {
+                "type": "string",
+                "description": "The event key for your metric (if custom metric)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_active": {
+                "type": "bool",
+                "description": "Whether the metric is active",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "is_numeric": {
+                "type": "bool",
+                "description": "Whether the metric is numeric",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A unique key that will be used to reference the metric in your code",
+                "description_kind": "plain",
+                "required": true
+              },
+              "kind": {
+                "type": "string",
+                "description": "The metric type -available choices are 'pageview', 'click', and 'custom'",
+                "description_kind": "plain",
+                "required": true
+              },
+              "maintainer_id": {
+                "type": "string",
+                "description": "The LaunchDarkly ID of the user who will maintain the metric. If not set, the API will automatically apply the member associated with your Terraform API key or the most recently-set maintainer",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for your metric",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "randomization_units": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A set of one or more context kinds that this metric can measure events from.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "selector": {
+                "type": "string",
+                "description": "The CSS selector for your metric (if click metric)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "success_criteria": {
+                "type": "string",
+                "description": "The success criteria for your metric (if numeric metric)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "unit": {
+                "type": "string",
+                "description": "The unit for your metric (if numeric metric)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "urls": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "kind": {
+                      "type": "string",
+                      "description": "The url type - available choices are 'exact', 'canonical', 'substring' and 'regex'",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "pattern": {
+                      "type": "string",
+                      "description": "The URL-matching regex",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "substring": {
+                      "type": "string",
+                      "description": "The URL substring",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The exact or canonical URL",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "List of nested `url` blocks describing URLs that you want to track the metric on",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "include_in_snippet": {
+                "type": "bool",
+                "description": "Whether feature flags created under the project should be available to client-side SDKs by default",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The project's unique key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for your project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "default_client_side_availability": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "using_environment_id": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "using_mobile_key": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List determining which SDKs have access to new flags created under the project by default",
+                  "description_kind": "plain"
+                }
+              },
+              "environments": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "api_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true,
+                      "sensitive": true
+                    },
+                    "client_side_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true,
+                      "sensitive": true
+                    },
+                    "color": {
+                      "type": "string",
+                      "description": "A color swatch (as an RGB hex value with no leading '#', e.g. C8C8C8)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "confirm_changes": {
+                      "type": "bool",
+                      "description": "Whether or not to require confirmation for flag and segment changes in this environment",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default_track_events": {
+                      "type": "bool",
+                      "description": "Whether or not to default to sending data export events for flags created in the environment",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default_ttl": {
+                      "type": "number",
+                      "description": "The TTL for the environment. This must be between 0 and 60 minutes. The TTL setting only applies to environments using the PHP SDK",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "A project-unique key for the new environment",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mobile_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true,
+                      "sensitive": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the new environment",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "require_comments": {
+                      "type": "bool",
+                      "description": "Whether or not to require comments for flag and segment changes in this environment",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secure_mode": {
+                      "type": "bool",
+                      "description": "Whether or not to use secure mode. Secure mode ensures a user of the client-side SDK cannot impersonate another user",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tags": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Tags associated with your resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "approval_settings": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "can_apply_declined_changes": {
+                            "type": "bool",
+                            "description": "Whether changes can be applied as long as minNumApprovals is met, regardless of whether any reviewers have declined a request. Defaults to true",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "can_review_own_request": {
+                            "type": "bool",
+                            "description": "Whether requesters can approve or decline their own request. They may always comment.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "min_num_approvals": {
+                            "type": "number",
+                            "description": "The number of approvals required before an approval request can be applied.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "required": {
+                            "type": "bool",
+                            "description": "Whether any changes to flags in this environment will require approval. You may only set required or requiredApprovalTags, not both.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "required_approval_tags": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "An array of tags used to specify which flags with those tags require approval. You may only set requiredApprovalTags or required, not both.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "List of nested `environments` blocks describing LaunchDarkly environments that belong to the project",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_relay_proxy_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "display_key": {
+                "type": "string",
+                "description": "The last four characters of the full_key.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "full_key": {
+                "type": "string",
+                "description": "The unique key assigned to the Relay Proxy configuration during creation.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-friendly name for the Relay Proxy configuration",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "policy": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_segment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation_date": {
+                "type": "number",
+                "description": "The segment's creation date represented as a UNIX epoch timestamp",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the segment's purpose",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "env_key": {
+                "type": "string",
+                "description": "The segment's environment key.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "excluded": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of user keys excluded from the segment. To target on other context kinds, use the excluded_contexts block attribute",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "included": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of user keys included in the segment. To target on other context kinds, use the included_contexts block attribute",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The unique key that references the segment.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The human-friendly name for the segment.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The segment's project key.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "excluded_contexts": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with this segment target. To target on user contexts, use the included and excluded attributes",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of target object keys included in or excluded from the segment",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of non-user target objects excluded from the segment",
+                  "description_kind": "plain"
+                }
+              },
+              "included_contexts": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with this segment target. To target on user contexts, use the included and excluded attributes",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of target object keys included in or excluded from the segment",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of non-user target objects included in the segment",
+                  "description_kind": "plain"
+                }
+              },
+              "rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_by": {
+                      "type": "string",
+                      "description": "The attribute by which to group users together.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rollout_context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with this segment rule. This argument is only valid if weight is also specified. If omitted, defaults to 'user'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description": "The integer weight of the rule (between 1 and 100000).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "clauses": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "attribute": {
+                            "type": "string",
+                            "description": "The user attribute to operate on",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "context_kind": {
+                            "type": "string",
+                            "description": "The context kind associated with this rule clause. If omitted, defaults to user",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "Whether to negate the rule clause",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "op": {
+                            "type": "string",
+                            "description": "The operator associated with the rule clause. Available options are in, endsWith, startsWith, matches, contains, lessThan, lessThanOrEqual, greaterThanOrEqual, before, after, segmentMatch, semVerEqual, semVerLessThan, and semVerGreaterThan",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value_type": {
+                            "type": "string",
+                            "description": "The type for each of the clause's values. Available types are boolean, string, and number. If omitted, value_type defaults to string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "values": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The list of values associated with the rule clause",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of nested blocks specifying the logical clauses to evaluate",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "custom_role_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of custom role keys for the team",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The team's description",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The team's unique key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "maintainers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of team maintainer IDs as strings",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "member_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of team member IDs as strings",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The team's human-readable name",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_team_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "custom_roles": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "IDs or keys of custom roles. Team members must have either a role or custom role",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The team member's email address",
+                "description_kind": "plain",
+                "required": true
+              },
+              "first_name": {
+                "type": "string",
+                "description": "The team member's first name",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "last_name": {
+                "type": "string",
+                "description": "The team member's last name",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The team member's role. This must be reader, writer, admin, or no_access. Team members must have either a role or custom role",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_webhook": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for your webhook",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "on": {
+                "type": "bool",
+                "description": "Whether this webhook is enabled or not",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "If sign is true, and the secret attribute is omitted, LaunchDarkly will automatically generate a secret for you",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The URL of the remote webhook",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "statements": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "launchdarkly_audit_log_subscription": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The audit log subscription ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "integration_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "on": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "statements": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "client_side_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "color": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "confirm_changes": {
+                "type": "bool",
+                "description": "Whether or not to require confirmation for flag and segment changes in this environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_track_events": {
+                "type": "bool",
+                "description": "Whether or not to default to sending data export events for flags created in the environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_ttl": {
+                "type": "number",
+                "description": "The TTL for the environment. This must be between 0 and 60 minutes. The TTL setting only applies to environments using the PHP SDK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A project-unique key for the new environment",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mobile_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "require_comments": {
+                "type": "bool",
+                "description": "Whether or not to require comments for flag and segment changes in this environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secure_mode": {
+                "type": "bool",
+                "description": "Whether or not to use secure mode. Secure mode ensures a user of the client-side SDK cannot impersonate another user",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "approval_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "can_apply_declined_changes": {
+                      "type": "bool",
+                      "description": "Whether changes can be applied as long as minNumApprovals is met, regardless of whether any reviewers have declined a request. Defaults to true",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "can_review_own_request": {
+                      "type": "bool",
+                      "description": "Whether requesters can approve or decline their own request. They may always comment.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "min_num_approvals": {
+                      "type": "number",
+                      "description": "The number of approvals required before an approval request can be applied.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required": {
+                      "type": "bool",
+                      "description": "Whether any changes to flags in this environment will require approval. You may only set required or requiredApprovalTags, not both.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required_approval_tags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An array of tags used to specify which flags with those tags require approval. You may only set requiredApprovalTags or required, not both.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_feature_flag": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "archived": {
+                "type": "bool",
+                "description": "Whether to archive the flag",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A short description of what the flag will be used for",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "include_in_snippet": {
+                "type": "bool",
+                "description": "Whether or not this flag should be made available to the client-side JavaScript SDK",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A unique key that will be used to reference the flag in your code",
+                "description_kind": "plain",
+                "required": true
+              },
+              "maintainer_id": {
+                "type": "string",
+                "description": "The LaunchDarkly id of the user who will maintain the flag. If not set, the API will automatically apply the member associated with your Terraform API key or the most recently set maintainer",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The feature flag's human-readable name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "temporary": {
+                "type": "bool",
+                "description": "Whether or not the flag is a temporary flag",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "variation_type": {
+                "type": "string",
+                "description": "The uniform type for all variations. Can be either \"boolean\", \"string\", \"number\", or \"json\".",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "client_side_availability": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "using_environment_id": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "using_mobile_key": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "custom_properties": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 64
+              },
+              "defaults": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "off_variation": {
+                      "type": "number",
+                      "description": "The index of the variation served when the flag is off for new environments",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "on_variation": {
+                      "type": "number",
+                      "description": "The index of the variation served when the flag is on for new environments",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The default variations used for this flag in new environments. If omitted, the first and last variation will be used",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "variations": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "A description for the variation",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "A name for the variation",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the flag for this variation",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "An array of possible variations for the flag",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_feature_flag_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "env_key": {
+                "type": "string",
+                "description": "The LaunchDarkly environment key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "flag_id": {
+                "type": "string",
+                "description": "The global feature flag's unique id in the format `<project_key>/<flag_key>`",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "off_variation": {
+                "type": "number",
+                "description": "The index of the variation to serve if targeting is disabled",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "on": {
+                "type": "bool",
+                "description": "Whether targeting is enabled",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "track_events": {
+                "type": "bool",
+                "description": "Whether to send event data back to LaunchDarkly",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "context_targets": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind on which the flag should target in this environment. If the context_kind has not been previously specified at the project level, it will be automatically created on the project. User targets should be specified as targets attribute blocks.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of user strings to target",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "Index of the variation to serve if a user_target is matched",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Set of nested blocks describing the individual targets for non-user context kinds for each variation.",
+                  "description_kind": "plain"
+                }
+              },
+              "fallthrough": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_by": {
+                      "type": "string",
+                      "description": "Group percentage rollout by a custom attribute. This argument is only valid if rollout_weights is also specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with the specified rollout. This argument is only valid if rollout_weights is also specified. If omitted, defaults to 'user'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rollout_weights": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "The integer variation index to serve in case of fallthrough",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Nested block describing the default variation to serve if no prerequisites, user_target, or rules apply. You must specify either variation or rollout_weights",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "prerequisites": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "flag_key": {
+                      "type": "string",
+                      "description": "The prerequisite feature flag's key",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "The index of the prerequisite feature flag's variation to target",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of nested blocks describing prerequisite feature flags rules",
+                  "description_kind": "plain"
+                }
+              },
+              "rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_by": {
+                      "type": "string",
+                      "description": "Group percentage rollout by a custom attribute. This argument is only valid if rollout_weights is also specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A human-readable description of the targeting rule",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rollout_weights": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "The integer variation index to serve if the rule clauses evaluate to true. This argument is only valid if clauses are also specified",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "clauses": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "attribute": {
+                            "type": "string",
+                            "description": "The user attribute to operate on",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "context_kind": {
+                            "type": "string",
+                            "description": "The context kind associated with this rule clause. If omitted, defaults to user",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "Whether to negate the rule clause",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "op": {
+                            "type": "string",
+                            "description": "The operator associated with the rule clause. Available options are in, endsWith, startsWith, matches, contains, lessThan, lessThanOrEqual, greaterThanOrEqual, before, after, segmentMatch, semVerEqual, semVerLessThan, and semVerGreaterThan",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value_type": {
+                            "type": "string",
+                            "description": "The type for each of the clause's values. Available types are boolean, string, and number. If omitted, value_type defaults to string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "values": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The list of values associated with the rule clause",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of nested blocks specifying the logical clauses to evaluate",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "List of logical targeting rules. You must specify either clauses or rollout weights",
+                  "description_kind": "plain"
+                }
+              },
+              "targets": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of user strings to target",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "variation": {
+                      "type": "number",
+                      "description": "Index of the variation to serve if a user_target is matched",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Set of nested blocks describing the individual user targets for each variation.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_flag_trigger": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the trigger is currently active or not. This property defaults to true upon creation",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "env_key": {
+                "type": "string",
+                "description": "The LaunchDarkly environment key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "flag_key": {
+                "type": "string",
+                "description": "The key of the feature flag the trigger acts upon",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The flag trigger resource ID. This can be found on your trigger URL - please see docs for more info",
+                "description_kind": "plain",
+                "required": true
+              },
+              "integration_key": {
+                "type": "string",
+                "description": "The unique identifier of the integration you intend to set your trigger up with. \"generic-trigger\" should be used for integrations not explicitly supported.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "maintainer_id": {
+                "type": "string",
+                "description": "The LaunchDarkly ID of the member who maintains the trigger. The API will automatically apply the member associated with your Terraform API key or the most recently-set maintainer",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "trigger_url": {
+                "type": "string",
+                "description": "The unique trigger URL",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "block_types": {
+              "instructions": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "kind": {
+                      "type": "string",
+                      "description": "The action to perform when triggering. Currently supported flag actions are \"turnFlagOn\" and \"turnFlagOff\".",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Instructions containing the action to perform when triggering. Currently supported flag actions are \"turnFlagOn\" and \"turnFlagOff\".",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_metric": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "A short description of what the metric will be used for",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "event_key": {
+                "type": "string",
+                "description": "The event key for your metric (if custom metric)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_active": {
+                "type": "bool",
+                "description": "Whether the metric is active",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "is_numeric": {
+                "type": "bool",
+                "description": "Whether the metric is numeric",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key": {
+                "type": "string",
+                "description": "A unique key that will be used to reference the metric in your code",
+                "description_kind": "plain",
+                "required": true
+              },
+              "kind": {
+                "type": "string",
+                "description": "The metric type -available choices are 'pageview', 'click', and 'custom'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "maintainer_id": {
+                "type": "string",
+                "description": "The LaunchDarkly ID of the user who will maintain the metric. If not set, the API will automatically apply the member associated with your Terraform API key or the most recently-set maintainer",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for your metric",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The LaunchDarkly project key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "randomization_units": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A set of one or more context kinds that this metric can measure events from.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "selector": {
+                "type": "string",
+                "description": "The CSS selector for your metric (if click metric)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "success_criteria": {
+                "type": "string",
+                "description": "The success criteria for your metric (if numeric metric)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "unit": {
+                "type": "string",
+                "description": "The unit for your metric (if numeric metric)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "urls": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "kind": {
+                      "type": "string",
+                      "description": "The url type - available choices are 'exact', 'canonical', 'substring' and 'regex'",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "pattern": {
+                      "type": "string",
+                      "description": "The URL-matching regex",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "substring": {
+                      "type": "string",
+                      "description": "The URL substring",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The exact or canonical URL",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "List of nested `url` blocks describing URLs that you want to track the metric on",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "client_side_availability": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "using_environment_id": "bool",
+                      "using_mobile_key": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "default_client_side_availability": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "using_environment_id": "bool",
+                      "using_mobile_key": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_relay_proxy_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "display_key": {
+                "type": "string",
+                "description": "The last four characters of the full_key.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The Relay Proxy configuration's unique 24 character ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-friendly name for the Relay Proxy configuration",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "policy": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_segment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation_date": {
+                "type": "number",
+                "description": "The segment's creation date represented as a UNIX epoch timestamp",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the segment's purpose",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "env_key": {
+                "type": "string",
+                "description": "The segment's environment key.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "excluded": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of user keys excluded from the segment. To target on other context kinds, use the excluded_contexts block attribute",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "included": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of user keys included in the segment. To target on other context kinds, use the included_contexts block attribute",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The unique key that references the segment.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The human-friendly name for the segment.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The segment's project key.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "excluded_contexts": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with this segment target. To target on user contexts, use the included and excluded attributes",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of target object keys included in or excluded from the segment",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of non-user target objects excluded from the segment",
+                  "description_kind": "plain"
+                }
+              },
+              "included_contexts": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with this segment target. To target on user contexts, use the included and excluded attributes",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of target object keys included in or excluded from the segment",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of non-user target objects included in the segment",
+                  "description_kind": "plain"
+                }
+              },
+              "rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_by": {
+                      "type": "string",
+                      "description": "The attribute by which to group users together.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rollout_context_kind": {
+                      "type": "string",
+                      "description": "The context kind associated with this segment rule. This argument is only valid if weight is also specified. If omitted, defaults to 'user'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description": "The integer weight of the rule (between 1 and 100000).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "clauses": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "attribute": {
+                            "type": "string",
+                            "description": "The user attribute to operate on",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "context_kind": {
+                            "type": "string",
+                            "description": "The context kind associated with this rule clause. If omitted, defaults to user",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "Whether to negate the rule clause",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "op": {
+                            "type": "string",
+                            "description": "The operator associated with the rule clause. Available options are in, endsWith, startsWith, matches, contains, lessThan, lessThanOrEqual, greaterThanOrEqual, before, after, segmentMatch, semVerEqual, semVerLessThan, and semVerGreaterThan",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value_type": {
+                            "type": "string",
+                            "description": "The type for each of the clause's values. Available types are boolean, string, and number. If omitted, value_type defaults to string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "values": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The list of values associated with the rule clause",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of nested blocks specifying the logical clauses to evaluate",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "custom_role_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of keys for custom roles the team has",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The team's description",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The team's unique key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "maintainers": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string",
+                      "first_name": "string",
+                      "id": "string",
+                      "last_name": "string",
+                      "role": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of maintainers as 'member' objects",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The team's human-readable name",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of keys of projects that this team owns",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_team_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "custom_roles": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "email": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "first_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "last_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "role": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_team_members": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "emails": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ignore_missing": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "team_members": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "custom_roles": [
+                        "set",
+                        "string"
+                      ],
+                      "email": "string",
+                      "first_name": "string",
+                      "id": "string",
+                      "last_name": "string",
+                      "role": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "launchdarkly_webhook": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the webhook",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for your webhook",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "on": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "If sign is true, and the secret attribute is omitted, LaunchDarkly will automatically generate a secret for you",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags associated with your resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "statements": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "An action to perform on a resource",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "effect": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "not_actions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted actions will be those actions NOT in this list. The 'actions' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "not_resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Targeted resources will be those resources NOT in this list. The 'resources' field must be empty to use this field",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resources": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of LaunchDarkly resource specifiers",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

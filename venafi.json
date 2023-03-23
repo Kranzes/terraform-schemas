@@ -1,1 +1,458 @@
-/nix/store/g5j3asdhgifll0cawxr6ni1p6jm98n1v-venafi.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/venafi/venafi": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "access_token": {
+              "type": "string",
+              "description": "Access token for TPP, user should use this for authentication",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "api_key": {
+              "type": "string",
+              "description": "API key for Venafi as a Service. Example: 142231b7-cvb0-412e-886b-6aeght0bc93d",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "dev_mode": {
+              "type": "bool",
+              "description": "When set to true, the resulting certificate will be issued by an ephemeral, no trust CA rather than enrolling using Venafi as a Service or Trust Protection Platform. Useful for development and testing.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "tpp_password": {
+              "type": "string",
+              "description": "Password for WebSDK user. Example: password",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "tpp_username": {
+              "type": "string",
+              "description": "WebSDK user for Venafi Platform. Example: admin",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "trust_bundle": {
+              "type": "string",
+              "description": "Use to specify a PEM-formatted file that contains certificates to be trust anchors for all communications with the Venafi Web Service.\nExample:\n  trust_bundle = \"${file(\"chain.pem\")}\"",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "url": {
+              "type": "string",
+              "description": "The Venafi Web Service URL.. Example: https://tpp.venafi.example/vedsdk",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "zone": {
+              "type": "string",
+              "description": "DN of the Venafi Platform policy folder or name of the Venafi as a Service application. \nExample for Platform: testpolicy\\\\vault\nExample for Venafi as a Service: Default",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "venafi_certificate": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "algorithm": {
+                "type": "string",
+                "description": "Key encryption algorithm. RSA or ECDSA. RSA is default.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "certificate": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "certificate_dn": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "chain": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "common_name": {
+                "type": "string",
+                "description": "Common name of certificate",
+                "description_kind": "plain",
+                "required": true
+              },
+              "csr_origin": {
+                "type": "string",
+                "description": "csr origin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "csr_pem": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "custom_fields": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Data map in the form key=\"value1|value2|...|valueN\", to be added to the certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ecdsa_curve": {
+                "type": "string",
+                "description": "ECDSA curve to use when generating a key",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "expiration_window": {
+                "type": "number",
+                "description": "Number of hours before the certificates expiry when a new certificate will be generated",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issuer_hint": {
+                "type": "string",
+                "description": "Indicate the target issuer to enable valid days with Venafi Platform; DigiCert, Entrust, and Microsoft are supported values.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key_password": {
+                "type": "string",
+                "description": "Private key password.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "nickname": {
+                "type": "string",
+                "description": "Use to specify a name for the new certificate object that will be created and placed in a policy. Only valid for TPP",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "pkcs12": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "private_key_pem": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "rsa_bits": {
+                "type": "number",
+                "description": "Number of bits to use when generating an RSA key",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "san_dns": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of DNS names to use as subjects of the certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "san_email": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of email addresses to use as subjects of the certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "san_ip": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IP addresses to use as subjects of the certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "san_uri": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of Uniform Resource Identifiers (URIs) to use as subjects of the certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "valid_days": {
+                "type": "number",
+                "description": "The desired certificate requested time of validity",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "venafi_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_specification": {
+                "type": "string",
+                "description": "policy specification",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "zone name",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "venafi_ssh_certificate": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "certificate": {
+                "type": "string",
+                "description": "The SSH Certificate",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "certificate_type": {
+                "type": "string",
+                "description": "Certificate type, server or client",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "destination_address": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The address (FQDN/hostname/IP/CIDR) of the destination host where the certificate will be used to authenticate to",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "extension": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The requested certificate extensions.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "folder": {
+                "type": "string",
+                "description": "The DN of the policy folder where the certificate object will be created",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_command": {
+                "type": "string",
+                "description": "The requested force command.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key_id": {
+                "type": "string",
+                "description": "The identifier of the requested certificate",
+                "description_kind": "plain",
+                "required": true
+              },
+              "key_passphrase": {
+                "type": "string",
+                "description": "Passphrase for encrypting the private key",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "key_size": {
+                "type": "number",
+                "description": "The key size bits, they will be used for creating keypair",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "object_name": {
+                "type": "string",
+                "description": "The friendly name for the certificate object.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "principal": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The requested principals.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "principals": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The requested principals.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "private_key": {
+                "type": "string",
+                "description": "Private key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "public_key": {
+                "type": "string",
+                "description": "Public key that will be used to generate the certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "public_key_fingerprint": {
+                "type": "string",
+                "description": "Public key fingerprint SHA256",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "public_key_method": {
+                "type": "string",
+                "description": "If the public key will be: file provided or local, service generated",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "serial": {
+                "type": "string",
+                "description": "Serial number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "signing_ca": {
+                "type": "string",
+                "description": "CA fingerprint SHA256",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "source_address": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The requested source addresses as list of IP/CIDR",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "template": {
+                "type": "string",
+                "description": "The certificate issuing template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "valid_from": {
+                "type": "string",
+                "description": "Valid from",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "valid_hours": {
+                "type": "number",
+                "description": "How much time the requester wants to have the certificate valid, the format is hours",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "valid_to": {
+                "type": "string",
+                "description": "Valid to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "windows": {
+                "type": "bool",
+                "description": "If the line endings of service's private key will end on MS windows format",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "venafi_ssh_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ca_public_key": {
+                "type": "string",
+                "description": "The template's CA PublicKey",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "principals": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The requested principals.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template": {
+                "type": "string",
+                "description": "The certificate issuing template",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

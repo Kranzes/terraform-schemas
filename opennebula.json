@@ -1,1 +1,4925 @@
-/nix/store/faq7y5wmkdf0hs98h1kkl7vy5694cqci-opennebula.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/opennebula/opennebula": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "endpoint": {
+              "type": "string",
+              "description": "The URL to your public or private OpenNebula",
+              "description_kind": "plain",
+              "required": true
+            },
+            "flow_endpoint": {
+              "type": "string",
+              "description": "The URL to your public or private OpenNebula Flow server",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "insecure": {
+              "type": "bool",
+              "description": "Disable TLS validation",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "password": {
+              "type": "string",
+              "description": "The password for the user",
+              "description_kind": "plain",
+              "required": true
+            },
+            "username": {
+              "type": "string",
+              "description": "The ID of the user to identify as",
+              "description_kind": "plain",
+              "required": true
+            }
+          },
+          "block_types": {
+            "default_tags": {
+              "nesting_mode": "set",
+              "block": {
+                "attributes": {
+                  "tags": {
+                    "type": [
+                      "map",
+                      "string"
+                    ],
+                    "description": "Default tags to apply",
+                    "description_kind": "plain",
+                    "optional": true
+                  }
+                },
+                "description": "Add default tags to the resources",
+                "description_kind": "plain"
+              }
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "opennebula_acl": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "resource": {
+                "type": "string",
+                "description": "Resource component of the new rule. ACL String Syntax is expected.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "rights": {
+                "type": "string",
+                "description": "Rights component of the new rule. ACL String Syntax is expected.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user": {
+                "type": "string",
+                "description": "User component of the new rule. ACL String Syntax is expected.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "Zone component of the new rule. ACL String Syntax is expected.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_cluster": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "datastores": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of datastores IDs part of the cluster",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hosts": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of hosts IDs part of the cluster",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "virtual_networks": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of virtual network IDs part of the cluster",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_datastore": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bridge_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of hosts that have access to the storage to add new images to the datastore",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "check_available_capacity": {
+                "type": "bool",
+                "description": "If yes, the available capacity of the Datastore is checked before creating a new image",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cluster_id": {
+                "type": "number",
+                "description": "ID of the cluster",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "cluster_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of cluster IDs hosting the datastore, if not set it uses the default cluster",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "compatible_system_datastore": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "For Image Datastores only. Set the System Datastores IDs that can be used with an Image Datastore",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "driver": {
+                "type": "string",
+                "description": "Specific image mapping driver enforcement. If present it overrides image DRIVER set in the image attributes and VM template",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Datastore",
+                "description_kind": "plain",
+                "required": true
+              },
+              "no_decompress": {
+                "type": "bool",
+                "description": "Do not try to untar or decompress the file to be registered",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "restricted_directories": {
+                "type": "string",
+                "description": "Paths that cannot be used to register images. A space separated list of paths",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "safe_directories": {
+                "type": "string",
+                "description": "If you need to allow a directory listed under RESTRICTED_DIRS. A space separated list of paths",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "staging_dir": {
+                "type": "string",
+                "description": "Path in the storage bridge host to copy an Image before moving it to its final destination",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "storage_usage_limit": {
+                "type": "number",
+                "description": "The maximum capacity allowed for the Datastore in MB",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "transfer_bandwith_limit": {
+                "type": "number",
+                "description": "Specify the maximum transfer rate in bytes/second when downloading images from a http/https URL. Suffixes K, M or G can be used",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the datastore: image, system, files",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "ceph": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "config": {
+                      "type": "string",
+                      "description": "Non-default Ceph configuration file if needed",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "host": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of Ceph monitors",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "Key file for user. if not set default locations are used",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "local_storage": {
+                      "type": "bool",
+                      "description": "Use local host storage, SSH mode",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "pool_name": {
+                      "type": "string",
+                      "description": "Ceph pool name",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rbd_format": {
+                      "type": "string",
+                      "description": "By default RBD Format 2 will be used",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secret": {
+                      "type": "string",
+                      "description": "The UUID of the libvirt secret",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "trash": {
+                      "type": "bool",
+                      "description": "Enables trash feature on given datastore",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": "string",
+                      "description": "Ceph user name",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "custom": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "datastore": {
+                      "type": "string",
+                      "description": "Datastore driver",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "transfer": {
+                      "type": "string",
+                      "description": "Transfer driver",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admins": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "List of Admin user IDs part of the group",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "users": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "List of user IDs part of the group",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              }
+            },
+            "block_types": {
+              "opennebula": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "api_list_order": {
+                      "type": "string",
+                      "description": "Sets order of elements by ID in list API calls: ASC or DESC respectively for ascending or descending order",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default_image_persistent": {
+                      "type": "string",
+                      "description": "Control the default value for the PERSISTENT attribute on image creation ( clone and disk save-as): should be YES or NO",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default_image_persistent_new": {
+                      "type": "string",
+                      "description": "Control the default value for the PERSISTENT attribute on image creation ( only new images): should be YES or NO",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "OpenNebula core configuration",
+                  "description_kind": "plain"
+                }
+              },
+              "quotas": {
+                "nesting_mode": "set",
+                "block": {
+                  "block_types": {
+                    "datastore_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "number",
+                            "description": "Datastore ID",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "images": {
+                            "type": "number",
+                            "description": "Maximum number of Images allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "size": {
+                            "type": "number",
+                            "description": "Maximum size in MB allowed on the datastore (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Datastore quotas",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "image_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "number",
+                            "description": "Image ID",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "running_vms": {
+                            "type": "number",
+                            "description": "Maximum number of Running VMs allowed for this image (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Image quotas",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "network_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "number",
+                            "description": "Network ID",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "leases": {
+                            "type": "number",
+                            "description": "Maximum number of Leases allowed for this network (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Network quotas",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "vm_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cpu": {
+                            "type": "number",
+                            "description": "Maximum number of CPU allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory": {
+                            "type": "number",
+                            "description": "Maximum Memory (MB) allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "running_cpu": {
+                            "type": "number",
+                            "description": "Maximum number of 'running' CPUs allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "running_memory": {
+                            "type": "number",
+                            "description": "'Running' Memory (MB) allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "running_vms": {
+                            "type": "number",
+                            "description": "Maximum number of Running VMs allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "system_disk_size": {
+                            "type": "number",
+                            "description": "Maximum System Disk size (MB) allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "vms": {
+                            "type": "number",
+                            "description": "Maximum number of VMs allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "VM quotas",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Define user quota",
+                  "description_kind": "plain"
+                }
+              },
+              "sunstone": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "default_view": {
+                      "type": "string",
+                      "description": "Default Sunstone view for regular users",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "group_admin_default_view": {
+                      "type": "string",
+                      "description": "Default Sunstone view for group admin users",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "group_admin_views": {
+                      "type": "string",
+                      "description": "List of available views for the group admins",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "views": {
+                      "type": "string",
+                      "description": "List of available views for regular users",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Allow users and group admins to access specific views",
+                  "description_kind": "plain"
+                }
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_group_admins": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group_id": {
+                "type": "number",
+                "description": "ID of the group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "users_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of user IDs admins of the group",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_host": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "number",
+                "description": "ID of the cluster. Affected to the default cluster if not set",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Host",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the new host: kvm, qemu, lxd, lxc, firecracker, custom",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "custom": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "information": {
+                      "type": "string",
+                      "description": "Information driver",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "virtualization": {
+                      "type": "string",
+                      "description": "Virtualization driver",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "overcommit": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "cpu": {
+                      "type": "number",
+                      "description": "Maximum allocatable CPU capacity in number of cores multiplied by 100",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "memory": {
+                      "type": "number",
+                      "description": "Maximum allocatable memory capacity in KB",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "clone_from_image": {
+                "type": "string",
+                "description": "ID or name of the Image to be cloned from",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "datastore_id": {
+                "type": "number",
+                "description": "ID of the datastore where Image will be stored",
+                "description_kind": "plain",
+                "required": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the Image, in OpenNebula's XML or String format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dev_prefix": {
+                "type": "string",
+                "description": "Device prefix, normally one of: hd, sd, vd",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "driver": {
+                "type": "string",
+                "description": "Driver to use, normally 'raw' or 'qcow2'",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "format": {
+                "type": "string",
+                "description": "Image format, normally 'raw' or 'qcow2'",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the Image",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the Image",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the Image, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Image",
+                "description_kind": "plain",
+                "required": true
+              },
+              "path": {
+                "type": "string",
+                "description": "Path to the new image (local path on the OpenNebula server or URL)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the Image (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "persistent": {
+                "type": "bool",
+                "description": "Flag which indicates if the Image has to be persistent",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "size": {
+                "type": "number",
+                "description": "Size of the new image in MB",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": "string",
+                "description": "Device target, example: vda",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Timeout (in minutes) within resource should be available. Default: 10 minutes",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the new Image: OS, CDROM, DATABLOCK, KERNEL, RAMDISK, CONTEXT",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the Image",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the Image",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_security_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "commit": {
+                "type": "bool",
+                "description": "Should changes to the Security Group rules be commited to running Virtual Machines?",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the Security Group Rule Set",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the Security Group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the Security Group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the Security Group, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Security Group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the Security Group (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the Security Group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the Security Group",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "rule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "icmp_type": {
+                      "type": "string",
+                      "description": "Type of ICMP traffic to apply to when 'protocol' is ICMP",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description": "IP (or starting IP if used with 'size') to apply the rule to",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "network_id": {
+                      "type": "string",
+                      "description": "VNET ID to be used as the source/destination IP addresses",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Protocol for the rule, must be one of: ALL, TCP, UDP, ICMP or IPSEC",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "range": {
+                      "type": "string",
+                      "description": "Comma separated list of ports and port ranges",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "rule_type": {
+                      "type": "string",
+                      "description": "Direction of the traffic flow to allow, must be INBOUND or OUTBOUND",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "size": {
+                      "type": "string",
+                      "description": "Number of IPs to apply the rule from, starting with 'ip'",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "List of rules to be in the Security Group",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_service": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "extra_template": {
+                "type": "string",
+                "description": "Extra template information in json format to be added to the service template during instantiate.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the Service",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the Service",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Service",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "networks": {
+                "type": [
+                  "map",
+                  "number"
+                ],
+                "description": "Map with the service networks names as key and id as value",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the service (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "roles": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cardinality": "number",
+                      "name": "string",
+                      "nodes": [
+                        "list",
+                        "number"
+                      ],
+                      "state": "number"
+                    }
+                  ]
+                ],
+                "description": "Map with the role dinamically generated information",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "state": {
+                "type": "number",
+                "description": "Current state of the Service",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_id": {
+                "type": "number",
+                "description": "Id of the Service template to use",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the Service",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the Service",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_service_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the Service Template",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the Service Template",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Service Template",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the Service Template (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "template": {
+                "type": "string",
+                "description": "Service Template body in json format",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the Service Template",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the Service Template",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "context": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Context variables",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cpu": {
+                "type": "number",
+                "description": "Amount of CPU quota assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the entity",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the resource, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Amount of memory (RAM) in MB assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the resource (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reg_time": {
+                "type": "number",
+                "description": "Registration time",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sched_ds_requirements": {
+                "type": "string",
+                "description": "Storage placement requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sched_requirements": {
+                "type": "string",
+                "description": "Scheduling requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_inputs": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Provides the template creator with the possibility to dynamically ask the user instantiating the template for dynamic values that must be defined.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vcpu": {
+                "type": "number",
+                "description": "Number of virtual CPUs assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "cpumodel": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of CPU Model type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "disk": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cache": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dev_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "discard": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "driver": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "number",
+                      "description": "Image Id  of the image to attach to the VM. Defaults to -1: no image attached.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "io": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "target": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_format": {
+                      "type": "string",
+                      "description": "Format of the volatile disk: raw or qcow2.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_type": {
+                      "type": "string",
+                      "description": "Type of the volatile disk: swap or fs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Definition of disks assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                }
+              },
+              "features": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "acpi": {
+                      "type": "string",
+                      "description": "Useful for power management, for example, with KVM guests it is required for graceful shutdown to work.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "apic": {
+                      "type": "string",
+                      "description": "Enables the advanced programmable IRQ management. Useful for SMP machines.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "guest_agent": {
+                      "type": "string",
+                      "description": "Enables the QEMU Guest Agent communication. This only creates the socket inside the VM, the Guest Agent itself must be installed and started in the VM.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "hyperv": {
+                      "type": "string",
+                      "description": "Add hyperv extensions to the VM. The options can be configured in the driver configuration, HYPERV_OPTIONS.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "iothreads": {
+                      "type": "string",
+                      "description": "Number of iothreads for virtio disks. By default threads will be assign to disk by round robin algorithm. Disk thread id can be forced by disk IOTHREAD attribute.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "localtime": {
+                      "type": "string",
+                      "description": "The guest clock will be synchronized to the host’s configured timezone when booted. Useful for Windows VMs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "pae": {
+                      "type": "string",
+                      "description": "Physical address extension mode allows 32-bit guests to address more than 4 GB of memory.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "virtio_scsi_queues": {
+                      "type": "string",
+                      "description": "Numer of vCPU queues for the virtio-scsi controller.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "List of Features",
+                  "description_kind": "plain"
+                }
+              },
+              "graphics": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "keymap": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "listen": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of graphics adapter assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "nic": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "ip": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mac": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "network": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "network_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "physical_device": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "security_groups": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "virtio_queues": {
+                      "type": "string",
+                      "description": "Only if model is virtio",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Definition of network adapter(s) assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                }
+              },
+              "os": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "arch": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "boot": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of OS boot and type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "raw": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data": {
+                      "type": "string",
+                      "description": "Low-level data to pass to the hypervisor",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Name of the hypervisor: kvm, lxd, vmware",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Low-level hypervisor tuning",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              },
+              "vmgroup": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "role": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vmgroup_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Virtual Machine Group to associate with during VM creation only. If it changes, a New VM is created",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auth_driver": {
+                "type": "string",
+                "description": "Authentication driver. Select between: core, public, ssh, x509, ldap, server_cipher, server_x509 and custom. Defaults to 'core'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "groups": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of group IDs to add to the user",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the User",
+                "description_kind": "plain",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "Password of the User. Required for all `auth_driver` options excepted 'ldap'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_group": {
+                "type": "number",
+                "description": "Primary (Default) Group ID of the user. Defaults to 0",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "quotas": {
+                "nesting_mode": "set",
+                "block": {
+                  "block_types": {
+                    "datastore_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "number",
+                            "description": "Datastore ID",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "images": {
+                            "type": "number",
+                            "description": "Maximum number of Images allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "size": {
+                            "type": "number",
+                            "description": "Maximum size in MB allowed on the datastore (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Datastore quotas",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "image_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "number",
+                            "description": "Image ID",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "running_vms": {
+                            "type": "number",
+                            "description": "Maximum number of Running VMs allowed for this image (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Image quotas",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "network_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "number",
+                            "description": "Network ID",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "leases": {
+                            "type": "number",
+                            "description": "Maximum number of Leases allowed for this network (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Network quotas",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "vm_quotas": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cpu": {
+                            "type": "number",
+                            "description": "Maximum number of CPU allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory": {
+                            "type": "number",
+                            "description": "Maximum Memory (MB) allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "running_cpu": {
+                            "type": "number",
+                            "description": "Maximum number of 'running' CPUs allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "running_memory": {
+                            "type": "number",
+                            "description": "'Running' Memory (MB) allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "running_vms": {
+                            "type": "number",
+                            "description": "Maximum number of Running VMs allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "system_disk_size": {
+                            "type": "number",
+                            "description": "Maximum System Disk size (MB) allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "vms": {
+                            "type": "number",
+                            "description": "Maximum number of VMs allowed (default: default quota)",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "VM quotas",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Define user quota",
+                  "description_kind": "plain"
+                }
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_data_center": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of Group IDs to be added into the VDC",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the VDC",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "zones": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "cluster_ids": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "List of cluster IDs from the Zone to add in the VDC",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "datastore_ids": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "List of Datastore IDs from the Zone to add in the VDC",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "host_ids": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "List of Host IDs from the Zone to add in the VDC",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "Resources Zone ID (default: 0)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vnet_ids": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "List of VNET IDs from the Zone to add in the VDC",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "List of zones to add into the VDC",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_machine": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "context": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Context variables",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cpu": {
+                "type": "number",
+                "description": "Amount of CPU quota assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the entity",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the resource, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hard_shutdown": {
+                "type": "bool",
+                "description": "Immediately poweroff/terminate/reboot/undeploy the VM. (default: false)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip": {
+                "type": "string",
+                "description": "Primary IP address assigned by OpenNebula",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "keep_nic_order": {
+                "type": "bool",
+                "description": "Force the provider to keep nics order at update.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "lcmstate": {
+                "type": "number",
+                "description": "Current LCM state of the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Amount of memory (RAM) in MB assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the VM. If empty, defaults to 'templatename-<vmid>'",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "on_disk_change": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "pending": {
+                "type": "bool",
+                "description": "Pending state of the VM during its creation, by default it is set to false",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the resource (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sched_ds_requirements": {
+                "type": "string",
+                "description": "Storage placement requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sched_requirements": {
+                "type": "string",
+                "description": "Scheduling requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "number",
+                "description": "Current state of the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_disk": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "computed_cache": "string",
+                      "computed_dev_prefix": "string",
+                      "computed_discard": "string",
+                      "computed_driver": "string",
+                      "computed_io": "string",
+                      "computed_size": "number",
+                      "computed_target": "string",
+                      "computed_volatile_format": "string",
+                      "disk_id": "number",
+                      "image_id": "number"
+                    }
+                  ]
+                ],
+                "description": "Disks assigned to the Virtual Machine via a template",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_id": {
+                "type": "number",
+                "description": "Id of the VM template to use. Defaults to -1: no template used.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "template_nic": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "computed_ip": "string",
+                      "computed_mac": "string",
+                      "computed_model": "string",
+                      "computed_physical_device": "string",
+                      "computed_security_groups": [
+                        "list",
+                        "number"
+                      ],
+                      "computed_virtio_queues": "string",
+                      "network": "string",
+                      "network_id": "number",
+                      "nic_id": "number"
+                    }
+                  ]
+                ],
+                "description": "Network adapter(s) assigned to the Virtual Machine via a template",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_section_names": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "When template_id was set this keeps the template sections names.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "When template_id was set this keeps the template tags.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Timeout (in minutes) within resource should be available. Default: 3 minutes",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vcpu": {
+                "type": "number",
+                "description": "Number of virtual CPUs assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "cpumodel": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of CPU Model type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "disk": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cache": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "computed_cache": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_dev_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_discard": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_driver": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_io": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_target": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_volatile_format": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "dev_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "discard": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "driver": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "number",
+                      "description": "Image Id  of the image to attach to the VM. Defaults to -1: no image attached.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "io": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "target": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_format": {
+                      "type": "string",
+                      "description": "Format of the volatile disk: raw or qcow2.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_type": {
+                      "type": "string",
+                      "description": "Type of the volatile disk: swap or fs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Definition of disks assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                }
+              },
+              "graphics": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "keymap": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "listen": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of graphics adapter assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "nic": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "computed_ip": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_mac": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_physical_device": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_security_groups": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_virtio_queues": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mac": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "network": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "network_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "nic_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "physical_device": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "security_groups": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "virtio_queues": {
+                      "type": "string",
+                      "description": "Only if model is virtio",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Definition of network adapter(s) assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                }
+              },
+              "os": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "arch": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "boot": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of OS boot and type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "vmgroup": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "role": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vmgroup_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Virtual Machine Group to associate with during VM creation only. If it changes, a New VM is created",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_machine_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the template vm group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the template vm group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the Template VM Group, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the template vm group (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the template vm group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the template vm group",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "role": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "host_affined": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description": "Host(s) where the VM should run",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "host_anti_affined": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description": "Host(s) where the VM should not run",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "policy": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Roles of the VM Group",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automatic_vlan_id": {
+                "type": "bool",
+                "description": "If set, let OpenNebula to attribute VLAN ID",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "bridge": {
+                "type": "string",
+                "description": "Name of the bridge interface to which the vnet should be associated",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cluster_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of cluster IDs hosting the virtual Network",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "clusters": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of cluster IDs hosting the virtual Network, if not set it uses the default cluster",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the vnet, in OpenNebula's XML or String format",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "dns": {
+                "type": "string",
+                "description": "DNS IP if necessary",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gateway": {
+                "type": "string",
+                "description": "Gateway IP if necessary",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the vnet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the vnet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the Virtual Network, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "guest_mtu": {
+                "type": "number",
+                "description": "MTU of the Guest interface. Must be lower or equal to 'mtu' (defaut: 1500)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hold_ips": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IPs to be held the VNET",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mtu": {
+                "type": "number",
+                "description": "MTU of the vnet (defaut: 1500)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the vnet",
+                "description_kind": "plain",
+                "required": true
+              },
+              "network_address": {
+                "type": "string",
+                "description": "Network Address",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_mask": {
+                "type": "string",
+                "description": "Network Mask",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the vnet (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "physical_device": {
+                "type": "string",
+                "description": "Name of the physical device to which the vnet should be associated",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reservation_ar_id": {
+                "type": "number",
+                "description": "Address Range ID to be used for the reservation",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "reservation_first_ip": {
+                "type": "string",
+                "description": "First IP of the reservation",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "reservation_size": {
+                "type": "number",
+                "description": "Reserve this many IPs from reservation_vnet",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "reservation_vnet": {
+                "type": "number",
+                "description": "Create a reservation from this VNET ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "search_domain": {
+                "type": "string",
+                "description": "Search Domain",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "security_groups": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "List of Security Group IDs to be applied to the VNET",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the Virtual Network: dummy, bridge, fw, ebtables, 802.1Q, vxlan, ovswitch. Default is 'bridge'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the vnet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the vnet",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vlan_id": {
+                "type": "string",
+                "description": "VLAN ID. Only if 'Type' is : 802.1Q, vxlan or ovswich and if 'automatic_vlan_id' is not set",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "ar": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "ar_type": {
+                      "type": "string",
+                      "description": "Type of the Address Range: IP4, IP6. Default is 'IP4'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "computed_global_prefix": {
+                      "type": "string",
+                      "description": "Global prefix for IP6 or IP4_6",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_ip6": {
+                      "type": "string",
+                      "description": "Start IPv6 of the range to be allocated (Required if IP6_STATIC or IP4_6_STATIC)",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_mac": {
+                      "type": "string",
+                      "description": "Start MAC of the range to be allocated",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_ula_prefix": {
+                      "type": "string",
+                      "description": "ULA prefix for IP6 or IP4_6",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "global_prefix": {
+                      "type": "string",
+                      "description": "Global prefix for IP6 or IP4_6",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ip4": {
+                      "type": "string",
+                      "description": "Start IPv4 of the range to be allocated (Required if IP4 or IP4_6).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip6": {
+                      "type": "string",
+                      "description": "Start IPv6 of the range to be allocated (Required if IP6_STATIC or IP4_6_STATIC)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mac": {
+                      "type": "string",
+                      "description": "Start MAC of the range to be allocated",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "prefix_length": {
+                      "type": "string",
+                      "description": "Prefix lenght Only needed for IP6_STATIC or IP4_6_STATIC",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description": "Size (in number) of the ip range",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ula_prefix": {
+                      "type": "string",
+                      "description": "ULA prefix for IP6 or IP4_6",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "List of Address Ranges to be part of the Virtual Network",
+                  "description_kind": "plain",
+                  "deprecated": true
+                }
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_network_address_range": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ar_type": {
+                "type": "string",
+                "description": "Type of the Address Range: IP4, IP6. Default is 'IP4'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "global_prefix": {
+                "type": "string",
+                "description": "Global prefix for IP6 or IP4_6",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "held_ips": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of IPs held in this address range",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hold_ips": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of IPs to be held from this address range",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip4": {
+                "type": "string",
+                "description": "Start IPv4 of the range to be allocated (Required if IP4 or IP4_6).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ip6": {
+                "type": "string",
+                "description": "Start IPv6 of the range to be allocated (Required if IP6_STATIC or IP4_6_STATIC)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mac": {
+                "type": "string",
+                "description": "Start MAC of the range to be allocated",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "prefix_length": {
+                "type": "string",
+                "description": "Prefix length Only needed for IP6_STATIC or IP4_6_STATIC",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "size": {
+                "type": "number",
+                "description": "Count of addresses in the ip range",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ula_prefix": {
+                "type": "string",
+                "description": "ULA prefix for IP6 or IP4_6",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "virtual_network_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_router": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the entity",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the virtual router",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the virtual router",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the virtual router, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_template_id": {
+                "type": "number",
+                "description": "ID of the template of the virtual router instances.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the virtual router",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the virtual router (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the virtual router",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the virtual router",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_router_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "context": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Context variables",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cpu": {
+                "type": "number",
+                "description": "Amount of CPU quota assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the entity",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the resource, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hard_shutdown": {
+                "type": "bool",
+                "description": "Immediately poweroff/terminate/reboot/undeploy the VM. (default: false)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lcmstate": {
+                "type": "number",
+                "description": "Current LCM state of the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Amount of memory (RAM) in MB assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the VM. If empty, defaults to 'templatename-<vmid>'",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "on_disk_change": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "pending": {
+                "type": "bool",
+                "description": "Pending state of the VM during its creation, by default it is set to false",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the resource (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sched_ds_requirements": {
+                "type": "string",
+                "description": "Storage placement requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sched_requirements": {
+                "type": "string",
+                "description": "Scheduling requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "number",
+                "description": "Current state of the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_disk": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "computed_cache": "string",
+                      "computed_dev_prefix": "string",
+                      "computed_discard": "string",
+                      "computed_driver": "string",
+                      "computed_io": "string",
+                      "computed_size": "number",
+                      "computed_target": "string",
+                      "computed_volatile_format": "string",
+                      "disk_id": "number",
+                      "image_id": "number"
+                    }
+                  ]
+                ],
+                "description": "Disks assigned to the Virtual Machine via a template",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_section_names": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "When template_id was set this keeps the template sections names.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "When template_id was set this keeps the template tags.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Timeout (in minutes) within resource should be available. Default: 3 minutes",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vcpu": {
+                "type": "number",
+                "description": "Number of virtual CPUs assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "virtual_router_id": {
+                "type": "number",
+                "description": "Identifier of the parent virtual router ressource",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "cpumodel": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of CPU Model type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "disk": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cache": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "computed_cache": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_dev_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_discard": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_driver": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_io": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_target": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "computed_volatile_format": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "dev_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "discard": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "driver": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "number",
+                      "description": "Image Id  of the image to attach to the VM. Defaults to -1: no image attached.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "io": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "target": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_format": {
+                      "type": "string",
+                      "description": "Format of the volatile disk: raw or qcow2.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_type": {
+                      "type": "string",
+                      "description": "Type of the volatile disk: swap or fs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Definition of disks assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                }
+              },
+              "graphics": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "keymap": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "listen": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of graphics adapter assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "os": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "arch": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "boot": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of OS boot and type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "vmgroup": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "role": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vmgroup_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Virtual Machine Group to associate with during VM creation only. If it changes, a New VM is created",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_router_instance_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "context": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Context variables",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cpu": {
+                "type": "number",
+                "description": "Amount of CPU quota assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "default_tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Default tags defined in the provider configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A description of the entity",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description": "ID of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gname": {
+                "type": "string",
+                "description": "Name of the group that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "Name of the Group that onws the resource, If empty, it uses caller group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lock": {
+                "type": "string",
+                "description": "Lock level of the new resource: USE, MANAGE, ADMIN, ALL, UNLOCK",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Amount of memory (RAM) in MB assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": "string",
+                "description": "Permissions for the resource (in Unix format, owner-group-other, use-manage-admin)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reg_time": {
+                "type": "number",
+                "description": "Registration time",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sched_ds_requirements": {
+                "type": "string",
+                "description": "Storage placement requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sched_requirements": {
+                "type": "string",
+                "description": "Scheduling requirements to deploy the resource following specific rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags_all": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Result of the applied default_tags and resource tags",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uid": {
+                "type": "number",
+                "description": "ID of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uname": {
+                "type": "string",
+                "description": "Name of the user that will own the resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_inputs": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Provides the template creator with the possibility to dynamically ask the user instantiating the template for dynamic values that must be defined.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vcpu": {
+                "type": "number",
+                "description": "Number of virtual CPUs assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "cpumodel": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "model": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of CPU Model type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "disk": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cache": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dev_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "discard": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "driver": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "image_id": {
+                      "type": "number",
+                      "description": "Image Id  of the image to attach to the VM. Defaults to -1: no image attached.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "io": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "target": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_format": {
+                      "type": "string",
+                      "description": "Format of the volatile disk: raw or qcow2.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volatile_type": {
+                      "type": "string",
+                      "description": "Type of the volatile disk: swap or fs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Definition of disks assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                }
+              },
+              "features": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "acpi": {
+                      "type": "string",
+                      "description": "Useful for power management, for example, with KVM guests it is required for graceful shutdown to work.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "apic": {
+                      "type": "string",
+                      "description": "Enables the advanced programmable IRQ management. Useful for SMP machines.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "guest_agent": {
+                      "type": "string",
+                      "description": "Enables the QEMU Guest Agent communication. This only creates the socket inside the VM, the Guest Agent itself must be installed and started in the VM.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "hyperv": {
+                      "type": "string",
+                      "description": "Add hyperv extensions to the VM. The options can be configured in the driver configuration, HYPERV_OPTIONS.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "iothreads": {
+                      "type": "string",
+                      "description": "Number of iothreads for virtio disks. By default threads will be assign to disk by round robin algorithm. Disk thread id can be forced by disk IOTHREAD attribute.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "localtime": {
+                      "type": "string",
+                      "description": "The guest clock will be synchronized to the host’s configured timezone when booted. Useful for Windows VMs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "pae": {
+                      "type": "string",
+                      "description": "Physical address extension mode allows 32-bit guests to address more than 4 GB of memory.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "virtio_scsi_queues": {
+                      "type": "string",
+                      "description": "Numer of vCPU queues for the virtio-scsi controller.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "List of Features",
+                  "description_kind": "plain"
+                }
+              },
+              "graphics": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "keymap": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "listen": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of graphics adapter assigned to the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "os": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "arch": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "boot": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Definition of OS boot and type for the Virtual Machine",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "raw": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data": {
+                      "type": "string",
+                      "description": "Low-level data to pass to the hypervisor",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Name of the hypervisor: kvm, lxd, vmware",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Low-level hypervisor tuning",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "template_section": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "elements": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              },
+              "vmgroup": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "role": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vmgroup_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Virtual Machine Group to associate with during VM creation only. If it changes, a New VM is created",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_router_nic": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "model": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "physical_device": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "security_groups": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "virtio_queues": {
+                "type": "string",
+                "description": "Only if model is virtio",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "virtual_router_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "opennebula_cluster": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the cluster",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_datastore": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the datastore",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admins": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "List of Admin user IDs part of the group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_host": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the host",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the image",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_security_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Security Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cpu": {
+                "type": "number",
+                "description": "Amount of CPU quota assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "disk": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cache": "string",
+                      "dev_prefix": "string",
+                      "discard": "string",
+                      "driver": "string",
+                      "image_id": "number",
+                      "io": "string",
+                      "size": "number",
+                      "target": "string",
+                      "volatile_format": "string",
+                      "volatile_type": "string"
+                    }
+                  ]
+                ],
+                "description": "Definition of disks assigned to the Virtual Machine",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "has_cpu": {
+                "type": "bool",
+                "description": "Indicate if template has CPU defined",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "has_memory": {
+                "type": "bool",
+                "description": "Indicate if template has memory defined",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "has_vcpu": {
+                "type": "bool",
+                "description": "Indicate if template has VCPU defined",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Amount of memory (RAM) in MB assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Template",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nic": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "ip": "string",
+                      "mac": "string",
+                      "model": "string",
+                      "network": "string",
+                      "network_id": "number",
+                      "physical_device": "string",
+                      "security_groups": [
+                        "list",
+                        "number"
+                      ],
+                      "virtio_queues": "string"
+                    }
+                  ]
+                ],
+                "description": "Definition of network adapter(s) assigned to the Virtual Machine",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vcpu": {
+                "type": "number",
+                "description": "Number of virtual CPUs assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vmgroup": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "role": "string",
+                      "vmgroup_id": "number"
+                    }
+                  ]
+                ],
+                "description": "Virtual Machine Group to associate with during VM creation only.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "groups": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "List of group IDs to add to the user",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the User",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_group": {
+                "type": "number",
+                "description": "Primary (Default) Group ID of the user. Defaults to 0",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_data_center": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the VDC",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_machine_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Virtual Machine Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_virtual_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mtu": {
+                "type": "number",
+                "description": "MTU of the vnet (defaut: 1500)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Virtual Network",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

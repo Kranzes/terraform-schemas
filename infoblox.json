@@ -1,1 +1,1356 @@
-/nix/store/rwdgs6ag8plr4rkwm9ixc5d7cbxf36jj-infoblox.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/infobloxopen/infoblox": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "connect_timeout": {
+              "type": "number",
+              "description": "Maximum wait for connection, in seconds. Zero or not specified means wait indefinitely.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "password": {
+              "type": "string",
+              "description": "Password to authenticate with Infoblox server.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "pool_connections": {
+              "type": "number",
+              "description": "Maximum number of connections to establish to the Infoblox server. Zero means unlimited.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "port": {
+              "type": "string",
+              "description": "Port number used for connection for Infoblox Server.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "server": {
+              "type": "string",
+              "description": "Infoblox server IP address.",
+              "description_kind": "plain",
+              "required": true
+            },
+            "sslmode": {
+              "type": "bool",
+              "description": "If set, Infoblox client will permit unverifiable SSL certificates.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "username": {
+              "type": "string",
+              "description": "User to authenticate with Infoblox server.",
+              "description_kind": "plain",
+              "required": true
+            },
+            "wapi_version": {
+              "type": "string",
+              "description": "WAPI Version of Infoblox server defaults to v2.7.",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "infoblox_a_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "Network to allocate an IP address from, when the 'ip_addr' field is empty (dynamic allocation). The address is in CIDR format. For static allocation, leave this field empty.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "Description of the A-record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the zone does exist within.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the A-record to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "FQDN for the A-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address to associate with the A-record. For static allocation, set the field with a valid IP address. For dynamic allocation, leave this field empty and set 'cidr' and 'network_view' fields.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view to use when allocating an IP address from a network dynamically. For static allocation, leave this field empty.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the A-record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_aaaa_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The network address in cidr format under which record has to be created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description about AAAA record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of AAAA record to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The name of the AAAA record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ipv6_addr": {
+                "type": "string",
+                "description": "IPv6 address for record creation. Set the field with valid IP for static allocation. If to be dynamically allocated set cidr field",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name of NIOS server.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_cname_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "alias": {
+                "type": "string",
+                "description": "The alias name in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "canonical": {
+                "type": "string",
+                "description": "The Canonical name in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description about CNAME record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of CNAME record, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ip_allocation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allocated_ipv4_addr": {
+                "type": "string",
+                "description": "Value which comes from 'ipv4_addr' (if specified) or from auto-allocation function (using 'ipv4_cidr').",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "allocated_ipv6_addr": {
+                "type": "string",
+                "description": "Value which comes from 'ipv6_addr' (if specified) or from auto-allocation function (using 'ipv6_cidr').",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of IP address allocation.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view under which the zone has been created.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "enable_dns": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for DNS purposes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The extensible attributes for IP address allocation, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The host name for Host Record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "Internal ID of an object at NIOS side, used by Infoblox Terraform plugin to search for a NIOS's object which corresponds to the Terraform resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ipv4_addr": {
+                "type": "string",
+                "description": "IPv4 address of cloud instance.Set a valid IP address for static allocation and leave empty if dynamically allocated.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ipv4_cidr": {
+                "type": "string",
+                "description": "The IPv4 cidr from which an IPv4 address will be allocated.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ipv6_addr": {
+                "type": "string",
+                "description": "IPv6 address of cloud instance.Set a valid IP address for static allocation and leave empty if dynamically allocated.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ipv6_cidr": {
+                "type": "string",
+                "description": "The IPv6 cidr from which an IPv6 address will be allocated.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "network view name on NIOS server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ref": {
+                "type": "string",
+                "description": "NIOS object's reference, not to be set by a user.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ip_association": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "duid": {
+                "type": "string",
+                "description": "DHCP unique identifier for IPv6.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dhcp": {
+                "type": "bool",
+                "description": "The flag which defines if the host record is to be used for IPAM purposes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "This value must point to the ID of the appropriate allocation resource. Required on resource creation.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mac_addr": {
+                "type": "string",
+                "description": "MAC address of a cloud instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ref": {
+                "type": "string",
+                "description": "NIOS object's reference, not to be set by a user.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv4_allocation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The address in cidr format.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of IP address allocation.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dns": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for DNS Purposes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The extensible attributes for IP address allocation, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The host name for Host Record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address of cloud instance.Set a valid IP for static allocation and leave empty if dynamically allocated.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name of NIOS server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv4_association": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The address in cidr format.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of the IP association.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "view in which record has to be created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "duid": {
+                "type": "string",
+                "description": "DHCP unique identifier for IPv6.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dhcp": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for IPAM Purposes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dns": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for DNS Purposes",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes for IP Association, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The host name for Host Record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address of cloud instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mac_addr": {
+                "type": "string",
+                "description": "mac address of cloud instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name of NIOS server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv4_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allocate_prefix_len": {
+                "type": "number",
+                "description": "Set the parameter's value > 0 to allocate next available network with corresponding prefix length from the network container defined by 'parent_cidr'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cidr": {
+                "type": "string",
+                "description": "The network block in cidr format.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A string describing the network",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the Network, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gateway": {
+                "type": "string",
+                "description": "Gateway's IP address of the network. By default, the first IP address is set as gateway address; if the value is 'none' then the network has no gateway.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name available in NIOS Server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parent_cidr": {
+                "type": "string",
+                "description": "The parent network container block in cidr format to allocate from.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "reserve_ip": {
+                "type": "number",
+                "description": "The number of IP's you want to reserve in IPv4 Network.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reserve_ipv6": {
+                "type": "number",
+                "description": "The number of IP's you want to reserve in IPv6 Network",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv4_network_container": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The network container's address, in CIDR format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of the network container.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the network container to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "The name of network view for the network container.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv6_allocation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The address in cidr format.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of IP address allocation.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dns": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for DNS Purposes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The extensible attributes for IP address allocation, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The host name for Host Record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address of cloud instance.Set a valid IP for static allocation and leave empty if dynamically allocated.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name of NIOS server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv6_association": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The address in cidr format.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of the IP association.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "view in which record has to be created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "duid": {
+                "type": "string",
+                "description": "DHCP unique identifier for IPv6.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dhcp": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for IPAM Purposes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_dns": {
+                "type": "bool",
+                "description": "flag that defines if the host record is to be used for DNS Purposes",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes for IP Association, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The host name for Host Record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address of cloud instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mac_addr": {
+                "type": "string",
+                "description": "mac address of cloud instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name of NIOS server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv6_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allocate_prefix_len": {
+                "type": "number",
+                "description": "Set the parameter's value > 0 to allocate next available network with corresponding prefix length from the network container defined by 'parent_cidr'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cidr": {
+                "type": "string",
+                "description": "The network block in cidr format.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A string describing the network",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the Network, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gateway": {
+                "type": "string",
+                "description": "Gateway's IP address of the network. By default, the first IP address is set as gateway address; if the value is 'none' then the network has no gateway.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name available in NIOS Server.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parent_cidr": {
+                "type": "string",
+                "description": "The parent network container block in cidr format to allocate from.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "reserve_ip": {
+                "type": "number",
+                "description": "The number of IP's you want to reserve in IPv4 Network.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reserve_ipv6": {
+                "type": "number",
+                "description": "The number of IP's you want to reserve in IPv6 Network",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv6_network_container": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The network container's address, in CIDR format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description of the network container.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the network container to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "The name of network view for the network container.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_network_view": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "A description of the network view.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the network container to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the desired name of the network view as shown in the NIOS appliance. The name has the same requirements as the corresponding parameter in WAPI.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ptr_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The network address in cidr format under which record has to be created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description about PTR record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of PTR record to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IPv4/IPv6 address for record creation. Set the field with valid IP for static allocation. If to be dynamically allocated set cidr field",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Network view name of NIOS server.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ptrdname": {
+                "type": "string",
+                "description": "The domain name in FQDN to which the record should point to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "record_name": {
+                "type": "string",
+                "description": "The name of the DNS PTR record in FQDN format",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "infoblox_a_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the A-record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the A-record, as a map in JSON format",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "A record FQDN.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IP address the A-record points to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the A-record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "Zone under which record has been created.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_aaaa_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "The content of 'comment' field at the AAAA-record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the record's zone belongs to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the AAAA-record",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The name of the AAAA-record in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ipv6_addr": {
+                "type": "string",
+                "description": "IPv6 address of the AAAA-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "Zone which the record belongs to.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_cname_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "alias": {
+                "type": "string",
+                "description": "The alias name in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "canonical": {
+                "type": "string",
+                "description": "The Canonical name in FQDN format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A description about CNAME record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "Dns View under which the zone has been created.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of CNAME record, as a map in JSON format",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "Zone under which record has been created.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv4_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A string describing the network",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes for network datasource, as a map in JSON format",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ipv4_network_container": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description": "The CIDR value of the network container.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "Network container's description.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes for the network container.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "Newtwork view's name the network container belongs to.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_network_view": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Network view's description",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the network view.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the view shown in NIOS's UI.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_ptr_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "PTR-record's description.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the record's zone belongs to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the PTR-record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addr": {
+                "type": "string",
+                "description": "IPv4/IPv6 address the PTR-record points from.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ptrdname": {
+                "type": "string",
+                "description": "The domain name in FQDN which the record points to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "record_name": {
+                "type": "string",
+                "description": "The name of the DNS PTR-record in FQDN format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

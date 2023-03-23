@@ -1,1 +1,1328 @@
-/nix/store/l49sjpg0ymkj0kfdi4vkhlpjv7kc0d1w-checkly.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/checkly/checkly": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "account_id": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "api_key": {
+              "type": "string",
+              "description_kind": "plain",
+              "required": true
+            },
+            "api_url": {
+              "type": "string",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "checkly_alert_channel": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "send_degraded": {
+                "type": "bool",
+                "description": "(Default `false`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "send_failure": {
+                "type": "bool",
+                "description": "(Default `true`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "send_recovery": {
+                "type": "bool",
+                "description": "(Default `true`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ssl_expiry": {
+                "type": "bool",
+                "description": "(Default `false`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ssl_expiry_threshold": {
+                "type": "number",
+                "description": "Value must be between 1 and 30 (Default `30`)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "email": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "The email address of this email alert channel.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "opsgenie": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "api_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "priority": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "pagerduty": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "account": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "slack": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "channel": {
+                      "type": "string",
+                      "description": "The name of the alert's Slack channel",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The Slack webhook URL",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "sms": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of this alert channel",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "number": {
+                      "type": "string",
+                      "description": "The mobile number to receive the alerts",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "webhook": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "headers": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "(Default `POST`)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "query_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "template": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "webhook_secret": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "webhook_type": {
+                      "type": "string",
+                      "description": "Type of the webhook. Possible values are 'WEBHOOK_DISCORD', 'WEBHOOK_FIREHYDRANT', 'WEBHOOK_GITLAB_ALERT', 'WEBHOOK_SPIKESH', 'WEBHOOK_SPLUNK', 'WEBHOOK_MSTEAMS' and 'WEBHOOK_TELEGRAM'.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "Allows you to define alerting channels for the checks and groups in your account",
+            "description_kind": "plain"
+          }
+        },
+        "checkly_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "activated": {
+                "type": "bool",
+                "description": "Determines if the check is running or not. Possible values `true`, and `false`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "degraded_response_time": {
+                "type": "number",
+                "description": "The response time in milliseconds starting from which a check should be considered degraded. Possible values are between 0 and 30000. (Default `15000`).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "double_check": {
+                "type": "bool",
+                "description": "Setting this to `true` will trigger a retry when a check fails from the failing region and another, randomly selected region before marking the check as failed.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "environment_variables": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Key/value pairs for setting environment variables during check execution. These are only relevant for browser checks. Use global environment variables whenever possible.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "frequency": {
+                "type": "number",
+                "description": "The frequency in minutes to run the check. Possible values are `0`, `1`, `2`, `5`, `10`, `15`, `30`, `60`, `120`, `180`, `360`, `720`, and `1440`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "frequency_offset": {
+                "type": "number",
+                "description": "This property only valid for API high frequency checks. To create a hight frequency check, the property `frequency` must be `0` and `frequency_offset` could be `10`, `20` or `30`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_id": {
+                "type": "number",
+                "description": "The id of the check group this check is part of.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_order": {
+                "type": "number",
+                "description": "The position of this check in a check group. It determines in what order checks are run when a group is triggered from the API or from CI/CD.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_setup_script": {
+                "type": "string",
+                "description": "A valid piece of Node.js code to run in the setup phase.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local_teardown_script": {
+                "type": "string",
+                "description": "A valid piece of Node.js code to run in the teardown phase.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "locations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "An array of one or more data center locations where to run the this check. (Default [\"us-east-1\"])",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_response_time": {
+                "type": "number",
+                "description": "The response time in milliseconds starting from which a check should be considered failing. Possible values are between 0 and 30000. (Default `30000`).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "muted": {
+                "type": "bool",
+                "description": "Determines if any notifications will be sent out when a check fails/degrades/recovers.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the check.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "private_locations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "An array of one or more private locations slugs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "runtime_id": {
+                "type": "string",
+                "description": "The id of the runtime to use for this check.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "script": {
+                "type": "string",
+                "description": "A valid piece of Node.js JavaScript code describing a browser interaction with the Puppeteer/Playwright framework or a reference to an external JavaScript file.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "setup_snippet_id": {
+                "type": "number",
+                "description": "An ID reference to a snippet to use in the setup phase of an API check.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "should_fail": {
+                "type": "bool",
+                "description": "Allows to invert the behaviour of when a check is considered to fail. Allows for validating error status like 404.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ssl_check": {
+                "type": "bool",
+                "description": "Determines if the SSL certificate should be validated for expiry.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of tags for organizing and filtering checks.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "teardown_snippet_id": {
+                "type": "number",
+                "description": "An ID reference to a snippet to use in the teardown phase of an API check.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the check. Possible values are `API`, and `BROWSER`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "use_global_alert_settings": {
+                "type": "bool",
+                "description": "When true, the account level alert settings will be used, not the alert setting defined on this check.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "alert_channel_subscription": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "activated": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "channel_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "alert_settings": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "escalation_type": {
+                      "type": "string",
+                      "description": "Determines what type of escalation to use. Possible values are `RUN_BASED` or `TIME_BASED`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "reminders": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "amount": {
+                            "type": "number",
+                            "description": "How many reminders to send out after the initial alert notification. Possible values are `0`, `1`, `2`, `3`, `4`, `5`, and `100000`",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "interval": {
+                            "type": "number",
+                            "description": "Possible values are `5`, `10`, `15`, and `30`. (Default `5`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "run_based_escalation": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "failed_run_threshold": {
+                            "type": "number",
+                            "description": "After how many failed consecutive check runs an alert notification should be sent. Possible values are between 1 and 5. (Default `1`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "ssl_certificates": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "alert_threshold": {
+                            "type": "number",
+                            "description": "How long before SSL certificate expiry to send alerts. Possible values `3`, `7`, `14`, `30`. (Default `3`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Determines if alert notifications should be sent for expiring SSL certificates. Possible values `true`, and `false`. (Default `false`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "deprecated": true
+                      }
+                    },
+                    "time_based_escalation": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "minutes_failing_threshold": {
+                            "type": "number",
+                            "description": "After how many minutes after a check starts failing an alert should be sent. Possible values are `5`, `10`, `15`, and `30`. (Default `5`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "environment_variable": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "locked": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Key/value pairs for setting environment variables during check execution, add locked = true to keep value hidden. These are only relevant for browser checks. Use global environment variables whenever possible.",
+                  "description_kind": "plain"
+                }
+              },
+              "request": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "body": {
+                      "type": "string",
+                      "description": "The body of the request.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "body_type": {
+                      "type": "string",
+                      "description": "The `Content-Type` header of the request. Possible values `NONE`, `JSON`, `FORM`, `RAW`, and `GRAPHQL`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "follow_redirects": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "headers": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "The HTTP method to use for this API check. Possible values are `GET`, `POST`, `PUT`, `HEAD`, `DELETE`, `PATCH`. (Default `GET`).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "query_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "skip_ssl": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "assertion": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "comparison": {
+                            "type": "string",
+                            "description": "The type of comparison to be executed between expected and actual value of the assertion. Possible values `EQUALS`, `NOT_EQUALS`, `HAS_KEY`, `NOT_HAS_KEY`, `HAS_VALUE`, `NOT_HAS_VALUE`, `IS_EMPTY`, `NOT_EMPTY`, `GREATER_THAN`, `LESS_THAN`, `CONTAINS`, `NOT_CONTAINS`, `IS_NULL`, and `NOT_NULL`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "property": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "The source of the asserted value. Possible values `STATUS_CODE`, `JSON_BODY`, `HEADERS`, `TEXT_BODY`, and `RESPONSE_TIME`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "target": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "A request can have multiple assertions.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "basic_auth": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "password": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "username": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Set up HTTP basic authentication (username & password).",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "An API check might have one request config.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "Checks allows you to monitor key webapp flows, backend API's and set up alerting, so you get a notification when things break or slow down.",
+            "description_kind": "plain"
+          }
+        },
+        "checkly_check_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "activated": {
+                "type": "bool",
+                "description": "Determines if the checks in the group are running or not.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "concurrency": {
+                "type": "number",
+                "description": "Determines how many checks are run concurrently when triggering a check group from CI/CD or through the API.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "double_check": {
+                "type": "bool",
+                "description": "Setting this to `true` will trigger a retry when a check fails from the failing region and another, randomly selected region before marking the check as failed.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "environment_variables": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Key/value pairs for setting environment variables during check execution. These are only relevant for browser checks. Use global environment variables whenever possible.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_setup_script": {
+                "type": "string",
+                "description": "A valid piece of Node.js code to run in the setup phase of an API check in this group.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local_teardown_script": {
+                "type": "string",
+                "description": "A valid piece of Node.js code to run in the teardown phase of an API check in this group.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "locations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "An array of one or more data center locations where to run the checks.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "muted": {
+                "type": "bool",
+                "description": "Determines if any notifications will be sent out when a check in this group fails and/or recovers.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the check group.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "private_locations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "An array of one or more private locations slugs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "runtime_id": {
+                "type": "string",
+                "description": "The id of the runtime to use for this group.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "setup_snippet_id": {
+                "type": "number",
+                "description": "An ID reference to a snippet to use in the setup phase of an API check.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags for organizing and filtering checks.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "teardown_snippet_id": {
+                "type": "number",
+                "description": "An ID reference to a snippet to use in the teardown phase of an API check.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "use_global_alert_settings": {
+                "type": "bool",
+                "description": "When true, the account level alert settings will be used, not the alert setting defined on this check group.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "alert_channel_subscription": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "activated": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "channel_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "alert_settings": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "escalation_type": {
+                      "type": "string",
+                      "description": "Determines what type of escalation to use. Possible values are `RUN_BASED` or `TIME_BASED`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "reminders": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "amount": {
+                            "type": "number",
+                            "description": "How many reminders to send out after the initial alert notification. Possible values are `0`, `1`, `2`, `3`, `4`, `5`, and `100000`",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "interval": {
+                            "type": "number",
+                            "description": "Possible values are `5`, `10`, `15`, and `30`. (Default `5`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "run_based_escalation": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "failed_run_threshold": {
+                            "type": "number",
+                            "description": "After how many failed consecutive check runs an alert notification should be sent. Possible values are between 1 and 5. (Default `1`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "ssl_certificates": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "alert_threshold": {
+                            "type": "number",
+                            "description": "At what moment in time to start alerting on SSL certificates. Possible values `3`, `7`, `14`, `30`. (Default `3`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Determines if alert notifications should be sent for expiring SSL certificates.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "deprecated": true
+                      }
+                    },
+                    "time_based_escalation": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "minutes_failing_threshold": {
+                            "type": "number",
+                            "description": "After how many minutes after a check starts failing an alert should be sent. Possible values are `5`, `10`, `15`, and `30`. (Default `5`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "api_check_defaults": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "headers": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "query_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The base url for this group which you can reference with the `GROUP_BASE_URL` variable in all group checks.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "assertion": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "comparison": {
+                            "type": "string",
+                            "description": "The type of comparison to be executed between expected and actual value of the assertion. Possible values `EQUALS`, `NOT_EQUALS`, `HAS_KEY`, `NOT_HAS_KEY`, `HAS_VALUE`, `NOT_HAS_VALUE`, `IS_EMPTY`, `NOT_EMPTY`, `GREATER_THAN`, `LESS_THAN`, `CONTAINS`, `NOT_CONTAINS`, `IS_NULL`, and `NOT_NULL`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "property": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "The source of the asserted value. Possible values `STATUS_CODE`, `JSON_BODY`, `HEADERS`, `TEXT_BODY`, and `RESPONSE_TIME`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "target": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "basic_auth": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "password": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "username": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "environment_variable": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "locked": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Key/value pairs for setting environment variables during check execution, add locked = true to keep value hidden. These are only relevant for browser checks. Use global environment variables whenever possible.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Check groups allow  you to group together a set of related checks, which can also share default settings for various attributes.",
+            "description_kind": "plain"
+          }
+        },
+        "checkly_dashboard": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "checks_per_page": {
+                "type": "number",
+                "description": "Determines how many checks to show per page.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "custom_domain": {
+                "type": "string",
+                "description": "A custom user domain, e.g. 'status.example.com'. See the docs on updating your DNS and SSL usage.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "custom_url": {
+                "type": "string",
+                "description": "A subdomain name under 'checklyhq.com'. Needs to be unique across all users.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "HTML <meta> description for the dashboard.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "favicon": {
+                "type": "string",
+                "description": "A URL pointing to an image file to use as browser favicon.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "header": {
+                "type": "string",
+                "description": "A piece of text displayed at the top of your dashboard.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hide_tags": {
+                "type": "bool",
+                "description": "Show or hide the tags on the dashboard.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "link": {
+                "type": "string",
+                "description": "A link to for the dashboard logo.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "logo": {
+                "type": "string",
+                "description": "A URL pointing to an image file to use for the dashboard logo.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "paginate": {
+                "type": "bool",
+                "description": "Determines if pagination is on or off.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "pagination_rate": {
+                "type": "number",
+                "description": "How often to trigger pagination in seconds. Possible values `30`, `60` and `300`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "refresh_rate": {
+                "type": "number",
+                "description": "How often to refresh the dashboard in seconds. Possible values `60`, '300' and `600`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of one or more tags that filter which checks to display on the dashboard.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "use_tags_and_operator": {
+                "type": "bool",
+                "description": "Set when to use AND operator for fetching dashboard tags.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "width": {
+                "type": "string",
+                "description": "Determines whether to use the full screen or focus in the center. Possible values `FULL` and `960PX`.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_environment_variable": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "locked": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "value": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_maintenance_windows": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ends_at": {
+                "type": "string",
+                "description": "The end date of the maintenance window.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The maintenance window name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "repeat_ends_at": {
+                "type": "string",
+                "description": "The date on which the maintenance window should stop repeating.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "repeat_interval": {
+                "type": "number",
+                "description": "The repeat interval of the maintenance window from the first occurrence.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "repeat_unit": {
+                "type": "string",
+                "description": "The repeat cadence for the maintenance window. Possible values `DAY`, `WEEK` and `MONTH`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "starts_at": {
+                "type": "string",
+                "description": "The start date of the maintenance window.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The names of the checks and groups maintenance window should apply to.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_private_location": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "icon": {
+                "type": "string",
+                "description": "Icon assigned to the private location.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Private location API keys.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The private location name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "slug_name": {
+                "type": "string",
+                "description": "Valid slug name.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_snippet": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the snippet",
+                "description_kind": "plain",
+                "required": true
+              },
+              "script": {
+                "type": "string",
+                "description": "Your Node.js code that interacts with the API check lifecycle, or functions as a partial for browser checks.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_trigger_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "check_id": {
+                "type": "string",
+                "description": "The id of the check that you want to attach the trigger to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "token": {
+                "type": "string",
+                "description": "The token value created to trigger the check",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The request URL to trigger the check run.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_trigger_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group_id": {
+                "type": "number",
+                "description": "The id of the group that you want to attach the trigger to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "token": {
+                "type": "string",
+                "description": "The token value created to trigger the group",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The request URL to trigger the group run.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

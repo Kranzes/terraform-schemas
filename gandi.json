@@ -1,1 +1,1095 @@
-/nix/store/qi93v4bnmvw5ddiv3z8vadh7ryss5vph-gandi.json
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/go-gandi/gandi": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "dry_run": {
+              "type": "bool",
+              "description": "Prevent the Domain provider from taking certain actions",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "key": {
+              "type": "string",
+              "description": "A Gandi API key",
+              "description_kind": "plain",
+              "required": true,
+              "sensitive": true
+            },
+            "sharing_id": {
+              "type": "string",
+              "description": "A Gandi Sharing ID",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "url": {
+              "type": "string",
+              "description": "The Gandi API URL",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "gandi_dnssec_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "algorithm": {
+                "type": "number",
+                "description": "DNSSEC algorithm type",
+                "description_kind": "plain",
+                "required": true
+              },
+              "domain": {
+                "type": "string",
+                "description": "Domain name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "public_key": {
+                "type": "string",
+                "description": "DNSSEC public key",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "DNSSEC key type",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "autorenew": {
+                "type": "bool",
+                "description": "Should the domain autorenew",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nameservers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of nameservers for the domain",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of tags attached to the domain",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "admin": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "city": {
+                      "type": "string",
+                      "description": "City for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The two letter country code for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "data_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact data in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Contact email address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "extra_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Extra parameters, needed for some jurisdictions",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "family_name": {
+                      "type": "string",
+                      "description": "Family name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "given_name": {
+                      "type": "string",
+                      "description": "Given name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mail_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact email in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "organisation": {
+                      "type": "string",
+                      "description": "The legal name of the organisation. Required for types other than person",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "phone": {
+                      "type": "string",
+                      "description": "Phone number for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The state code for the contact",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "street_addr": {
+                      "type": "string",
+                      "description": "Street Address of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "One of 'person', 'company', 'association', 'public body', or 'reseller'",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "zip": {
+                      "type": "string",
+                      "description": "Postal Code/Zipcode of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "billing": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "city": {
+                      "type": "string",
+                      "description": "City for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The two letter country code for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "data_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact data in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Contact email address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "extra_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Extra parameters, needed for some jurisdictions",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "family_name": {
+                      "type": "string",
+                      "description": "Family name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "given_name": {
+                      "type": "string",
+                      "description": "Given name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mail_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact email in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "organisation": {
+                      "type": "string",
+                      "description": "The legal name of the organisation. Required for types other than person",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "phone": {
+                      "type": "string",
+                      "description": "Phone number for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The state code for the contact",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "street_addr": {
+                      "type": "string",
+                      "description": "Street Address of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "One of 'person', 'company', 'association', 'public body', or 'reseller'",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "zip": {
+                      "type": "string",
+                      "description": "Postal Code/Zipcode of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "owner": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "city": {
+                      "type": "string",
+                      "description": "City for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The two letter country code for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "data_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact data in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Contact email address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "extra_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Extra parameters, needed for some jurisdictions",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "family_name": {
+                      "type": "string",
+                      "description": "Family name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "given_name": {
+                      "type": "string",
+                      "description": "Given name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mail_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact email in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "organisation": {
+                      "type": "string",
+                      "description": "The legal name of the organisation. Required for types other than person",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "phone": {
+                      "type": "string",
+                      "description": "Phone number for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The state code for the contact",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "street_addr": {
+                      "type": "string",
+                      "description": "Street Address of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "One of 'person', 'company', 'association', 'public body', or 'reseller'",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "zip": {
+                      "type": "string",
+                      "description": "Postal Code/Zipcode of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "tech": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "city": {
+                      "type": "string",
+                      "description": "City for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The two letter country code for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "data_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact data in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Contact email address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "extra_parameters": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Extra parameters, needed for some jurisdictions",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "family_name": {
+                      "type": "string",
+                      "description": "Family name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "given_name": {
+                      "type": "string",
+                      "description": "Given name of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mail_obfuscated": {
+                      "type": "bool",
+                      "description": "Whether or not to obfuscate contact email in WHOIS",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "organisation": {
+                      "type": "string",
+                      "description": "The legal name of the organisation. Required for types other than person",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "phone": {
+                      "type": "string",
+                      "description": "Phone number for the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The state code for the contact",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "street_addr": {
+                      "type": "string",
+                      "description": "Street Address of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "One of 'person', 'company', 'association', 'public body', or 'reseller'",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "zip": {
+                      "type": "string",
+                      "description": "Postal Code/Zipcode of the contact",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_email_forwarding": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "destinations": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Forwards to email addresses",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "source": {
+                "type": "string",
+                "description": "Account alias name",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_glue_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "fqdn": {
+                "type": "string",
+                "description": "The fqdn of the record",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fqdn_unicode": {
+                "type": "string",
+                "description": "The fqdn unicode of the record",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "href": {
+                "type": "string",
+                "description": "The href of the record",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ips": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IP addresses",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Host name of the glue record",
+                "description_kind": "plain",
+                "required": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "Domain name",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_livedns_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automatic_snapshots": {
+                "type": "bool",
+                "description": "Enable or disable the automatic creation of snapshots when records are changed",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "The SOA TTL for the domain",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_livedns_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "href": {
+                "type": "string",
+                "description": "The href of the record",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mutable": {
+                "type": "bool",
+                "description": "Define if the record can be modified outside Terraform (this currently only works for TXT records)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the record",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "The TTL of the record",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the record",
+                "description_kind": "plain",
+                "required": true
+              },
+              "values": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of values of the record",
+                "description_kind": "plain",
+                "required": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_mailbox": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aliases": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Aliases for email",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "domain": {
+                "type": "string",
+                "description": "Domain name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "login": {
+                "type": "string",
+                "description": "Login",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mailbox_type": {
+                "type": "string",
+                "description": "Mailbox type",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "password": {
+                "type": "string",
+                "description": "Password",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_nameservers": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "nameservers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of nameservers for the domain",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_simplehosting_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "database_name": {
+                "type": "string",
+                "description": "The name of the database type ('mysql' or 'pgsql')",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "language_name": {
+                "type": "string",
+                "description": "The name of the language ('php', 'python', 'nodejs' or 'ruby')",
+                "description_kind": "plain",
+                "required": true
+              },
+              "location": {
+                "type": "string",
+                "description": "The datacenter location of the instance ('FR' or 'LU')",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the SimpleHosting instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "size": {
+                "type": "string",
+                "description": "The size of the SimpleHosting instance ('s+', 'm', 'l' or 'xxl')",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_simplehosting_vhost": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application": {
+                "type": "string",
+                "description": "The name of an application to install ('grav', 'matomo', 'nextcloud', 'prestashop', 'wordpress')",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "certificate_id": {
+                "type": "string",
+                "description": "The ID of the created free certificate",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The FQDN of the Vhost",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of the SimpleHosting instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "linked_dns_zone_alteration": {
+                "type": "bool",
+                "description": "Whether to alter the linked DNS Zone",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "gandi_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nameservers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of nameservers for the domain",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_glue_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ips": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of the ip addresses provided for the glue record",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Host name of the glue record",
+                "description_kind": "plain",
+                "required": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "Domain name",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_livedns_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_livedns_domain_ns": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The FQDN of the domain",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nameservers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of nameservers for the domain",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "gandi_mailbox": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain": {
+                "type": "string",
+                "description": "Domain name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mailbox_id": {
+                "type": "string",
+                "description": "Mailbox ID",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}
