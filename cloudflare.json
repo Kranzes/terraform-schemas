@@ -1376,6 +1376,12 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "ui_read_only_toggle_reason": {
+                "type": "string",
+                "description": "A description of the reason why the UI read only field is being toggled.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "user_seat_expiration_inactive_time": {
                 "type": "string",
                 "description": "The amount of time a user seat is inactive before it expires. When the user seat exceeds the set time of inactivity, the user is removed as an active seat and no longer counts against your Teams seat count. Must be in the format `300ms` or `2h45m`.",
@@ -2449,6 +2455,101 @@
               }
             },
             "description": "Provides a resource which manages Cloudflare account members.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_address_map": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "can_delete": {
+                "type": "bool",
+                "description": "If set to false, then the Address Map cannot be deleted via API. This is true for Cloudflare-managed maps.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "can_modify_ips": {
+                "type": "bool",
+                "description": "If set to false, then the IPs on the Address Map cannot be modified via the API. This is true for Cloudflare-managed maps.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "default_sni": {
+                "type": "string",
+                "description": "If you have legacy TLS clients which do not send the TLS server name indicator, then you can specify one default SNI on the map.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the address map.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the Address Map is enabled or not.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "ips": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "ip": {
+                      "type": "string",
+                      "description": "An IPv4 or IPv6 address.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "The set of IPs on the Address Map.",
+                  "description_kind": "markdown"
+                }
+              },
+              "memberships": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "can_delete": {
+                      "type": "bool",
+                      "description": "Controls whether the membership can be deleted via the API or not.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "identifier": {
+                      "type": "string",
+                      "description": "Identifier of the account or zone.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "kind": {
+                      "type": "string",
+                      "description": "The type of the membership.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Zones and Accounts which will be assigned IPs on this Address Map.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "Provides the ability to manage IP addresses that can be used by DNS records when\nthey are proxied through Cloudflare.\n",
             "description_kind": "markdown"
           }
         },
@@ -3604,6 +3705,15 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "check_disks": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Specific volume(s) to check for encryption.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "compliance_status": {
                       "type": "string",
                       "description": "The workspace one device compliance status. Available values: `compliant`, `noncompliant`.",
@@ -4836,7 +4946,7 @@
               },
               "kind": {
                 "type": "string",
-                "description": "The type of items the list will contain.",
+                "description": "The type of items the list will contain. **Modifying this attribute will force creation of a new resource.**",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -4933,6 +5043,99 @@
               }
             },
             "description": "Provides Lists (IPs, Redirects) to be used in Edge Rules Engine\nacross all zones within the same account.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_list_item": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "An optional comment for the item.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip": {
+                "type": "string",
+                "description": "IP address to include in the list. Must provide only one of `ip`, `redirect`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "list_id": {
+                "type": "string",
+                "description": "The list identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "redirect": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "include_subdomains": {
+                      "type": "string",
+                      "description": "Whether the redirect also matches subdomains of the source url. Available values: `disabled`, `enabled`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "preserve_path_suffix": {
+                      "type": "string",
+                      "description": "Whether to preserve the path suffix when doing subpath matching. Available values: `disabled`, `enabled`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "preserve_query_string": {
+                      "type": "string",
+                      "description": "Whether the redirect target url should keep the query string of the request's url. Available values: `disabled`, `enabled`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "source_url": {
+                      "type": "string",
+                      "description": "The source url of the redirect.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "description": "The status code to be used when redirecting a request.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "subpath_matching": {
+                      "type": "string",
+                      "description": "Whether the redirect also matches subpaths of the source url. Available values: `disabled`, `enabled`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "target_url": {
+                      "type": "string",
+                      "description": "The target url of the redirect.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Redirect configuration to store in the list. Must provide only one of `ip`, `redirect`. **Modifying this attribute will force creation of a new resource.**",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "Provides individual list items (IPs, Redirects) to be used in Edge Rules Engine\nacross all zones within the same account.\n",
             "description_kind": "markdown"
           }
         },
@@ -5726,7 +5929,7 @@
                     },
                     "default_policy": {
                       "type": "string",
-                      "description": "Method of shedding traffic. Available values: ``, `hash`, `random`. Defaults to `\"\"`.",
+                      "description": "Method of shedding traffic. Available values: `\"\"`, `hash`, `random`. Defaults to `\"\"`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -5738,7 +5941,7 @@
                     },
                     "session_policy": {
                       "type": "string",
-                      "description": "Method of shedding traffic. Available values: ``, `hash`. Defaults to `\"\"`.",
+                      "description": "Method of shedding traffic. Available values: `\"\"`, `hash`. Defaults to `\"\"`.",
                       "description_kind": "markdown",
                       "optional": true
                     }
@@ -5753,7 +5956,7 @@
                   "attributes": {
                     "policy": {
                       "type": "string",
-                      "description": "Origin steering policy to be used. Available values: ``, `hash`, `random`. Defaults to `random`.",
+                      "description": "Origin steering policy to be used. Available values: `\"\"`, `hash`, `random`. Defaults to `random`.",
                       "description_kind": "markdown",
                       "optional": true
                     }
@@ -6496,7 +6699,7 @@
               },
               "url": {
                 "type": "string",
-                "description": "The URL of the webhook destinations.",
+                "description": "The URL of the webhook destinations. **Modifying this attribute will force creation of a new resource.**",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -8041,12 +8244,12 @@
           }
         },
         "cloudflare_ruleset": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "account_id": {
                 "type": "string",
-                "description": "The account identifier to target for the resource. Conflicts with `zone_id`.",
+                "description": "The account identifier to target for the resource.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -8054,12 +8257,13 @@
                 "type": "string",
                 "description": "Brief summary of the ruleset and its intended use.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The identifier of this resource.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "kind": {
@@ -8070,7 +8274,7 @@
               },
               "name": {
                 "type": "string",
-                "description": "Name of the ruleset. **Modifying this attribute will force creation of a new resource.**",
+                "description": "Name of the ruleset.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -8088,7 +8292,7 @@
               },
               "zone_id": {
                 "type": "string",
-                "description": "The zone identifier to target for the resource. Conflicts with `account_id`.",
+                "description": "The zone identifier to target for the resource.",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -8100,7 +8304,7 @@
                   "attributes": {
                     "action": {
                       "type": "string",
-                      "description": "Action to perform in the ruleset rule. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                      "description": "Action to perform in the ruleset rule. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -8108,13 +8312,15 @@
                       "type": "string",
                       "description": "Brief summary of the ruleset rule and its intended use.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "enabled": {
                       "type": "bool",
                       "description": "Whether the rule is active.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "expression": {
                       "type": "string",
@@ -8126,24 +8332,27 @@
                       "type": "string",
                       "description": "Unique rule identifier.",
                       "description_kind": "markdown",
+                      "optional": true,
                       "computed": true
                     },
                     "last_updated": {
                       "type": "string",
                       "description": "The most recent update to this rule.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "ref": {
                       "type": "string",
                       "description": "Rule reference.",
                       "description_kind": "markdown",
-                      "computed": true
+                      "optional": true
                     },
                     "version": {
                       "type": "string",
                       "description": "Version of the ruleset to deploy.",
                       "description_kind": "markdown",
+                      "optional": true,
                       "computed": true
                     }
                   },
@@ -8379,7 +8588,7 @@
                               "attributes": {
                                 "css": {
                                   "type": "bool",
-                                  "description": "SSL minification.",
+                                  "description": "CSS minification.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -8414,13 +8623,12 @@
                                   "type": "string",
                                   "description": "Mode of the browser TTL.",
                                   "description_kind": "markdown",
-                                  "required": true
+                                  "optional": true
                                 }
                               },
                               "description": "List of browser TTL parameters to apply to the request.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "cache_key": {
                             "nesting_mode": "list",
@@ -8428,7 +8636,7 @@
                               "attributes": {
                                 "cache_by_device_type": {
                                   "type": "bool",
-                                  "description": "Cache by device type. Conflicts with \"custom_key.user.device_type\".",
+                                  "description": "Cache by device type.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -8456,7 +8664,7 @@
                                           "attributes": {
                                             "check_presence": {
                                               "type": [
-                                                "list",
+                                                "set",
                                                 "string"
                                               ],
                                               "description": "List of cookies to check for presence in the custom key.",
@@ -8465,7 +8673,7 @@
                                             },
                                             "include": {
                                               "type": [
-                                                "list",
+                                                "set",
                                                 "string"
                                               ],
                                               "description": "List of cookies to include in the custom key.",
@@ -8475,8 +8683,7 @@
                                           },
                                           "description": "Cookie parameters for the custom key.",
                                           "description_kind": "markdown"
-                                        },
-                                        "max_items": 1
+                                        }
                                       },
                                       "header": {
                                         "nesting_mode": "list",
@@ -8484,7 +8691,7 @@
                                           "attributes": {
                                             "check_presence": {
                                               "type": [
-                                                "list",
+                                                "set",
                                                 "string"
                                               ],
                                               "description": "List of headers to check for presence in the custom key.",
@@ -8499,7 +8706,7 @@
                                             },
                                             "include": {
                                               "type": [
-                                                "list",
+                                                "set",
                                                 "string"
                                               ],
                                               "description": "List of headers to include in the custom key.",
@@ -8509,8 +8716,7 @@
                                           },
                                           "description": "Header parameters for the custom key.",
                                           "description_kind": "markdown"
-                                        },
-                                        "max_items": 1
+                                        }
                                       },
                                       "host": {
                                         "nesting_mode": "list",
@@ -8525,8 +8731,7 @@
                                           },
                                           "description": "Host parameters for the custom key.",
                                           "description_kind": "markdown"
-                                        },
-                                        "max_items": 1
+                                        }
                                       },
                                       "query_string": {
                                         "nesting_mode": "list",
@@ -8534,27 +8739,26 @@
                                           "attributes": {
                                             "exclude": {
                                               "type": [
-                                                "list",
+                                                "set",
                                                 "string"
                                               ],
-                                              "description": "List of query string parameters to exclude from the custom key. Conflicts with \"include\".",
+                                              "description": "List of query string parameters to exclude from the custom key.",
                                               "description_kind": "markdown",
                                               "optional": true
                                             },
                                             "include": {
                                               "type": [
-                                                "list",
+                                                "set",
                                                 "string"
                                               ],
-                                              "description": "List of query string parameters to include in the custom key. Conflicts with \"exclude\".",
+                                              "description": "List of query string parameters to include in the custom key.",
                                               "description_kind": "markdown",
                                               "optional": true
                                             }
                                           },
                                           "description": "Query string parameters for the custom key.",
                                           "description_kind": "markdown"
-                                        },
-                                        "max_items": 1
+                                        }
                                       },
                                       "user": {
                                         "nesting_mode": "list",
@@ -8562,7 +8766,7 @@
                                           "attributes": {
                                             "device_type": {
                                               "type": "bool",
-                                              "description": "Add device type to the custom key. Conflicts with \"cache_key.cache_by_device_type\".",
+                                              "description": "Add device type to the custom key.",
                                               "description_kind": "markdown",
                                               "optional": true
                                             },
@@ -8581,20 +8785,17 @@
                                           },
                                           "description": "User parameters for the custom key.",
                                           "description_kind": "markdown"
-                                        },
-                                        "max_items": 1
+                                        }
                                       }
                                     },
                                     "description": "Custom key parameters for the request.",
                                     "description_kind": "markdown"
-                                  },
-                                  "max_items": 1
+                                  }
                                 }
                               },
                               "description": "List of cache key parameters to apply to the request.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "edge_ttl": {
                             "nesting_mode": "list",
@@ -8602,7 +8803,7 @@
                               "attributes": {
                                 "default": {
                                   "type": "number",
-                                  "description": "Default edge TTL.",
+                                  "description": "Default edge TTL",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -8610,7 +8811,7 @@
                                   "type": "string",
                                   "description": "Mode of the edge TTL.",
                                   "description_kind": "markdown",
-                                  "required": true
+                                  "optional": true
                                 }
                               },
                               "block_types": {
@@ -8620,7 +8821,7 @@
                                     "attributes": {
                                       "status_code": {
                                         "type": "number",
-                                        "description": "Status code for which the edge TTL is applied. Conflicts with \"status_code_range\".",
+                                        "description": "Status code for which the edge TTL is applied.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -8628,7 +8829,7 @@
                                         "type": "number",
                                         "description": "Status code edge TTL value.",
                                         "description_kind": "markdown",
-                                        "required": true
+                                        "optional": true
                                       }
                                     },
                                     "block_types": {
@@ -8649,7 +8850,7 @@
                                               "optional": true
                                             }
                                           },
-                                          "description": "Status code range for which the edge TTL is applied. Conflicts with \"status_code\".",
+                                          "description": "Status code range for which the edge TTL is applied.",
                                           "description_kind": "markdown"
                                         }
                                       }
@@ -8661,8 +8862,7 @@
                               },
                               "description": "List of edge TTL parameters to apply to the request.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "from_list": {
                             "nesting_mode": "list",
@@ -8672,19 +8872,18 @@
                                   "type": "string",
                                   "description": "Expression to use for the list lookup.",
                                   "description_kind": "markdown",
-                                  "required": true
+                                  "optional": true
                                 },
                                 "name": {
                                   "type": "string",
                                   "description": "Name of the list.",
                                   "description_kind": "markdown",
-                                  "required": true
+                                  "optional": true
                                 }
                               },
                               "description": "Use a list to lookup information for the action.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "from_value": {
                             "nesting_mode": "list",
@@ -8710,27 +8909,25 @@
                                     "attributes": {
                                       "expression": {
                                         "type": "string",
-                                        "description": "Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions. Conflicts with `\"value\"`.",
+                                        "description": "Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
                                       "value": {
                                         "type": "string",
-                                        "description": "Static value to provide as the HTTP request header value. Conflicts with `\"expression\"`.",
+                                        "description": "Static value to provide as the HTTP request header value.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       }
                                     },
                                     "description": "Target URL for redirect.",
                                     "description_kind": "markdown"
-                                  },
-                                  "max_items": 1
+                                  }
                                 }
                               },
                               "description": "Use a value to lookup information for the action.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "headers": {
                             "nesting_mode": "list",
@@ -8738,7 +8935,7 @@
                               "attributes": {
                                 "expression": {
                                   "type": "string",
-                                  "description": "Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions. Conflicts with `\"value\"`.",
+                                  "description": "Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -8756,7 +8953,7 @@
                                 },
                                 "value": {
                                   "type": "string",
-                                  "description": "Static value to provide as the HTTP request header value. Conflicts with `\"expression\"`.",
+                                  "description": "Static value to provide as the HTTP request header value.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 }
@@ -8778,8 +8975,7 @@
                               },
                               "description": "List of properties to configure WAF payload logging.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "origin": {
                             "nesting_mode": "list",
@@ -8800,8 +8996,7 @@
                               },
                               "description": "List of properties to change request origin.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "overrides": {
                             "nesting_mode": "list",
@@ -8809,7 +9004,7 @@
                               "attributes": {
                                 "action": {
                                   "type": "string",
-                                  "description": "Action to perform in the rule-level override. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                                  "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -8817,18 +9012,11 @@
                                   "type": "bool",
                                   "description": "Defines if the current ruleset-level override enables or disables the ruleset.",
                                   "description_kind": "markdown",
-                                  "deprecated": true,
                                   "optional": true
                                 },
                                 "sensitivity_level": {
                                   "type": "string",
                                   "description": "Sensitivity level to override for all ruleset rules. Available values: `default`, `medium`, `low`, `eoff`.",
-                                  "description_kind": "markdown",
-                                  "optional": true
-                                },
-                                "status": {
-                                  "type": "string",
-                                  "description": "Defines if the current ruleset-level override enables or disables the ruleset. Available values: `enabled`, `disabled`. Defaults to `\"\"`.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 }
@@ -8840,7 +9028,7 @@
                                     "attributes": {
                                       "action": {
                                         "type": "string",
-                                        "description": "Action to perform in the tag-level override. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                                        "description": "Action to perform in the tag-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -8853,13 +9041,6 @@
                                       "enabled": {
                                         "type": "bool",
                                         "description": "Defines if the current tag-level override enables or disables the ruleset rules with the specified tag.",
-                                        "description_kind": "markdown",
-                                        "deprecated": true,
-                                        "optional": true
-                                      },
-                                      "status": {
-                                        "type": "string",
-                                        "description": "Defines if the current tag-level override enables or disables the ruleset rules with the specified tag. Available values: `enabled`, `disabled`. Defaults to `\"\"`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       }
@@ -8874,7 +9055,7 @@
                                     "attributes": {
                                       "action": {
                                         "type": "string",
-                                        "description": "Action to perform in the rule-level override. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                                        "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -8882,7 +9063,6 @@
                                         "type": "bool",
                                         "description": "Defines if the current rule-level override enables or disables the rule.",
                                         "description_kind": "markdown",
-                                        "deprecated": true,
                                         "optional": true
                                       },
                                       "id": {
@@ -8902,12 +9082,6 @@
                                         "description": "Sensitivity level for a ruleset rule override.",
                                         "description_kind": "markdown",
                                         "optional": true
-                                      },
-                                      "status": {
-                                        "type": "string",
-                                        "description": "Defines if the current rule-level override enables or disables the rule. Available values: `enabled`, `disabled`. Defaults to `\"\"`.",
-                                        "description_kind": "markdown",
-                                        "optional": true
                                       }
                                     },
                                     "description": "List of rule-based overrides.",
@@ -8917,8 +9091,7 @@
                               },
                               "description": "List of override configurations to apply to the ruleset.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "response": {
                             "nesting_mode": "list",
@@ -8960,8 +9133,7 @@
                               },
                               "description": "List of serve stale parameters to apply to the request.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "sni": {
                             "nesting_mode": "list",
@@ -8976,8 +9148,7 @@
                               },
                               "description": "List of properties to manange Server Name Indication.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           },
                           "uri": {
                             "nesting_mode": "list",
@@ -9009,8 +9180,7 @@
                                     },
                                     "description": "URI path configuration when performing a URL rewrite.",
                                     "description_kind": "markdown"
-                                  },
-                                  "max_items": 1
+                                  }
                                 },
                                 "query": {
                                   "nesting_mode": "list",
@@ -9031,20 +9201,17 @@
                                     },
                                     "description": "Query string configuration when performing a URL rewrite.",
                                     "description_kind": "markdown"
-                                  },
-                                  "max_items": 1
+                                  }
                                 }
                               },
                               "description": "List of URI properties to configure for the ruleset rule when performing URL rewrite transformations.",
                               "description_kind": "markdown"
-                            },
-                            "max_items": 1
+                            }
                           }
                         },
                         "description": "List of parameters that configure the behavior of the ruleset rule action.",
                         "description_kind": "markdown"
-                      },
-                      "max_items": 1
+                      }
                     },
                     "exposed_credential_check": {
                       "nesting_mode": "list",
@@ -9065,8 +9232,7 @@
                         },
                         "description": "List of parameters that configure exposed credential checks.",
                         "description_kind": "markdown"
-                      },
-                      "max_items": 1
+                      }
                     },
                     "logging": {
                       "nesting_mode": "list",
@@ -9076,20 +9242,12 @@
                             "type": "bool",
                             "description": "Override the default logging behavior when a rule is matched.",
                             "description_kind": "markdown",
-                            "deprecated": true,
-                            "optional": true
-                          },
-                          "status": {
-                            "type": "string",
-                            "description": "Override the default logging behavior when a rule is matched. Available values: `enabled`, `disabled`. Defaults to `\"\"`.",
-                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
                         "description": "List parameters to configure how the rule generates logs.",
                         "description_kind": "markdown"
-                      },
-                      "max_items": 1
+                      }
                     },
                     "ratelimit": {
                       "nesting_mode": "list",
@@ -9149,8 +9307,7 @@
                         },
                         "description": "List of parameters that configure HTTP rate limiting behaviour.",
                         "description_kind": "markdown"
-                      },
-                      "max_items": 1
+                      }
                     }
                   },
                   "description": "List of rules to apply to the ruleset.",
@@ -9924,7 +10081,7 @@
               },
               "action": {
                 "type": "string",
-                "description": "The action executed by matched teams rule. Available values: `allow`, `block`, `safesearch`, `ytrestricted`, `on`, `off`, `scan`, `noscan`, `isolate`, `noisolate`, `override`, `l4_override`, `egress`.",
+                "description": "The action executed by matched teams rule. Available values: `allow`, `block`, `safesearch`, `ytrestricted`, `on`, `off`, `scan`, `noscan`, `isolate`, `noisolate`, `override`, `l4_override`, `egress`, `audit_ssh`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -10436,7 +10593,7 @@
                           },
                           "proxy_type": {
                             "type": "string",
-                            "description": "cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: ``, `socks`. Defaults to `\"\"`.",
+                            "description": "cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: `\"\"`, `socks`. Defaults to `\"\"`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -11155,6 +11312,12 @@
                 "description": "The account identifier to target for the resource.",
                 "description_kind": "markdown",
                 "required": true
+              },
+              "compatibility_date": {
+                "type": "string",
+                "description": "The date to use for the compatibility flag.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "content": {
                 "type": "string",
@@ -12624,6 +12787,89 @@
               }
             },
             "description": "Use this data source to get the [IP ranges](https://www.cloudflare.com/ips/) of Cloudflare network.",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_list": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "List description.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kind": {
+                "type": "string",
+                "description": "List kind.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The list name to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "numitems": {
+                "type": "number",
+                "description": "Number of items in list.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to lookup a [List](https://developers.cloudflare.com/api/operations/lists-get-lists).",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_lists": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lists": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "id": "string",
+                      "kind": "string",
+                      "name": "string",
+                      "numitems": "number"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to lookup [Lists](https://developers.cloudflare.com/api/operations/lists-get-lists).",
             "description_kind": "markdown"
           }
         },

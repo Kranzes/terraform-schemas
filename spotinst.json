@@ -8288,6 +8288,99 @@
                 },
                 "max_items": 1
               },
+              "block_device_mappings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "device_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "ebs": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "delete_on_termination": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "encrypted": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "iops": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "kms_key_id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "snapshot_id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "throughput": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "volume_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "volume_type": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "block_types": {
+                          "dynamic_volume_size": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "base_size": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "resource": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "size_per_resource_unit": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "cluster_orientation": {
                 "nesting_mode": "list",
                 "block": {
@@ -10428,11 +10521,6 @@
                       "nesting_mode": "list",
                       "block": {
                         "attributes": {
-                          "batch_size_percentage": {
-                            "type": "number",
-                            "description_kind": "plain",
-                            "optional": true
-                          },
                           "cron_expression": {
                             "type": "string",
                             "description_kind": "plain",
@@ -10447,6 +10535,46 @@
                             "type": "string",
                             "description_kind": "plain",
                             "required": true
+                          }
+                        },
+                        "block_types": {
+                          "task_parameters": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "cluster_roll": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "batch_min_healthy_percentage": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "batch_size_percentage": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "comment": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "respect_pdb": {
+                                        "type": "bool",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
                           }
                         },
                         "description_kind": "plain"
@@ -10535,6 +10663,11 @@
                               "list",
                               "string"
                             ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "respect_pdb": {
+                            "type": "bool",
                             "description_kind": "plain",
                             "optional": true
                           }

@@ -24,9 +24,27 @@
               "description_kind": "plain",
               "optional": true
             },
+            "http_client_retry_backoff_base": {
+              "type": "number",
+              "description": "The HTTP request retry back off base. Defaults to 2.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "http_client_retry_backoff_multiplier": {
+              "type": "number",
+              "description": "The HTTP request retry back off multiplier. Defaults to 2.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "http_client_retry_enabled": {
               "type": "bool",
               "description": "Enables request retries on HTTP status codes 429 and 5xx. Defaults to `true`.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "http_client_retry_max_retries": {
+              "type": "number",
+              "description": "The HTTP request maximum retry number. Defaults to 3.",
               "description_kind": "plain",
               "optional": true
             },
@@ -32802,6 +32820,49 @@
             "description_kind": "plain"
           }
         },
+        "datadog_ip_allowlist": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the IP Allowlist is enabled.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "entry": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "cidr_block": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "note": {
+                      "type": "string",
+                      "description": "Note accompanying IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Set of objects containing an IP address or range of IP addresses in the allowlist and an accompanying note.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Provides the Datadog IP allowlist resource. This can be used to manage the Datadog IP allowlist",
+            "description_kind": "plain"
+          }
+        },
         "datadog_logs_archive": {
           "version": 0,
           "block": {
@@ -33819,6 +33880,46 @@
                                   },
                                   "max_items": 1
                                 },
+                                "reference_table_lookup_processor": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "is_enabled": {
+                                        "type": "bool",
+                                        "description": "If the processor is enabled or not.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "lookup_enrichment_table": {
+                                        "type": "string",
+                                        "description": "Name of the Reference Table for the source attribute and their associated target attribute values.",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Name of the processor",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "source": {
+                                        "type": "string",
+                                        "description": "Name of the source attribute used to do the lookup.",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "target": {
+                                        "type": "string",
+                                        "description": "Name of the attribute that contains the result of the lookup.",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description": "Reference Table Lookup Processor. Reference Tables are in public beta. More information can be found in the [official docs](https://docs.datadoghq.com/logs/processing/processors/?tab=ui#lookup-processor)",
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
                                 "service_remapper": {
                                   "nesting_mode": "list",
                                   "block": {
@@ -34043,6 +34144,46 @@
                             }
                           }
                         },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "reference_table_lookup_processor": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "is_enabled": {
+                            "type": "bool",
+                            "description": "If the processor is enabled or not.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "lookup_enrichment_table": {
+                            "type": "string",
+                            "description": "Name of the Reference Table for the source attribute and their associated target attribute values.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the processor",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "Name of the source attribute used to do the lookup.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "target": {
+                            "type": "string",
+                            "description": "Name of the attribute that contains the result of the lookup.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Reference Table Lookup Processor. Reference Tables are in public beta. More information can be found in the [official docs](https://docs.datadoghq.com/logs/processing/processors/?tab=ui#lookup-processor)",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -35108,6 +35249,7 @@
                               "description": "The search options.",
                               "description_kind": "plain"
                             },
+                            "min_items": 1,
                             "max_items": 1
                           }
                         },
@@ -35651,7 +35793,7 @@
               },
               "tags": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "Tags for generated signals.",
@@ -35749,13 +35891,13 @@
                     },
                     "keep_alive": {
                       "type": "number",
-                      "description": "Once a signal is generated, the signal will remain “open” if a case is matched at least once within this keep alive window. Valid values are `0`, `60`, `300`, `600`, `900`, `1800`, `3600`, `7200`, `10800`, `21600`.",
+                      "description": "Once a signal is generated, the signal will remain “open” if a case is matched at least once within this keep alive window (in seconds). Valid values are `0`, `60`, `300`, `600`, `900`, `1800`, `3600`, `7200`, `10800`, `21600`.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "max_signal_duration": {
                       "type": "number",
-                      "description": "A signal will “close” regardless of the query being matched once the time exceeds the maximum duration. This time is calculated from the first seen timestamp. Valid values are `0`, `60`, `300`, `600`, `900`, `1800`, `3600`, `7200`, `10800`, `21600`, `43200`, `86400`.",
+                      "description": "A signal will “close” regardless of the query being matched once the time exceeds the maximum duration (in seconds). This time is calculated from the first seen timestamp. Valid values are `0`, `60`, `300`, `600`, `900`, `1800`, `3600`, `7200`, `10800`, `21600`, `43200`, `86400`.",
                       "description_kind": "plain",
                       "required": true
                     }
@@ -36115,7 +36257,7 @@
                       "required": true
                     }
                   },
-                  "description": "Object describing how the scanned event will be replaced.",
+                  "description": "Object describing how the scanned event will be replaced. Defaults to `type: none`",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -37718,7 +37860,7 @@
                     },
                     "min_failure_duration": {
                       "type": "number",
-                      "description": "Minimum amount of time in failure required to trigger an alert. Default is `0`.",
+                      "description": "Minimum amount of time in failure required to trigger an alert (in seconds). Default is `0`.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -39579,7 +39721,7 @@
                         ]
                       ],
                       "tags": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "type": "string"

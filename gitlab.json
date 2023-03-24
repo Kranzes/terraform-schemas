@@ -54,6 +54,62 @@
         }
       },
       "resource_schemas": {
+        "gitlab_application": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "Internal name of the application.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "confidential": {
+                "type": "bool",
+                "description": "The application is used where the client secret can be kept confidential. Native mobile apps and Single Page Apps are considered non-confidential. Defaults to true if not supplied",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<application_id>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the application.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "redirect_url": {
+                "type": "string",
+                "description": "The URL gitlab should send the user to after authentication.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "scopes": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "\n\t\t\t\t\tScopes of the application. Use \"openid\" if you plan to use this as an oidc authentication application. Valid options are: `api`, `read_api`, `read_user`, `read_repository`, `write_repository`, `read_registry`, `write_registry`, `sudo`, `admin_mode`, `openid`, `profile`, `email`.\nThis is only populated when creating a new application. This attribute is not available for imported resources\n\t\t\t\t\t",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "Application secret. Sensative and must be kept secret. This is only populated when creating a new application. This attribute is not available for imported resources.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description": "The `gitlab_application` resource allows to manage the lifecycle of applications in gitlab.\n\n~> In order to use a user for a user to create an application, they must have admin priviledges at the instance level.\nTo create an OIDC application, a scope of \"openid\".\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/applications.html)",
+            "description_kind": "markdown"
+          }
+        },
         "gitlab_application_settings": {
           "version": 0,
           "block": {
@@ -2352,7 +2408,8 @@
                 "type": "bool",
                 "description": "Defaults to false. Default to Auto DevOps pipeline for all projects within this group.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "avatar": {
                 "type": "string",
@@ -2377,7 +2434,8 @@
                 "type": "number",
                 "description": "Defaults to 2. See https://docs.gitlab.com/ee/api/groups.html#options-for-default_branch_protection",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "description": {
                 "type": "string",
@@ -2389,7 +2447,8 @@
                 "type": "bool",
                 "description": "Defaults to false. Disable email notifications.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "extra_shared_runners_minutes_limit": {
                 "type": "number",
@@ -2429,7 +2488,8 @@
                 "type": "bool",
                 "description": "Defaults to true. Enable/disable Large File Storage (LFS) for the projects in this group.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "membership_lock": {
                 "type": "bool",
@@ -2441,7 +2501,8 @@
                 "type": "bool",
                 "description": "Defaults to false. Disable the capability of a group from getting mentioned.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "name": {
                 "type": "string",
@@ -2453,7 +2514,8 @@
                 "type": "number",
                 "description": "Id of the parent group (creates a nested group).",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "path": {
                 "type": "string",
@@ -2465,25 +2527,29 @@
                 "type": "bool",
                 "description": "Defaults to false. When enabled, users can not fork projects from this group to external namespaces.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "project_creation_level": {
                 "type": "string",
                 "description": "Defaults to maintainer. Determine if developers can create projects in the group.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "request_access_enabled": {
                 "type": "bool",
                 "description": "Defaults to false. Allow users to request member access.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "require_two_factor_authentication": {
                 "type": "bool",
                 "description": "Defaults to false. Require all users in this group to setup Two-factor authentication.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "runners_token": {
                 "type": "string",
@@ -2496,7 +2562,8 @@
                 "type": "bool",
                 "description": "Defaults to false. Prevent sharing a project with another group within this group.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "shared_runners_minutes_limit": {
                 "type": "number",
@@ -2509,13 +2576,15 @@
                 "type": "string",
                 "description": "Defaults to owner. Allowed to create subgroups.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "two_factor_grace_period": {
                 "type": "number",
                 "description": "Defaults to 48. Time before Two-factor authentication is enforced (in hours).",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "visibility_level": {
                 "type": "string",
@@ -3575,7 +3644,7 @@
                   "set",
                   "string"
                 ],
-                "description": "The scope for the personal access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_user`, `read_api`, `read_repository`, `write_repository`, `read_registry`, `write_registry`, `sudo`.",
+                "description": "The scope for the personal access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_user`, `read_api`, `read_repository`, `write_repository`, `read_registry`, `write_registry`, `sudo`, `admin_mode`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -3893,11 +3962,25 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "environments_access_level": {
+                "type": "string",
+                "description": "Set the environments access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "external_authorization_classification_label": {
                 "type": "string",
                 "description": "The classification label for the project.",
                 "description_kind": "markdown",
                 "optional": true
+              },
+              "feature_flags_access_level": {
+                "type": "string",
+                "description": "Set the feature flags access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               },
               "forked_from_project_id": {
                 "type": "number",
@@ -3948,6 +4031,13 @@
                 "description": "The username for the `import_url`. The value of this field is used to construct a valid `import_url` and is only related to the provider. This field cannot be imported using `terraform import`.  See the examples section for how to properly use it.",
                 "description_kind": "markdown",
                 "optional": true
+              },
+              "infrastructure_access_level": {
+                "type": "string",
+                "description": "Set the infrastructure access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               },
               "initialize_with_readme": {
                 "type": "bool",
@@ -4049,6 +4139,13 @@
                 "optional": true,
                 "computed": true
               },
+              "monitor_access_level": {
+                "type": "string",
+                "description": "Set the monitor access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "mr_default_target_self": {
                 "type": "bool",
                 "description": "For forked projects, target merge requests to this project. If false, the target will be the upstream project.",
@@ -4140,6 +4237,13 @@
               "public_builds": {
                 "type": "bool",
                 "description": "If true, jobs can be viewed by non-project members.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "releases_access_level": {
+                "type": "string",
+                "description": "Set the releases access level. Valid values are `disabled`, `private`, `enabled`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -4291,7 +4395,7 @@
               },
               "use_custom_template": {
                 "type": "bool",
-                "description": "Use either custom instance or group (with group_with_project_templates_id) project template (enterprise edition).",
+                "description": "Use either custom instance or group (with group_with_project_templates_id) project template (enterprise edition).\n\t\t~> When using a custom template, [Group Tokens won't work](https://docs.gitlab.com/15.7/ee/user/project/settings/import_export_troubleshooting.html#import-using-the-rest-api-fails-when-using-a-group-access-token). You must use a real user's Personal Access Token.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -4349,10 +4453,18 @@
                       "optional": true,
                       "computed": true
                     },
+                    "name_regex": {
+                      "type": "string",
+                      "description": "The regular expression to match image names to delete.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
                     "name_regex_delete": {
                       "type": "string",
-                      "description": "The regular expression to match image names to delete. **Note**: the upstream API has some inconsistencies with the `name_regex` field here. It's basically unusable at the moment.",
+                      "description": "The regular expression to match image names to delete.",
                       "description_kind": "markdown",
+                      "deprecated": true,
                       "optional": true,
                       "computed": true
                     },
@@ -6088,7 +6200,7 @@
               },
               "file_path": {
                 "type": "string",
-                "description": "The full path of the file. It must be relative to the root of the project without a leading slash `/`.",
+                "description": "The full path of the file. It must be relative to the root of the project without a leading slash `/` or `./`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -6245,6 +6357,63 @@
               }
             },
             "description": "The `gitlab_runner` resource allows to manage the lifecycle of a runner.\n\t\t\nA runner can either be registered at an instance level or group level. \nThe runner will be registered at a group level if the token used is from a group, or at an instance level if the token used is for the instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/runners.html#register-a-new-runner)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_service_custom_issue_tracker": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was activated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<project>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "issues_url": {
+                "type": "string",
+                "description": "The URL to view an issue in the external issue tracker. Must contain :id.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The ID or full path of the project for the custom issue tracker.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project_url": {
+                "type": "string",
+                "description": "The URL to the project in the external issue tracker.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The name of the integration in lowercase, shortened to 63 bytes, and with everything except 0-9 and a-z replaced with -. No leading / trailing -. Use in URLs, host names and domain names.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was last updated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_service_custom_issue_tracker` resource allows to manage the lifecycle of a project integration with Custom Issue Tracker.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#custom-issue-tracker)",
             "description_kind": "markdown"
           }
         },
@@ -6698,7 +6867,7 @@
               },
               "webhook": {
                 "type": "string",
-                "description": "The Microsoft Teams webhook. For example, https://outlook.office.com/webhook/...",
+                "description": "The Microsoft Teams webhook (Example, https://outlook.office.com/webhook/...). This value cannot be imported.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -6905,7 +7074,7 @@
               },
               "webhook": {
                 "type": "string",
-                "description": "Webhook URL (ex.: https://hooks.slack.com/services/...)",
+                "description": "Webhook URL (Example, https://hooks.slack.com/services/...). This value cannot be imported.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -7303,6 +7472,45 @@
         }
       },
       "data_source_schemas": {
+        "gitlab_application": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "Internal GitLab application id.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "confidential": {
+                "type": "bool",
+                "description": "Indicates if the application is kept confidential.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<application_id>`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the GitLab application.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "redirect_url": {
+                "type": "string",
+                "description": "The redirect url of the application.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_application` data source retrieves information about a gitlab application.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/applications.html)",
+            "description_kind": "markdown"
+          }
+        },
         "gitlab_branch": {
           "version": 0,
           "block": {
@@ -8490,6 +8698,7 @@
                       "cadence": "string",
                       "enabled": "bool",
                       "keep_n": "number",
+                      "name_regex": "string",
                       "name_regex_delete": "string",
                       "name_regex_keep": "string",
                       "next_run_at": "string",
@@ -8525,9 +8734,21 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "environments_access_level": {
+                "type": "string",
+                "description": "Set the environments access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "external_authorization_classification_label": {
                 "type": "string",
                 "description": "The classification label for the project.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "feature_flags_access_level": {
+                "type": "string",
+                "description": "Set the feature flags access level. Valid values are `disabled`, `private`, `enabled`.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -8545,7 +8766,7 @@
               },
               "id": {
                 "type": "string",
-                "description": "The integer or path with namespace that uniquely identifies the project within the gitlab install.",
+                "description": "The integer that uniquely identifies the project within the gitlab install.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -8553,6 +8774,12 @@
               "import_url": {
                 "type": "string",
                 "description": "URL the project was imported from.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "infrastructure_access_level": {
+                "type": "string",
+                "description": "Set the infrastructure access level. Valid values are `disabled`, `private`, `enabled`.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -8601,6 +8828,12 @@
               "merge_trains_enabled": {
                 "type": "bool",
                 "description": "Enable or disable merge trains.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "monitor_access_level": {
+                "type": "string",
+                "description": "Set the monitor access level. Valid values are `disabled`, `private`, `enabled`.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -8677,6 +8910,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "releases_access_level": {
+                "type": "string",
+                "description": "Set the releases access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "remove_source_branch_after_merge": {
                 "type": "bool",
                 "description": "Enable `Delete source branch` option by default for all new merge requests",
@@ -8723,7 +8962,8 @@
                 "type": "string",
                 "description": "Registration token to use during runner setup.",
                 "description_kind": "markdown",
-                "computed": true
+                "computed": true,
+                "sensitive": true
               },
               "security_and_compliance_access_level": {
                 "type": "string",
@@ -10331,6 +10571,7 @@
                             "cadence": "string",
                             "enabled": "bool",
                             "keep_n": "number",
+                            "name_regex": "string",
                             "name_regex_delete": "string",
                             "name_regex_keep": "string",
                             "next_run_at": "string",
@@ -10352,7 +10593,9 @@
                       "default_branch": "string",
                       "description": "string",
                       "emails_disabled": "bool",
+                      "environments_access_level": "string",
                       "external_authorization_classification_label": "string",
+                      "feature_flags_access_level": "string",
                       "forked_from_project": [
                         "list",
                         [
@@ -10375,6 +10618,7 @@
                       "import_error": "string",
                       "import_status": "string",
                       "import_url": "string",
+                      "infrastructure_access_level": "string",
                       "issues_access_level": "string",
                       "issues_enabled": "bool",
                       "jobs_enabled": "bool",
@@ -10390,6 +10634,7 @@
                       "mirror_overwrites_diverged_branches": "bool",
                       "mirror_trigger_builds": "bool",
                       "mirror_user_id": "number",
+                      "monitor_access_level": "string",
                       "name": "string",
                       "name_with_namespace": "string",
                       "namespace": [
@@ -10446,6 +10691,7 @@
                       "public": "bool",
                       "public_builds": "bool",
                       "readme_url": "string",
+                      "releases_access_level": "string",
                       "repository_access_level": "string",
                       "repository_storage": "string",
                       "request_access_enabled": "bool",
@@ -10732,7 +10978,7 @@
               },
               "file_path": {
                 "type": "string",
-                "description": "The full path of the file. It must be relative to the root of the project without a leading slash `/`.",
+                "description": "The full path of the file. It must be relative to the root of the project without a leading slash `/` or `./`.",
                 "description_kind": "markdown",
                 "required": true
               },
