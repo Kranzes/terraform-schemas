@@ -3250,6 +3250,90 @@
             "description_kind": "plain"
           }
         },
+        "yandex_compute_gpu_cluster": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "folder_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "interconnect_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "yandex_compute_image": {
           "version": 0,
           "block": {
@@ -3423,6 +3507,12 @@
               "fqdn": {
                 "type": "string",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "gpu_cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "hostname": {
@@ -10349,6 +10439,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "data_stream": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
@@ -16049,6 +16144,762 @@
             "description_kind": "plain"
           }
         },
+        "yandex_monitoring_dashboard": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "dashboard_id": {
+                "type": "string",
+                "description": "Dashboard ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Dashboard description",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "folder_id": {
+                "type": "string",
+                "description": "Folder ID",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Dashboard labels",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Dashboard name, used as local identifier in folder_id",
+                "description_kind": "plain",
+                "required": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Dashboard title",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "parametrization": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "selectors": {
+                      "type": "string",
+                      "description": "Predefined selectors",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "parameters": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "description": {
+                            "type": "string",
+                            "description": "Parameter description",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "hidden": {
+                            "type": "bool",
+                            "description": "UI-visibility",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "Parameter identifier",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "UI-visible title of the parameter",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "custom": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "default_values": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Default value",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "multiselectable": {
+                                  "type": "bool",
+                                  "description": "Specifies the multiselectable values of parameter",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "values": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Parameter values",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Custom parameter",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "label_values": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "default_values": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Default value",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "folder_id": {
+                                  "type": "string",
+                                  "description": "Folder ID",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "label_key": {
+                                  "type": "string",
+                                  "description": "Required. Label key to list label values",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "multiselectable": {
+                                  "type": "bool",
+                                  "description": "Specifies the multiselectable values of parameter",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "selectors": {
+                                  "type": "string",
+                                  "description": "Required. Selectors to select metric label values",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Label values parameter",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "text": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "default_value": {
+                                  "type": "string",
+                                  "description": "Default value",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Text parameter",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "Dashboard parameter",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Dashboard parametrization",
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "widgets": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "chart": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "chart_id": {
+                            "type": "string",
+                            "description": "Chart ID",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Chart description in dashboard (not enabled in UI)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "display_legend": {
+                            "type": "bool",
+                            "description": "Enable legend under chart",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "freeze": {
+                            "type": "string",
+                            "description": "Fixed time interval for chart",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "Chart widget title",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "name_hiding_settings": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "names": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "positive": {
+                                  "type": "bool",
+                                  "description": "True if we want to show concrete series names only, false if we want to hide concrete series names",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Name hiding settings",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "queries": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "downsampling": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "disabled": {
+                                        "type": "bool",
+                                        "description": "Disable downsampling",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "gap_filling": {
+                                        "type": "string",
+                                        "description": "Parameters for filling gaps in data",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "grid_aggregation": {
+                                        "type": "string",
+                                        "description": "Function that is used for downsampling",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "grid_interval": {
+                                        "type": "number",
+                                        "description": "Time interval (grid) for downsampling in milliseconds. Points in the specified range are aggregated into one time point",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "max_points": {
+                                        "type": "number",
+                                        "description": "Maximum number of points to be returned",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Downsampling settings",
+                                    "description_kind": "plain"
+                                  }
+                                },
+                                "target": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "hidden": {
+                                        "type": "bool",
+                                        "description": "Checks that target is visible or invisible",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "query": {
+                                        "type": "string",
+                                        "description": "Required. Query",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "text_mode": {
+                                        "type": "bool",
+                                        "description": "Text mode",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Downsampling settings",
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description": "Queries",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "series_overrides": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "Series name",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "target_index": {
+                                  "type": "string",
+                                  "description": "Target index",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "settings": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "color": {
+                                        "type": "string",
+                                        "description": "Series color or empty",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "grow_down": {
+                                        "type": "bool",
+                                        "description": "Stack grow down",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Series name or empty",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "stack_name": {
+                                        "type": "string",
+                                        "description": "Stack name or empty",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "description": "Type",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "computed": true
+                                      },
+                                      "yaxis_position": {
+                                        "type": "string",
+                                        "description": "Yaxis position",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "computed": true
+                                      }
+                                    },
+                                    "description": "Override settings",
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "visualization_settings": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "aggregation": {
+                                  "type": "string",
+                                  "description": "Aggregation",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "interpolate": {
+                                  "type": "string",
+                                  "description": "Interpolate",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "normalize": {
+                                  "type": "bool",
+                                  "description": "Normalize",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "show_labels": {
+                                  "type": "bool",
+                                  "description": "Show chart labels",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "description": "Inside chart title",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "description": "Visualization type",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "block_types": {
+                                "color_scheme_settings": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "automatic": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "description": "Automatic color scheme",
+                                          "description_kind": "plain"
+                                        }
+                                      },
+                                      "gradient": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "green_value": {
+                                              "type": "string",
+                                              "description": "Gradient green value",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "red_value": {
+                                              "type": "string",
+                                              "description": "Gradient red value",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "violet_value": {
+                                              "type": "string",
+                                              "description": "Gradient violet_value",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "yellow_value": {
+                                              "type": "string",
+                                              "description": "Gradient yellow value",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description": "Gradient color scheme",
+                                          "description_kind": "plain"
+                                        }
+                                      },
+                                      "standard": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "description": "Standard color scheme",
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description": "Color scheme settings",
+                                    "description_kind": "plain"
+                                  }
+                                },
+                                "heatmap_settings": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "green_value": {
+                                        "type": "string",
+                                        "description": "Heatmap green value",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "red_value": {
+                                        "type": "string",
+                                        "description": "Heatmap red value",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "violet_value": {
+                                        "type": "string",
+                                        "description": "Heatmap violet_value",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "yellow_value": {
+                                        "type": "string",
+                                        "description": "Heatmap yellow value",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Heatmap settings",
+                                    "description_kind": "plain"
+                                  }
+                                },
+                                "yaxis_settings": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "left": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "max": {
+                                              "type": "string",
+                                              "description": "Max value in extended number format or empty",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "min": {
+                                              "type": "string",
+                                              "description": "Min value in extended number format or empty",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "precision": {
+                                              "type": "number",
+                                              "description": "Tick value precision (null as default, 0-7 in other cases)",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "title": {
+                                              "type": "string",
+                                              "description": "Title or empty",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "description": "Type",
+                                              "description_kind": "plain",
+                                              "optional": true,
+                                              "computed": true
+                                            },
+                                            "unit_format": {
+                                              "type": "string",
+                                              "description": "Unit format",
+                                              "description_kind": "plain",
+                                              "optional": true,
+                                              "computed": true
+                                            }
+                                          },
+                                          "description": "Left Y axis settings",
+                                          "description_kind": "plain"
+                                        }
+                                      },
+                                      "right": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "max": {
+                                              "type": "string",
+                                              "description": "Max value in extended number format or empty",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "min": {
+                                              "type": "string",
+                                              "description": "Min value in extended number format or empty",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "precision": {
+                                              "type": "number",
+                                              "description": "Tick value precision (null as default, 0-7 in other cases)",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "title": {
+                                              "type": "string",
+                                              "description": "Title or empty",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "description": "Type",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "unit_format": {
+                                              "type": "string",
+                                              "description": "Unit format",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description": "Right Y axis settings",
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description": "Y axis settings",
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description": "Visualization settings",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "Chart widget",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "position": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "h": {
+                            "type": "number",
+                            "description": "Required. Height",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "w": {
+                            "type": "number",
+                            "description": "Required. Weight",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "x": {
+                            "type": "number",
+                            "description": "Required. X-axis top-left corner coordinate",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "y": {
+                            "type": "number",
+                            "description": "Required. Y-axis top-left corner coordinate",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Required. Widget layout position",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "text": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "text": {
+                            "type": "string",
+                            "description": "Text",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Text widget",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "title": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "size": {
+                            "type": "string",
+                            "description": "Title size",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "text": {
+                            "type": "string",
+                            "description": "Title text",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Title widget",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Widgets",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Monitoring dashboard",
+            "description_kind": "plain"
+          }
+        },
         "yandex_organizationmanager_group": {
           "version": 0,
           "block": {
@@ -21602,6 +22453,71 @@
             "description_kind": "plain"
           }
         },
+        "yandex_compute_gpu_cluster": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "folder_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "gpu_cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "interconnect_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "yandex_compute_image": {
           "version": 0,
           "block": {
@@ -21745,6 +22661,12 @@
               "fqdn": {
                 "type": "string",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "gpu_cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "id": {
@@ -24870,6 +25792,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "data_stream": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
@@ -27662,6 +28589,33 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "database": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "extension": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "version": "string"
+                          }
+                        ]
+                      ],
+                      "lc_collate": "string",
+                      "lc_type": "string",
+                      "name": "string",
+                      "owner": "string",
+                      "template_db": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "deletion_protection": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -27766,6 +28720,38 @@
               },
               "status": {
                 "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "conn_limit": "number",
+                      "grants": [
+                        "list",
+                        "string"
+                      ],
+                      "login": "bool",
+                      "name": "string",
+                      "permission": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "database_name": "string"
+                          }
+                        ]
+                      ],
+                      "settings": [
+                        "map",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
                 "description_kind": "plain",
                 "computed": true
               }
@@ -28314,6 +29300,350 @@
               },
               "url": {
                 "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "yandex_monitoring_dashboard": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "dashboard_id": {
+                "type": "string",
+                "description": "Dashboard ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Dashboard description",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "folder_id": {
+                "type": "string",
+                "description": "Folder ID",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Dashboard labels",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Dashboard name, used as local identifier in folder_id",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parametrization": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "parameters": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "custom": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "default_values": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "multiselectable": "bool",
+                                  "values": [
+                                    "list",
+                                    "string"
+                                  ]
+                                }
+                              ]
+                            ],
+                            "description": "string",
+                            "hidden": "bool",
+                            "id": "string",
+                            "label_values": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "default_values": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "folder_id": "string",
+                                  "label_key": "string",
+                                  "multiselectable": "bool",
+                                  "selectors": "string"
+                                }
+                              ]
+                            ],
+                            "text": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "default_value": "string"
+                                }
+                              ]
+                            ],
+                            "title": "string"
+                          }
+                        ]
+                      ],
+                      "selectors": "string"
+                    }
+                  ]
+                ],
+                "description": "Dashboard parametrization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Dashboard title",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "widgets": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "chart": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "chart_id": "string",
+                            "description": "string",
+                            "display_legend": "bool",
+                            "freeze": "string",
+                            "name_hiding_settings": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "names": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "positive": "bool"
+                                }
+                              ]
+                            ],
+                            "queries": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "downsampling": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "disabled": "bool",
+                                        "gap_filling": "string",
+                                        "grid_aggregation": "string",
+                                        "grid_interval": "number",
+                                        "max_points": "number"
+                                      }
+                                    ]
+                                  ],
+                                  "target": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "hidden": "bool",
+                                        "query": "string",
+                                        "text_mode": "bool"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ],
+                            "series_overrides": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "name": "string",
+                                  "settings": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "color": "string",
+                                        "grow_down": "bool",
+                                        "name": "string",
+                                        "stack_name": "string",
+                                        "type": "string",
+                                        "yaxis_position": "string"
+                                      }
+                                    ]
+                                  ],
+                                  "target_index": "string"
+                                }
+                              ]
+                            ],
+                            "title": "string",
+                            "visualization_settings": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "aggregation": "string",
+                                  "color_scheme_settings": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "automatic": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {}
+                                          ]
+                                        ],
+                                        "gradient": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {
+                                              "green_value": "string",
+                                              "red_value": "string",
+                                              "violet_value": "string",
+                                              "yellow_value": "string"
+                                            }
+                                          ]
+                                        ],
+                                        "standard": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {}
+                                          ]
+                                        ]
+                                      }
+                                    ]
+                                  ],
+                                  "heatmap_settings": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "green_value": "string",
+                                        "red_value": "string",
+                                        "violet_value": "string",
+                                        "yellow_value": "string"
+                                      }
+                                    ]
+                                  ],
+                                  "interpolate": "string",
+                                  "normalize": "bool",
+                                  "show_labels": "bool",
+                                  "title": "string",
+                                  "type": "string",
+                                  "yaxis_settings": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "left": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {
+                                              "max": "string",
+                                              "min": "string",
+                                              "precision": "number",
+                                              "title": "string",
+                                              "type": "string",
+                                              "unit_format": "string"
+                                            }
+                                          ]
+                                        ],
+                                        "right": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {
+                                              "max": "string",
+                                              "min": "string",
+                                              "precision": "number",
+                                              "title": "string",
+                                              "type": "string",
+                                              "unit_format": "string"
+                                            }
+                                          ]
+                                        ]
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "position": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "h": "number",
+                            "w": "number",
+                            "x": "number",
+                            "y": "number"
+                          }
+                        ]
+                      ],
+                      "text": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "text": "string"
+                          }
+                        ]
+                      ],
+                      "title": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "size": "string",
+                            "text": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Widgets",
                 "description_kind": "plain",
                 "computed": true
               }

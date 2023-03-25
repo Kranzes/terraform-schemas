@@ -7915,6 +7915,75 @@
             "description_kind": "plain"
           }
         },
+        "opentelekomcloud_lb_ipgroup_v3": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "listeners": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "ip_list": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "opentelekomcloud_lb_l7policy_v2": {
           "version": 0,
           "block": {
@@ -8234,6 +8303,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "advanced_forwarding": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "client_ca_tls_container_ref": {
                 "type": "string",
                 "description_kind": "plain",
@@ -8314,6 +8389,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "security_policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "sni_container_refs": {
                 "type": [
                   "set",
@@ -8321,6 +8402,12 @@
                 ],
                 "description_kind": "plain",
                 "optional": true
+              },
+              "sni_match_algo": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "tags": {
                 "type": [
@@ -8367,6 +8454,32 @@
                     },
                     "forwarded_port": {
                       "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "ip_group": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enable": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
                       "description_kind": "plain",
                       "optional": true,
                       "computed": true
@@ -8496,6 +8609,12 @@
               "created_at": {
                 "type": "string",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "deletion_protection": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "description": {
@@ -9029,6 +9148,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "priority": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "project_id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -9045,6 +9170,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "redirect_url": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "status": {
                 "type": "string",
                 "description_kind": "plain",
@@ -9052,6 +9183,87 @@
               }
             },
             "block_types": {
+              "fixed_response_config": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "content_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "message_body": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "status_code": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "redirect_pools_config": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "pool_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "redirect_url_config": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "path": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "port": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "query": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "status_code": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "rules": {
                 "nesting_mode": "set",
                 "block": {
@@ -9222,6 +9434,12 @@
                 "optional": true,
                 "computed": true
               },
+              "member_deletion_protection": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "name": {
                 "type": "string",
                 "description_kind": "plain",
@@ -9238,6 +9456,18 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -9311,6 +9541,26 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "block_types": {
+              "conditions": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -19922,6 +20172,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "advanced_forwarding": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
               "client_ca_tls_container_ref": {
                 "type": "string",
                 "description_kind": "plain",
@@ -20033,11 +20288,21 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "security_policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "sni_container_refs": {
                 "type": [
                   "set",
                   "string"
                 ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sni_match_algo": {
+                "type": "string",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20082,6 +20347,11 @@
               },
               "created_at": {
                 "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deletion_protection": {
+                "type": "bool",
                 "description_kind": "plain",
                 "computed": true
               },

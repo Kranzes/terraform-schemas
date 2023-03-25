@@ -2086,6 +2086,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "resolution_payload": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "type": {
                 "type": "string",
                 "description_kind": "plain",
@@ -13385,6 +13391,164 @@
             "description_kind": "plain"
           }
         },
+        "sumologic_local_file_source": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automatic_date_parsing": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "category": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "collector_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "content_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cutoff_relative_time": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cutoff_timestamp": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deny_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "encoding": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fields": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_timezone": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "host_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manual_prefix_regexp": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "multiline_processing_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "path_expression": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "timezone": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "use_autoline_matching": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "default_date_formats": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "format": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "locator": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "filters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "filter_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mask": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "regexp": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "sumologic_lookup_table": {
           "version": 0,
           "block": {
@@ -13876,6 +14040,11 @@
                               "list",
                               "string"
                             ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "resolution_payload_override": {
+                            "type": "string",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -14417,12 +14586,32 @@
                                 "burn_rate_threshold": {
                                   "type": "number",
                                   "description_kind": "plain",
-                                  "required": true
+                                  "optional": true
                                 },
                                 "time_range": {
                                   "type": "string",
                                   "description_kind": "plain",
-                                  "required": true
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "burn_rate": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "burn_rate_threshold": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "time_range": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  }
                                 }
                               },
                               "description_kind": "plain"
@@ -14436,12 +14625,32 @@
                                 "burn_rate_threshold": {
                                   "type": "number",
                                   "description_kind": "plain",
-                                  "required": true
+                                  "optional": true
                                 },
                                 "time_range": {
                                   "type": "string",
                                   "description_kind": "plain",
-                                  "required": true
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "burn_rate": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "burn_rate_threshold": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "time_range": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  }
                                 }
                               },
                               "description_kind": "plain"
