@@ -3302,6 +3302,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "custom": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom attributes",
+                "description_kind": "plain",
+                "optional": true
+              },
               "global_prefix": {
                 "type": "string",
                 "description": "Global prefix for IP6 or IP4_6",
@@ -3341,6 +3350,12 @@
               "ip6": {
                 "type": "string",
                 "description": "Start IPv6 of the range to be allocated (Required if IP6_STATIC or IP4_6_STATIC)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ipam": {
+                "type": "string",
+                "description": "IPAM driver",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4474,10 +4489,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the cluster",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4503,10 +4518,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the datastore",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4541,10 +4556,10 @@
                 "computed": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the group",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4570,10 +4585,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the host",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4599,10 +4614,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the image",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4628,10 +4643,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the security group",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4705,10 +4720,10 @@
                 "optional": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the template",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "memory": {
                 "type": "number",
@@ -4782,6 +4797,156 @@
             "description_kind": "plain"
           }
         },
+        "opennebula_templates": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cpu": {
+                "type": "number",
+                "description": "Amount of CPU quota assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "has_cpu": {
+                "type": "bool",
+                "description": "Indicate if template has CPU defined",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "has_memory": {
+                "type": "bool",
+                "description": "Indicate if template has memory defined",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "has_vcpu": {
+                "type": "bool",
+                "description": "Indicate if template has VCPU defined",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "memory": {
+                "type": "number",
+                "description": "Amount of memory (RAM) in MB assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_regex": {
+                "type": "string",
+                "description": "Filter templates by name with a RE2 a regular expression",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order": {
+                "type": "string",
+                "description": "Ordering of the sort: asc or desc",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sort_on": {
+                "type": "string",
+                "description": "Attribute used to sort the templates list, it has to be an ",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Add custom tags to the resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "templates": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cpu": "number",
+                      "disk": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "cache": "string",
+                            "dev_prefix": "string",
+                            "discard": "string",
+                            "driver": "string",
+                            "image_id": "number",
+                            "io": "string",
+                            "size": "number",
+                            "target": "string",
+                            "volatile_format": "string",
+                            "volatile_type": "string"
+                          }
+                        ]
+                      ],
+                      "id": "number",
+                      "memory": "number",
+                      "name": "string",
+                      "nic": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "ip": "string",
+                            "mac": "string",
+                            "model": "string",
+                            "network": "string",
+                            "network_id": "number",
+                            "physical_device": "string",
+                            "security_groups": [
+                              "list",
+                              "number"
+                            ],
+                            "virtio_queues": "string"
+                          }
+                        ]
+                      ],
+                      "register_date": "number",
+                      "tags": [
+                        "map",
+                        "string"
+                      ],
+                      "vcpu": "number",
+                      "vmgroup": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "role": "string",
+                            "vmgroup_id": "number"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "List of matching templates",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vcpu": {
+                "type": "number",
+                "description": "Number of virtual CPUs assigned to the virtual machine",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "opennebula_user": {
           "version": 0,
           "block": {
@@ -4796,10 +4961,10 @@
                 "optional": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the user",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4831,10 +4996,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the datacenter",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4860,10 +5025,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the vm group",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -4889,10 +5054,10 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Id of the virtual network",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "mtu": {
                 "type": "number",
@@ -4904,7 +5069,7 @@
                 "type": "string",
                 "description": "Name of the Virtual Network",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "tags": {
                 "type": [
