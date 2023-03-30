@@ -1532,6 +1532,16 @@
           "version": 0,
           "block": {
             "attributes": {
+              "approved_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of approved cidrs. Requires 'enable_learned_cidrs_approval' to be true. Type: Set(String).",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "cloudn_bgp_asn": {
                 "type": "string",
                 "description": "CloudN BGP AS Number.",
@@ -1562,9 +1572,21 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "enable_dead_peer_detection": {
+                "type": "bool",
+                "description": "Enable dead peer detection.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enable_jumbo_frame": {
                 "type": "bool",
                 "description": "Enable jumbo frame.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_learned_cidrs_approval": {
+                "type": "bool",
+                "description": "Switch to enable/disable encrypted transit approval for cloudn transit gateway attachment. Valid values: true, false.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -7543,7 +7565,7 @@
               },
               "bgp_lan_interfaces_count": {
                 "type": "number",
-                "description": "Number of interfaces that will be created for BGP over LAN enabled Azure transit.",
+                "description": "Number of interfaces that will be created for BGP over LAN enabled Azure transit. Applies on HA Transit as well if enabled. Updatable as of provider version 3.0.3+.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -7635,7 +7657,7 @@
               },
               "enable_bgp_over_lan": {
                 "type": "bool",
-                "description": "Pre-allocate a network interface(eth4) for \"BGP over LAN\" functionality. Only valid for cloud_type = 4 (GCP) and 8 (Azure). Valid values: true or false. Default value: false. Available as of provider version R2.18+",
+                "description": "Pre-allocate a network interface(eth4) for \"BGP over LAN\" functionality. Only valid for cloud_type = 4 (GCP) and 8 (Azure). Valid values: true or false. Default value: false. Available as of provider version R2.18+. Updatable as of provider version 3.0.3+.",
                 "description_kind": "plain",
                 "optional": true
               },

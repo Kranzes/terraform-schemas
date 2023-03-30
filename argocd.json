@@ -8,41 +8,49 @@
           "attributes": {
             "auth_token": {
               "type": "string",
+              "description": "ArgoCD authentication token, takes precedence over `username`/`password`. Can be set through the `ARGOCD_AUTH_TOKEN` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "cert_file": {
               "type": "string",
+              "description": "Additional root CA certificates file to add to the client TLS connection pool.",
               "description_kind": "plain",
               "optional": true
             },
             "client_cert_file": {
               "type": "string",
+              "description": "Client certificate.",
               "description_kind": "plain",
               "optional": true
             },
             "client_cert_key": {
               "type": "string",
+              "description": "Client certificate key.",
               "description_kind": "plain",
               "optional": true
             },
             "config_path": {
               "type": "string",
+              "description": "Override the default config path of `$HOME/.config/argocd/config`. Only relevant when `use_local_config`. Can be set through the `ARGOCD_CONFIG_PATH` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "context": {
               "type": "string",
+              "description": "Kubernetes context to load from an existing `.kube/config` file. Can be set through `ARGOCD_CONTEXT` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "grpc_web": {
               "type": "bool",
+              "description": "Whether to use gRPC web proxy client. Useful if Argo CD server is behind proxy which does not support HTTP2.",
               "description_kind": "plain",
               "optional": true
             },
             "grpc_web_root_path": {
               "type": "string",
+              "description": "Use the gRPC web proxy client and set the web root, e.g. `argo-cd`. Useful if the Argo CD server is behind a proxy at a non-root path.",
               "description_kind": "plain",
               "optional": true
             },
@@ -51,21 +59,25 @@
                 "set",
                 "string"
               ],
+              "description": "Additional headers to add to each request to the ArgoCD server.",
               "description_kind": "plain",
               "optional": true
             },
             "insecure": {
               "type": "bool",
+              "description": "Whether to skip TLS server certificate. Can be set through the `ARGOCD_INSECURE` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "password": {
               "type": "string",
+              "description": "Authentication password. Can be set through the `ARGOCD_AUTH_PASSWORD` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "plain_text": {
               "type": "bool",
+              "description": "Whether to initiate an unencrypted connection to ArgoCD server.",
               "description_kind": "plain",
               "optional": true
             },
@@ -81,11 +93,13 @@
             },
             "server_addr": {
               "type": "string",
+              "description": "ArgoCD server address with port. Can be set through the `ARGOCD_SERVER` environment variable.",
               "description_kind": "plain",
               "required": true
             },
             "use_local_config": {
               "type": "bool",
+              "description": "Use the authentication settings found in the local config file. Useful when you have previously logged in using SSO. Conflicts with `auth_token`, `username` and `password`.",
               "description_kind": "plain",
               "optional": true
             },
@@ -96,6 +110,7 @@
             },
             "username": {
               "type": "string",
+              "description": "Authentication username. Can be set through the `ARGOCD_AUTH_USERNAME` environment variable.",
               "description_kind": "plain",
               "optional": true
             }
@@ -107,24 +122,25 @@
                 "attributes": {
                   "client_certificate": {
                     "type": "string",
-                    "description": "PEM-encoded client certificate for TLS authentication.",
+                    "description": "PEM-encoded client certificate for TLS authentication. Can be sourced from `KUBE_CLIENT_CERT_DATA`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "client_key": {
                     "type": "string",
-                    "description": "PEM-encoded client certificate key for TLS authentication.",
+                    "description": "PEM-encoded client certificate key for TLS authentication. Can be sourced from `KUBE_CLIENT_KEY_DATA`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "cluster_ca_certificate": {
                     "type": "string",
-                    "description": "PEM-encoded root certificates bundle for TLS authentication.",
+                    "description": "PEM-encoded root certificates bundle for TLS authentication. Can be sourced from `KUBE_CLUSTER_CA_CERT_DATA`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "config_context": {
                     "type": "string",
+                    "description": "Context to choose from the config file. Can be sourced from `KUBE_CTX`.",
                     "description_kind": "plain",
                     "optional": true
                   },
@@ -140,7 +156,7 @@
                   },
                   "config_path": {
                     "type": "string",
-                    "description": "Path to the kube config file. Can be set with KUBE_CONFIG_PATH.",
+                    "description": "Path to the kube config file. Can be sourced from `KUBE_CONFIG_PATH`.",
                     "description_kind": "plain",
                     "optional": true
                   },
@@ -149,37 +165,37 @@
                       "list",
                       "string"
                     ],
-                    "description": "A list of paths to kube config files. Can be set with KUBE_CONFIG_PATHS environment variable.",
+                    "description": "A list of paths to the kube config files. Can be sourced from `KUBE_CONFIG_PATHS`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "host": {
                     "type": "string",
-                    "description": "The hostname (in form of URI) of Kubernetes master.",
+                    "description": "The hostname (in form of URI) of the Kubernetes API. Can be sourced from `KUBE_HOST`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "insecure": {
                     "type": "bool",
-                    "description": "Whether server should be accessed without verifying the TLS certificate.",
+                    "description": "Whether server should be accessed without verifying the TLS certificate. Can be sourced from `KUBE_INSECURE`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "password": {
                     "type": "string",
-                    "description": "The password to use for HTTP basic authentication when accessing the Kubernetes master endpoint.",
+                    "description": "The password to use for HTTP basic authentication when accessing the Kubernetes API. Can be sourced from `KUBE_PASSWORD`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "token": {
                     "type": "string",
-                    "description": "Token to authenticate an service account",
+                    "description": "Token to authenticate an service account. Can be sourced from `KUBE_TOKEN`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "username": {
                     "type": "string",
-                    "description": "The username to use for HTTP basic authentication when accessing the Kubernetes master endpoint.",
+                    "description": "The username to use for HTTP basic authentication when accessing the Kubernetes API. Can be sourced from `KUBE_USER`.",
                     "description_kind": "plain",
                     "optional": true
                   }
@@ -191,6 +207,7 @@
                       "attributes": {
                         "api_version": {
                           "type": "string",
+                          "description": "API version to use when decoding the ExecCredentials resource, e.g. `client.authentication.k8s.io/v1beta1`.",
                           "description_kind": "plain",
                           "required": true
                         },
@@ -199,11 +216,13 @@
                             "list",
                             "string"
                           ],
+                          "description": "Map of environment variables to set when executing the plugin.",
                           "description_kind": "plain",
                           "optional": true
                         },
                         "command": {
                           "type": "string",
+                          "description": "Command to execute.",
                           "description_kind": "plain",
                           "required": true
                         },
@@ -212,10 +231,12 @@
                             "map",
                             "string"
                           ],
+                          "description": "List of arguments to pass when executing the plugin.",
                           "description_kind": "plain",
                           "optional": true
                         }
                       },
+                      "description": "Configuration block to use an [exec-based credential plugin](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins), e.g. call an external command to receive user credentials.",
                       "description_kind": "plain"
                     },
                     "max_items": 1
@@ -249,7 +270,7 @@
               },
               "wait": {
                 "type": "bool",
-                "description": "Upon application creation or update, wait for application health/sync status to be healthy/Synced, upon application deletion, wait for application to be removed, when set to true.",
+                "description": "Upon application creation or update, wait for application health/sync status to be healthy/Synced, upon application deletion, wait for application to be removed, when set to true. Wait timeouts are controlled by Terraform Create, Update and Delete resource timeouts (all default to 5 minutes).",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -310,7 +331,7 @@
                       "computed": true
                     }
                   },
-                  "description": "Standard applications.argoproj.io's metadata. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata",
+                  "description": "Standard Kubernetes object metadata. For more info see the [Kubernetes reference](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata).",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -840,6 +861,7 @@
                 }
               }
             },
+            "description": "Manages [applications](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#applications) within ArgoCD.",
             "description_kind": "plain"
           }
         },
@@ -874,12 +896,13 @@
                     }
                   ]
                 ],
+                "description": "Information about cluster cache and state.",
                 "description_kind": "plain",
                 "computed": true
               },
               "name": {
                 "type": "string",
-                "description": "Name of the cluster. If omitted, will use the server address",
+                "description": "Name of the cluster. If omitted, will use the server address.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -888,25 +911,25 @@
                   "list",
                   "string"
                 ],
-                "description": "Holds list of namespaces which are accessible in that cluster. Cluster level resources would be ignored if namespace list is not empty.",
+                "description": "List of namespaces which are accessible in that cluster. Cluster level resources would be ignored if namespace list is not empty.",
                 "description_kind": "plain",
                 "optional": true
               },
               "project": {
                 "type": "string",
-                "description": "Add cluster scoped to project",
+                "description": "Reference between project and cluster that allow you automatically to be added as item inside Destinations project entity. More info: https://argo-cd.readthedocs.io/en/stable/user-guide/projects/#project-scoped-repositories-and-clusters.",
                 "description_kind": "plain",
                 "optional": true
               },
               "server": {
                 "type": "string",
-                "description": "Server is the API server URL of the Kubernetes cluster",
+                "description": "Server is the API server URL of the Kubernetes cluster.",
                 "description_kind": "plain",
                 "optional": true
               },
               "shard": {
                 "type": "string",
-                "description": "Shard contains optional shard number. Calculated on the fly by the application controller if not specified.",
+                "description": "Optional shard number. Calculated on the fly by the application controller if not specified.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -918,21 +941,21 @@
                   "attributes": {
                     "bearer_token": {
                       "type": "string",
-                      "description": "Server requires Bearer authentication. This client will not attempt to use refresh tokens for an OAuth2 flow.",
+                      "description": "Server requires Bearer authentication. The client will not attempt to use refresh tokens for an OAuth2 flow.",
                       "description_kind": "plain",
                       "optional": true,
                       "sensitive": true
                     },
                     "password": {
                       "type": "string",
-                      "description": "Server requires Basic authentication",
+                      "description": "Password for servers that require Basic authentication.",
                       "description_kind": "plain",
                       "optional": true,
                       "sensitive": true
                     },
                     "username": {
                       "type": "string",
-                      "description": "Server requires Basic authentication",
+                      "description": "Username for servers that require Basic authentication.",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -944,12 +967,13 @@
                         "attributes": {
                           "cluster_name": {
                             "type": "string",
+                            "description": "AWS cluster name.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "role_arn": {
                             "type": "string",
-                            "description": "RoleARN contains optional role ARN. If set then AWS IAM Authenticator assume a role to perform cluster operations instead of the default AWS credential provider chain",
+                            "description": "IAM role ARN. If set then AWS IAM Authenticator assume a role to perform cluster operations instead of the default AWS credential provider chain.",
                             "description_kind": "plain",
                             "optional": true
                           }
@@ -998,7 +1022,7 @@
                             "optional": true
                           }
                         },
-                        "description": "exec_provider_config is config used to call an external command to perform cluster authentication See: https://godoc.org/k8s.io/client-go/tools/clientcmd/api#ExecConfig",
+                        "description": "Configuration for an exec provider used to call an external command to perform cluster authentication See: https://godoc.org/k8s.io/client-go/tools/clientcmd/api#ExecConfig.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -1009,41 +1033,43 @@
                         "attributes": {
                           "ca_data": {
                             "type": "string",
-                            "description": "ca_data holds PEM-encoded bytes (typically read from a root certificates bundle)",
+                            "description": "PEM-encoded bytes (typically read from a root certificates bundle).",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "cert_data": {
                             "type": "string",
-                            "description": "cert_data holds PEM-encoded bytes (typically read from a client certificate file).",
+                            "description": "PEM-encoded bytes (typically read from a client certificate file).",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "insecure": {
                             "type": "bool",
-                            "description": "Server should be accessed without verifying the TLS certificate.",
+                            "description": "Whether server should be accessed without verifying the TLS certificate.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "key_data": {
                             "type": "string",
-                            "description": "key_data holds PEM-encoded bytes (typically read from a client certificate key file).",
+                            "description": "PEM-encoded bytes (typically read from a client certificate key file).",
                             "description_kind": "plain",
                             "optional": true,
                             "sensitive": true
                           },
                           "server_name": {
                             "type": "string",
-                            "description": "ServerName is passed to the server for SNI and is used in the client to check server certificates against. If ServerName is empty, the hostname used to contact the server is used.",
+                            "description": "Name to pass to the server for SNI and used in the client to check server certificates against. If empty, the hostname used to contact the server is used.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Settings to enable transport layer security when connecting to the cluster.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
                     }
                   },
+                  "description": "Cluster information for connecting to a cluster.",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -1078,6 +1104,7 @@
                 "max_items": 2
               }
             },
+            "description": "Manages [clusters](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters) within ArgoCD.",
             "description_kind": "plain"
           }
         },
@@ -1148,7 +1175,7 @@
                       "computed": true
                     }
                   },
-                  "description": "Standard appprojects.argoproj.io's metadata. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata",
+                  "description": "Standard Kubernetes object metadata. For more info see the [Kubernetes reference](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata).",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -1160,6 +1187,7 @@
                   "attributes": {
                     "description": {
                       "type": "string",
+                      "description": "Project description.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1168,6 +1196,7 @@
                         "list",
                         "string"
                       ],
+                      "description": "List of PGP key IDs that commits in Git must be signed with in order to be allowed for sync.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1176,6 +1205,7 @@
                         "set",
                         "string"
                       ],
+                      "description": "List of namespaces that application resources are allowed to be created in.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1184,6 +1214,7 @@
                         "list",
                         "string"
                       ],
+                      "description": "List of repository URLs which can be used for deployment. Can be set to `[\"*\"]` to allow all configured repositories configured in ArgoCD.",
                       "description_kind": "plain",
                       "required": true
                     }
@@ -1195,15 +1226,18 @@
                         "attributes": {
                           "group": {
                             "type": "string",
+                            "description": "The Kubernetes resource Group to match for.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "kind": {
                             "type": "string",
+                            "description": "The Kubernetes resource Kind to match for.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Blacklisted cluster level resources.",
                         "description_kind": "plain"
                       }
                     },
@@ -1213,15 +1247,18 @@
                         "attributes": {
                           "group": {
                             "type": "string",
+                            "description": "The Kubernetes resource Group to match for.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "kind": {
                             "type": "string",
+                            "description": "The Kubernetes resource Kind to match for.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Whitelisted cluster level resources.",
                         "description_kind": "plain"
                       }
                     },
@@ -1237,15 +1274,18 @@
                           },
                           "namespace": {
                             "type": "string",
+                            "description": "Target namespace for applications' resources.",
                             "description_kind": "plain",
                             "required": true
                           },
                           "server": {
                             "type": "string",
+                            "description": "URL of the target cluster and must be set to the Kubernetes control plane API.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Destinations available for deployment.",
                         "description_kind": "plain"
                       },
                       "min_items": 1
@@ -1256,15 +1296,18 @@
                         "attributes": {
                           "group": {
                             "type": "string",
+                            "description": "The Kubernetes resource Group to match for.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "kind": {
                             "type": "string",
+                            "description": "The Kubernetes resource Kind to match for.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Blacklisted namespace level resources.",
                         "description_kind": "plain"
                       }
                     },
@@ -1274,15 +1317,18 @@
                         "attributes": {
                           "group": {
                             "type": "string",
+                            "description": "The Kubernetes resource Group to match for.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "kind": {
                             "type": "string",
+                            "description": "The Kubernetes resource Kind to match for.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Whitelisted namespace level resources.",
                         "description_kind": "plain"
                       }
                     },
@@ -1292,6 +1338,7 @@
                         "attributes": {
                           "warn": {
                             "type": "bool",
+                            "description": "Whether a warning condition should be created for apps which have orphaned resources.",
                             "description_kind": "plain",
                             "optional": true
                           }
@@ -1303,16 +1350,19 @@
                               "attributes": {
                                 "group": {
                                   "type": "string",
+                                  "description": "The Kubernetes resource Group to match for.",
                                   "description_kind": "plain",
                                   "optional": true
                                 },
                                 "kind": {
                                   "type": "string",
+                                  "description": "The Kubernetes resource Kind to match for.",
                                   "description_kind": "plain",
                                   "optional": true
                                 },
                                 "name": {
                                   "type": "string",
+                                  "description": "The Kubernetes resource name to match for.",
                                   "description_kind": "plain",
                                   "optional": true
                                 }
@@ -1321,6 +1371,7 @@
                             }
                           }
                         },
+                        "description": "Settings specifying if controller should monitor orphaned resources of apps in this project.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -1331,6 +1382,7 @@
                         "attributes": {
                           "description": {
                             "type": "string",
+                            "description": "Description of the role.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -1339,11 +1391,13 @@
                               "list",
                               "string"
                             ],
+                            "description": "List of OIDC group claims bound to this role.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "name": {
                             "type": "string",
+                            "description": "Name of the role.",
                             "description_kind": "plain",
                             "required": true
                           },
@@ -1352,10 +1406,12 @@
                               "list",
                               "string"
                             ],
+                            "description": "List of casbin formatted strings that define access policies for the role in the project. For more information, see the [ArgoCD RBAC reference](https://argoproj.github.io/argo-cd/operator-manual/rbac/#rbac-permission-structure).",
                             "description_kind": "plain",
                             "required": true
                           }
                         },
+                        "description": "User defined RBAC roles associated with this project.",
                         "description_kind": "plain"
                       }
                     },
@@ -1368,6 +1424,7 @@
                               "list",
                               "string"
                             ],
+                            "description": "List of applications that the window will apply to.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -1376,21 +1433,25 @@
                               "list",
                               "string"
                             ],
+                            "description": "List of clusters that the window will apply to.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "duration": {
                             "type": "string",
+                            "description": "Amount of time the sync window will be open.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "kind": {
                             "type": "string",
+                            "description": "Defines if the window allows or blocks syncs, allowed values are `allow` or `deny`.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "manual_sync": {
                             "type": "bool",
+                            "description": "Enables manual syncs when they would otherwise be blocked.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -1399,26 +1460,30 @@
                               "list",
                               "string"
                             ],
+                            "description": "List of namespaces that the window will apply to.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "schedule": {
                             "type": "string",
+                            "description": "Time the window will begin, specified in cron format.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
+                        "description": "Settings controlling when syncs can be run for apps in this project.",
                         "description_kind": "plain"
                       }
                     }
                   },
-                  "description": "ArgoCD App project resource specs. Required attributes: destination, source_repos.",
+                  "description": "ArgoCD AppProject spec.",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
                 "max_items": 1
               }
             },
+            "description": "Manages [projects](https://argo-cd.readthedocs.io/en/stable/user-guide/projects/) within ArgoCD.",
             "description_kind": "plain"
           }
         },
@@ -1428,16 +1493,19 @@
             "attributes": {
               "description": {
                 "type": "string",
+                "description": "Description of the token.",
                 "description_kind": "plain",
                 "optional": true
               },
               "expires_at": {
                 "type": "string",
+                "description": "If `expires_in` is set, Unix timestamp upon which the token will expire.",
                 "description_kind": "plain",
                 "computed": true
               },
               "expires_in": {
                 "type": "string",
+                "description": "Duration before the token will expire. Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`. E.g. `12h`, `7d`. Default: No expiration.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1449,31 +1517,37 @@
               },
               "issued_at": {
                 "type": "string",
+                "description": "Unix timestamp at which the token was issued.",
                 "description_kind": "plain",
                 "computed": true
               },
               "jwt": {
                 "type": "string",
+                "description": "The raw JWT.",
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
               },
               "project": {
                 "type": "string",
+                "description": "The project associated with the token.",
                 "description_kind": "plain",
                 "required": true
               },
               "renew_before": {
                 "type": "string",
+                "description": "Duration to control token silent regeneration, valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`. If `expires_in` is set, Terraform will regenerate the token if `expires_in - renew_before < currentDate`.",
                 "description_kind": "plain",
                 "optional": true
               },
               "role": {
                 "type": "string",
+                "description": "The name of the role in the project associated with the token.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Manages ArgoCD project role JWT tokens. See [Project Roles](https://argo-cd.readthedocs.io/en/stable/user-guide/projects/#project-roles) for more info.",
             "description_kind": "plain"
           }
         },
@@ -1483,42 +1557,43 @@
             "attributes": {
               "connection_state_status": {
                 "type": "string",
+                "description": "Contains information about the current state of connection to the repository server.",
                 "description_kind": "plain",
                 "computed": true
               },
               "enable_lfs": {
                 "type": "bool",
-                "description": "Whether git-lfs support should be enabled for this repo",
+                "description": "Whether `git-lfs` support should be enabled for this repository.",
                 "description_kind": "plain",
                 "optional": true
               },
               "enable_oci": {
                 "type": "bool",
-                "description": "Specify whether the repo server should be viewed as OCI compliant",
+                "description": "Whether `helm-oci` support should be enabled for this repository.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_enterprise_base_url": {
                 "type": "string",
-                "description": "If using GitHub App for a GitHub Enterprise repository the host url is required",
+                "description": "GitHub API URL for GitHub app authentication.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_id": {
                 "type": "string",
-                "description": "GitHub App id for authenticating at the repo server only for GitHub repos",
+                "description": "ID of the GitHub app used to access the repo.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_installation_id": {
                 "type": "string",
-                "description": "GitHub App installation id for authenticating at the repo server only for GitHub repos",
+                "description": "The installation ID of the GitHub App used to access the repo.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_private_key": {
                 "type": "string",
-                "description": "Private key data (pem) of GitHub App for authenticating at the repo server only for GitHub repos",
+                "description": "Private key data (PEM) for authentication via GitHub app.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
@@ -1531,74 +1606,75 @@
               },
               "inherited_creds": {
                 "type": "bool",
-                "description": "Whether credentials were inherited from a credential set",
+                "description": "Whether credentials were inherited from a credential set.",
                 "description_kind": "plain",
                 "computed": true
               },
               "insecure": {
                 "type": "bool",
-                "description": "Whether the repo is insecure",
+                "description": "Whether the connection to the repository ignores any errors when verifying TLS certificates or SSH host keys.",
                 "description_kind": "plain",
                 "optional": true
               },
               "name": {
                 "type": "string",
-                "description": "only for Helm repos",
+                "description": "Name to be used for this repo. Only used with Helm repos.",
                 "description_kind": "plain",
                 "optional": true
               },
               "password": {
                 "type": "string",
-                "description": "Password for authenticating at the repo server",
+                "description": "Password or PAT used for authenticating at the remote repository.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
               },
               "project": {
                 "type": "string",
-                "description": "The project name, in case the repository is project scoped",
+                "description": "The project name, in case the repository is project scoped.",
                 "description_kind": "plain",
                 "optional": true
               },
               "repo": {
                 "type": "string",
-                "description": "URL of the repo",
+                "description": "URL of the repository.",
                 "description_kind": "plain",
                 "required": true
               },
               "ssh_private_key": {
                 "type": "string",
-                "description": "SSH private key data for authenticating at the repo server only for Git repos",
+                "description": "PEM data for authenticating at the repo server. Only used with Git repos.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
               },
               "tls_client_cert_data": {
                 "type": "string",
-                "description": "TLS client cert data for authenticating at the repo server",
+                "description": "TLS client certificate in PEM format for authenticating at the repo server.",
                 "description_kind": "plain",
                 "optional": true
               },
               "tls_client_cert_key": {
                 "type": "string",
-                "description": "TLS client cert key for authenticating at the repo server ",
+                "description": "TLS client certificate private key in PEM format for authenticating at the repo server.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
               },
               "type": {
                 "type": "string",
-                "description": "type of the repo, may be 'git' or 'helm', defaults to 'git'",
+                "description": "Type of the repo. Can be either `git` or `helm`. `git` is assumed if empty or absent.",
                 "description_kind": "plain",
                 "optional": true
               },
               "username": {
                 "type": "string",
-                "description": "Username for authenticating at the repo server",
+                "description": "Username used for authenticating at the remote repository.",
                 "description_kind": "plain",
                 "optional": true
               }
             },
+            "description": "Manages [repositories](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories) within ArgoCD.",
             "description_kind": "plain"
           }
         },
@@ -1620,30 +1696,30 @@
                   "attributes": {
                     "cert_data": {
                       "type": "string",
-                      "description": "CertData contains the actual certificate data, dependent on the certificate type",
+                      "description": "The actual certificate data, dependent on the certificate type.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "cert_info": {
                       "type": "string",
-                      "description": "CertInfo will hold additional certificate info, dependent on the certificate type (e.g. SSH fingerprint, X509 CommonName)",
+                      "description": "Additional certificate info, dependent on the certificate type (e.g. SSH fingerprint, X509 CommonName).",
                       "description_kind": "plain",
                       "computed": true
                     },
                     "cert_subtype": {
                       "type": "string",
-                      "description": "SubType specifies the sub type of the cert, i.e. `ssh-rsa`",
+                      "description": "The sub type of the cert, i.e. `ssh-rsa`.",
                       "description_kind": "plain",
                       "computed": true
                     },
                     "server_name": {
                       "type": "string",
-                      "description": "ServerName specifies the DNS name of the server this certificate is intended for",
+                      "description": "DNS name of the server this certificate is intended for.",
                       "description_kind": "plain",
                       "required": true
                     }
                   },
-                  "description": "Defines a https certificate.",
+                  "description": "Defines a `https` certificate.",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1654,35 +1730,36 @@
                   "attributes": {
                     "cert_data": {
                       "type": "string",
-                      "description": "CertData contains the actual certificate data, dependent on the certificate type",
+                      "description": "The actual certificate data, dependent on the certificate type.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "cert_info": {
                       "type": "string",
-                      "description": "CertInfo will hold additional certificate info, dependent on the certificate type (e.g. SSH fingerprint, X509 CommonName)",
+                      "description": "Additional certificate info, dependent on the certificate type (e.g. SSH fingerprint, X509 CommonName).",
                       "description_kind": "plain",
                       "computed": true
                     },
                     "cert_subtype": {
                       "type": "string",
-                      "description": "SubType specifies the sub type of the cert, i.e. `ssh-rsa`",
+                      "description": "The sub type of the cert, i.e. `ssh-rsa`.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "server_name": {
                       "type": "string",
-                      "description": "ServerName specifies the DNS name of the server this certificate is intended for",
+                      "description": "DNS name of the server this certificate is intended for.",
                       "description_kind": "plain",
                       "required": true
                     }
                   },
-                  "description": "Defines a ssh certificate.",
+                  "description": "Defines a `ssh` certificate.",
                   "description_kind": "plain"
                 },
                 "max_items": 1
               }
             },
+            "description": "Manages [custom TLS certificates](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/#self-signed-untrusted-tls-certificates) used by ArgoCD for connecting Git repositories.",
             "description_kind": "plain"
           }
         },
@@ -1692,31 +1769,31 @@
             "attributes": {
               "enable_oci": {
                 "type": "bool",
-                "description": "Specify whether the repo server should be viewed as OCI compliant",
+                "description": "Whether `helm-oci` support should be enabled for this repo.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_enterprise_base_url": {
                 "type": "string",
-                "description": "If using GitHub App for a GitHub Enterprise repository the host url is required",
+                "description": "GitHub API URL for GitHub app authentication.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_id": {
                 "type": "string",
-                "description": "GitHub App id for authenticating at the repo server only for GitHub repos",
+                "description": "Github App ID of the app used to access the repo for GitHub app authentication.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_installation_id": {
                 "type": "string",
-                "description": "GitHub App installation id for authenticating at the repo server only for GitHub repos",
+                "description": "ID of the installed GitHub App for GitHub app authentication.",
                 "description_kind": "plain",
                 "optional": true
               },
               "githubapp_private_key": {
                 "type": "string",
-                "description": "Private key data (pem) of GitHub App for authenticating at the repo server only for GitHub repos",
+                "description": "Private key data (PEM) for authentication via GitHub app.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
@@ -1729,44 +1806,45 @@
               },
               "password": {
                 "type": "string",
-                "description": "Password for authenticating at the repo server",
+                "description": "Password for authenticating at the repo server.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
               },
               "ssh_private_key": {
                 "type": "string",
-                "description": "SSH private key data for authenticating at the repo server only for Git repos",
+                "description": "Private key data for authenticating at the repo server using SSH (only Git repos).",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
               },
               "tls_client_cert_data": {
                 "type": "string",
-                "description": "TLS client cert data for authenticating at the repo server",
+                "description": "TLS client cert data for authenticating at the repo server.",
                 "description_kind": "plain",
                 "optional": true
               },
               "tls_client_cert_key": {
                 "type": "string",
-                "description": "TLS client cert key for authenticating at the repo server ",
+                "description": "TLS client cert key for authenticating at the repo server.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
               },
               "url": {
                 "type": "string",
-                "description": "URL is the URL that these credentials matches to",
+                "description": "URL that these credentials matches to.",
                 "description_kind": "plain",
                 "required": true
               },
               "username": {
                 "type": "string",
-                "description": "Username for authenticating at the repo server",
+                "description": "Username for authenticating at the repo server.",
                 "description_kind": "plain",
                 "optional": true
               }
             },
+            "description": "Manages [repository credentials](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/#credentials) within ArgoCD.\n\n**Note**: due to restrictions in the ArgoCD API the provider is unable to track drift in this resource to fields other than `username`. I.e. the provider is unable to detect changes to repository credentials that are made outside of Terraform (e.g. manual updates to the underlying Kubernetes Secrets).",
             "description_kind": "plain"
           }
         }
