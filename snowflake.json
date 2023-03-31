@@ -2692,11 +2692,26 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "handler": {
+                "type": "string",
+                "description": "The handler method for Java / Python procedures.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "imports": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Imports for Java / Python procedures. For Java this a list of jar files, for Python this is a list of Python files.",
+                "description_kind": "plain",
+                "optional": true
               },
               "language": {
                 "type": "string",
@@ -2716,6 +2731,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "packages": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of package imports to use for Java / Python procedures. For Java, package imports should be of the form: package_name:version_number, where package_name is snowflake_domain:package. For Python use it should be: ('numpy','pandas','xgboost==1.5.0').",
+                "description_kind": "plain",
+                "optional": true
+              },
               "return_behavior": {
                 "type": "string",
                 "description": "Specifies the behavior of the function when returning results",
@@ -2728,6 +2752,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "runtime_version": {
+                "type": "string",
+                "description": "Required for Python procedures. Specifies Python runtime version.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "schema": {
                 "type": "string",
                 "description": "The schema in which to create the procedure. Don't use the | character.",
@@ -2736,7 +2766,7 @@
               },
               "statement": {
                 "type": "string",
-                "description": "Specifies the javascript code used to create the procedure.",
+                "description": "Specifies the code used to create the procedure.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -2937,7 +2967,7 @@
               },
               "set_for_account": {
                 "type": "bool",
-                "description": "Specifies whether the resource monitor should be applied globally to your Snowflake account.",
+                "description": "Specifies whether the resource monitor should be applied globally to your Snowflake account (defaults to false).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2948,12 +2978,25 @@
                 "optional": true,
                 "computed": true
               },
+              "suspend_immediate_trigger": {
+                "type": "number",
+                "description": "The number that represents the percentage threshold at which to immediately suspend all warehouses.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "suspend_immediate_triggers": {
                 "type": [
                   "set",
                   "number"
                 ],
-                "description": "A list of percentage thresholds at which to immediately suspend all warehouses.",
+                "description": "A list of percentage thresholds at which to suspend all warehouses.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "suspend_trigger": {
+                "type": "number",
+                "description": "The number that represents the percentage threshold at which to suspend all warehouses.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2964,6 +3007,7 @@
                 ],
                 "description": "A list of percentage thresholds at which to suspend all warehouses.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "warehouses": {
@@ -4619,6 +4663,12 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all all tables in the given schema. When this is true and no schema_name is provided apply this grant on all all tables in the given database. The table_name and shares fields must be unset in order to use on_all.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
                 "description": "When this is set to true and a schema_name is provided, apply this grant on all future tables in the given schema. When this is true and no schema_name is provided apply this grant on all future tables in the given database. The table_name and shares fields must be unset in order to use on_future.",
@@ -4651,13 +4701,13 @@
                   "set",
                   "string"
                 ],
-                "description": "Grants privilege to these shares (only valid if on_future is unset).",
+                "description": "Grants privilege to these shares (only valid if on_future or on_all is unset).",
                 "description_kind": "plain",
                 "optional": true
               },
               "table_name": {
                 "type": "string",
-                "description": "The name of the table on which to grant privileges immediately (only valid if on_future is unset).",
+                "description": "The name of the table on which to grant privileges immediately (only valid if on_future or on_all is unset).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6881,9 +6931,33 @@
                 "optional": true,
                 "computed": true
               },
+              "internal_stage": {
+                "type": "string",
+                "description": "The endpoint to connect to your Snowflake internal stage using AWS PrivateLink or Azure Private Link.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "ocsp_url": {
                 "type": "string",
                 "description": "The OCSP URL corresponding to your Snowflake account that uses AWS PrivateLink or Azure Private Link.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "regionless_account_url": {
+                "type": "string",
+                "description": "The regionless URL to connect to your Snowflake account using AWS PrivateLink, Azure Private Link, or Google Cloud Private Service Connect.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "regionless_snowsight_url": {
+                "type": "string",
+                "description": "The URL for your organization to access Snowsight using Private Connectivity to the Snowflake Service.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "snowsight_url": {
+                "type": "string",
+                "description": "The URL containing the cloud region to access Snowsight and the Snowflake Marketplace using Private Connectivity to the Snowflake Service.",
                 "description_kind": "plain",
                 "computed": true
               }

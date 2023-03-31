@@ -5823,11 +5823,17 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "day_of_month": {
+                "type": "string",
+                "description": "The specific day (day 1 to day 31) of the month on which to create a snapshot.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "day_of_week": {
                 "type": "string",
                 "description": "The day of the week on which to repeat the snapshot operation.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "hour": {
                 "type": "string",
@@ -5840,6 +5846,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "interval_days": {
+                "type": "number",
+                "description": "The snapshot interval, in days.",
+                "description_kind": "plain",
+                "optional": true
               },
               "policy_name": {
                 "type": "string",
@@ -13752,6 +13764,32 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_cvm_launch_template_default_version": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_version": {
+                "type": "number",
+                "description": "The number of the version that you want to set as the default version.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "launch_template_id": {
+                "type": "string",
+                "description": "Instance launch template ID.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -26299,6 +26337,68 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_lighthouse_firewall_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "firewall_rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "action": {
+                      "type": "string",
+                      "description": "Valid values are ACCEPT, DROP. Default value is ACCEPT.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "cidr_block": {
+                      "type": "string",
+                      "description": "IP range or IP (mutually exclusive). Default value is 0.0.0.0/0, which indicates all sources.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "firewall_rule_description": {
+                      "type": "string",
+                      "description": "Firewall rule description.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "port": {
+                      "type": "string",
+                      "description": "Port. Valid values are ALL, one single port, multiple ports separated by commas, or port range indicated by a minus sign.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Protocol. Valid values are TCP, UDP, ICMP, ALL.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Firewall rule list.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_lighthouse_instance": {
           "version": 0,
           "block": {
@@ -33817,6 +33917,161 @@
             "deprecated": true
           }
         },
+        "tencentcloud_mysql_audit_log_file": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "download_url": {
+                "type": "string",
+                "description": "download url.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "end time.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "file_size": {
+                "type": "number",
+                "description": "size of file(KB).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "order": {
+                "type": "string",
+                "description": "Sort by. supported values are: `ASC`- ascending order, `DESC`- descending order.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "Sort field. supported values include:`timestamp` - timestamp; `affectRows` - affected rows; `execTime` - execution time.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "start_time": {
+                "type": "string",
+                "description": "start time.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "affect_rows": {
+                      "type": "number",
+                      "description": "Affects the number of rows. Indicates to filter audit logs whose number of affected rows is greater than this value.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "db_name": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Database name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "exec_time": {
+                      "type": "number",
+                      "description": "Execution time. The unit is: ms. Indicates to filter audit logs whose execution time is greater than this value.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "host": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Client address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "policy_name": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The name of policy.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sql": {
+                      "type": "string",
+                      "description": "SQL statement. support fuzzy matching.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sql_type": {
+                      "type": "string",
+                      "description": "SQL type. Currently supported: SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, SET, REPLACE, EXECUTE.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sql_types": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "SQL type. Supports simultaneous query of multiple types. Currently supported: SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, SET, REPLACE, EXECUTE.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sqls": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "SQL statement. Support passing multiple sql statements.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "table_name": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Table name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "User name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Filter condition. Logs can be filtered according to the filter conditions set.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_mysql_backup_policy": {
           "version": 0,
           "block": {
@@ -35320,6 +35575,76 @@
                     }
                   },
                   "description": "Specify instance node info for disaster migration.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_postgresql_parameter_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "db_engine": {
+                "type": "string",
+                "description": "Database engine, such as postgresql, mssql_compatible.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "db_major_version": {
+                "type": "string",
+                "description": "The major database version number, such as 11, 12, 13.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "delete_param_set": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The set of parameters that need to be deleted.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "template_description": {
+                "type": "string",
+                "description": "Parameter template description, which can contain 1-60 letters, digits, and symbols (-_./()+=:@).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "template_name": {
+                "type": "string",
+                "description": "Template name, which can contain 1-60 letters, digits, and symbols (-_./()+=:@).",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "modify_param_entry_set": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "expected_value": {
+                      "type": "string",
+                      "description": "Modify the parameter value. The input parameters are passed in the form of strings, for example: decimal `0.1`, integer `1000`, enumeration `replica`.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The parameter name.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The set of parameters that need to be modified or added. Note: the same parameter cannot appear in the set of modifying and adding and deleting at the same time.",
                   "description_kind": "plain"
                 }
               }
@@ -63409,6 +63734,45 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_lighthouse_firewall_rules_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "firewall_rule_set": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "action": "string",
+                      "app_type": "string",
+                      "cidr_block": "string",
+                      "firewall_rule_description": "string",
+                      "port": "string",
+                      "protocol": "string"
+                    }
+                  ]
+                ],
+                "description": "Firewall rule details list.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_mariadb_accounts": {
           "version": 0,
           "block": {
@@ -65236,6 +65600,82 @@
                 "description": "Used to save results.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_postgresql_parameter_templates": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "list": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "db_engine": "string",
+                      "db_major_version": "string",
+                      "template_description": "string",
+                      "template_id": "string",
+                      "template_name": "string"
+                    }
+                  ]
+                ],
+                "description": "list of parameter templates.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "Sorting metric. Valid values:CreateTime, TemplateName, DBMajorVersion.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by_type": {
+                "type": "string",
+                "description": "Sorting order. Valid values:asc (ascending order),desc (descending order).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "Filter name.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "One or more filter values.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Filter conditions. Valid values:TemplateName, TemplateId, DBMajorVersion, DBEngine.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
