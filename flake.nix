@@ -7,7 +7,7 @@
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } ({ withSystem, config, ... }: {
-      systems = [ "x86_64-linux" ];
+      systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [ inputs.hercules-ci-effects.flakeModule ];
 
       perSystem = { pkgs, config, ... }: {
@@ -20,7 +20,6 @@
 
       hercules-ci.flake-update = {
         enable = true;
-        autoMergeMethod = "rebase";
         # Update  everynight at midnight
         when = {
           hour = [ 0 ];
@@ -29,6 +28,7 @@
       };
 
       herculesCI = herculesCI: {
+        ciSystems = [ "x86_64-linux" ];
         onPush.default.outputs.effects.dump-to-branch = withSystem config.defaultEffectSystem ({ pkgs, config, hci-effects, ... }:
           hci-effects.runIf (herculesCI.config.repo.branch == "master") (hci-effects.gitWriteBranch {
             git.checkout.remote.url = herculesCI.config.repo.remoteHttpUrl;
