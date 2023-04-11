@@ -607,7 +607,7 @@
                 "type": "bool",
                 "description": "If 'true', the runner group will be restricted to running only the workflows specified in the 'selected_workflows' array. Defaults to 'false'.",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "runners_url": {
                 "type": "string",
@@ -637,7 +637,7 @@
                 ],
                 "description": "List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to 'true'.",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "visibility": {
                 "type": "string",
@@ -1152,6 +1152,41 @@
                       "description": "Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.",
                       "description_kind": "plain",
                       "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "bypass_pull_request_allowances": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "apps": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "teams": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "users": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "Enforce restrictions for pull request reviews.",
@@ -2600,6 +2635,76 @@
             "description_kind": "plain"
           }
         },
+        "github_repository_collaborators": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invitation_ids": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Map of usernames to invitation ID for any users added",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "team": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "permission": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "team_id": {
+                      "type": "string",
+                      "description": "Team ID or slug to add to the repository as a collaborator.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of teams",
+                  "description_kind": "plain"
+                }
+              },
+              "user": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "permission": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "(Required) The user to add to the repository as a collaborator.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "List of users",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_repository_deploy_key": {
           "version": 0,
           "block": {
@@ -2733,7 +2838,7 @@
             "attributes": {
               "branch": {
                 "type": "string",
-                "description": "The branch name, defaults to \"main\"",
+                "description": "The branch name, defaults to the repository's default branch",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2785,6 +2890,12 @@
                 "description": "Enable overwriting existing files, defaults to \"false\"",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "ref": {
+                "type": "string",
+                "description": "The name of the commit/branch/tag",
+                "description_kind": "plain",
+                "computed": true
               },
               "repository": {
                 "type": "string",
@@ -3657,6 +3768,30 @@
             "description_kind": "plain"
           }
         },
+        "github_actions_organization_public_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "key_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_actions_organization_registration_token": {
           "version": 0,
           "block": {
@@ -4040,6 +4175,30 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_dependabot_organization_public_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "key_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -4484,6 +4643,7 @@
                   "string"
                 ],
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "name": {
@@ -4510,6 +4670,17 @@
                 "type": [
                   "list",
                   "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "users": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
                 ],
                 "description_kind": "plain",
                 "computed": true
@@ -5187,7 +5358,7 @@
             "attributes": {
               "branch": {
                 "type": "string",
-                "description": "The branch name, defaults to \"main\"",
+                "description": "The branch name, defaults to the repository's default branch",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5231,6 +5402,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "ref": {
+                "type": "string",
+                "description": "The name of the commit/branch/tag",
+                "description_kind": "plain",
                 "computed": true
               },
               "repository": {
@@ -5564,6 +5741,28 @@
             "description_kind": "plain"
           }
         },
+        "github_ssh_keys": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_team": {
           "version": 0,
           "block": {
@@ -5814,6 +6013,14 @@
           "version": 0,
           "block": {
             "attributes": {
+              "emails": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",

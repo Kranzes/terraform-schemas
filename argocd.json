@@ -1534,9 +1534,15 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "renew_after": {
+                "type": "string",
+                "description": "Duration to control token silent regeneration based on token age. Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`. If set, then the token will be regenerated if it is older than `renew_after`. I.e. if `currentDate - issued_at > renew_after`.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "renew_before": {
                 "type": "string",
-                "description": "Duration to control token silent regeneration, valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`. If `expires_in` is set, Terraform will regenerate the token if `expires_in - renew_before < currentDate`.",
+                "description": "Duration to control token silent regeneration based on remaining token lifetime. If `expires_in` is set, Terraform will regenerate the token if `expires_at - currentDate < renew_before`. Valid time units are `ns`, `us` (or `µs`), `ms`, `s`, `m`, `h`.",
                 "description_kind": "plain",
                 "optional": true
               },

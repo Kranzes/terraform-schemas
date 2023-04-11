@@ -1,0 +1,619 @@
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/nats-io/jetstream": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "credential_data": {
+              "type": "string",
+              "description": "The contents of the NATS 2.0 Credentials file to use",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "credentials": {
+              "type": "string",
+              "description": "Path to the NATS 2.0 credentials file to use for authentication",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "nkey": {
+              "type": "string",
+              "description": "Connect using a NKEY seed stored in a file",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "password": {
+              "type": "string",
+              "description": "Connect using a password",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "servers": {
+              "type": "string",
+              "description": "Comma separated list of NATS servers to connect to",
+              "description_kind": "plain",
+              "required": true
+            },
+            "user": {
+              "type": "string",
+              "description": "Connect using an username, used as token when no password is given",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "block_types": {
+            "tls": {
+              "nesting_mode": "set",
+              "block": {
+                "attributes": {
+                  "ca_file": {
+                    "type": "string",
+                    "description": "Path to the server root CA file (in PEM format). Needed when the NATS server has TLS enabled with an unknown root CA",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "ca_file_data": {
+                    "type": "string",
+                    "description": "The root CA (file) content, in PEM format. Needed when the NATS server has TLS enabled with an unknown root CA",
+                    "description_kind": "plain",
+                    "optional": true
+                  }
+                },
+                "description_kind": "plain"
+              },
+              "max_items": 1
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "jetstream_consumer": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ack_policy": {
+                "type": "string",
+                "description": "The delivery acknowledgement policy to apply to the Consumer",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ack_wait": {
+                "type": "number",
+                "description": "Number of seconds to wait for acknowledgement",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backoff": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "List of durations in Go format that represents a retry time scale for NaK'd messages. A list of durations in seconds.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deliver_all": {
+                "type": "bool",
+                "description": "Starts at the first available message in the Stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deliver_last": {
+                "type": "bool",
+                "description": "Starts at the latest available message in the Stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deliver_last_per_subject": {
+                "type": "bool",
+                "description": "Starts with the last message for each subject matched by filter",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deliver_new": {
+                "type": "bool",
+                "description": "Starts with the next available message in the Stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "delivery_group": {
+                "type": "string",
+                "description": "When set Push consumers will only deliver messages to subscriptions with this group set",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "delivery_subject": {
+                "type": "string",
+                "description": "The subject where a Push-based consumer will deliver messages",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Contains additional information about this consumer",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "durable_name": {
+                "type": "string",
+                "description": "The durable name of the Consumer",
+                "description_kind": "plain",
+                "required": true
+              },
+              "filter_subject": {
+                "type": "string",
+                "description": "Only receive a subset of messages from the Stream based on the subject they entered the Stream on",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "flow_control": {
+                "type": "bool",
+                "description": "Enable flow control for push consumers",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "headers_only": {
+                "type": "bool",
+                "description": "When true no message bodies will be delivered only headers",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "heartbeat": {
+                "type": "number",
+                "description": "Enable heartbeat messages for push consumers, duration specified in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "inactive_threshold": {
+                "type": "number",
+                "description": "Removes the consumer after a idle period, specified as a duration in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_ack_pending": {
+                "type": "number",
+                "description": "Maximum pending Acks before consumers are paused",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_batch": {
+                "type": "number",
+                "description": "Limits Pull Batch sizes to this maximum",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_bytes": {
+                "type": "number",
+                "description": "The maximum bytes value that maybe set when dong a pull on a Pull Consumer",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_delivery": {
+                "type": "number",
+                "description": "Maximum deliveries to attempt for each message",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_expires": {
+                "type": "number",
+                "description": "Limits the Pull Expires duration to this maximum in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_waiting": {
+                "type": "number",
+                "description": "The number of pulls that can be outstanding on a pull consumer, pulls received after this is reached are ignored",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "memory": {
+                "type": "bool",
+                "description": "Force the consumer state to be kept in memory rather than inherit the setting from the stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ratelimit": {
+                "type": "number",
+                "description": "The rate limit for delivering messages to push consumers, expressed in bits per second",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "replay_policy": {
+                "type": "string",
+                "description": "The rate at which messages will be replayed from the stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "replicas": {
+                "type": "number",
+                "description": "How many replicas of the data to keep in a clustered environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sample_freq": {
+                "type": "number",
+                "description": "The percentage of acknowledgements that will be sampled for observability purposes",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "start_time": {
+                "type": "string",
+                "description": "The timestamp of the first message that will be delivered by this Consumer",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "stream_id": {
+                "type": "string",
+                "description": "The name of the Stream that this consumer consumes",
+                "description_kind": "plain",
+                "required": true
+              },
+              "stream_sequence": {
+                "type": "number",
+                "description": "The Stream Sequence that will be the first message delivered by this Consumer",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "jetstream_kv_bucket": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Contains additional information about this bucket",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "history": {
+                "type": "number",
+                "description": "How many historical values to keep",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_bucket_size": {
+                "type": "number",
+                "description": "Maximum size of the entire bucket",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_value_size": {
+                "type": "number",
+                "description": "Maximum size of any value",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Bucket",
+                "description_kind": "plain",
+                "required": true
+              },
+              "placement_cluster": {
+                "type": "string",
+                "description": "Place the bucket in a specific cluster, influenced by placement_tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "placement_tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Place the stream only on servers with these tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "replicas": {
+                "type": "number",
+                "description": "Number of cluster replicas to store",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "How many seconds a value will be kept in the bucket",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "jetstream_stream": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ack": {
+                "type": "bool",
+                "description": "If the Stream should support confirming receiving messages via acknowledgements",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allow_direct": {
+                "type": "bool",
+                "description": "Allow higher performance, direct access to get individual messages via the $JS.DS.GET API",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allow_rollup_hdrs": {
+                "type": "bool",
+                "description": "Allows the use of the Nats-Rollup header to replace all contents of a stream, or subject in a stream, with a single new message",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deny_delete": {
+                "type": "bool",
+                "description": "Restricts the ability to delete messages from a stream via the API. Cannot be changed once set to true",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deny_purge": {
+                "type": "bool",
+                "description": "Restricts the ability to purge messages from a stream via the API. Cannot be change once set to true",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Contains additional information about this stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "duplicate_window": {
+                "type": "number",
+                "description": "The size of the duplicate tracking windows, duration specified in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_age": {
+                "type": "number",
+                "description": "The maximum oldest message that can be kept in the stream, duration specified in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_bytes": {
+                "type": "number",
+                "description": "The maximum size of all messages that can be kept in the stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_consumers": {
+                "type": "number",
+                "description": "Number of consumers this stream allows",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_msg_size": {
+                "type": "number",
+                "description": "The maximum individual message size that the stream will accept",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_msgs": {
+                "type": "number",
+                "description": "The maximum amount of messages that can be kept in the stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_msgs_per_subject": {
+                "type": "number",
+                "description": "The maximum amount of messages that can be kept in the stream on a per-subject basis",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the stream",
+                "description_kind": "plain",
+                "required": true
+              },
+              "placement_cluster": {
+                "type": "string",
+                "description": "Place the stream in a specific cluster, influenced by placement_tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "placement_tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Place the stream only on servers with these tags",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "replicas": {
+                "type": "number",
+                "description": "How many replicas of the data to keep in a clustered environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "republish_destination": {
+                "type": "string",
+                "description": "The destination to publish messages to",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "republish_headers_only": {
+                "type": "bool",
+                "description": "Republish only message headers, no bodies",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "republish_source": {
+                "type": "string",
+                "description": "Republish messages to republish_destination",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "retention": {
+                "type": "string",
+                "description": "The retention policy to apply over and above max_msgs, max_bytes and max_age",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "storage": {
+                "type": "string",
+                "description": "The storage engine to use to back the stream",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "subjects": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The list of subjects that will be consumed by the Stream, may be empty when sources and mirrors are present",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "mirror": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "filter_subject": {
+                      "type": "string",
+                      "description": "Only copy messages matching a specific subject, not usable for mirrors",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the source Stream",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "start_seq": {
+                      "type": "number",
+                      "description": "The sequence to start mirroring from",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "start_time": {
+                      "type": "string",
+                      "description": "The time stamp in the source stream to start from, in RFC3339 format",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "external": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "api": {
+                            "type": "string",
+                            "description": "The subject prefix for the remote API",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "deliver": {
+                            "type": "string",
+                            "description": "The subject prefix where messages will be delivered to",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Streams replicated from other accounts",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specifies a remote stream to mirror into this one",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "source": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "filter_subject": {
+                      "type": "string",
+                      "description": "Only copy messages matching a specific subject, not usable for mirrors",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the source Stream",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "start_seq": {
+                      "type": "number",
+                      "description": "The sequence to start mirroring from",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "start_time": {
+                      "type": "string",
+                      "description": "The time stamp in the source stream to start from, in RFC3339 format",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "external": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "api": {
+                            "type": "string",
+                            "description": "The subject prefix for the remote API",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "deliver": {
+                            "type": "string",
+                            "description": "The subject prefix where messages will be delivered to",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Streams replicated from other accounts",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specifies a list of streams to source into this one",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

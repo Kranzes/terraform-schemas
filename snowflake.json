@@ -175,13 +175,15 @@
                 "type": "string",
                 "description": "Email address of the initial administrative user of the account. This email address is used to send any notifications about the account.",
                 "description_kind": "plain",
-                "required": true
+                "required": true,
+                "sensitive": true
               },
               "first_name": {
                 "type": "string",
                 "description": "First name of the initial administrative user of the account",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "sensitive": true
               },
               "id": {
                 "type": "string",
@@ -189,11 +191,18 @@
                 "optional": true,
                 "computed": true
               },
+              "is_org_admin": {
+                "type": "bool",
+                "description": "Indicates whether the ORGADMIN role is enabled in an account. If TRUE, the role is enabled.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "last_name": {
                 "type": "string",
                 "description": "Last name of the initial administrative user of the account",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "sensitive": true
               },
               "must_change_password": {
                 "type": "bool",
@@ -2486,6 +2495,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "on_account": {
+                "type": "bool",
+                "description": "If true, the object parameter will be set on the account level.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "value": {
                 "type": "string",
                 "description": "Value of object parameter, as a string. Constraints are the same as those for the parameters in Snowflake documentation.",
@@ -3787,6 +3802,18 @@
                 "description": "Name of session parameter. Valid values are those in [session parameters](https://docs.snowflake.com/en/sql-reference/parameters.html#session-parameters).",
                 "description_kind": "plain",
                 "required": true
+              },
+              "on_account": {
+                "type": "bool",
+                "description": "If true, the session parameter will be set on the account level.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user": {
+                "type": "string",
+                "description": "The user to set the session parameter for. Required if on_account is false",
+                "description_kind": "plain",
+                "optional": true
               },
               "value": {
                 "type": "string",
@@ -5164,19 +5191,22 @@
                 "description": "Name displayed for the user in the Snowflake web interface.",
                 "description_kind": "plain",
                 "optional": true,
-                "computed": true
+                "computed": true,
+                "sensitive": true
               },
               "email": {
                 "type": "string",
                 "description": "Email address for the user.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "sensitive": true
               },
               "first_name": {
                 "type": "string",
                 "description": "First name of the user.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "sensitive": true
               },
               "has_rsa_public_key": {
                 "type": "bool",
@@ -5194,14 +5224,16 @@
                 "type": "string",
                 "description": "Last name of the user.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "sensitive": true
               },
               "login_name": {
                 "type": "string",
                 "description": "The name users use to log in. If not supplied, snowflake will use name instead.",
                 "description_kind": "plain",
                 "optional": true,
-                "computed": true
+                "computed": true,
+                "sensitive": true
               },
               "must_change_password": {
                 "type": "bool",
@@ -5213,7 +5245,8 @@
                 "type": "string",
                 "description": "Name of the user. Note that if you do not supply login_name this will be used as login_name. [doc](https://docs.snowflake.net/manuals/sql-reference/sql/create-user.html#required-parameters)",
                 "description_kind": "plain",
-                "required": true
+                "required": true,
+                "sensitive": true
               },
               "password": {
                 "type": "string",
@@ -5398,6 +5431,12 @@
               "comment": {
                 "type": "string",
                 "description": "Specifies a comment for the view.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "copy_grants": {
+                "type": "bool",
+                "description": "Retains the access permissions from the original view when a new view is created using the OR REPLACE clause.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6412,6 +6451,12 @@
               "pattern": {
                 "type": "string",
                 "description": "Allows limiting the list of parameters by name using LIKE clause. Refer to [Limiting the List of Parameters by Name](https://docs.snowflake.com/en/sql-reference/parameters.html#limiting-the-list-of-parameters-by-name)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user": {
+                "type": "string",
+                "description": "If parameter_type is set to \"SESSION\" then user is the name of the user to display session parameters for.",
                 "description_kind": "plain",
                 "optional": true
               }

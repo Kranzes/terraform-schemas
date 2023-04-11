@@ -26,7 +26,7 @@
             },
             "api_key": {
               "type": "string",
-              "description": "The API key for operations. Alternatively, can be configured using the `CLOUDFLARE_API_KEY` environment variable. API keys are [now considered legacy by Cloudflare](https://developers.cloudflare.com/api/keys/#limitations), API tokens should be used instead. Must provide only one of `api_key`, `api_token`, `api_user_service_key`.",
+              "description": "The API key for operations. Alternatively, can be configured using the `CLOUDFLARE_API_KEY` environment variable. API keys are [now considered legacy by Cloudflare](https://developers.cloudflare.com/fundamentals/api/get-started/keys/#limitations), API tokens should be used instead. Must provide only one of `api_key`, `api_token`, `api_user_service_key`.",
               "description_kind": "markdown",
               "optional": true
             },
@@ -491,12 +491,14 @@
                               "list",
                               "string"
                             ],
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure group or user.",
+                            "description_kind": "markdown",
                             "optional": true
                           },
                           "identity_provider_id": {
                             "type": "string",
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
@@ -729,12 +731,14 @@
                               "list",
                               "string"
                             ],
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure group or user.",
+                            "description_kind": "markdown",
                             "optional": true
                           },
                           "identity_provider_id": {
                             "type": "string",
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
@@ -968,12 +972,14 @@
                               "list",
                               "string"
                             ],
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure group or user.",
+                            "description_kind": "markdown",
                             "optional": true
                           },
                           "identity_provider_id": {
                             "type": "string",
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
@@ -1155,7 +1161,8 @@
                         "string"
                       ],
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "auth_url": {
                       "type": "string",
@@ -1176,6 +1183,15 @@
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "claims": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
                     },
                     "client_id": {
                       "type": "string",
@@ -1228,6 +1244,15 @@
                       "optional": true,
                       "computed": true
                     },
+                    "scopes": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
                     "sign_request": {
                       "type": "bool",
                       "description_kind": "plain",
@@ -1250,6 +1275,41 @@
                     }
                   },
                   "description": "Provider configuration from the [developer documentation](https://developers.cloudflare.com/access/configuring-identity-providers/).",
+                  "description_kind": "markdown"
+                }
+              },
+              "scim_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "group_member_deprovision": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "seat_deprovision": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secret": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "user_deprovision": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Configuration for SCIM settings for a given IDP.",
                   "description_kind": "markdown"
                 }
               }
@@ -1647,12 +1707,14 @@
                               "list",
                               "string"
                             ],
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure group or user.",
+                            "description_kind": "markdown",
                             "optional": true
                           },
                           "identity_provider_id": {
                             "type": "string",
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
@@ -1886,12 +1948,14 @@
                               "list",
                               "string"
                             ],
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure group or user.",
+                            "description_kind": "markdown",
                             "optional": true
                           },
                           "identity_provider_id": {
                             "type": "string",
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
@@ -2126,12 +2190,14 @@
                               "list",
                               "string"
                             ],
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure group or user.",
+                            "description_kind": "markdown",
                             "optional": true
                           },
                           "identity_provider_id": {
                             "type": "string",
-                            "description_kind": "plain",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
                             "optional": true
                           }
                         },
@@ -3476,6 +3542,94 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_device_dex_test": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "created": {
+                "type": "string",
+                "description": "Timestamp of when the Dex Test was created.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Additional details about the test.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Determines whether or not the test is active.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "interval": {
+                "type": "string",
+                "description": "How often the test will run.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Device Dex Test. Must be unique.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "Timestamp of when the Dex Test was last updated.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "data": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description": "The host URL for `http` test `kind`. For `traceroute`, it must be a valid hostname or IP address.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "kind": {
+                      "type": "string",
+                      "description": "The type of Device Dex Test. Available values: `http`, `traceroute`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "The http request method. Available values: `GET`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "The configuration object which contains the details for the WARP client to conduct the test.",
+                  "description_kind": "markdown"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description": "Provides a Cloudflare Device Dex Test resource. Device Dex Tests allow for building location-aware device settings policies.",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_device_managed_networks": {
           "version": 0,
           "block": {
@@ -3596,7 +3750,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The device posture integration type. Available values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`.",
+                "description": "The device posture integration type. Available values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`, `kolide`.",
                 "description_kind": "markdown",
                 "required": true
               }
@@ -3946,7 +4100,7 @@
               },
               "service_mode_v2_mode": {
                 "type": "string",
-                "description": "The service mode. Defaults to `warp`.",
+                "description": "The service mode. Available values: `1dot1`, `warp`, `proxy`, `posture_only`, `warp_tunnel_only`. Defaults to `warp`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -10162,6 +10316,12 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "allow_child_bypass": {
+                      "type": "bool",
+                      "description": "Allow parent MSP accounts to enable bypass their children's rules.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "block_page_enabled": {
                       "type": "bool",
                       "description": "Indicator of block page enablement.",
@@ -10174,9 +10334,21 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "bypass_parent_rule": {
+                      "type": "bool",
+                      "description": "Allow child MSP accounts to bypass their parent's rule.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "insecure_disable_dnssec_validation": {
                       "type": "bool",
                       "description": "Disable DNSSEC validation (must be Allow rule).",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "ip_categories": {
+                      "type": "bool",
+                      "description": "Turns on IP category based filter on dns if the rule contains dns category checks.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -10197,6 +10369,22 @@
                     }
                   },
                   "block_types": {
+                    "audit_ssh": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "command_logging": {
+                            "type": "bool",
+                            "description": "Log all SSH commands.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description": "Settings for auditing SSH usage.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
                     "biso_admin_controls": {
                       "nesting_mode": "list",
                       "block": {
@@ -11270,6 +11458,51 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_worker_domain": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "The name of the Worker environment. Defaults to `production`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "Hostname of the Worker Domain.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "service": {
+                "type": "string",
+                "description": "Name of worker script to attach the domain to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Creates a Worker Custom Domain.",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_worker_route": {
           "version": 0,
           "block": {
@@ -11318,6 +11551,16 @@
                 "description": "The date to use for the compatibility flag.",
                 "description_kind": "markdown",
                 "optional": true
+              },
+              "compatibility_flags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Compatibility flags used for Worker Scripts.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               },
               "content": {
                 "type": "string",
@@ -12698,16 +12941,21 @@
                     "object",
                     {
                       "created": "string",
+                      "deleted": "bool",
                       "device_type": "string",
                       "id": "string",
                       "ip": "string",
                       "key": "string",
                       "last_seen": "string",
+                      "mac_address": "string",
+                      "manufacturer": "string",
                       "model": "string",
                       "name": "string",
                       "os_distro_name": "string",
                       "os_distro_revision": "string",
                       "os_version": "string",
+                      "revoked_at": "string",
+                      "serial_number": "string",
                       "updated": "string",
                       "user_email": "string",
                       "user_id": "string",

@@ -9,26 +9,26 @@
             "account": {
               "type": "string",
               "description": "The account for API operations.",
-              "description_kind": "plain",
-              "required": true
+              "description_kind": "markdown",
+              "optional": true
             },
             "prefetch": {
               "type": "bool",
               "description": "Flag to enable the prefetch of zone records.",
-              "description_kind": "plain",
+              "description_kind": "markdown",
               "optional": true
             },
             "sandbox": {
               "type": "bool",
               "description": "Flag to enable the sandbox API.",
-              "description_kind": "plain",
+              "description_kind": "markdown",
               "optional": true
             },
             "token": {
               "type": "string",
               "description": "The API v2 token for API operations.",
-              "description_kind": "plain",
-              "required": true,
+              "description_kind": "markdown",
+              "optional": true,
               "sensitive": true
             },
             "user_agent": {
@@ -38,7 +38,8 @@
               "optional": true
             }
           },
-          "description_kind": "plain"
+          "description": "The DNSimple provider is used to interact with the various services that DNSimple offers. The provider needs to be configured with the proper credentials before it can be used.",
+          "description_kind": "markdown"
         }
       },
       "resource_schemas": {
@@ -57,9 +58,8 @@
                 "computed": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
@@ -88,7 +88,8 @@
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "DNSimple domain resource",
+            "description_kind": "markdown"
           }
         },
         "dnsimple_email_forward": {
@@ -116,13 +117,13 @@
                 "required": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "DNSimple email forward resource",
+            "description_kind": "markdown"
           }
         },
         "dnsimple_lets_encrypt_certificate": {
@@ -139,12 +140,6 @@
                 "description_kind": "plain",
                 "required": true
               },
-              "contact_id": {
-                "type": "number",
-                "description_kind": "plain",
-                "deprecated": true,
-                "optional": true
-              },
               "created_at": {
                 "type": "string",
                 "description_kind": "plain",
@@ -158,15 +153,15 @@
               "domain_id": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
-              "expires_on": {
+              "expires_at": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -196,77 +191,8 @@
                 "computed": true
               }
             },
-            "block_types": {
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "read": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "dnsimple_record": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "domain": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "domain_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "hostname": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "priority": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ttl": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "type": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "value": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              }
-            },
-            "description_kind": "plain"
+            "description": "DNSimple Let's Encrypt certificate resource",
+            "description_kind": "markdown"
           }
         },
         "dnsimple_zone_record": {
@@ -274,9 +200,8 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
+                "type": "number",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
@@ -285,7 +210,7 @@
                 "required": true
               },
               "priority": {
-                "type": "string",
+                "type": "number",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -296,9 +221,10 @@
                 "computed": true
               },
               "ttl": {
-                "type": "string",
+                "type": "number",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "type": {
                 "type": "string",
@@ -321,7 +247,8 @@
                 "required": true
               }
             },
-            "description_kind": "plain"
+            "description": "DNSimple domain resource",
+            "description_kind": "markdown"
           }
         }
       },
@@ -335,42 +262,48 @@
                   "list",
                   "string"
                 ],
-                "description_kind": "plain",
+                "description": "Certificate chain",
+                "description_kind": "markdown",
                 "computed": true
               },
               "certificate_id": {
-                "type": "string",
-                "description_kind": "plain",
+                "type": "number",
+                "description": "Certificate ID",
+                "description_kind": "markdown",
                 "required": true
               },
               "domain": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Domain name",
+                "description_kind": "markdown",
                 "required": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "private_key": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Private key",
+                "description_kind": "markdown",
                 "computed": true
               },
               "root_certificate": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Root certificate",
+                "description_kind": "markdown",
                 "computed": true
               },
               "server_certificate": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Server certificate",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "DNSimple certificate data source",
+            "description_kind": "markdown"
           }
         },
         "dnsimple_zone": {
@@ -379,7 +312,8 @@
             "attributes": {
               "account_id": {
                 "type": "number",
-                "description_kind": "plain",
+                "description": "DNSimple Account ID to which the zone belongs to",
+                "description_kind": "markdown",
                 "computed": true
               },
               "id": {
@@ -389,16 +323,19 @@
               },
               "name": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Zone Name",
+                "description_kind": "markdown",
                 "required": true
               },
               "reverse": {
                 "type": "bool",
-                "description_kind": "plain",
+                "description": "True if the zone is a reverse zone",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "DNSimple zone data source",
+            "description_kind": "markdown"
           }
         }
       }

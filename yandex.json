@@ -10515,6 +10515,12 @@
                 "optional": true,
                 "sensitive": true
               },
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "copy_schema_on_new_hosts": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -13918,6 +13924,71 @@
                       },
                       "max_items": 1
                     },
+                    "mongocfg": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "net": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_incoming_connections": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "operation_profiling": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "slow_op_threshold": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "storage": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "wired_tiger": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "cache_size_gb": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
                     "mongod": {
                       "nesting_mode": "list",
                       "block": {
@@ -13933,6 +14004,39 @@
                                 },
                                 "runtime_configuration": {
                                   "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "net": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_incoming_connections": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "operation_profiling": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "slow_op_threshold": {
+                                  "type": "number",
                                   "description_kind": "plain",
                                   "optional": true
                                 }
@@ -13997,6 +14101,71 @@
                               "attributes": {
                                 "audit_authorization_success": {
                                   "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "storage": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "journal": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "commit_interval": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "wired_tiger": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "block_compressor": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "cache_size_gb": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "mongos": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "net": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_incoming_connections": {
+                                  "type": "number",
                                   "description_kind": "plain",
                                   "optional": true
                                 }
@@ -14070,8 +14239,7 @@
                     "type": {
                       "type": "string",
                       "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
+                      "optional": true
                     },
                     "zone_id": {
                       "type": "string",
@@ -14127,9 +14295,105 @@
                       "required": true
                     }
                   },
+                  "description_kind": "plain",
+                  "deprecated": true
+                },
+                "max_items": 1
+              },
+              "resources_mongocfg": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
                   "description_kind": "plain"
                 },
-                "min_items": 1,
+                "max_items": 1
+              },
+              "resources_mongod": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "resources_mongoinfra": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "resources_mongos": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
                 "max_items": 1
               },
               "restore": {
@@ -15332,6 +15596,11 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "deletion_protection": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -15429,6 +15698,11 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "deletion_protection": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "grants": {
                 "type": [
@@ -19779,6 +20053,12 @@
                 "optional": true
               },
               "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "metering_mode": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
@@ -25852,202 +26132,11 @@
           "version": 0,
           "block": {
             "attributes": {
-              "access": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "data_lens": "bool",
-                      "data_transfer": "bool",
-                      "metrika": "bool",
-                      "serverless": "bool",
-                      "web_sql": "bool",
-                      "yandex_query": "bool"
-                    }
-                  ]
-                ],
+              "admin_password": {
+                "type": "string",
                 "description_kind": "plain",
-                "computed": true
-              },
-              "backup_window_start": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "hours": "number",
-                      "minutes": "number"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "clickhouse": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "config": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "background_fetches_pool_size": "number",
-                            "background_pool_size": "number",
-                            "background_schedule_pool_size": "number",
-                            "compression": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "method": "string",
-                                  "min_part_size": "number",
-                                  "min_part_size_ratio": "number"
-                                }
-                              ]
-                            ],
-                            "default_database": "string",
-                            "geobase_uri": "string",
-                            "graphite_rollup": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "name": "string",
-                                  "pattern": [
-                                    "list",
-                                    [
-                                      "object",
-                                      {
-                                        "function": "string",
-                                        "regexp": "string",
-                                        "retention": [
-                                          "list",
-                                          [
-                                            "object",
-                                            {
-                                              "age": "number",
-                                              "precision": "number"
-                                            }
-                                          ]
-                                        ]
-                                      }
-                                    ]
-                                  ]
-                                }
-                              ]
-                            ],
-                            "kafka": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "sasl_mechanism": "string",
-                                  "sasl_password": "string",
-                                  "sasl_username": "string",
-                                  "security_protocol": "string"
-                                }
-                              ]
-                            ],
-                            "kafka_topic": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "name": "string",
-                                  "settings": [
-                                    "list",
-                                    [
-                                      "object",
-                                      {
-                                        "sasl_mechanism": "string",
-                                        "sasl_password": "string",
-                                        "sasl_username": "string",
-                                        "security_protocol": "string"
-                                      }
-                                    ]
-                                  ]
-                                }
-                              ]
-                            ],
-                            "keep_alive_timeout": "number",
-                            "log_level": "string",
-                            "mark_cache_size": "number",
-                            "max_concurrent_queries": "number",
-                            "max_connections": "number",
-                            "max_partition_size_to_drop": "number",
-                            "max_table_size_to_drop": "number",
-                            "merge_tree": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "max_bytes_to_merge_at_min_space_in_pool": "number",
-                                  "max_replicated_merges_in_queue": "number",
-                                  "min_bytes_for_wide_part": "number",
-                                  "min_rows_for_wide_part": "number",
-                                  "number_of_free_entries_in_pool_to_lower_max_size_of_merge": "number",
-                                  "parts_to_delay_insert": "number",
-                                  "parts_to_throw_insert": "number",
-                                  "replicated_deduplication_window": "number",
-                                  "replicated_deduplication_window_seconds": "number",
-                                  "ttl_only_drop_parts": "bool"
-                                }
-                              ]
-                            ],
-                            "metric_log_enabled": "bool",
-                            "metric_log_retention_size": "number",
-                            "metric_log_retention_time": "number",
-                            "part_log_retention_size": "number",
-                            "part_log_retention_time": "number",
-                            "query_log_retention_size": "number",
-                            "query_log_retention_time": "number",
-                            "query_thread_log_enabled": "bool",
-                            "query_thread_log_retention_size": "number",
-                            "query_thread_log_retention_time": "number",
-                            "rabbitmq": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "password": "string",
-                                  "username": "string",
-                                  "vhost": "string"
-                                }
-                              ]
-                            ],
-                            "text_log_enabled": "bool",
-                            "text_log_level": "string",
-                            "text_log_retention_size": "number",
-                            "text_log_retention_time": "number",
-                            "timezone": "string",
-                            "total_memory_profiler_step": "number",
-                            "trace_log_enabled": "bool",
-                            "trace_log_retention_size": "number",
-                            "trace_log_retention_time": "number",
-                            "uncompressed_cache_size": "number"
-                          }
-                        ]
-                      ],
-                      "resources": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "disk_size": "number",
-                            "disk_type_id": "string",
-                            "resource_preset_id": "string"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
+                "optional": true,
+                "sensitive": true
               },
               "cluster_id": {
                 "type": "string",
@@ -26055,22 +26144,15 @@
                 "optional": true,
                 "computed": true
               },
+              "copy_schema_on_new_hosts": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "created_at": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
-              },
-              "database": {
-                "type": [
-                  "set",
-                  [
-                    "object",
-                    {
-                      "name": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "deletion_protection": {
@@ -26082,17 +26164,18 @@
               "description": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "embedded_keeper": {
                 "type": "bool",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "environment": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "folder_id": {
                 "type": "string",
@@ -26100,42 +26183,10 @@
                 "optional": true,
                 "computed": true
               },
-              "format_schema": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "name": "string",
-                      "type": "string",
-                      "uri": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
               "health": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
-              },
-              "host": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "assign_public_ip": "bool",
-                      "fqdn": "string",
-                      "shard_name": "string",
-                      "subnet_id": "string",
-                      "type": "string",
-                      "zone": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "id": {
@@ -26150,48 +26201,18 @@
                   "string"
                 ],
                 "description_kind": "plain",
-                "computed": true
-              },
-              "maintenance_window": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "day": "string",
-                      "hour": "number",
-                      "type": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "ml_model": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "name": "string",
-                      "type": "string",
-                      "uri": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "network_id": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "security_group_ids": {
                 "type": [
@@ -26199,6 +26220,7 @@
                   "string"
                 ],
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "service_account_id": {
@@ -26207,224 +26229,582 @@
                 "optional": true,
                 "computed": true
               },
-              "shard_group": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "description": "string",
-                      "name": "string",
-                      "shard_names": [
-                        "list",
-                        "string"
-                      ]
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
               "sql_database_management": {
                 "type": "bool",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "sql_user_management": {
                 "type": "bool",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "status": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
-              },
-              "user": {
-                "type": [
-                  "set",
-                  [
-                    "object",
-                    {
-                      "name": "string",
-                      "permission": [
-                        "set",
-                        [
-                          "object",
-                          {
-                            "database_name": "string"
-                          }
-                        ]
-                      ],
-                      "quota": [
-                        "set",
-                        [
-                          "object",
-                          {
-                            "errors": "number",
-                            "execution_time": "number",
-                            "interval_duration": "number",
-                            "queries": "number",
-                            "read_rows": "number",
-                            "result_rows": "number"
-                          }
-                        ]
-                      ],
-                      "settings": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "add_http_cors_header": "bool",
-                            "allow_ddl": "bool",
-                            "allow_introspection_functions": "bool",
-                            "allow_suspicious_low_cardinality_types": "bool",
-                            "async_insert": "bool",
-                            "async_insert_busy_timeout": "number",
-                            "async_insert_max_data_size": "number",
-                            "async_insert_stale_timeout": "number",
-                            "async_insert_threads": "number",
-                            "cancel_http_readonly_queries_on_client_close": "bool",
-                            "compile": "bool",
-                            "compile_expressions": "bool",
-                            "connect_timeout": "number",
-                            "connect_timeout_with_failover": "number",
-                            "count_distinct_implementation": "string",
-                            "distinct_overflow_mode": "string",
-                            "distributed_aggregation_memory_efficient": "bool",
-                            "distributed_ddl_task_timeout": "number",
-                            "distributed_product_mode": "string",
-                            "empty_result_for_aggregation_by_empty_set": "bool",
-                            "enable_http_compression": "bool",
-                            "fallback_to_stale_replicas_for_distributed_queries": "bool",
-                            "flatten_nested": "bool",
-                            "force_index_by_date": "bool",
-                            "force_primary_key": "bool",
-                            "group_by_overflow_mode": "string",
-                            "group_by_two_level_threshold": "number",
-                            "group_by_two_level_threshold_bytes": "number",
-                            "http_connection_timeout": "number",
-                            "http_headers_progress_interval": "number",
-                            "http_receive_timeout": "number",
-                            "http_send_timeout": "number",
-                            "input_format_defaults_for_omitted_fields": "bool",
-                            "input_format_values_interpret_expressions": "bool",
-                            "insert_null_as_default": "bool",
-                            "insert_quorum": "number",
-                            "insert_quorum_timeout": "number",
-                            "join_overflow_mode": "string",
-                            "join_use_nulls": "bool",
-                            "joined_subquery_requires_alias": "bool",
-                            "low_cardinality_allow_in_native_format": "bool",
-                            "max_ast_depth": "number",
-                            "max_ast_elements": "number",
-                            "max_block_size": "number",
-                            "max_bytes_before_external_group_by": "number",
-                            "max_bytes_before_external_sort": "number",
-                            "max_bytes_in_distinct": "number",
-                            "max_bytes_in_join": "number",
-                            "max_bytes_in_set": "number",
-                            "max_bytes_to_read": "number",
-                            "max_bytes_to_sort": "number",
-                            "max_bytes_to_transfer": "number",
-                            "max_columns_to_read": "number",
-                            "max_concurrent_queries_for_user": "number",
-                            "max_execution_time": "number",
-                            "max_expanded_ast_elements": "number",
-                            "max_http_get_redirects": "number",
-                            "max_insert_block_size": "number",
-                            "max_memory_usage": "number",
-                            "max_memory_usage_for_user": "number",
-                            "max_network_bandwidth": "number",
-                            "max_network_bandwidth_for_user": "number",
-                            "max_query_size": "number",
-                            "max_replica_delay_for_distributed_queries": "number",
-                            "max_result_bytes": "number",
-                            "max_result_rows": "number",
-                            "max_rows_in_distinct": "number",
-                            "max_rows_in_join": "number",
-                            "max_rows_in_set": "number",
-                            "max_rows_to_group_by": "number",
-                            "max_rows_to_read": "number",
-                            "max_rows_to_sort": "number",
-                            "max_rows_to_transfer": "number",
-                            "max_temporary_columns": "number",
-                            "max_temporary_non_const_columns": "number",
-                            "max_threads": "number",
-                            "memory_profiler_sample_probability": "number",
-                            "memory_profiler_step": "number",
-                            "merge_tree_max_bytes_to_use_cache": "number",
-                            "merge_tree_max_rows_to_use_cache": "number",
-                            "merge_tree_min_bytes_for_concurrent_read": "number",
-                            "merge_tree_min_rows_for_concurrent_read": "number",
-                            "min_bytes_to_use_direct_io": "number",
-                            "min_count_to_compile": "number",
-                            "min_count_to_compile_expression": "number",
-                            "min_execution_speed": "number",
-                            "min_execution_speed_bytes": "number",
-                            "min_insert_block_size_bytes": "number",
-                            "min_insert_block_size_rows": "number",
-                            "output_format_json_quote_64bit_integers": "bool",
-                            "output_format_json_quote_denormals": "bool",
-                            "priority": "number",
-                            "quota_mode": "string",
-                            "read_overflow_mode": "string",
-                            "readonly": "number",
-                            "receive_timeout": "number",
-                            "replication_alter_partitions_sync": "number",
-                            "result_overflow_mode": "string",
-                            "select_sequential_consistency": "bool",
-                            "send_progress_in_http_headers": "bool",
-                            "send_timeout": "number",
-                            "set_overflow_mode": "string",
-                            "skip_unavailable_shards": "bool",
-                            "sort_overflow_mode": "string",
-                            "timeout_before_checking_execution_speed": "number",
-                            "timeout_overflow_mode": "string",
-                            "transfer_overflow_mode": "string",
-                            "transform_null_in": "bool",
-                            "use_uncompressed_cache": "bool",
-                            "wait_for_async_insert": "bool",
-                            "wait_for_async_insert_timeout": "number"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "version": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
-              },
-              "zookeeper": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "resources": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "disk_size": "number",
-                            "disk_type_id": "string",
-                            "resource_preset_id": "string"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               }
             },
             "block_types": {
+              "access": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data_lens": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "data_transfer": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrika": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "serverless": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "web_sql": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "yandex_query": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "backup_window_start": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "hours": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "minutes": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "clickhouse": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "config": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "background_fetches_pool_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "background_pool_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "background_schedule_pool_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "default_database": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "geobase_uri": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "keep_alive_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "log_level": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "mark_cache_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_concurrent_queries": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_connections": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_partition_size_to_drop": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_table_size_to_drop": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "metric_log_enabled": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "metric_log_retention_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "metric_log_retention_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "part_log_retention_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "part_log_retention_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "query_log_retention_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "query_log_retention_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "query_thread_log_enabled": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "query_thread_log_retention_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "query_thread_log_retention_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "text_log_enabled": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "text_log_level": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "text_log_retention_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "text_log_retention_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "timezone": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "total_memory_profiler_step": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "trace_log_enabled": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "trace_log_retention_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "trace_log_retention_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "uncompressed_cache_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "block_types": {
+                          "compression": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "method": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "min_part_size": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "min_part_size_ratio": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "graphite_rollup": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "name": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "pattern": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "function": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "regexp": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "computed": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "retention": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "age": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "precision": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "kafka": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "sasl_mechanism": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "sasl_password": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true,
+                                  "sensitive": true
+                                },
+                                "sasl_username": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "security_protocol": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "kafka_topic": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "name": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "settings": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "sasl_mechanism": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "sasl_password": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "sensitive": true
+                                      },
+                                      "sasl_username": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "security_protocol": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "merge_tree": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_bytes_to_merge_at_min_space_in_pool": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "max_replicated_merges_in_queue": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "min_bytes_for_wide_part": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "min_rows_for_wide_part": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "number_of_free_entries_in_pool_to_lower_max_size_of_merge": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "parts_to_delay_insert": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "parts_to_throw_insert": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "replicated_deduplication_window": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "replicated_deduplication_window_seconds": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "ttl_only_drop_parts": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "rabbitmq": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "password": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true,
+                                  "sensitive": true
+                                },
+                                "username": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "vhost": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "resources": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "disk_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "disk_type_id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "resource_preset_id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "cloud_storage": {
                 "nesting_mode": "list",
                 "block": {
@@ -26444,7 +26824,7 @@
                     "enabled": {
                       "type": "bool",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "move_factor": {
                       "type": "number",
@@ -26457,6 +26837,130 @@
                 },
                 "max_items": 1
               },
+              "database": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "format_schema": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uri": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "host": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "assign_public_ip": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fqdn": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "shard_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "subnet_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "zone": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "maintenance_window": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "day": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "hour": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "ml_model": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uri": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "shard": {
                 "nesting_mode": "set",
                 "block": {
@@ -26464,7 +26968,7 @@
                     "name": {
                       "type": "string",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "weight": {
                       "type": "number",
@@ -26504,6 +27008,820 @@
                   },
                   "description_kind": "plain"
                 }
+              },
+              "shard_group": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "shard_names": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "user": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "sensitive": true
+                    }
+                  },
+                  "block_types": {
+                    "permission": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "database_name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "quota": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "errors": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "execution_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "interval_duration": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "queries": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "read_rows": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "result_rows": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "settings": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "add_http_cors_header": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "allow_ddl": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "allow_introspection_functions": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "allow_suspicious_low_cardinality_types": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "async_insert": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "async_insert_busy_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "async_insert_max_data_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "async_insert_stale_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "async_insert_threads": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "cancel_http_readonly_queries_on_client_close": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "compile": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "compile_expressions": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "connect_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "connect_timeout_with_failover": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "count_distinct_implementation": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "distinct_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "distributed_aggregation_memory_efficient": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "distributed_ddl_task_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "distributed_product_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "empty_result_for_aggregation_by_empty_set": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "enable_http_compression": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "fallback_to_stale_replicas_for_distributed_queries": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "flatten_nested": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "force_index_by_date": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "force_primary_key": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "group_by_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "group_by_two_level_threshold": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "group_by_two_level_threshold_bytes": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "http_connection_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "http_headers_progress_interval": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "http_receive_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "http_send_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "input_format_defaults_for_omitted_fields": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "input_format_values_interpret_expressions": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "insert_null_as_default": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "insert_quorum": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "insert_quorum_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "join_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "join_use_nulls": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "joined_subquery_requires_alias": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "low_cardinality_allow_in_native_format": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_ast_depth": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_ast_elements": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_block_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_before_external_group_by": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_before_external_sort": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_in_distinct": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_in_join": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_in_set": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_to_read": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_to_sort": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_bytes_to_transfer": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_columns_to_read": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_concurrent_queries_for_user": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_execution_time": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_expanded_ast_elements": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_http_get_redirects": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_insert_block_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_memory_usage": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_memory_usage_for_user": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_network_bandwidth": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_network_bandwidth_for_user": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_query_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_replica_delay_for_distributed_queries": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_result_bytes": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_result_rows": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_in_distinct": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_in_join": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_in_set": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_to_group_by": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_to_read": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_to_sort": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_rows_to_transfer": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_temporary_columns": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_temporary_non_const_columns": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "max_threads": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "memory_profiler_sample_probability": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "memory_profiler_step": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "merge_tree_max_bytes_to_use_cache": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "merge_tree_max_rows_to_use_cache": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "merge_tree_min_bytes_for_concurrent_read": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "merge_tree_min_rows_for_concurrent_read": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_bytes_to_use_direct_io": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_count_to_compile": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_count_to_compile_expression": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_execution_speed": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_execution_speed_bytes": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_insert_block_size_bytes": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "min_insert_block_size_rows": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "output_format_json_quote_64bit_integers": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "output_format_json_quote_denormals": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "priority": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "quota_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "read_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "readonly": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "receive_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "replication_alter_partitions_sync": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "result_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "select_sequential_consistency": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "send_progress_in_http_headers": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "send_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "set_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "skip_unavailable_shards": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "sort_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "timeout_before_checking_execution_speed": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "timeout_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "transfer_overflow_mode": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "transform_null_in": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "use_uncompressed_cache": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "wait_for_async_insert": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "wait_for_async_insert_timeout": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "zookeeper": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "resources": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "disk_size": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "disk_type_id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "resource_preset_id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -27852,6 +29170,71 @@
                       },
                       "max_items": 1
                     },
+                    "mongocfg": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "net": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_incoming_connections": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "operation_profiling": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "slow_op_threshold": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "storage": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "wired_tiger": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "cache_size_gb": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
                     "mongod": {
                       "nesting_mode": "list",
                       "block": {
@@ -27867,6 +29250,39 @@
                                 },
                                 "runtime_configuration": {
                                   "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "net": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_incoming_connections": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "operation_profiling": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "slow_op_threshold": {
+                                  "type": "number",
                                   "description_kind": "plain",
                                   "optional": true
                                 }
@@ -27931,6 +29347,71 @@
                               "attributes": {
                                 "audit_authorization_success": {
                                   "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "storage": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "journal": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "commit_interval": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "wired_tiger": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "block_compressor": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "cache_size_gb": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "mongos": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "net": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "max_incoming_connections": {
+                                  "type": "number",
                                   "description_kind": "plain",
                                   "optional": true
                                 }
@@ -28004,8 +29485,7 @@
                     "type": {
                       "type": "string",
                       "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
+                      "optional": true
                     },
                     "zone_id": {
                       "type": "string",
@@ -28041,6 +29521,103 @@
                 "max_items": 1
               },
               "resources": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain",
+                  "deprecated": true
+                },
+                "max_items": 1
+              },
+              "resources_mongocfg": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "resources_mongod": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "resources_mongoinfra": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "disk_size": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_type_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource_preset_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "resources_mongos": {
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
@@ -28768,6 +30345,11 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "deletion_protection": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -28838,6 +30420,11 @@
               },
               "conn_limit": {
                 "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "deletion_protection": {
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true
               },

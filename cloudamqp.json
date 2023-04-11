@@ -136,6 +136,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "allow_downtime": {
+                "type": "bool",
+                "description": "When resizing disk, allow cluster downtime to do so",
+                "description_kind": "plain",
+                "optional": true
+              },
               "extra_disk_size": {
                 "type": "number",
                 "description": "Extra disk size in GB",
@@ -153,6 +159,33 @@
                 "description": "Instance identifier",
                 "description_kind": "plain",
                 "required": true
+              },
+              "nodes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "additional_disk_size": "number",
+                      "disk_size": "number",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep time in seconds between retries for resizing the disk",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time in seconds for resizing the disk",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
