@@ -20,6 +20,8 @@
 
       hercules-ci.flake-update = {
         enable = true;
+        updateBranch = "master";
+        createPullRequest = false;
         # Update  everynight at midnight
         when = {
           hour = [ 0 ];
