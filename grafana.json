@@ -188,7 +188,7 @@
                 "computed": true
               }
             },
-            "description": "\nThis resource is used to configure the legacy alerting system which has been replaced by the [unified alerting system](https://grafana.com/docs/grafana/latest/alerting/) in Grafana 9+. See resources in the [Alerting section](https://registry.terraform.io/providers/grafana/grafana/latest/docs) for info on how to configure alerting with Terraform.\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/alerting_notification_channels/)\n",
+            "description": "\nThis resource is used to configure the legacy alerting system which has been replaced by the [unified alerting system](https://grafana.com/docs/grafana/latest/alerting/) in Grafana 9+. See resources in the [Alerting section](https://registry.terraform.io/providers/grafana/grafana/latest/docs) for info on how to configure alerting with Terraform.\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/alerting_notification_channels/)\n\n|> Deprecated: This resource is used to configure the legacy alerting system which has been replaced by the [unified alerting system](https://grafana.com/docs/grafana/latest/alerting/) in Grafana 9+. See resources in the [Alerting section](https://registry.terraform.io/providers/grafana/grafana/latest/docs) for info on how to configure alerting with Terraform.\n",
             "description_kind": "markdown",
             "deprecated": true
           }
@@ -199,6 +199,13 @@
             "attributes": {
               "dashboard_id": {
                 "type": "number",
+                "description": "The ID of the dashboard on which to create the annotation. Deprecated: Use dashboard_uid instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "optional": true
+              },
+              "dashboard_uid": {
+                "type": "string",
                 "description": "The ID of the dashboard on which to create the annotation.",
                 "description_kind": "markdown",
                 "optional": true
@@ -208,6 +215,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "org_id": {
+                "type": "string",
+                "description": "The Organization ID. If not set, the Org ID defined in the provider block will be used.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "panel_id": {
                 "type": "number",
@@ -255,7 +268,7 @@
             "attributes": {
               "cloud_stack_slug": {
                 "type": "string",
-                "description": "Deprecated: Use the `grafana_cloud_stack_api_key` resource instead",
+                "description": "Deprecated: Use `grafana_cloud_stack_service_account` and `grafana_cloud_stack_service_account_token` resources instead",
                 "description_kind": "markdown",
                 "deprecated": true,
                 "optional": true
@@ -298,8 +311,9 @@
                 "optional": true
               }
             },
-            "description": "\nManages Grafana API Keys.\n\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/auth/)\n",
-            "description_kind": "markdown"
+            "description": "\nManages Grafana API Keys.\n\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/auth/)\n\n!> Deprecated: please use `grafana_service_account` and `grafana_service_account_token` instead, see [Migrate API keys to Grafana service accounts using Terraform](https://grafana.com/docs/grafana/latest/administration/api-keys/#migrate-api-keys-to-grafana-service-accounts-using-terraform) for more information.\n",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "grafana_builtin_role_assignment": {
@@ -826,7 +840,97 @@
                 "required": true
               }
             },
-            "description": "\nManages API keys of a Grafana Cloud stack using the Cloud API\nThis can be used to bootstrap a management API key for a new stack\n\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/auth/)\n",
+            "description": "\nManages API keys of a Grafana Cloud stack using the Cloud API\nThis can be used to bootstrap a management API key for a new stack\n\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/auth/)\n\n|> Deprecated: please use `grafana_cloud_stack_service_account` and `grafana_cloud_stack_service_account_token` instead, see https://grafana.com/docs/grafana/next/administration/api-keys/#migrate-api-keys-to-grafana-service-accounts-using-terraform.\n",
+            "description_kind": "markdown",
+            "deprecated": true
+          }
+        },
+        "grafana_cloud_stack_service_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_disabled": {
+                "type": "bool",
+                "description": "The disabled status for the service account. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the service account.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The basic role of the service account in the organization.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "stack_slug": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "\n**Note:** This resource is available only with Grafana 9.1+.\n\nManages service accounts of a Grafana Cloud stack using the Cloud API\nThis can be used to bootstrap a management service account for a new stack\n\n* [Official documentation](https://grafana.com/docs/grafana/latest/administration/service-accounts/)\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/serviceaccount/#service-account-api)",
+            "description_kind": "markdown"
+          }
+        },
+        "grafana_cloud_stack_service_account_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "expiration": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "has_expired": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "seconds_to_live": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_account_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "stack_slug": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "\n**Note:** This resource is available only with Grafana 9.1+.\n\nManages service account tokens of a Grafana Cloud stack using the Cloud API\nThis can be used to bootstrap a management service account token for a new stack\n\n* [Official documentation](https://grafana.com/docs/grafana/latest/administration/service-accounts/)\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/serviceaccount/#service-account-api)",
             "description_kind": "markdown"
           }
         },
@@ -1810,6 +1914,12 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "message": {
+                      "type": "string",
+                      "description": "Custom message. You can use template variables.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "settings": {
                       "type": [
                         "map",
@@ -1819,6 +1929,12 @@
                       "description_kind": "markdown",
                       "optional": true,
                       "sensitive": true
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Templated title of the message.",
+                      "description_kind": "markdown",
+                      "optional": true
                     },
                     "uid": {
                       "type": "string",
@@ -3665,7 +3781,7 @@
                 }
               }
             },
-            "description": "\nSets the global notification policy for Grafana. Note that this resource manages the entire notification policy tree, and will overwrite any existing policies.\n\n* [Official documentation](https://grafana.com/docs/grafana/latest/alerting/manage-notifications/)\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/alerting_provisioning/)\n\nThis resource requires Grafana 9.1.0 or later.\n",
+            "description": "\nSets the global notification policy for Grafana.\n\n!> This resource manages the entire notification policy tree, and will overwrite any existing policies.\n\n* [Official documentation](https://grafana.com/docs/grafana/latest/alerting/manage-notifications/)\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/alerting_provisioning/)\n\nThis resource requires Grafana 9.1.0 or later.\n",
             "description_kind": "markdown"
           }
         },
@@ -3758,7 +3874,7 @@
                 "optional": true
               }
             },
-            "description": "\n* [Official documentation](https://grafana.com/docs/grafana-cloud/oncall/escalation-policies/)\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/escalation_policies/)\n",
+            "description": "\n* [Official documentation](https://grafana.com/docs/oncall/latest/escalation-policies/)\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/escalation_policies/)\n",
             "description_kind": "markdown"
           }
         },
@@ -3785,7 +3901,7 @@
                 "optional": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/escalation_chains/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/escalation_chains/)\n",
             "description_kind": "markdown"
           }
         },
@@ -4118,7 +4234,7 @@
                 "max_items": 1
               }
             },
-            "description": "\n* [Official documentation](https://grafana.com/docs/grafana-cloud/oncall/integrations/)\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/)\n",
+            "description": "\n* [Official documentation](https://grafana.com/docs/oncall/latest/integrations/)\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/)\n",
             "description_kind": "markdown"
           }
         },
@@ -4247,7 +4363,7 @@
                 "optional": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/on_call_shifts/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/on_call_shifts/)\n",
             "description_kind": "markdown"
           }
         },
@@ -4310,7 +4426,7 @@
                 "optional": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/outgoing_webhooks/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/outgoing_webhooks/)\n",
             "description_kind": "markdown"
           }
         },
@@ -4417,7 +4533,7 @@
                 "max_items": 1
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/routes/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/routes/)\n",
             "description_kind": "markdown"
           }
         },
@@ -4501,7 +4617,7 @@
                 "max_items": 1
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/schedules/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/schedules/)\n",
             "description_kind": "markdown"
           }
         },
@@ -6162,7 +6278,7 @@
                 "optional": true
               }
             },
-            "description": "\n* [Official documentation](https://grafana.com/docs/grafana/latest/administration/organization-preferences/)\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/team/)\n",
+            "description": "\n* [Official documentation](https://grafana.com/docs/grafana/latest/administration/organization-preferences/)\n* [HTTP API](https://grafana.com/docs/grafana/latest/developers/http_api/team/)\n\n|> Deprecated: Use the `preferences` attribute of the `grafana_team` resource instead.\n",
             "description_kind": "markdown",
             "deprecated": true
           }
@@ -6898,7 +7014,7 @@
                 "required": true
               }
             },
-            "description": "\n**Note:** This data source is going to be deprecated, please use outgoing webhook data source instead.\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/outgoing_webhooks/)\n",
+            "description": "\n**Note:** This data source is going to be deprecated, please use outgoing webhook data source instead.\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/outgoing_webhooks/)\n\n|> Deprecated: Use the `grafana_oncall_outgoing_webhook` data source instead.\n",
             "description_kind": "markdown",
             "deprecated": true
           }
@@ -6920,7 +7036,7 @@
                 "required": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/escalation_chains/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/escalation_chains/)\n",
             "description_kind": "markdown"
           }
         },
@@ -6941,7 +7057,7 @@
                 "required": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/outgoing_webhooks/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/outgoing_webhooks/)\n",
             "description_kind": "markdown"
           }
         },
@@ -6968,7 +7084,7 @@
                 "computed": true
               }
             },
-            "description": "\n* [Official documentation](https://grafana.com/docs/grafana-cloud/oncall/calendar-schedules/)\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/schedules/)\n",
+            "description": "\n* [Official documentation](https://grafana.com/docs/oncall/latest/calendar-schedules/)\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/schedules/)\n",
             "description_kind": "markdown"
           }
         },
@@ -6995,7 +7111,7 @@
                 "computed": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/slack_channels/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/slack_channels/)\n",
             "description_kind": "markdown"
           }
         },
@@ -7058,7 +7174,7 @@
                 "required": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/users/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/users/)\n",
             "description_kind": "markdown"
           }
         },
@@ -7083,7 +7199,7 @@
                 "computed": true
               }
             },
-            "description": "\n* [HTTP API](https://grafana.com/docs/grafana-cloud/oncall/oncall-api-reference/user_groups/)\n",
+            "description": "\n* [HTTP API](https://grafana.com/docs/oncall/latest/oncall-api-reference/user_groups/)\n",
             "description_kind": "markdown"
           }
         },

@@ -918,6 +918,62 @@
             "description_kind": "plain"
           }
         },
+        "infoblox_mx_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the MX-Record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the zone does exist within",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the MX-record to be added/updated, as a map in JSON format.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "FQDN for the MX-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mail_exchanger": {
+                "type": "string",
+                "description": "A record used to specify mail server.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "preference": {
+                "type": "number",
+                "description": "Configures the preference (0-65535) for this MX-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the MX-record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "infoblox_network_view": {
           "version": 0,
           "block": {
@@ -1020,6 +1076,124 @@
             },
             "description_kind": "plain"
           }
+        },
+        "infoblox_srv_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the SRV-record",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the zone does exist within",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the SRV-record to be added/updated, as a map in JSON format.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Combination of service's name, protocol's name and zone's name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "port": {
+                "type": "number",
+                "description": "Configures port number (0..65535) for this SRV-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "priority": {
+                "type": "number",
+                "description": "Configures the priority (0..65535) for this SRV-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target": {
+                "type": "string",
+                "description": "Provides service for domain name in the SRV-record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the SRV-record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "weight": {
+                "type": "number",
+                "description": "Configures weight of the SRV-record, valid values are 0..65535.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_txt_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the TXT-record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view in which the record's zone exists.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the TXT-record to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "FQDN for the TXT-Record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "text": {
+                "type": "string",
+                "description": "Data to be associated with TXT_Record.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value of the TXT-Record",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
         }
       },
       "data_source_schemas": {
@@ -1035,9 +1209,9 @@
               },
               "dns_view": {
                 "type": "string",
-                "description": "Dns View under which the zone has been created.",
+                "description": "DNS view which the record's zone belongs to.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "ext_attrs": {
                 "type": "string",
@@ -1070,7 +1244,7 @@
               },
               "zone": {
                 "type": "string",
-                "description": "Zone under which record has been created.",
+                "description": "The zone which the record belongs to.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1126,7 +1300,7 @@
               },
               "zone": {
                 "type": "string",
-                "description": "Zone which the record belongs to.",
+                "description": "The zone which the record belongs to.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1158,9 +1332,9 @@
               },
               "dns_view": {
                 "type": "string",
-                "description": "Dns View under which the zone has been created.",
+                "description": "DNS view which the record's zone belongs to.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "ext_attrs": {
                 "type": "string",
@@ -1181,7 +1355,7 @@
               },
               "zone": {
                 "type": "string",
-                "description": "Zone under which record has been created.",
+                "description": "The zone which the record belongs to.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1218,7 +1392,7 @@
               "network_view": {
                 "type": "string",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -1256,7 +1430,68 @@
                 "type": "string",
                 "description": "Newtwork view's name the network container belongs to.",
                 "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_mx_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the TXT-Record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the record's zone belongs to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the TXT-record, as a map in JSON format.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "FQDN for the MX-Record.",
+                "description_kind": "plain",
                 "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mail_exchanger": {
+                "type": "string",
+                "description": "A record used to specify mail server.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "preference": {
+                "type": "number",
+                "description": "Configures the preference (0-65535) for this MX record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the TXT-Record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The zone which the record belongs to.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -1302,7 +1537,7 @@
                 "type": "string",
                 "description": "PTR-record's description.",
                 "description_kind": "plain",
-                "optional": true
+                "computed": true
               },
               "dns_view": {
                 "type": "string",
@@ -1314,7 +1549,7 @@
                 "type": "string",
                 "description": "The Extensible attributes of the PTR-record.",
                 "description_kind": "plain",
-                "optional": true
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -1326,7 +1561,8 @@
                 "type": "string",
                 "description": "IPv4/IPv6 address the PTR-record points from.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "ptrdname": {
                 "type": "string",
@@ -1338,11 +1574,146 @@
                 "type": "string",
                 "description": "The name of the DNS PTR-record in FQDN format",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "ttl": {
                 "type": "number",
                 "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The zone which the record belongs to.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_srv_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the SRV record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the record's zone belongs to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the SRV-record to be added/updated, as a map in JSON format.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Combination of service name, protocol name and zone name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "port": {
+                "type": "number",
+                "description": "Configures port (0-65535) for this SRV record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "priority": {
+                "type": "number",
+                "description": "Configures the priority (0-65535) for this SRV record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": "string",
+                "description": "Provides service for domain name in the SRV record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the SRV record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "weight": {
+                "type": "number",
+                "description": "Configures weight of the SRV record, valid values (0-65535).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The zone which the record belongs to.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_txt_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Description of the TXT-Record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_view": {
+                "type": "string",
+                "description": "DNS view which the record's zone belongs to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "Extensible attributes of the TXT-record, as a map in JSON format.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "FQDN for the TXT-Record.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "text": {
+                "type": "string",
+                "description": "Data of the TXT-Record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "TTL value for the TXT-Record.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The zone which the record belongs to.",
                 "description_kind": "plain",
                 "computed": true
               }

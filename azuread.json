@@ -119,6 +119,713 @@
         }
       },
       "resource_schemas": {
+        "azuread_access_package": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "catalog_id": {
+                "type": "string",
+                "description": "The ID of the Catalog this access package will be created in",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the access package",
+                "description_kind": "plain",
+                "required": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the access package",
+                "description_kind": "plain",
+                "required": true
+              },
+              "hidden": {
+                "type": "bool",
+                "description": "Whether the access package is hidden from the requestor",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_access_package_assignment_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_package_id": {
+                "type": "string",
+                "description": "The ID of the access package that will contain the policy",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the policy",
+                "description_kind": "plain",
+                "required": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the policy",
+                "description_kind": "plain",
+                "required": true
+              },
+              "duration_in_days": {
+                "type": "number",
+                "description": "How many days this assignment is valid for",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "expiration_date": {
+                "type": "string",
+                "description": "The date that this assignment expires, formatted as an RFC3339 date string in UTC (e.g. 2018-01-01T01:02:03Z)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "extension_enabled": {
+                "type": "bool",
+                "description": "When enabled, users will be able to request extension of their access to this package before their access expires",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "approval_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "approval_required": {
+                      "type": "bool",
+                      "description": "Whether an approval is required",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "approval_required_for_extension": {
+                      "type": "bool",
+                      "description": "Whether an approval is required to grant extension. Same approval settings used to approve initial access will apply",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "requestor_justification_required": {
+                      "type": "bool",
+                      "description": "Whether requestor are required to provide a justification to request an access package. Justification is visible to other approvers and the requestor",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "approval_stage": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "alternative_approval_enabled": {
+                            "type": "bool",
+                            "description": "If no action taken, forward to alternate approvers?",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "approval_timeout_in_days": {
+                            "type": "number",
+                            "description": "Decision must be made in how many days? If a request is not approved within this time period after it is made, it will be automatically rejected",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "approver_justification_required": {
+                            "type": "bool",
+                            "description": "Whether an approver must provide a justification for their decision. Justification is visible to other approvers and the requestor",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "enable_alternative_approval_in_days": {
+                            "type": "number",
+                            "description": "Forward to alternate approver(s) after how many days?",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "alternative_approver": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "backup": {
+                                  "type": "bool",
+                                  "description": "For a user in an approval stage, this property indicates whether the user is a backup fallback approver",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "object_id": {
+                                  "type": "string",
+                                  "description": "The object ID of the subject",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "subject_type": {
+                                  "type": "string",
+                                  "description": "Type of users",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "If escalation is enabled and the primary approvers do not respond before the escalation time, the escalationApprovers are the users who will be asked to approve requests. This can be a collection of singleUser, groupMembers, requestorManager, internalSponsors and externalSponsors. When creating or updating a policy, if there are no escalation approvers, or escalation approvers are not required for the stage, the value of this property should be an empty collection",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "primary_approver": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "backup": {
+                                  "type": "bool",
+                                  "description": "For a user in an approval stage, this property indicates whether the user is a backup fallback approver",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "object_id": {
+                                  "type": "string",
+                                  "description": "The object ID of the subject",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "subject_type": {
+                                  "type": "string",
+                                  "description": "Type of users",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "The users who will be asked to approve requests. A collection of singleUser, groupMembers, requestorManager, internalSponsors and externalSponsors. When creating or updating a policy, include at least one userSet in this collection",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "The process to obtain an approval",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Settings of whether approvals are required and how they are obtained",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "assignment_review_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_recommendation_enabled": {
+                      "type": "bool",
+                      "description": "Whether to show Show reviewer decision helpers. If enabled, system recommendations based on users' access information will be shown to the reviewers. The reviewer will be recommended to approve the review if the user has signed-in at least once during the last 30 days. The reviewer will be recommended to deny the review if the user has not signed-in during the last 30 days",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "access_review_timeout_behavior": {
+                      "type": "string",
+                      "description": "What actions the system takes if reviewers don't respond in time",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "approver_justification_required": {
+                      "type": "bool",
+                      "description": "Whether a reviewer need provide a justification for their decision. Justification is visible to other reviewers and the requestor",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "duration_in_days": {
+                      "type": "number",
+                      "description": "How many days each occurrence of the access review series will run",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Whether to enable assignment review",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "review_frequency": {
+                      "type": "string",
+                      "description": "This will determine how often the access review campaign runs",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "review_type": {
+                      "type": "string",
+                      "description": "Self review or specific reviewers",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "starting_on": {
+                      "type": "string",
+                      "description": "This is the date the access review campaign will start on, formatted as an RFC3339 date string in UTC(e.g. 2018-01-01T01:02:03Z), default is now. Once an access review has been created, you cannot update its start date",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "reviewer": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "backup": {
+                            "type": "bool",
+                            "description": "For a user in an approval stage, this property indicates whether the user is a backup fallback approver",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "object_id": {
+                            "type": "string",
+                            "description": "The object ID of the subject",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "subject_type": {
+                            "type": "string",
+                            "description": "Type of users",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "If the reviewerType is Reviewers, this collection specifies the users who will be reviewers, either by ID or as members of a group, using a collection of singleUser and groupMembers",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "The settings of whether assignment review is needed and how it's conducted",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "question": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "required": {
+                      "type": "bool",
+                      "description": "Whether this question is required",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sequence": {
+                      "type": "number",
+                      "description": "The sequence number of this question",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "choice": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "actual_value": {
+                            "type": "string",
+                            "description": "The actual value of this choice",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "display_value": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "default_text": {
+                                  "type": "string",
+                                  "description": "The default text of this question",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "localized_text": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "content": {
+                                        "type": "string",
+                                        "description": "The localized content of this question",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "language_code": {
+                                        "type": "string",
+                                        "description": "The language code of this question content",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description": "The localized text of this question",
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description": "The display text of this choice",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1,
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Configuration of a choice to the question",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "text": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "default_text": {
+                            "type": "string",
+                            "description": "The default text of this question",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "localized_text": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "content": {
+                                  "type": "string",
+                                  "description": "The localized content of this question",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "language_code": {
+                                  "type": "string",
+                                  "description": "The language code of this question content",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "The localized text of this question",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "The content of this question",
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    }
+                  },
+                  "description": "One or more questions to the requestor",
+                  "description_kind": "plain"
+                }
+              },
+              "requestor_settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "requests_accepted": {
+                      "type": "bool",
+                      "description": "Whether to accept requests now, when disabled, no new requests can be made using this policy",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scope_type": {
+                      "type": "string",
+                      "description": "Specify the scopes of the requestors",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "requestor": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "backup": {
+                            "type": "bool",
+                            "description": "For a user in an approval stage, this property indicates whether the user is a backup fallback approver",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "object_id": {
+                            "type": "string",
+                            "description": "The object ID of the subject",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "subject_type": {
+                            "type": "string",
+                            "description": "Type of users",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "The users who are allowed to request on this policy, which can be singleUser, groupMembers, and connectedOrganizationMembers",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "This block configures the users who can request access",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_access_package_catalog": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the access package catalog",
+                "description_kind": "plain",
+                "required": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the access package catalog",
+                "description_kind": "plain",
+                "required": true
+              },
+              "externally_visible": {
+                "type": "bool",
+                "description": "Whether the access packages in this catalog can be requested by users outside the tenant",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "published": {
+                "type": "bool",
+                "description": "Whether the access packages in this catalog are available for management",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_access_package_resource_catalog_association": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "catalog_id": {
+                "type": "string",
+                "description": "The unique ID of the access package catalog",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "resource_origin_id": {
+                "type": "string",
+                "description": "The unique identifier of the resource in the origin system. In the case of an Azure AD group, this is the identifier of the group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "resource_origin_system": {
+                "type": "string",
+                "description": "The type of the resource in the origin system, such as SharePointOnline, AadApplication or AadGroup",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_access_package_resource_package_association": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_package_id": {
+                "type": "string",
+                "description": "The ID of access package this resource association is configured to",
+                "description_kind": "plain",
+                "required": true
+              },
+              "access_type": {
+                "type": "string",
+                "description": "The role of access type to the specified resource, valid values are `Member` and `Owner`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "catalog_resource_association_id": {
+                "type": "string",
+                "description": "The ID of the access package catalog association",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_administrative_unit": {
           "version": 0,
           "block": {
@@ -224,6 +931,68 @@
                 "description": "The object ID of the member",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_administrative_unit_role_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "administrative_unit_object_id": {
+                "type": "string",
+                "description": "The object ID of the administrative unit",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "member_object_id": {
+                "type": "string",
+                "description": "The object ID of the member",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role_object_id": {
+                "type": "string",
+                "description": "The object ID of the directory role",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "block_types": {
@@ -478,6 +1247,12 @@
                 "description": "The verified publisher domain for the application",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "service_management_reference": {
+                "type": "string",
+                "description": "References application or service contact information from a Service or Asset Management database",
+                "description_kind": "plain",
+                "optional": true
               },
               "sign_in_audience": {
                 "type": "string",
@@ -2092,6 +2867,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "onpremises_group_type": {
+                "type": "string",
+                "description": "Indicates the target on-premise group type the group will be written back as",
+                "description_kind": "plain",
+                "optional": true
+              },
               "onpremises_netbios_name": {
                 "type": "string",
                 "description": "The on-premises NetBIOS name, synchronized from the on-premises directory when Azure AD Connect is used",
@@ -2183,6 +2964,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "writeback_enabled": {
+                "type": "bool",
+                "description": "Whether this group should be synced from Azure AD to the on-premises directory when Azure AD Connect is used",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "block_types": {
@@ -3714,9 +4501,199 @@
             },
             "description_kind": "plain"
           }
+        },
+        "azuread_user_flow_attribute": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "attribute_type": {
+                "type": "string",
+                "description": "The type of the user flow attribute",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_type": {
+                "type": "string",
+                "description": "The data type of the user flow attribute",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the user flow attribute that is shown to the user at the time of sign-up",
+                "description_kind": "plain",
+                "required": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the user flow attribute.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
         }
       },
       "data_source_schemas": {
+        "azuread_access_package": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "catalog_id": {
+                "type": "string",
+                "description": "The ID of the Catalog this access package is in",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the access package",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the access package",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "hidden": {
+                "type": "bool",
+                "description": "Whether the access package is hidden from the requestor",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "object_id": {
+                "type": "string",
+                "description": "The ID of this access package",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_access_package_catalog": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the access package catalog",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the access package catalog",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "externally_visible": {
+                "type": "bool",
+                "description": "Whether the access packages in this catalog can be requested by users outside the tenant",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "object_id": {
+                "type": "string",
+                "description": "The ID of this access package catalog",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "published": {
+                "type": "bool",
+                "description": "Whether the access packages in this catalog are available for management",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_administrative_unit": {
           "version": 0,
           "block": {
@@ -4098,6 +5075,12 @@
                     }
                   ]
                 ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_management_reference": {
+                "type": "string",
+                "description": "References application or service contact information from a Service or Asset Management database",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -4679,6 +5662,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "onpremises_group_type": {
+                "type": "string",
+                "description": "Indicates the target on-premise group type the group will be written back as",
+                "description_kind": "plain",
+                "computed": true
+              },
               "onpremises_netbios_name": {
                 "type": "string",
                 "description": "The on-premises NetBIOS name, synchronized from the on-premises directory when Azure AD Connect is used",
@@ -4761,6 +5750,12 @@
               "visibility": {
                 "type": "string",
                 "description": "Specifies the group join policy and group content visibility",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "writeback_enabled": {
+                "type": "bool",
+                "description": "Whether this group is synced from Azure AD to the on-premises directory when Azure AD Connect is used",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -5376,6 +6371,7 @@
                 "type": "string",
                 "description": "The SMTP address for the user",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "mail_nickname": {
