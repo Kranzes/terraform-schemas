@@ -8809,6 +8809,649 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_ckafka_connect_resource": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Connection source description.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "resource_name": {
+                "type": "string",
+                "description": "connection source name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "connection source type.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "clickhouse_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Password for Clickhouse connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Clickhouse connection port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Instance resources for Click House connection sources.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "Whether the Clickhouse connection source is a self-built cluster.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "Instance VIP of the ClickHouse connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "The vpc Id of the source of the ClickHouse connection, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "The username of the clickhouse connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "ClickHouse configuration, required when Type is CLICKHOUSE.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "doris_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "be_port": {
+                      "type": "number",
+                      "description": "Doris http CLB port, Usually mapped to port 8040 of be.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Doris  password.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Doris jdbc CLB port, Usually mapped to port 9030 of fe.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Doris  instanceId.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "Doris Whether the connection source is a self-built cluster, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "Doris vip, When it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "Doris vpcId, When it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "Doris  The username of the connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Doris configuration, required when Type is DORIS.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "dts_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "group_id": {
+                      "type": "string",
+                      "description": "Id of the Dts consumption group.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "The password of the Dts consumption group.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Dts port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Dts instance Id.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "topic": {
+                      "type": "string",
+                      "description": "Topic subscribed by Dts.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "The account number of the Dts consumption group.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Dts configuration, required when Type is DTS.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "es_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Es The password of the connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Es port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Instance resource of Es connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "Whether the Es connection source is a self-built cluster.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "The instance vip of the Es connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "The vpc Id of the Es connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "Es The username of the connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Es configuration, required when Type is ES.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "kafka_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "broker_address": {
+                      "type": "string",
+                      "description": "Kafka broker ip, Mandatory when self-built.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Dip task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "CKafka instanceId region, Required when crossing regions.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Kafka instanceId, When it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "Whether it is a self-built cluster, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Kafka configuration, required when Type is KAFKA.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "mariadb_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "MariaDB password.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "MariaDB port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "MariaDB instanceId.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "The instance vip of the Maria DB connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "MariaDB vpcId, When it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "MariaDB The username of the connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Maria DB configuration, required when Type is MARIADB.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "mongodb_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Password for the source of the Mongo DB connection.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "MongoDB port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Instance resource of Mongo DB connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "Whether the Mongo DB connection source is a self-built cluster.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "The instance VIP of the Mongo DB connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "The vpc Id of the Mongo DB connection source, which is required when it is a Tencent Cloud instance.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "The username of the Mongo DB connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Mongo DB configuration, required when Type is MONGODB.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "mysql_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cluster_id": {
+                      "type": "string",
+                      "description": "Required when type is TDSQL C_MYSQL.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Mysql connection source password.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "MySQL port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "Instance resource of My SQL connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "Mysql Whether the connection source is a self-built cluster, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "The instance vip of the MySQL connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "The vpc Id of the My SQL connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "Username of Mysql connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "MySQL configuration, required when Type is MYSQL or TDSQL C_MYSQL.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "postgresql_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cluster_id": {
+                      "type": "string",
+                      "description": "Required when type is TDSQL C_POSTGRESQL.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Datahub task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "PostgreSQL password.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "PostgreSQL port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "PostgreSQL instanceId.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "self_built": {
+                      "type": "bool",
+                      "description": "PostgreSQL Whether the connection source is a self-built cluster, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "The instance VIP of the Postgresql connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "The instance vpcId of the Postgresql connection source, when it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "PostgreSQL The username of the connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Postgresql configuration, required when Type is POSTGRESQL or TDSQL C POSTGRESQL.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "sqlserver_connect_param": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "is_update": {
+                      "type": "bool",
+                      "description": "Whether to update to the associated Dip task, default: false.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "SQLServer password.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "SQLServer port.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource": {
+                      "type": "string",
+                      "description": "SQLServer instanceId.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_vip": {
+                      "type": "string",
+                      "description": "SQLServer instance vip, When it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uniq_vpc_id": {
+                      "type": "string",
+                      "description": "SQLServer vpcId, When it is a Tencent Cloud instance, it is required.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "SQLServer The username of the connection source.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "SQLServer configuration, required when Type is SQLSERVER.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_ckafka_datahub_topic": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name, start with appid, which is a string of no more than 128 characters, must start with a letter, and the rest can contain letters, numbers, and dashes (-).",
+                "description_kind": "plain",
+                "required": true
+              },
+              "note": {
+                "type": "string",
+                "description": "Subject note, which is a string of no more than 64 characters, must start with a letter, and the rest can contain letters, numbers and dashes (-).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "partition_num": {
+                "type": "number",
+                "description": "Number of Partitions, greater than 0.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "retention_ms": {
+                "type": "number",
+                "description": "Message retention time, in ms, the current minimum value is 60000 ms.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Tags of dataHub topic.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_ckafka_instance": {
           "version": 0,
           "block": {
@@ -14616,6 +15259,38 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_cvm_reboot_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "force_reboot": {
+                "type": "bool",
+                "description": "This parameter has been disused. We recommend using StopType instead. Note that ForceReboot and StopType parameters cannot be specified at the same time. Whether to forcibly restart an instance after a normal restart fails. Valid values are `TRUE` and `FALSE`. Default value: FALSE.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "stop_type": {
+                "type": "string",
+                "description": "Shutdown type. Valid values: `SOFT`: soft shutdown; `HARD`: hard shutdown; `SOFT_FIRST`: perform a soft shutdown first, and perform a hard shutdown if the soft shutdown fails. Default value: SOFT.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_cvm_security_group_attachment": {
           "version": 0,
           "block": {
@@ -17522,6 +18197,128 @@
                     }
                   },
                   "description": "A list of layer 7 rules. Each element contains the following attributes:",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_dbbrain_db_diag_report_task": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "contact_group": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "An array of contact group IDs to receive mail from.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "contact_person": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "An array of contact IDs to receive emails from.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "End time, such as 2020-11-09T14:00:00+08:00.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "instance id.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "product": {
+                "type": "string",
+                "description": "Service product type, supported values include: mysql - cloud database MySQL, cynosdb - cloud database CynosDB for MySQL.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "send_mail_flag": {
+                "type": "number",
+                "description": "Whether to send mail: 0 - no, 1 - yes.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "start_time": {
+                "type": "string",
+                "description": "Start time, such as 2020-11-08T14:00:00+08:00.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_dbbrain_modify_diag_db_instance_operation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Specifies the ID of the instance whose inspection status is changed.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "product": {
+                "type": "string",
+                "description": "Service product type, supported values include: mysql - cloud database MySQL, cynosdb - cloud database CynosDB for MySQL.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "regions": {
+                "type": "string",
+                "description": "Effective instance region, the value is All, which means all regions.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "instance_confs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "daily_inspection": {
+                      "type": "string",
+                      "description": "Database inspection switch, Yes/No.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "overview_display": {
+                      "type": "string",
+                      "description": "Instance overview switch, Yes/No.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Instance configuration, including inspection, overview switch, etc.",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -23793,13 +24590,13 @@
               },
               "issuer": {
                 "type": "string",
-                "description": "Specify service-account-issuer. If use_tke_default is set to `true`, please set this parameter value to empty string.",
+                "description": "Specify service-account-issuer. If use_tke_default is set to `true`, please do not set this field.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "jwks_uri": {
                 "type": "string",
-                "description": "Specify service-account-jwks-uri. If use_tke_default is set to `true`, please set this parameter value to empty string or just ignore it.",
+                "description": "Specify service-account-jwks-uri. If use_tke_default is set to `true`, please do not set this field.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -23817,7 +24614,7 @@
               },
               "use_tke_default": {
                 "type": "bool",
-                "description": "If set to `true`, the issuer and jwks_uri will be generated automatically by tke, please use empty string as value of issuer and jwks_uri.",
+                "description": "If set to `true`, the issuer and jwks_uri will be generated automatically by tke, please do not set issuer and jwks_uri.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -24212,19 +25009,19 @@
                     },
                     "issuer": {
                       "type": "string",
-                      "description": "Specify service-account-issuer. If use_tke_default is set to `true`, please set this parameter value to empty string or just ignore it.",
+                      "description": "Specify service-account-issuer. If use_tke_default is set to `true`, please do not set this field, it will be ignored anyway.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "jwks_uri": {
                       "type": "string",
-                      "description": "Specify service-account-jwks-uri. If use_tke_default is set to `true`, please set this parameter value to empty string or just ignore it.",
+                      "description": "Specify service-account-jwks-uri. If use_tke_default is set to `true`, please do not set this field, it will be ignored anyway.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "use_tke_default": {
                       "type": "bool",
-                      "description": "If set to `true`, the issuer and jwks_uri will be generated automatically by tke, please use empty string as value of issuer and jwks_uri.",
+                      "description": "If set to `true`, the issuer and jwks_uri will be generated automatically by tke, please do not set issuer and jwks_uri, and they will be ignored.",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -27834,6 +28631,73 @@
                 "description": "IP port of the Mongodb instance.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mongodb_instance_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID, the format is: cmgo-9d0p6umb.Same as the instance ID displayed in the cloud database console page.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mongo_user_password": {
+                "type": "string",
+                "description": "The password corresponding to the mongouser account. mongouser is the system default account, which is the password set when creating an instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "New account password. Password complexity requirements are as follows: character length range [8,32]. Contains at least letters, numbers and special characters (exclamation point!, at@, pound sign #, percent sign %, caret ^, asterisk *, parentheses (), underscore _).",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_desc": {
+                "type": "string",
+                "description": "Account remarks.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user_name": {
+                "type": "string",
+                "description": "The new account name. Its format requirements are as follows: character range [1,32]. Characters in the range of [A,Z], [a,z], [1,9] as well as underscore _ and dash - can be input.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "auth_role": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "mask": {
+                      "type": "number",
+                      "description": "Permission information of the current account. 0: No permission. 1: read-only. 2: Write only. 3: Read and write.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Refers to the name of the database with the current account permissions.*: Indicates all databases. db.name: Indicates the database of a specific name.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The read and write permission information of the account.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -41869,6 +42733,172 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_tat_invocation_command_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "command_id": {
+                "type": "string",
+                "description": "Command ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "command_name": {
+                "type": "string",
+                "description": "Command name. The name can be up to 60 bytes, and contain [a-z], [A-Z], [0-9] and [_-.].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "command_type": {
+                "type": "string",
+                "description": "Command type. SHELL and POWERSHELL are supported. The default value is SHELL.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "content": {
+                "type": "string",
+                "description": "Base64-encoded command. The maximum length is 64 KB.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "default_parameters": {
+                "type": "string",
+                "description": "The default value of the custom parameter value when it is enabled. The field type is JSON encoded string. For example, {varA: 222}.key is the name of the custom parameter and value is the default value. Both key and value are strings.If Parameters is not provided, the default values specified here are used.Up to 20 custom parameters are supported.The name of the custom parameter cannot exceed 64 characters and can contain [a-z], [A-Z], [0-9] and [-_].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Command description. The maximum length is 120 characters.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_parameter": {
+                "type": "bool",
+                "description": "Whether to enable the custom parameter feature.This cannot be modified once created.Default value: false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "ID of instances about to execute commands. Supported instance types:  CVM  LIGHTHOUSE.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "output_cos_bucket_url": {
+                "type": "string",
+                "description": "The COS bucket URL for uploading logs; The URL must start with https, such as https://BucketName-123454321.cos.ap-beijing.myqcloud.com.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "output_cos_key_prefix": {
+                "type": "string",
+                "description": "The COS bucket directory where the logs are saved; Check below for the rules of the directory name: 1 It must be a combination of number, letters, and visible characters, Up to 60 characters are allowed; 2 Use a slash (/) to create a subdirectory; 3 can not be used as the folder name; It cannot start with a slash (/), and cannot contain consecutive slashes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parameters": {
+                "type": "string",
+                "description": "Custom parameters of Command. The field type is JSON encoded string. For example, {varA: 222}.key is the name of the custom parameter and value is the default value. Both key and value are strings.If no parameter value is provided, the DefaultParameters is used.Up to 20 custom parameters are supported.The name of the custom parameter cannot exceed 64 characters and can contain [a-z], [A-Z], [0-9] and [-_].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "save_command": {
+                "type": "bool",
+                "description": "Whether to save the command. Valid values:rue: SaveFalse:Do not saveThe default value is False.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Command timeout period. Default value: 60 seconds. Value range: [1, 86400].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The username used to execute the command on the CVM or Lighthouse instance.The principle of least privilege is the best practice for permission management. We recommend you execute TAT commands as a general user. By default, the user root is used to execute commands on Linux and the user System is used on Windows.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "working_directory": {
+                "type": "string",
+                "description": "Command execution path. The default value is /root for SHELL commands and C:Program Filesqcloudtat_agentworkdir for POWERSHELL commands.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_tat_invocation_invoke_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "command_id": {
+                "type": "string",
+                "description": "Command ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "ID of instances about to execute commands. Supported instance types:  CVM  LIGHTHOUSE.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "output_cos_bucket_url": {
+                "type": "string",
+                "description": "The COS bucket URL for uploading logs. The URL must start with https, such as https://BucketName-123454321.cos.ap-beijing.myqcloud.com.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "output_cos_key_prefix": {
+                "type": "string",
+                "description": "The COS bucket directory where the logs are saved; Check below for the rules of the directory name: 1 It must be a combination of number, letters, and visible characters, Up to 60 characters are allowed; 2 Use a slash (/) to create a subdirectory; 3 can not be used as the folder name; It cannot start with a slash (/), and cannot contain consecutive slashes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parameters": {
+                "type": "string",
+                "description": "Custom parameters of Command. The field type is JSON encoded string. For example, {varA: 222}.key is the name of the custom parameter and value is the default value. Both key and value are strings.If no parameter value is provided, the DefaultParameters is used.Up to 20 custom parameters are supported.The name of the custom parameter cannot exceed 64 characters and can contain [a-z], [A-Z], [0-9] and [-_].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Command timeout period. Default value: 60 seconds. Value range: [1, 86400].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The username used to execute the command on the CVM or Lighthouse instance.The principle of least privilege is the best practice for permission management. We recommend you execute TAT commands as a general user. By default, the user root is used to execute commands on Linux and the user System is used on Windows.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "working_directory": {
+                "type": "string",
+                "description": "Command execution path. The default value is /root for SHELL commands and C:Program Filesqcloudtat_agentworkdir for POWERSHELL commands.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_tat_invoker": {
           "version": 0,
           "block": {
@@ -41971,6 +43001,32 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_tat_invoker_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invoker_id": {
+                "type": "string",
+                "description": "ID of the invoker to be enabled.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "invoker_status": {
+                "type": "string",
+                "description": "Invoker on and off state, Values: `on`, `off`.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -43498,6 +44554,69 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_tcr_tag_retention_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cron_setting": {
+                "type": "string",
+                "description": "Execution cycle, currently only available selections are: manual; daily; weekly; monthly.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "disabled": {
+                "type": "bool",
+                "description": "Whether to disable the rule, with the default value of false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "namespace_name": {
+                "type": "string",
+                "description": "The Name of the namespace.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "registry_id": {
+                "type": "string",
+                "description": "The main instance ID.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "retention_rule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The supported policies are latestPushedK (retain the latest `k` pushed versions) and nDaysSinceLastPush (retain pushed versions within the last `n` days).",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "number",
+                      "description": "corresponding values for rule settings.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Retention Policy.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_tcr_token": {
           "version": 0,
           "block": {
@@ -44820,9 +45939,10 @@
                           },
                           "secret_name": {
                             "type": "string",
-                            "description": "secret name.",
+                            "description": "secret name, if you use a certificate, you don't need to fill in this field.",
                             "description_kind": "plain",
-                            "optional": true
+                            "optional": true,
+                            "computed": true
                           }
                         },
                         "description": "ingress TLS configurations.",
@@ -57945,6 +59065,88 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_cvm_disaster_recover_group_quota": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "current_num": {
+                "type": "number",
+                "description": "The number of placement groups that have been created by the current user.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cvm_in_host_group_quota": {
+                "type": "number",
+                "description": "Quota on instances in a physical-machine-type disaster recovery group.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cvm_in_rack_group_quota": {
+                "type": "number",
+                "description": "Quota on instances in a rack-type disaster recovery group.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cvm_in_sw_group_quota": {
+                "type": "number",
+                "description": "Quota on instances in a switch-type disaster recovery group.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group_quota": {
+                "type": "number",
+                "description": "The maximum number of placement groups that can be created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_cvm_instance_vnc_url": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID. To obtain the instance IDs, you can call `DescribeInstances` and look for `InstanceId` in the response.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "instance_vnc_url": {
+                "type": "string",
+                "description": "Instance VNC URL.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_cvm_instances_modification": {
           "version": 0,
           "block": {
@@ -66006,6 +67208,424 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_mysql_backup_overview": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backup_archive_volume": {
+                "type": "number",
+                "description": "Archive backup capacity, including data backup and log backup. Note: This field may return null, indicating that no valid value can be obtained.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "backup_count": {
+                "type": "number",
+                "description": "The total number of user backups in the current region (including data backups and log backups).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "backup_standby_volume": {
+                "type": "number",
+                "description": "Standard storage backup capacity, including data backup and log backup. Note: This field may return null, indicating that no valid value can be obtained.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "backup_volume": {
+                "type": "number",
+                "description": "The total backup capacity of the user in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "billing_volume": {
+                "type": "number",
+                "description": "The billable capacity of the user&amp;#39;s backup in the current region, that is, the part that exceeds the gifted capacity.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "free_volume": {
+                "type": "number",
+                "description": "The free backup capacity obtained by the user in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "product": {
+                "type": "string",
+                "description": "The type of cloud database product to be queried, currently only supports `mysql`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "remote_backup_volume": {
+                "type": "number",
+                "description": "The total capacity of off-site backup of the user in the current region. Note: This field may return null, indicating that no valid value can be obtained.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mysql_backup_summaries": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "items": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "auto_backup_count": "number",
+                      "auto_backup_volume": "number",
+                      "backup_volume": "number",
+                      "binlog_backup_count": "number",
+                      "binlog_backup_volume": "number",
+                      "data_backup_count": "number",
+                      "data_backup_volume": "number",
+                      "instance_id": "string",
+                      "manual_backup_count": "number",
+                      "manual_backup_volume": "number"
+                    }
+                  ]
+                ],
+                "description": "Instance backup statistics entries.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "Specify to sort by a certain item, the optional values include: BackupVolume: backup volume, DataBackupVolume: data backup volume, BinlogBackupVolume: log backup volume, AutoBackupVolume: automatic backup volume, ManualBackupVolume: manual backup volume. By default, they are sorted by BackupVolume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_direction": {
+                "type": "string",
+                "description": "Specify the sorting direction, optional values include: ASC: forward order, DESC: reverse order. The default is ASC.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "product": {
+                "type": "string",
+                "description": "The type of cloud database product to be queried, currently only supports `mysql`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mysql_bin_log": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID, in the format: cdb-c1nl9rpv. Same instance ID as displayed in the ApsaraDB for Console page.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "items": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "binlog_finish_time": "string",
+                      "binlog_start_time": "string",
+                      "cos_storage_type": "number",
+                      "date": "string",
+                      "instance_id": "string",
+                      "internet_url": "string",
+                      "intranet_url": "string",
+                      "name": "string",
+                      "region": "string",
+                      "remote_info": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "finish_time": "string",
+                            "region": "string",
+                            "start_time": "string",
+                            "status": "string",
+                            "sub_backup_id": [
+                              "set",
+                              "number"
+                            ],
+                            "url": "string"
+                          }
+                        ]
+                      ],
+                      "size": "number",
+                      "status": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "Details of binary log files that meet the query conditions.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mysql_binlog_backup_overview": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "binlog_archive_count": {
+                "type": "number",
+                "description": "The number of archived log backups.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "binlog_archive_volume": {
+                "type": "number",
+                "description": "Archived log backup capacity (in bytes).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "binlog_backup_count": {
+                "type": "number",
+                "description": "The total number of log backups, including remote log backups.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "binlog_backup_volume": {
+                "type": "number",
+                "description": "Total log backup capacity, including off-site log backup (unit is byte).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "binlog_standby_count": {
+                "type": "number",
+                "description": "The number of standard storage log backups.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "binlog_standby_volume": {
+                "type": "number",
+                "description": "Standard storage log backup capacity (in bytes).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "product": {
+                "type": "string",
+                "description": "The type of cloud database product to be queried, currently only supports `mysql`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "remote_binlog_count": {
+                "type": "number",
+                "description": "The number of remote log backups.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "remote_binlog_volume": {
+                "type": "number",
+                "description": "Remote log backup capacity (in bytes).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mysql_clone_list": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Query the list of cloning tasks for the specified source instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "items": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "clone_job_id": "number",
+                      "dst_instance_id": "string",
+                      "end_time": "string",
+                      "new_region_id": "number",
+                      "rollback_strategy": "string",
+                      "rollback_target_time": "string",
+                      "src_instance_id": "string",
+                      "src_region_id": "number",
+                      "start_time": "string",
+                      "task_status": "string"
+                    }
+                  ]
+                ],
+                "description": "Clone task list.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mysql_data_backup_overview": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_backup_count": {
+                "type": "number",
+                "description": "The total number of automatic backups in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "auto_backup_volume": {
+                "type": "number",
+                "description": "The total automatic backup capacity of the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_backup_archive_count": {
+                "type": "number",
+                "description": "The total number of archive backups in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_backup_archive_volume": {
+                "type": "number",
+                "description": "The total capacity of the current regional archive backup.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_backup_count": {
+                "type": "number",
+                "description": "The total number of data backups in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_backup_standby_count": {
+                "type": "number",
+                "description": "The total number of standard storage backups in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_backup_standby_volume": {
+                "type": "number",
+                "description": "The total backup capacity of the current regional standard storage.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "data_backup_volume": {
+                "type": "number",
+                "description": "Total data backup capacity of the current region (including automatic backup and manual backup, in bytes).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manual_backup_count": {
+                "type": "number",
+                "description": "The total number of manual backups in the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "manual_backup_volume": {
+                "type": "number",
+                "description": "The total manual backup capacity of the current region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "product": {
+                "type": "string",
+                "description": "The type of cloud database product to be queried, currently only supports `mysql`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "remote_backup_count": {
+                "type": "number",
+                "description": "The total number of remote backups.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "remote_backup_volume": {
+                "type": "number",
+                "description": "The total capacity of remote backup.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_mysql_default_params": {
           "version": 0,
           "block": {
@@ -67140,6 +68760,227 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_redis_instance_shards": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "filter_slave": {
+                "type": "bool",
+                "description": "Whether to filter out slave information.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "instance_shards": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "connected": "number",
+                      "keys": "number",
+                      "role": "number",
+                      "runid": "string",
+                      "shard_id": "string",
+                      "shard_name": "string",
+                      "slots": "string",
+                      "storage": "number",
+                      "storage_slope": "number"
+                    }
+                  ]
+                ],
+                "description": "Instance shard list information.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_redis_instance_task_list": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "begin_time": {
+                "type": "string",
+                "description": "Start time.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "Termination time.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "instance_name": {
+                "type": "string",
+                "description": "Instance name.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "operate_uin": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Operator Uin.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "Project Id.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "result": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "Task status.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "task_status": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "Task status.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "task_types": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Task type.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tasks": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "end_time": "string",
+                      "instance_id": "string",
+                      "instance_name": "string",
+                      "progress": "number",
+                      "project_id": "number",
+                      "result": "number",
+                      "start_time": "string",
+                      "task_id": "number",
+                      "task_type": "string"
+                    }
+                  ]
+                ],
+                "description": "Task details.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_redis_instance_zone_info": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "replica_groups": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "group_id": "number",
+                      "group_name": "string",
+                      "redis_nodes": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "keys": "number",
+                            "node_id": "string",
+                            "role": "string",
+                            "slot": "string",
+                            "status": "string"
+                          }
+                        ]
+                      ],
+                      "role": "string",
+                      "zone_id": "string"
+                    }
+                  ]
+                ],
+                "description": "List of instance node groups.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_redis_instances": {
           "version": 0,
           "block": {
@@ -67230,6 +69071,50 @@
               "zone": {
                 "type": "string",
                 "description": "ID of an available zone.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_redis_param_records": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "instance_param_history": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "modify_time": "string",
+                      "new_value": "string",
+                      "param_name": "string",
+                      "pre_value": "string",
+                      "status": "number"
+                    }
+                  ]
+                ],
+                "description": "The parameter name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -68982,6 +70867,83 @@
             "deprecated": true
           }
         },
+        "tencentcloud_tat_agent": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automation_agent_set": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "agent_status": "string",
+                      "environment": "string",
+                      "instance_id": "string",
+                      "last_heartbeat_time": "string",
+                      "support_features": [
+                        "set",
+                        "string"
+                      ],
+                      "version": "string"
+                    }
+                  ]
+                ],
+                "description": "List of agent message.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of instance IDs for the query.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "Field to be filtered.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Filter values of the field.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Filter conditions. agent-status - String - Required: No - (Filter condition) Filter by agent status. Valid values: Online, Offline. environment - String - Required: No - (Filter condition) Filter by the agent environment. Valid value: Linux. instance-id - String - Required: No - (Filter condition) Filter by the instance ID. Up to 10 Filters allowed in one request. For each filter, five Filter.Values can be specified. InstanceIds and Filters cannot be specified at the same time.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_tat_command": {
           "version": 0,
           "block": {
@@ -69133,6 +71095,53 @@
               "type": {
                 "type": "string",
                 "description": "Invoker type.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_tat_invoker_records": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invoker_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of invoker IDs. Up to 100 IDs are allowed.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "invoker_record_set": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "invocation_id": "string",
+                      "invoke_time": "string",
+                      "invoker_id": "string",
+                      "reason": "string",
+                      "result": "string"
+                    }
+                  ]
+                ],
+                "description": "Execution history of an invoker.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
                 "description_kind": "plain",
                 "optional": true
               }
