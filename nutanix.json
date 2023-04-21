@@ -3386,7 +3386,8 @@
               "time_zone": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "type": {
                 "type": "string",
@@ -3516,25 +3517,31 @@
                       "description_kind": "plain",
                       "optional": true
                     },
-                    "properties": {
-                      "type": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "name": "string",
-                            "value": "string"
-                          }
-                        ]
-                      ],
-                      "description": "List of all the properties",
-                      "description_kind": "plain",
-                      "computed": true
-                    },
                     "vm_name": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "properties": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "List of all the properties",
+                        "description_kind": "plain"
+                      }
                     }
                   },
                   "description_kind": "plain"
@@ -5474,6 +5481,11 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "database_instance_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "database_name": {
                 "type": "string",
                 "description_kind": "plain",
@@ -6155,6 +6167,11 @@
                 "required": true
               },
               "database_cluster_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "database_instance_id": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
@@ -6967,7 +6984,7 @@
               "name": {
                 "type": "string",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "nx_cluster_id": {
                 "type": "string",
@@ -10033,6 +10050,11 @@
                 "required": true
               },
               "database_cluster_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "database_instance_id": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
@@ -23957,6 +23979,46 @@
                 "optional": true,
                 "computed": true
               },
+              "ip_addresses": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "dbserver_id": "string",
+                      "dbserver_name": "string",
+                      "ip": "string",
+                      "status": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ip_pools": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "addresses": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "ip": "string",
+                            "status": "string"
+                          }
+                        ]
+                      ],
+                      "end_ip": "string",
+                      "start_ip": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "managed": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -24013,6 +24075,48 @@
             "description_kind": "plain"
           }
         },
+        "nutanix_ndb_network_available_ips": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "available_ips": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cluster_id": "string",
+                      "cluster_name": "string",
+                      "id": "string",
+                      "ip_addresses": [
+                        "list",
+                        "string"
+                      ],
+                      "managed": "bool",
+                      "name": "string",
+                      "property_name": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "profile_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "nutanix_ndb_networks": {
           "version": 0,
           "block": {
@@ -24031,6 +24135,38 @@
                     {
                       "cluster_id": "string",
                       "id": "string",
+                      "ip_addresses": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "dbserver_id": "string",
+                            "dbserver_name": "string",
+                            "ip": "string",
+                            "status": "string"
+                          }
+                        ]
+                      ],
+                      "ip_pools": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "addresses": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "ip": "string",
+                                  "status": "string"
+                                }
+                              ]
+                            ],
+                            "end_ip": "string",
+                            "start_ip": "string"
+                          }
+                        ]
+                      ],
                       "managed": "bool",
                       "name": "string",
                       "properties": [
@@ -25071,11 +25207,13 @@
               "id": {
                 "type": "string",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "name": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "owner": {
@@ -25106,6 +25244,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "entity_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",

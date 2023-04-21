@@ -12,41 +12,49 @@
                 "attributes": {
                   "key_algorithm": {
                     "type": "string",
+                    "description": "Required if `key_name` is set. When using TSIG authentication, the algorithm to use for HMAC. Valid values are `hmac-md5`, `hmac-sha1`, `hmac-sha256` or `hmac-sha512`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "key_name": {
                     "type": "string",
+                    "description": "The name of the TSIG key used to sign the DNS update messages.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "key_secret": {
                     "type": "string",
+                    "description": "Required if `key_name` is set\nA Base64-encoded string containing the shared secret to be used for TSIG.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "port": {
                     "type": "number",
+                    "description": "The target UDP port on the server where updates are sent to. Defaults to `53`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "retries": {
                     "type": "number",
+                    "description": "How many times to retry on connection timeout. Defaults to `3`.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "server": {
                     "type": "string",
+                    "description": "The hostname or IP address of the DNS server to send updates to.",
                     "description_kind": "plain",
                     "required": true
                   },
                   "timeout": {
                     "type": "string",
+                    "description": "Timeout for DNS queries. Valid values are durations expressed as `500ms`, etc. or a plain number which is treated as whole seconds.",
                     "description_kind": "plain",
                     "optional": true
                   },
                   "transport": {
                     "type": "string",
+                    "description": "Transport to use for DNS queries. Valid values are `udp`, `udp4`, `udp6`, `tcp`, `tcp4`, or `tcp6`. Any UDP transport will retry automatically with the equivalent TCP transport in the event of a truncated response. Defaults to `udp`.",
                     "description_kind": "plain",
                     "optional": true
                   }
@@ -58,31 +66,37 @@
                       "attributes": {
                         "keytab": {
                           "type": "string",
+                          "description": "This or `password` is required if `username` is set, not supported on Windows. The path to a keytab file containing a key for `username`.",
                           "description_kind": "plain",
                           "optional": true
                         },
                         "password": {
                           "type": "string",
+                          "description": "This or `keytab` is required if `username` is set. The matching password for `username`.",
                           "description_kind": "plain",
                           "optional": true,
                           "sensitive": true
                         },
                         "realm": {
                           "type": "string",
+                          "description": "The Kerberos realm or Active Directory domain.",
                           "description_kind": "plain",
                           "required": true
                         },
                         "username": {
                           "type": "string",
+                          "description": "The name of the user to authenticate as. If not set the current user session will be used.",
                           "description_kind": "plain",
                           "optional": true
                         }
                       },
+                      "description": "A `gssapi` block. Only one `gssapi` block may be in the configuration. Conflicts with use of `key_name`, `key_algorithm` and `key_secret`.",
                       "description_kind": "plain"
                     },
                     "max_items": 1
                   }
                 },
+                "description": "When the provider is used for DNS updates, this block is required.",
                 "description_kind": "plain"
               },
               "max_items": 1
@@ -101,6 +115,7 @@
                   "set",
                   "string"
                 ],
+                "description": "The IPv4 addresses this record set will point to.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -112,20 +127,24 @@
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record set. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
                 "optional": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Creates an A type DNS record set.",
             "description_kind": "plain"
           }
         },
@@ -138,6 +157,7 @@
                   "set",
                   "string"
                 ],
+                "description": "The IPv6 addresses this record set will point to.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -149,20 +169,24 @@
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record set. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
                 "optional": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Creates an AAAA type DNS record set.",
             "description_kind": "plain"
           }
         },
@@ -172,31 +196,37 @@
             "attributes": {
               "cname": {
                 "type": "string",
+                "description": "The canonical name this record will point to.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the fully qualified domain name of the record.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "required": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Creates a CNAME type DNS record.",
             "description_kind": "plain"
           }
         },
@@ -206,22 +236,26 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the fully qualified domain name of the record set",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record set. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -233,20 +267,23 @@
                   "attributes": {
                     "exchange": {
                       "type": "string",
+                      "description": "The FQDN of the mail exchange, include the trailing dot.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "preference": {
                       "type": "number",
+                      "description": "The preference for the record.",
                       "description_kind": "plain",
                       "required": true
                     }
                   },
+                  "description": "Can be specified multiple times for each MX record.",
                   "description_kind": "plain"
-                },
-                "min_items": 1
+                }
               }
             },
+            "description": "Creates an MX type DNS record set.",
             "description_kind": "plain"
           }
         },
@@ -256,12 +293,13 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the fully qualified domain name of the record set.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record set. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -270,20 +308,25 @@
                   "set",
                   "string"
                 ],
+                "description": "The nameservers this record set will point to.",
                 "description_kind": "plain",
                 "required": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Creates an NS type DNS record set.",
             "description_kind": "plain"
           }
         },
@@ -293,31 +336,37 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the fully qualified domain name of the record.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ptr": {
                 "type": "string",
+                "description": "The canonical name this record will point to.",
                 "description_kind": "plain",
                 "required": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record. Defaults to `3600`.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Creates a PTR type DNS record.",
             "description_kind": "plain"
           }
         },
@@ -327,22 +376,26 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the fully qualified domain name of the record set.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record set. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "required": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -354,30 +407,35 @@
                   "attributes": {
                     "port": {
                       "type": "number",
+                      "description": "The port for the service on the target.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "priority": {
                       "type": "number",
+                      "description": "The priority for the record.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "target": {
                       "type": "string",
+                      "description": "The FQDN of the target, include the trailing dot.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "weight": {
                       "type": "number",
+                      "description": "The weight for the record.",
                       "description_kind": "plain",
                       "required": true
                     }
                   },
+                  "description": "Can be specified multiple times for each SRV record.",
                   "description_kind": "plain"
-                },
-                "min_items": 1
+                }
               }
             },
+            "description": "Creates an SRV type DNS record set.",
             "description_kind": "plain"
           }
         },
@@ -387,34 +445,40 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the fully qualified domain name of the record set.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the record set. The `zone` argument will be appended to this value to create the full record path.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ttl": {
                 "type": "number",
+                "description": "The TTL of the record set. Defaults to `3600`.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "txt": {
                 "type": [
                   "set",
                   "string"
                 ],
+                "description": "The text records this record set will be set to.",
                 "description_kind": "plain",
                 "required": true
               },
               "zone": {
                 "type": "string",
+                "description": "DNS zone the record set belongs to. It must be an FQDN, that is, include the trailing dot.",
                 "description_kind": "plain",
                 "required": true
               }
             },
+            "description": "Creates a TXT type DNS record set.",
             "description_kind": "plain"
           }
         }
@@ -429,21 +493,24 @@
                   "list",
                   "string"
                 ],
+                "description": "A list of IP addresses. IP addresses are always sorted to avoid constant changing plans.",
                 "description_kind": "plain",
                 "computed": true
               },
               "host": {
                 "type": "string",
+                "description": "Host to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the host.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS A records of the host.",
             "description_kind": "plain"
           }
         },
@@ -456,21 +523,24 @@
                   "list",
                   "string"
                 ],
+                "description": "A list of IP addresses. IP addresses are always sorted to avoid constant changing plans.",
                 "description_kind": "plain",
                 "computed": true
               },
               "host": {
                 "type": "string",
+                "description": "Host to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the host.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS AAAA records of the host.",
             "description_kind": "plain"
           }
         },
@@ -480,21 +550,24 @@
             "attributes": {
               "cname": {
                 "type": "string",
+                "description": "A CNAME record associated with host.",
                 "description_kind": "plain",
                 "computed": true
               },
               "host": {
                 "type": "string",
+                "description": "Host to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the host.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS CNAME record set of the host.",
             "description_kind": "plain"
           }
         },
@@ -504,13 +577,14 @@
             "attributes": {
               "domain": {
                 "type": "string",
+                "description": "Domain to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the domain.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "mx": {
@@ -524,10 +598,12 @@
                     }
                   ]
                 ],
+                "description": "A list of records. They are sorted by ascending preference then alphabetically by exchange to stay consistent across runs.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS MX records for a domain.",
             "description_kind": "plain"
           }
         },
@@ -537,13 +613,14 @@
             "attributes": {
               "host": {
                 "type": "string",
+                "description": "Host to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the domain.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "nameservers": {
@@ -551,10 +628,12 @@
                   "list",
                   "string"
                 ],
+                "description": "A list of nameservers. Nameservers are always sorted to avoid constant changing plans.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS NS records of the host.",
             "description_kind": "plain"
           }
         },
@@ -564,21 +643,24 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the IP address.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "ip_address": {
                 "type": "string",
+                "description": "IP address to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "ptr": {
                 "type": "string",
+                "description": "A PTR record associated with `ip_address`.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS PTR record set of the ip address.",
             "description_kind": "plain"
           }
         },
@@ -588,12 +670,13 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Always set to the service.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "service": {
                 "type": "string",
+                "description": "Service to look up.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -610,10 +693,12 @@
                     }
                   ]
                 ],
+                "description": "A list of records. They are sorted to stay consistent across runs.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS SRV records for a service.",
             "description_kind": "plain"
           }
         },
@@ -623,17 +708,19 @@
             "attributes": {
               "host": {
                 "type": "string",
+                "description": "Host to look up.",
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "Always set to the host.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "record": {
                 "type": "string",
+                "description": "The first TXT record.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -642,10 +729,12 @@
                   "list",
                   "string"
                 ],
+                "description": "A list of TXT records.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "Use this data source to get DNS TXT record set of the host.",
             "description_kind": "plain"
           }
         }
