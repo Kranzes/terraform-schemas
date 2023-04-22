@@ -3707,6 +3707,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "description": {
+                "type": "string",
+                "description": "Remark of attachment.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -13926,6 +13932,165 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_cvm_chc_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bmc_security_group_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Out-of-band network security group list.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "bmc_user": {
+                "type": "string",
+                "description": "Valid characters: Letters, numbers, hyphens and underscores. Only set when update password.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "chc_id": {
+                "type": "string",
+                "description": "CHC host ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "deploy_security_group_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Deployment network security group list.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "device_type": {
+                "type": "string",
+                "description": "Server type.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_name": {
+                "type": "string",
+                "description": "CHC host name.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password can contain 8 to 16 characters, including letters, numbers and special symbols (()`~!@#$%^&amp;amp;*-+=_|{}).",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              }
+            },
+            "block_types": {
+              "bmc_virtual_private_cloud": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "as_vpc_gateway": {
+                      "type": "bool",
+                      "description": "Whether to use a CVM instance as a public gateway. The public gateway is only available when the instance has a public IP and resides in a VPC. Valid values:&lt;br&gt;&lt;li&gt;TRUE: yes;&lt;br&gt;&lt;li&gt;FALSE: no&lt;br&gt;&lt;br&gt;Default: FALSE.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ipv6_address_count": {
+                      "type": "number",
+                      "description": "Number of IPv6 addresses randomly generated for the ENI.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "private_ip_addresses": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Array of VPC subnet IPs. You can use this parameter when creating instances or modifying VPC attributes of instances. Currently you can specify multiple IPs in one subnet only when creating multiple instances at the same time.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "subnet_id": {
+                      "type": "string",
+                      "description": "VPC subnet ID in the format subnet-xxx. To obtain valid subnet IDs, you can log in to the [console](https://console.tencentcloud.com/vpc/vpc?rid=1) or call DescribeSubnets and look for the unSubnetId fields in the response. If you specify DEFAULT for both SubnetId and VpcId when creating an instance, the default VPC will be used.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vpc_id": {
+                      "type": "string",
+                      "description": "VPC ID in the format of vpc-xxx. To obtain valid VPC IDs, you can log in to the [console](https://console.tencentcloud.com/vpc/vpc?rid=1) or call the DescribeVpcEx API and look for the unVpcId fields in the response. If you specify DEFAULT for both VpcId and SubnetId when creating an instance, the default VPC will be used.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Out-of-band network information.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "deploy_virtual_private_cloud": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "as_vpc_gateway": {
+                      "type": "bool",
+                      "description": "Whether to use a CVM instance as a public gateway. The public gateway is only available when the instance has a public IP and resides in a VPC. Valid values:&lt;br&gt;&lt;li&gt;TRUE: yes;&lt;br&gt;&lt;li&gt;FALSE: no&lt;br&gt;&lt;br&gt;Default: FALSE.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ipv6_address_count": {
+                      "type": "number",
+                      "description": "Number of IPv6 addresses randomly generated for the ENI.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "private_ip_addresses": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Array of VPC subnet IPs. You can use this parameter when creating instances or modifying VPC attributes of instances. Currently you can specify multiple IPs in one subnet only when creating multiple instances at the same time.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "subnet_id": {
+                      "type": "string",
+                      "description": "VPC subnet ID in the format subnet-xxx. To obtain valid subnet IDs, you can log in to the [console](https://console.tencentcloud.com/vpc/vpc?rid=1) or call DescribeSubnets and look for the unSubnetId fields in the response. If you specify DEFAULT for both SubnetId and VpcId when creating an instance, the default VPC will be used.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vpc_id": {
+                      "type": "string",
+                      "description": "VPC ID in the format of vpc-xxx. To obtain valid VPC IDs, you can log in to the [console](https://console.tencentcloud.com/vpc/vpc?rid=1) or call the DescribeVpcEx API and look for the unVpcId fields in the response. If you specify DEFAULT for both VpcId and SubnetId when creating an instance, the default VPC will be used.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Deployment network information.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_cvm_hpc_cluster": {
           "version": 0,
           "block": {
@@ -23391,6 +23556,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "disable_api_termination": {
+                "type": "bool",
+                "description": "Whether the termination protection is enabled. Default is `false`. If set true, which means that this instance can not be deleted by an API action.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "disable_monitor_service": {
                 "type": "bool",
                 "description": "Disable enhance service for monitor, it is enabled by default. When this options is set, monitor agent won't be installed. Modifying will cause the instance reset.",
@@ -28696,6 +28867,53 @@
                     }
                   },
                   "description": "The read and write permission information of the account.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_mongodb_instance_backup": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backup_method": {
+                "type": "number",
+                "description": "0:logical backup, 1:physical backup.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "backup_remark": {
+                "type": "string",
+                "description": "backup notes.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID, the format is: cmgo-9d0p6umb.Same as the instance ID displayed in the cloud database console page.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
                   "description_kind": "plain"
                 }
               }
@@ -41285,6 +41503,95 @@
                 "description": "Port for private access.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_sqlserver_config_backup_strategy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backup_cycle": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "The days of the week on which backup will be performed when `BackupType` is weekly. If data backup retention period is less than 7 days, the values will be 1-7, indicating that backup will be performed everyday by default; if data backup retention period is greater than or equal to 7 days, the values will be at least any two days, indicating that backup will be performed at least twice in a week by default.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backup_day": {
+                "type": "number",
+                "description": "Backup interval in days when the BackupType is daily. Valid value: 1.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backup_model": {
+                "type": "string",
+                "description": "Backup mode. Valid values: master_pkg (archive the backup files of the primary node), master_no_pkg (do not archive the backup files of the primary node), slave_pkg (archive the backup files of the replica node), slave_no_pkg (do not archive the backup files of the replica node). Backup files of the replica node are supported only when Always On disaster recovery is enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backup_save_days": {
+                "type": "number",
+                "description": "Data (log) backup retention period. Value range: 3-1830 days, default value: 7 days.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backup_time": {
+                "type": "number",
+                "description": "Backup time. Value range: an integer from 0 to 23.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backup_type": {
+                "type": "string",
+                "description": "Backup type. Valid values: weekly (when length(BackupDay) <=7 && length(BackupDay) >=2), daily (when length(BackupDay)=1). Default value: daily.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "regular_backup_counts": {
+                "type": "number",
+                "description": "The number of retained archive backups. Default value: 1.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "regular_backup_enable": {
+                "type": "string",
+                "description": "Archive backup status. Valid values: enable (enabled); disable (disabled). Default value: disable.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "regular_backup_save_days": {
+                "type": "number",
+                "description": "Archive backup retention days. Value range: 90-3650 days. Default value: 365 days.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "regular_backup_start_time": {
+                "type": "string",
+                "description": "Archive backup start date in YYYY-MM-DD format, which is the current time by default.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "regular_backup_strategy": {
+                "type": "string",
+                "description": "Archive backup policy. Valid values: years (yearly); quarters (quarterly); months(monthly); Default value: `months`.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -54150,6 +54457,44 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_vpn_gateway_ccn_routes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "destination_cidr_block": {
+                "type": "string",
+                "description": "Routing CIDR.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "route_id": {
+                "type": "string",
+                "description": "Route Id.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Whether routing information is enabled. `ENABLE`: Enable Route, `DISABLE`: Disable Route.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vpn_gateway_id": {
+                "type": "string",
+                "description": "VPN GATEWAY INSTANCE ID.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_vpn_gateway_route": {
           "version": 0,
           "block": {
@@ -56941,6 +57286,213 @@
             "description_kind": "plain"
           }
         },
+        "tencentcloud_ccn_cross_border_compliance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "business_address": {
+                "type": "string",
+                "description": "(Fuzzy query) business license address.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "company": {
+                "type": "string",
+                "description": "(Fuzzy query) Company name.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "compliance_id": {
+                "type": "number",
+                "description": "(Exact match) compliance approval form: 'ID'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "email": {
+                "type": "string",
+                "description": "(Exact match) email.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issuing_authority": {
+                "type": "string",
+                "description": "(Fuzzy query) Issuing authority.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "legal_person": {
+                "type": "string",
+                "description": "(Fuzzy query) legal representative.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "manager": {
+                "type": "string",
+                "description": "(Fuzzy query) Person in charge.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "manager_address": {
+                "type": "string",
+                "description": "(Fuzzy query) ID card address of the person in charge.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "manager_id": {
+                "type": "string",
+                "description": "(Exact query) ID number of the person in charge.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "manager_telephone": {
+                "type": "string",
+                "description": "(Exact match) contact number of the person in charge.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "post_code": {
+                "type": "number",
+                "description": "(Exact match) post code.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_end_date": {
+                "type": "string",
+                "description": "(Exact match) service end date, such as: '2020-07-28'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_provider": {
+                "type": "string",
+                "description": "(Exact match) service provider, optional value: 'UNICOM'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_start_date": {
+                "type": "string",
+                "description": "(Exact match) service start date, such as: '2020-07-28'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "(Exact match) status. Pending: PENDING, Passed: APPROVED, Denied: DENY.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "uniform_social_credit_code": {
+                "type": "string",
+                "description": "(Exact match) Uniform Social Credit Code.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_ccn_cross_border_flow_monitor": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ccn_id": {
+                "type": "string",
+                "description": "CcnId.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ccn_uin": {
+                "type": "string",
+                "description": "CcnUin.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cross_border_flow_monitor_data": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "in_bandwidth": [
+                        "set",
+                        "number"
+                      ],
+                      "in_pkg": [
+                        "set",
+                        "number"
+                      ],
+                      "out_bandwidth": [
+                        "set",
+                        "number"
+                      ],
+                      "out_pkg": [
+                        "set",
+                        "number"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "monitor data of cross border.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "destination_region": {
+                "type": "string",
+                "description": "DestinationRegion.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "EndTime.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "period": {
+                "type": "number",
+                "description": "TimePeriod.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_region": {
+                "type": "string",
+                "description": "SourceRegion.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "start_time": {
+                "type": "string",
+                "description": "StartTime.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tencentcloud_ccn_instances": {
           "version": 0,
           "block": {
@@ -57004,6 +57556,53 @@
               "result_output_file": {
                 "type": "string",
                 "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_ccn_tenant_instances": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ccn_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "filter by ccn ids, like: ['ccn-12345678'].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_security_lock": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "filter by locked, like ['true'].",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user_account_id": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "filter by ccn ids, like: ['12345678'].",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -59060,6 +59659,197 @@
                 "description": "Used to save results.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_cvm_chc_denied_actions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "chc_host_denied_action_set": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "chc_id": "string",
+                      "deny_actions": [
+                        "set",
+                        "string"
+                      ],
+                      "state": "string"
+                    }
+                  ]
+                ],
+                "description": "Actions not allowed for the CHC instance.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "chc_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "CHC host IDs.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_cvm_chc_hosts": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "chc_host_set": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "bmc_ip": "string",
+                      "bmc_mac": "string",
+                      "bmc_security_group_ids": [
+                        "set",
+                        "string"
+                      ],
+                      "bmc_virtual_private_cloud": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "as_vpc_gateway": "bool",
+                            "ipv6_address_count": "number",
+                            "private_ip_addresses": [
+                              "set",
+                              "string"
+                            ],
+                            "subnet_id": "string",
+                            "vpc_id": "string"
+                          }
+                        ]
+                      ],
+                      "chc_id": "string",
+                      "cpu": "number",
+                      "created_time": "string",
+                      "cvm_instance_id": "string",
+                      "deploy_ip": "string",
+                      "deploy_mac": "string",
+                      "deploy_security_group_ids": [
+                        "set",
+                        "string"
+                      ],
+                      "deploy_virtual_private_cloud": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "as_vpc_gateway": "bool",
+                            "ipv6_address_count": "number",
+                            "private_ip_addresses": [
+                              "set",
+                              "string"
+                            ],
+                            "subnet_id": "string",
+                            "vpc_id": "string"
+                          }
+                        ]
+                      ],
+                      "device_type": "string",
+                      "disk": "string",
+                      "hardware_description": "string",
+                      "instance_name": "string",
+                      "instance_state": "string",
+                      "memory": "number",
+                      "placement": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "host_id": "string",
+                            "host_ids": [
+                              "set",
+                              "string"
+                            ],
+                            "host_ips": [
+                              "set",
+                              "string"
+                            ],
+                            "project_id": "number",
+                            "zone": "string"
+                          }
+                        ]
+                      ],
+                      "serial_number": "string",
+                      "tenant_type": "string"
+                    }
+                  ]
+                ],
+                "description": "List of returned instances.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "chc_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "CHC host ID. Up to 100 instances per request is allowed. ChcIds and Filters cannot be specified at the same time.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "Filter name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Filter values.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "- `zone` Filter by the availability zone, such as ap-guangzhou-1. Valid values: See [Regions and Availability Zones](https://www.tencentcloud.com/document/product/213/6091?from_cn_redirect=1).\n- `instance-name` Filter by the instance name.\n- `instance-state` Filter by the instance status. For status details, see [InstanceStatus](https://www.tencentcloud.com/document/api/213/15753?from_cn_redirect=1#InstanceStatus).\n- `device-type` Filter by the device type.\n- `vpc-id` Filter by the unique VPC ID.\n- `subnet-id` Filter by the unique VPC subnet ID.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -74136,6 +74926,42 @@
               "vpn_gateway_id": {
                 "type": "string",
                 "description": "VPN gateway ID of the VPN connection.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tencentcloud_vpn_customer_gateway_vendors": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "customer_gateway_vendor_set": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "platform": "string",
+                      "software_version": "string",
+                      "vendor_name": "string"
+                    }
+                  ]
+                ],
+                "description": "Customer Gateway Vendor Set.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "result_output_file": {
+                "type": "string",
+                "description": "Used to save results.",
                 "description_kind": "plain",
                 "optional": true
               }

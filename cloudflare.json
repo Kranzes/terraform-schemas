@@ -1418,6 +1418,12 @@
                 "description_kind": "markdown",
                 "required": true
               },
+              "auto_redirect_to_identity": {
+                "type": "bool",
+                "description": "When set to true, users skip the identity provider selection step during login.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1533,6 +1539,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "isolation_required": {
+                "type": "bool",
+                "description": "Require this application to be served in an isolated browser for users matching this policy.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -8434,7 +8446,7 @@
               },
               "phase": {
                 "type": "string",
-                "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
+                "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `http_response_compression`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -8458,7 +8470,7 @@
                   "attributes": {
                     "action": {
                       "type": "string",
-                      "description": "Action to perform in the ruleset rule. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                      "description": "Action to perform in the ruleset rule. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -8624,7 +8636,7 @@
                               "set",
                               "string"
                             ],
-                            "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
+                            "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `http_response_compression`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -9101,7 +9113,7 @@
                                 },
                                 "operation": {
                                   "type": "string",
-                                  "description": "Action to perform on the HTTP request header. Available values: `remove`, `set`.",
+                                  "description": "Action to perform on the HTTP request header. Available values: `remove`, `set`, `add`.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -9158,7 +9170,7 @@
                               "attributes": {
                                 "action": {
                                   "type": "string",
-                                  "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                                  "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -9182,7 +9194,7 @@
                                     "attributes": {
                                       "action": {
                                         "type": "string",
-                                        "description": "Action to perform in the tag-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                                        "description": "Action to perform in the tag-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -9209,7 +9221,7 @@
                                     "attributes": {
                                       "action": {
                                         "type": "string",
-                                        "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.",
+                                        "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -10616,6 +10628,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "config_src": {
+                "type": "string",
+                "description": "Indicates if this is a locally or remotely configured tunnel. If `local`, manage the tunnel using a YAML file on the origin machine. If `cloudflare`, manage the tunnel on the Zero Trust dashboard or using tunnel_config, tunnel_route or tunnel_virtual_network resources. Available values: `local`, `cloudflare`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -11573,6 +11591,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "logpush": {
+                "type": "bool",
+                "description": "Enabling allows Worker events to be sent to a defined Logpush destination.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "module": {
                 "type": "bool",
@@ -13878,7 +13902,7 @@
                     },
                     "phase": {
                       "type": "string",
-                      "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
+                      "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `http_response_compression`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
                       "description_kind": "markdown",
                       "optional": true
                     },

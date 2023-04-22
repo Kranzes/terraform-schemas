@@ -24,6 +24,12 @@
               "description_kind": "plain",
               "optional": true
             },
+            "insecure_mode": {
+              "type": "bool",
+              "description": "If true, bypass the Online Certificate Status Protocol (OCSP) certificate revocation check. IMPORTANT: Change the default value for testing or emergency situations only.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "oauth_access_token": {
               "type": "string",
               "description": "Token for use with OAuth. Generating the token is left to other tools. Cannot be used with `browser_auth`, `private_key_path`, `oauth_refresh_token` or `password`. Can be sourced from `SNOWFLAKE_OAUTH_ACCESS_TOKEN` environment variable.",
@@ -300,6 +306,110 @@
             "description_kind": "plain"
           }
         },
+        "snowflake_alert": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description": "The SQL statement that should be executed if the condition returns one or more rows.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "Specifies a comment for the alert.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "condition": {
+                "type": "string",
+                "description": "The SQL statement that represents the condition for the alert. (SELECT, SHOW, CALL)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "database": {
+                "type": "string",
+                "description": "The database in which to create the alert.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Specifies if an alert should be 'started' (enabled) after creation or should remain 'suspended' (default).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the identifier for the alert; must be unique for the database and schema in which the alert is created.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "schema": {
+                "type": "string",
+                "description": "The schema in which to create the alert.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "warehouse": {
+                "type": "string",
+                "description": "The warehouse the alert will use.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "alert_schedule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "interval": {
+                      "type": "number",
+                      "description": "Specifies the interval in minutes for the alert schedule. The interval must be greater than 0 and less than 1440 (24 hours).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "cron": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "expression": {
+                            "type": "string",
+                            "description": "Specifies the cron expression for the alert. The cron expression must be in the following format: \"minute hour day-of-month month day-of-week\". The following values are supported: minute: 0-59 hour: 0-23 day-of-month: 1-31 month: 1-12 day-of-week: 0-6 (0 is Sunday)",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "time_zone": {
+                            "type": "string",
+                            "description": "Specifies the time zone for alert refresh.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Specifies the cron expression for the alert. The cron expression must be in the following format: \"minute hour day-of-month month day-of-week\". The following values are supported: minute: 0-59 hour: 0-23 day-of-month: 1-31 month: 1-12 day-of-week: 0-6 (0 is Sunday)",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "The schedule for periodically running an alert.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "snowflake_api_integration": {
           "version": 0,
           "block": {
@@ -427,8 +537,7 @@
                 "type": "number",
                 "description": "Number of days for which Snowflake retains historical data for performing Time Travel actions (SELECT, CLONE, UNDROP) on the object. A value of 0 effectively disables Time Travel for the specified database, schema, or table. For more information, see Understanding & Using Time Travel.",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "from_database": {
                 "type": "string",
@@ -582,6 +691,38 @@
                 "description": "When this is set to true, allows the recipient role to grant the privileges to other roles.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_database_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Specifies a comment for the database role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "database": {
+                "type": "string",
+                "description": "The database in which to create the database role.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the identifier for the database role.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -832,6 +973,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "scope_mapping_attribute": {
+                "type": "string",
+                "description": "Specifies the access token claim to map the access token to an account role.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "snowflake_user_mapping_attribute": {
                 "type": "string",
                 "description": "Indicates which Snowflake user record attribute should be used to map the access token to a Snowflake user record.",
@@ -854,6 +1001,7 @@
                 "required": true
               }
             },
+            "description": "An External OAuth security integration allows a client to use a third-party authorization server to obtain the access tokens needed to interact with Snowflake.",
             "description_kind": "plain"
           }
         },
@@ -1705,13 +1853,6 @@
                 "description_kind": "plain",
                 "optional": true
               },
-              "return_type": {
-                "type": "string",
-                "description": "The return type of the function (must be present if function_name is present)",
-                "description_kind": "plain",
-                "deprecated": true,
-                "optional": true
-              },
               "roles": {
                 "type": [
                   "set",
@@ -1741,30 +1882,6 @@
                 "description": "When this is set to true, allows the recipient role to grant the privileges to other roles.",
                 "description_kind": "plain",
                 "optional": true
-              }
-            },
-            "block_types": {
-              "arguments": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "name": {
-                      "type": "string",
-                      "description": "The argument name",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "type": {
-                      "type": "string",
-                      "description": "The argument type",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "List of the arguments for the function (must be present if function has arguments and function_name is present)",
-                  "description_kind": "plain",
-                  "deprecated": true
-                }
               }
             },
             "description_kind": "plain"
@@ -2135,19 +2252,25 @@
               },
               "materialized_view_name": {
                 "type": "string",
-                "description": "The name of the materialized view on which to grant privileges immediately (only valid if on_future is false).",
+                "description": "The name of the materialized view on which to grant privileges immediately (only valid if on_future and on_all are false).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all materialized views in the given schema. When this is true and no schema_name is provided apply this grant on all materialized views in the given database. The materialized_view_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
                 "description_kind": "plain",
                 "optional": true
               },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future materialized views in the given schema. When this is true and no schema_name is provided apply this grant on all future materialized views in the given database. The materialized_view_name and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future materialized views in the given schema. When this is true and no schema_name is provided apply this grant on all future materialized views in the given database. The materialized_view_name and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future materialized view view.",
+                "description": "The privilege to grant on the current or future materialized view.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2171,7 +2294,7 @@
                   "set",
                   "string"
                 ],
-                "description": "Grants privilege to these shares (only valid if on_future is false).",
+                "description": "Grants privilege to these shares (only valid if on_future and on_all are false).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2363,6 +2486,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "gcp_pubsub_topic_name": {
+                "type": "string",
+                "description": "The topic id that Snowflake will use to push notifications.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2537,6 +2666,111 @@
                 }
               }
             },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_password_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Adds a comment or overwrites an existing comment for the password policy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "database": {
+                "type": "string",
+                "description": "The database this password policy belongs to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "if_not_exists": {
+                "type": "bool",
+                "description": "Prevent overwriting a previous password policy with the same name.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "lockout_time_mins": {
+                "type": "number",
+                "description": "Specifies the number of minutes the user account will be locked after exhausting the designated number of password retries (i.e. PASSWORD_MAX_RETRIES). Supported range: 1 to 999, inclusive. Default: 15",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_age_days": {
+                "type": "number",
+                "description": "Specifies the maximum number of days before the password must be changed. Supported range: 0 to 999, inclusive. A value of zero (i.e. 0) indicates that the password does not need to be changed. Snowflake does not recommend choosing this value for a default account-level password policy or for any user-level policy. Instead, choose a value that meets your internal security guidelines. Default: 90, which means the password must be changed every 90 days.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_length": {
+                "type": "number",
+                "description": "Specifies the maximum number of characters the password must contain. This number must be greater than or equal to the sum of PASSWORD_MIN_LENGTH, PASSWORD_MIN_UPPER_CASE_CHARS, and PASSWORD_MIN_LOWER_CASE_CHARS. Supported range: 8 to 256, inclusive. Default: 256",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_retries": {
+                "type": "number",
+                "description": "Specifies the maximum number of attempts to enter a password before being locked out. Supported range: 1 to 10, inclusive. Default: 5",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_length": {
+                "type": "number",
+                "description": "Specifies the minimum number of characters the password must contain. Supported range: 8 to 256, inclusive. Default: 8",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_lower_case_chars": {
+                "type": "number",
+                "description": "Specifies the minimum number of lowercase characters the password must contain. Supported range: 0 to 256, inclusive. Default: 1",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_numeric_chars": {
+                "type": "number",
+                "description": "Specifies the minimum number of numeric characters the password must contain. Supported range: 0 to 256, inclusive. Default: 1",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_special_chars": {
+                "type": "number",
+                "description": "Specifies the minimum number of special characters the password must contain. Supported range: 0 to 256, inclusive. Default: 1",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_upper_case_chars": {
+                "type": "number",
+                "description": "Specifies the minimum number of uppercase characters the password must contain. Supported range: 0 to 256, inclusive. Default: 1",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Identifier for the password policy; must be unique for your account.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "or_replace": {
+                "type": "bool",
+                "description": "Whether to override a previous password policy with the same name.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "schema": {
+                "type": "string",
+                "description": "The schema this password policy belongs to.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "A password policy specifies the requirements that must be met to create and reset a password to authenticate to Snowflake.",
             "description_kind": "plain"
           }
         },
@@ -2861,13 +3095,6 @@
                 "description_kind": "plain",
                 "optional": true
               },
-              "return_type": {
-                "type": "string",
-                "description": "The return type of the procedure (must be present if procedure_name is present)",
-                "description_kind": "plain",
-                "deprecated": true,
-                "optional": true
-              },
               "roles": {
                 "type": [
                   "set",
@@ -2897,30 +3124,6 @@
                 "description": "When this is set to true, allows the recipient role to grant the privileges to other roles.",
                 "description_kind": "plain",
                 "optional": true
-              }
-            },
-            "block_types": {
-              "arguments": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "name": {
-                      "type": "string",
-                      "description": "The argument name",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "type": {
-                      "type": "string",
-                      "description": "The argument type",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "List of the arguments for the procedure (must be present if procedure has arguments and procedure_name is present)",
-                  "description_kind": "plain",
-                  "deprecated": true
-                }
               }
             },
             "description_kind": "plain"
@@ -3576,9 +3779,15 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true, apply this grant on all schemas in the given database. The schema_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true, apply this grant on all future schemas in the given database. The schema_name and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true, apply this grant on all future schemas in the given database. The schema_name and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3608,7 +3817,7 @@
                   "set",
                   "string"
                 ],
-                "description": "Grants privilege to these shares (only valid if on_future is unset).",
+                "description": "Grants privilege to these shares (only valid if on_future and on_all are unset).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4011,9 +4220,15 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all stages in the given schema. When this is true and no schema_name is provided apply this grant on all stages in the given database. The stage_name field must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future stages in the given schema. When this is true and no schema_name is provided apply this grant on all future stages in the given database. The stage_name field must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future stages in the given schema. When this is true and no schema_name is provided apply this grant on all future stages in the given database. The stage_name field must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4040,7 +4255,7 @@
               },
               "stage_name": {
                 "type": "string",
-                "description": "The name of the stage on which to grant privilege (only valid if on_future is false).",
+                "description": "The name of the stage on which to grant privilege (only valid if on_future and on_all are false).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4692,13 +4907,13 @@
               },
               "on_all": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all all tables in the given schema. When this is true and no schema_name is provided apply this grant on all all tables in the given database. The table_name and shares fields must be unset in order to use on_all.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all tables in the given schema. When this is true and no schema_name is provided apply this grant on all tables in the given database. The table_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
                 "description_kind": "plain",
                 "optional": true
               },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future tables in the given schema. When this is true and no schema_name is provided apply this grant on all future tables in the given database. The table_name and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future tables in the given schema. When this is true and no schema_name is provided apply this grant on all future tables in the given database. The table_name and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4728,13 +4943,13 @@
                   "set",
                   "string"
                 ],
-                "description": "Grants privilege to these shares (only valid if on_future or on_all is unset).",
+                "description": "Grants privilege to these shares (only valid if on_future or on_all are unset).",
                 "description_kind": "plain",
                 "optional": true
               },
               "table_name": {
                 "type": "string",
-                "description": "The name of the table on which to grant privileges immediately (only valid if on_future or on_all is unset).",
+                "description": "The name of the table on which to grant privileges immediately (only valid if on_future or on_all are unset).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5544,9 +5759,15 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all views in the given schema. When this is true and no schema_name is provided apply this grant on all views in the given database. The view_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future views in the given schema. When this is true and no schema_name is provided apply this grant on all future views in the given database. The view_name and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future views in the given schema. When this is true and no schema_name is provided apply this grant on all future views in the given database. The view_name and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5576,13 +5797,13 @@
                   "set",
                   "string"
                 ],
-                "description": "Grants privilege to these shares (only valid if on_future is unset).",
+                "description": "Grants privilege to these shares (only valid if on_future and on_all are unset).",
                 "description_kind": "plain",
                 "optional": true
               },
               "view_name": {
                 "type": "string",
-                "description": "The name of the view on which to grant privileges immediately (only valid if on_future is unset).",
+                "description": "The name of the view on which to grant privileges immediately (only valid if on_future and on_all are unset).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6764,6 +6985,44 @@
                   ]
                 ],
                 "description": "The sequences in the schema",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_shares": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "pattern": {
+                "type": "string",
+                "description": "Filters the command output by object name.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "shares": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "kind": "string",
+                      "name": "string",
+                      "owner": "string",
+                      "to": "string"
+                    }
+                  ]
+                ],
+                "description": "List of all the shares available in the system.",
                 "description_kind": "plain",
                 "computed": true
               }

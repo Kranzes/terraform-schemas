@@ -5810,6 +5810,35 @@
                             "required": true
                           }
                         },
+                        "block_types": {
+                          "redirect": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "code": {
+                                  "type": "number",
+                                  "description": "The HTTP redirect code to use",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "target": {
+                                  "type": "string",
+                                  "description": "An URL can be used in case of a location redirect ",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "description": "The redirect type",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Redirect parameters when using an ACL with `redirect` action",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
                         "description": "Action to undertake when an ACL filter matches",
                         "description_kind": "plain"
                       },
@@ -8380,6 +8409,42 @@
               "revoked_at": {
                 "type": "string",
                 "description": "Date and time of the revocation of the domain (RFC 3339 format)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_host": {
+                "type": "string",
+                "description": "SMTP host to use to send emails",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_port": {
+                "type": "number",
+                "description": "SMTP port to use to send emails over TLS. (Port 587)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_port_alternative": {
+                "type": "number",
+                "description": "SMTP port to use to send emails over TLS. (Port 2587)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_port_unsecure": {
+                "type": "number",
+                "description": "SMTP port to use to send emails. (Port 25)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtps_port": {
+                "type": "number",
+                "description": "SMTPS port to use to send emails over TLS Wrapper. (Port 465)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtps_port_alternative": {
+                "type": "number",
+                "description": "SMTPS port to use to send emails over TLS Wrapper. (Port 2465)",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -12442,6 +12507,17 @@
                         [
                           "object",
                           {
+                            "redirect": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "code": "number",
+                                  "target": "string",
+                                  "type": "string"
+                                }
+                              ]
+                            ],
                             "type": "string"
                           }
                         ]
@@ -12947,6 +13023,17 @@
                         [
                           "object",
                           {
+                            "redirect": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "code": "number",
+                                  "target": "string",
+                                  "type": "string"
+                                }
+                              ]
+                            ],
                             "type": "string"
                           }
                         ]
@@ -14580,6 +14667,42 @@
               "revoked_at": {
                 "type": "string",
                 "description": "Date and time of the revocation of the domain (RFC 3339 format)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_host": {
+                "type": "string",
+                "description": "SMTP host to use to send emails",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_port": {
+                "type": "number",
+                "description": "SMTP port to use to send emails over TLS. (Port 587)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_port_alternative": {
+                "type": "number",
+                "description": "SMTP port to use to send emails over TLS. (Port 2587)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtp_port_unsecure": {
+                "type": "number",
+                "description": "SMTP port to use to send emails. (Port 25)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtps_port": {
+                "type": "number",
+                "description": "SMTPS port to use to send emails over TLS Wrapper. (Port 465)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "smtps_port_alternative": {
+                "type": "number",
+                "description": "SMTPS port to use to send emails over TLS Wrapper. (Port 2465)",
                 "description_kind": "plain",
                 "computed": true
               },
