@@ -117,6 +117,189 @@
         }
       },
       "resource_schemas": {
+        "nomad_acl_auth_method": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default": {
+                "type": "bool",
+                "description": "Defines whether this ACL Auth Method is to be set as default.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_token_ttl": {
+                "type": "string",
+                "description": "Defines the maximum life of a token created by this method.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The identifier of the ACL Auth Method.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "token_locality": {
+                "type": "string",
+                "description": "Defines whether the ACL Auth Method creates a local or global token when performing SSO login. This field must be set to either \"local\" or \"global\".",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "ACL Auth Method SSO workflow type. Currently, the only supported type is \"OIDC.\"",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "allowed_redirect_uris": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of allowed values that can be used for the redirect URI.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "bound_audiences": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of auth claims that are valid for login.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "claim_mappings": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Mappings of claims (key) that will be copied to a metadata field (value).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "discovery_ca_pem": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "PEM encoded CA certs for use by the TLS client used to talk with the OIDC Discovery URL.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "list_claim_mappings": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Mappings of list claims (key) that will be copied to a metadata field (value).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "oidc_client_id": {
+                      "type": "string",
+                      "description": "The OAuth Client ID configured with the OIDC provider.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "oidc_client_secret": {
+                      "type": "string",
+                      "description": "The OAuth Client Secret configured with the OIDC provider.",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    },
+                    "oidc_discovery_url": {
+                      "type": "string",
+                      "description": "The OIDC Discovery URL, without any .well-known component (base path).",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "oidc_scopes": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of OIDC scopes.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "signing_algs": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of supported signing algorithms.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Configuration specific to the auth method provider.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_acl_binding_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auth_method": {
+                "type": "string",
+                "description": "Name of the auth method for which this rule applies to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "bind_name": {
+                "type": "string",
+                "description": "Target of the binding.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "bind_type": {
+                "type": "string",
+                "description": "Adjusts how this binding rule is applied at login time. Valid values are \"role\" and \"policy\".",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description for this ACL binding rule.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "selector": {
+                "type": "string",
+                "description": "A boolean expression that matches against verified identity attributes returned from the auth method during login.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "nomad_acl_policy": {
           "version": 0,
           "block": {
