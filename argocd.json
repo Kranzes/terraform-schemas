@@ -270,7 +270,7 @@
               },
               "wait": {
                 "type": "bool",
-                "description": "Upon application creation or update, wait for application health/sync status to be healthy/Synced, upon application deletion, wait for application to be removed, when set to true. Wait timeouts are controlled by Terraform Create, Update and Delete resource timeouts (all default to 5 minutes).",
+                "description": "Upon application creation or update, wait for application health/sync status to be healthy/Synced, upon application deletion, wait for application to be removed, when set to true. Wait timeouts are controlled by Terraform Create, Update and Delete resource timeouts (all default to 5 minutes). **Note**: if ArgoCD decides not to sync an application (e.g. because the project to which the application belongs has a `sync_window` applied) then you will experience an expected timeout event if `wait = true`.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -369,7 +369,7 @@
                             "type": "string",
                             "description": "Target namespace for the application's resources. The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace.",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           },
                           "server": {
                             "type": "string",
@@ -490,6 +490,18 @@
                             "nesting_mode": "list",
                             "block": {
                               "attributes": {
+                                "exclude": {
+                                  "type": "string",
+                                  "description": "Glob pattern to match paths against that should be explicitly excluded from being used during manifest generation. This takes precedence over the `include` field. To match multiple patterns, wrap the patterns in {} and separate them with commas. For example: '{config.yaml,env-use2/*}'",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "include": {
+                                  "type": "string",
+                                  "description": "Glob pattern to match paths against that should be explicitly included during manifest generation. If this field is set, only matching manifests will be included. To match multiple patterns, wrap the patterns in {} and separate them with commas. For example: '{*.yml,*.yaml}'",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
                                 "recurse": {
                                   "type": "bool",
                                   "description": "Whether to scan a directory recursively for manifests.",
@@ -501,6 +513,17 @@
                                 "jsonnet": {
                                   "nesting_mode": "list",
                                   "block": {
+                                    "attributes": {
+                                      "libs": {
+                                        "type": [
+                                          "list",
+                                          "string"
+                                        ],
+                                        "description": "Additional library search dirs.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
                                     "block_types": {
                                       "ext_var": {
                                         "nesting_mode": "list",

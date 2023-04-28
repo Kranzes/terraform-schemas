@@ -9,368 +9,430 @@
         }
       },
       "resource_schemas": {
-        "talos_client_configuration": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cluster_name": {
-                "type": "string",
-                "description": "The name of the cluster in the generated config",
-                "description_kind": "plain",
-                "required": true
-              },
-              "endpoints": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description": "endpoints to set in the generated config",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "machine_secrets": {
-                "type": "string",
-                "description": "The machine secrets for the cluster",
-                "description_kind": "plain",
-                "required": true
-              },
-              "nodes": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description": "nodes to set in the generated config",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "talos_config": {
-                "type": "string",
-                "description": "The generated talos config",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              }
-            },
-            "description": "Generate client configuration for a Talos cluster",
-            "description_kind": "plain"
-          }
-        },
-        "talos_cluster_kubeconfig": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "endpoint": {
-                "type": "string",
-                "description": "machine endpoint",
-                "description_kind": "plain",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kube_config": {
-                "type": "string",
-                "description": "The retrieved Kubeconfig",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "node": {
-                "type": "string",
-                "description": "node to use",
-                "description_kind": "plain",
-                "required": true
-              },
-              "talos_config": {
-                "type": "string",
-                "description": "talos client configuration for authentication",
-                "description_kind": "plain",
-                "required": true
-              }
-            },
-            "description": "Retrieve Kubeconfig for a Talos cluster",
-            "description_kind": "plain"
-          }
-        },
         "talos_machine_bootstrap": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
-              "endpoint": {
-                "type": "string",
-                "description": "machine endpoint",
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The client configuration data",
                 "description_kind": "plain",
                 "required": true
               },
-              "id": {
+              "endpoint": {
                 "type": "string",
+                "description": "The endpoint of the machine to bootstrap",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
+              "id": {
+                "type": "string",
+                "description": "This is a unique identifier for the machine ",
+                "description_kind": "plain",
+                "computed": true
+              },
               "node": {
                 "type": "string",
-                "description": "node to bootstrap",
+                "description": "The name of the node to bootstrap",
                 "description_kind": "plain",
                 "required": true
               },
-              "talos_config": {
-                "type": "string",
-                "description": "talos client configuration for authentication",
+              "timeouts": {
+                "nested_type": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               }
             },
-            "description": "Applies machine configuration to a Talos node.",
+            "description": "The machine bootstrap resource allows you to bootstrap a Talos node.",
             "description_kind": "plain"
           }
         },
         "talos_machine_configuration_apply": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
+              "apply_mode": {
+                "type": "string",
+                "description": "The mode of the apply operation",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The client configuration data",
+                "description_kind": "plain",
+                "required": true
+              },
               "config_patches": {
                 "type": [
                   "list",
                   "string"
                 ],
-                "description": "config patches to apply to the generated config",
+                "description": "The list of config patches to apply",
                 "description_kind": "plain",
                 "optional": true
               },
               "endpoint": {
                 "type": "string",
-                "description": "machine endpoint",
+                "description": "The endpoint of the machine to bootstrap",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
+                "description": "This is a unique identifier for the machine ",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "machine_configuration": {
                 "type": "string",
-                "description": "machine configuration",
+                "description": "The generated machine configuration after applying patches",
                 "description_kind": "plain",
-                "required": true
+                "computed": true,
+                "sensitive": true
               },
-              "mode": {
+              "machine_configuration_input": {
                 "type": "string",
-                "description": "The mode to apply the configuration in.",
+                "description": "The machine configuration to apply",
                 "description_kind": "plain",
-                "optional": true
+                "required": true,
+                "sensitive": true
               },
               "node": {
                 "type": "string",
-                "description": "node to apply the config against",
+                "description": "The name of the node to bootstrap",
                 "description_kind": "plain",
                 "required": true
               },
-              "talos_config": {
-                "type": "string",
-                "description": "talos client configuration for authentication",
-                "description_kind": "plain",
-                "required": true
-              }
-            },
-            "description": "Applies machine configuration to a Talos node.",
-            "description_kind": "plain"
-          }
-        },
-        "talos_machine_configuration_controlplane": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cluster_endpoint": {
-                "type": "string",
-                "description": "The endpoint of the Talos cluster",
-                "description_kind": "plain",
-                "required": true
-              },
-              "cluster_name": {
-                "type": "string",
-                "description": "The name of the cluster in the generated config",
-                "description_kind": "plain",
-                "required": true
-              },
-              "config_patches": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description": "config patches to apply to the generated config",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "config_version": {
-                "type": "string",
-                "description": "the desired machine config version to generate (the `version` field of the generated config, currently `v1alpha1`)",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "docs_enabled": {
-                "type": "bool",
-                "description": "whether to render all machine configs adding the documentation for each field",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "examples_enabled": {
-                "type": "bool",
-                "description": "whether to render all machine configs with the commented examples",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kubernetes_version": {
-                "type": "string",
-                "description": "desired kubernetes version to run",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "machine_config": {
-                "type": "string",
-                "description": "the generated control plane config",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "machine_secrets": {
-                "type": "string",
-                "description": "The machine secrets for the cluster",
-                "description_kind": "plain",
-                "required": true
-              },
-              "talos_version": {
-                "type": "string",
-                "description": "The version of Talos for which to generate configs. **Note**: This parameter defines the desired Talos schema version of configuration generated for backwards compatibility. To change the version of Talos installed, please use a config patch.",
+              "timeouts": {
+                "nested_type": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
                 "description_kind": "plain",
                 "optional": true
               }
             },
-            "description": "Generate machine configuration for a Talos control plane node.",
-            "description_kind": "plain"
-          }
-        },
-        "talos_machine_configuration_worker": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cluster_endpoint": {
-                "type": "string",
-                "description": "The endpoint of the Talos cluster",
-                "description_kind": "plain",
-                "required": true
-              },
-              "cluster_name": {
-                "type": "string",
-                "description": "The name of the cluster in the generated config",
-                "description_kind": "plain",
-                "required": true
-              },
-              "config_patches": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description": "config patches to apply to the generated config",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "config_version": {
-                "type": "string",
-                "description": "the desired machine config version to generate (the `version` field of the generated config, currently `v1alpha1`)",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "docs_enabled": {
-                "type": "bool",
-                "description": "whether to render all machine configs adding the documentation for each field",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "examples_enabled": {
-                "type": "bool",
-                "description": "whether to render all machine configs with the commented examples",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kubernetes_version": {
-                "type": "string",
-                "description": "desired kubernetes version to run",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "machine_config": {
-                "type": "string",
-                "description": "the generated worker config",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "machine_secrets": {
-                "type": "string",
-                "description": "The machine secrets for the cluster",
-                "description_kind": "plain",
-                "required": true
-              },
-              "talos_version": {
-                "type": "string",
-                "description": "The version of Talos for which to generate configs. **Note**: This parameter defines the desired Talos schema version of configuration generated for backwards compatibility. To change the version of Talos installed, please use a config patch.",
-                "description_kind": "plain",
-                "optional": true
-              }
-            },
-            "description": "Generate machine configuration for a Talos worker node.",
+            "description": "The machine configuration apply resource allows to apply machine configuration to a node",
             "description_kind": "plain"
           }
         },
         "talos_machine_secrets": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "computed": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The generated client configuration data",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
+                "description": "The computed ID of the Talos cluster",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "machine_secrets": {
-                "type": "string",
-                "description": "The generated talos cluster secrets",
+                "nested_type": {
+                  "attributes": {
+                    "certs": {
+                      "nested_type": {
+                        "attributes": {
+                          "etcd": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "computed": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "computed": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "k8s": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "computed": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "computed": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "k8s_aggregator": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "computed": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "computed": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "k8s_serviceaccount": {
+                            "nested_type": {
+                              "attributes": {
+                                "key": {
+                                  "type": "string",
+                                  "description": "The service account key",
+                                  "description_kind": "plain",
+                                  "computed": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The service account secrets",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "os": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "computed": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "computed": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "cluster": {
+                      "nested_type": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description": "The cluster ID",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "secret": {
+                            "type": "string",
+                            "description": "The cluster secret",
+                            "description_kind": "plain",
+                            "computed": true,
+                            "sensitive": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "The cluster secrets",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "secrets": {
+                      "nested_type": {
+                        "attributes": {
+                          "aescbc_encryption_secret": {
+                            "type": "string",
+                            "description": "The AES-CBC encryption secret",
+                            "description_kind": "plain",
+                            "computed": true,
+                            "sensitive": true
+                          },
+                          "bootstrap_token": {
+                            "type": "string",
+                            "description": "The bootstrap token",
+                            "description_kind": "plain",
+                            "computed": true,
+                            "sensitive": true
+                          },
+                          "secretbox_encryption_secret": {
+                            "type": "string",
+                            "description": "The secretbox encryption secret",
+                            "description_kind": "plain",
+                            "computed": true,
+                            "sensitive": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "kubernetes cluster secrets",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "trustdinfo": {
+                      "nested_type": {
+                        "attributes": {
+                          "token": {
+                            "type": "string",
+                            "description": "The trustd token",
+                            "description_kind": "plain",
+                            "computed": true,
+                            "sensitive": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "trustd secrets",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The secrets for the talos cluster",
                 "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
+                "computed": true
               },
               "talos_version": {
                 "type": "string",
-                "description": "The version of Talos for which to generate secrets",
+                "description": "The version of talos features to use in generated machine configuration",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               }
             },
-            "description": "Generate machine secrets for a Talos cluster",
+            "description": "Generate machine secrets for Talos cluster.",
             "description_kind": "plain"
           }
         }
@@ -380,6 +442,35 @@
           "version": 0,
           "block": {
             "attributes": {
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The client configuration data",
+                "description_kind": "plain",
+                "required": true
+              },
               "cluster_name": {
                 "type": "string",
                 "description": "The name of the cluster in the generated config",
@@ -397,15 +488,9 @@
               },
               "id": {
                 "type": "string",
+                "description": "The ID of this resource",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
-              },
-              "machine_secrets": {
-                "type": "string",
-                "description": "The machine secrets for the cluster",
-                "description_kind": "plain",
-                "required": true
               },
               "nodes": {
                 "type": [
@@ -418,7 +503,7 @@
               },
               "talos_config": {
                 "type": "string",
-                "description": "The generated talos config",
+                "description": "The generated client configuration",
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
@@ -432,39 +517,587 @@
           "version": 0,
           "block": {
             "attributes": {
-              "endpoint": {
-                "type": "string",
-                "description": "machine endpoint",
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The client configuration data",
                 "description_kind": "plain",
                 "required": true
               },
-              "id": {
+              "endpoint": {
                 "type": "string",
+                "description": "endpoint to use for the talosclient. if not set, the node value will be used",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
-              "kube_config": {
+              "id": {
                 "type": "string",
-                "description": "The retrieved Kubeconfig",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "kubeconfig_raw": {
+                "type": "string",
+                "description": "The raw kubeconfig",
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
               },
+              "kubernetes_client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The kubernetes CA certificate",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The kubernetes client certificate",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The kubernetes client key",
+                      "description_kind": "plain",
+                      "computed": true,
+                      "sensitive": true
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "The kubernetes host",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The kubernetes client configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
               "node": {
                 "type": "string",
-                "description": "node to use",
+                "description": "controlplane node to retrieve the kubeconfig from",
                 "description_kind": "plain",
                 "required": true
               },
-              "talos_config": {
-                "type": "string",
-                "description": "talos client configuration for authentication",
+              "timeouts": {
+                "nested_type": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
                 "description_kind": "plain",
-                "required": true
+                "optional": true
+              },
+              "wait": {
+                "type": "bool",
+                "description": "Wait for the kubernetes api to be available",
+                "description_kind": "plain",
+                "optional": true
               }
             },
-            "description": "Retrieve Kubeconfig for a Talos cluster",
+            "description": "Retrieves the kubeconfig for a Talos cluster",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_endpoint": {
+                "type": "string",
+                "description": "The endpoint of the talos kubernetes cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "The name of the talos kubernetes cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "config_patches": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The list of config patches to apply to the generated configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "docs": {
+                "type": "bool",
+                "description": "Whether to generate documentation for the generated configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "examples": {
+                "type": "bool",
+                "description": "Whether to generate examples for the generated configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "kubernetes_version": {
+                "type": "string",
+                "description": "The version of kubernetes to use",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "machine_configuration": {
+                "type": "string",
+                "description": "The generated machine configuration",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "machine_secrets": {
+                "nested_type": {
+                  "attributes": {
+                    "certs": {
+                      "nested_type": {
+                        "attributes": {
+                          "etcd": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "required": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "k8s": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "required": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "k8s_aggregator": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "required": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "k8s_serviceaccount": {
+                            "nested_type": {
+                              "attributes": {
+                                "key": {
+                                  "type": "string",
+                                  "description": "The key for the k8s service account",
+                                  "description_kind": "plain",
+                                  "required": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "os": {
+                            "nested_type": {
+                              "attributes": {
+                                "cert": {
+                                  "type": "string",
+                                  "description": "certificate data",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "key": {
+                                  "type": "string",
+                                  "description": "key data",
+                                  "description_kind": "plain",
+                                  "required": true,
+                                  "sensitive": true
+                                }
+                              },
+                              "nesting_mode": "single"
+                            },
+                            "description": "The certificate and key pair",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "The certs for the talos kubernetes cluster",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "cluster": {
+                      "nested_type": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description": "The cluster id",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "secret": {
+                            "type": "string",
+                            "description": "The cluster secret",
+                            "description_kind": "plain",
+                            "required": true,
+                            "sensitive": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "The cluster secrets",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secrets": {
+                      "nested_type": {
+                        "attributes": {
+                          "aescbc_encryption_secret": {
+                            "type": "string",
+                            "description": "The aescbc encryption secret for the talos kubernetes cluster",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "sensitive": true
+                          },
+                          "bootstrap_token": {
+                            "type": "string",
+                            "description": "The bootstrap token for the talos kubernetes cluster",
+                            "description_kind": "plain",
+                            "required": true,
+                            "sensitive": true
+                          },
+                          "secretbox_encryption_secret": {
+                            "type": "string",
+                            "description": "The secretbox encryption secret for the talos kubernetes cluster",
+                            "description_kind": "plain",
+                            "required": true,
+                            "sensitive": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "The secrets for the talos kubernetes cluster",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "trustdinfo": {
+                      "nested_type": {
+                        "attributes": {
+                          "token": {
+                            "type": "string",
+                            "description": "The trustd token for the talos kubernetes cluster",
+                            "description_kind": "plain",
+                            "required": true,
+                            "sensitive": true
+                          }
+                        },
+                        "nesting_mode": "single"
+                      },
+                      "description": "The trustd info for the talos kubernetes cluster",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The secrets for the talos cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "machine_type": {
+                "type": "string",
+                "description": "The type of machine to generate the configuration for",
+                "description_kind": "plain",
+                "required": true
+              },
+              "talos_version": {
+                "type": "string",
+                "description": "The version of talos features to use in generated machine configuration",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Generate a machine configuration for a node type",
+            "description_kind": "plain"
+          }
+        },
+        "talos_machine_disks": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The client configuration data",
+                "description_kind": "plain",
+                "required": true
+              },
+              "disks": {
+                "nested_type": {
+                  "attributes": {
+                    "bus_path": {
+                      "type": "string",
+                      "description": "The bus path of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "modalias": {
+                      "type": "string",
+                      "description": "The modalias of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "model": {
+                      "type": "string",
+                      "description": "The model of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "serial": {
+                      "type": "string",
+                      "description": "The serial number of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "size": {
+                      "type": "string",
+                      "description": "The size of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "uuid": {
+                      "type": "string",
+                      "description": "The uuid of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "wwid": {
+                      "type": "string",
+                      "description": "The wwid of the disk",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "The disks that match the filters",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "endpoint": {
+                "type": "string",
+                "description": "endpoint to use for the talosclient. if not set, the node value will be used",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "filters": {
+                "nested_type": {
+                  "attributes": {
+                    "bus_path": {
+                      "type": "string",
+                      "description": "Filter disks by bus path",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "modalias": {
+                      "type": "string",
+                      "description": "Filter disks by modalias",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "model": {
+                      "type": "string",
+                      "description": "Filter disks by model",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Filter disks by name",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "serial": {
+                      "type": "string",
+                      "description": "Filter disks by serial number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "string",
+                      "description": "Filter disks by size",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Filter disks by type",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "uuid": {
+                      "type": "string",
+                      "description": "Filter disks by uuid",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wwid": {
+                      "type": "string",
+                      "description": "Filter disks by wwid",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "Filters to apply to the disks",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The generated ID of this resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "node": {
+                "type": "string",
+                "description": "controlplane node to retrieve the kubeconfig from",
+                "description_kind": "plain",
+                "required": true
+              },
+              "timeouts": {
+                "nested_type": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Generate a machine configuration for a node type",
             "description_kind": "plain"
           }
         }

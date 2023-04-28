@@ -8,7 +8,7 @@
           "attributes": {
             "api_version": {
               "type": "string",
-              "description": "An HTTP User-Agent Prefix to prepend in API requests.",
+              "description": "The version of Linode API.",
               "description_kind": "plain",
               "optional": true
             },
@@ -93,6 +93,53 @@
         }
       },
       "resource_schemas": {
+        "linode_account_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backups_enabled": {
+                "type": "bool",
+                "description": "Account-wide backups default.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longview_subscription": {
+                "type": "string",
+                "description": "The Longview Pro tier you are currently subscribed to.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "managed": {
+                "type": "bool",
+                "description": "Enables monitoring for connectivity, response, and total request time.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_helper": {
+                "type": "bool",
+                "description": "Enables network helper across all users by default for new Linodes and Linode Configs.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "object_storage": {
+                "type": "string",
+                "description": "A string describing the status of this account's Object Storage service enrollment.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "linode_database_access_controls": {
           "version": 0,
           "block": {
@@ -3731,14 +3778,14 @@
               },
               "expiry": {
                 "type": "string",
-                "description": "When this token will expire. Personal Access Tokens cannot be renewed, so after this time the token will be completely unusable and a new token will need to be generated. Tokens may be created with 'null' as their expiry and will never expire unless revoked.",
+                "description": "When this token will expire. Personal Access Tokens cannot be renewed, so after this time the token will be completely unusable and a new token will need to be generated. Tokens may be created with 'null' as their expiry and will never expire unless revoked. Format: 2006-01-02T15:04:05Z07:00",
                 "description_kind": "plain",
                 "optional": true
               },
               "id": {
                 "type": "string",
+                "description": "The ID of the token.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "label": {
@@ -3749,7 +3796,7 @@
               },
               "scopes": {
                 "type": "string",
-                "description": "The scopes this token was created with. These define what parts of the Account the token can be used to access. Many command-line tools, such as the Linode CLI, require tokens with access to *. Tokens with more restrictive scopes are generally more secure.",
+                "description": "The scopes this token was created with. These define what parts of the Account the token can be used to access. Many command-line tools, such as the Linode CLI, require tokens with access to *. Tokens with more restrictive scopes are generally more secure. Multiple scopes are separated by a space character (e.g., \"databases:read_only events:read_only\"). You can find the list of available scopes on Linode API docs site, https://www.linode.com/docs/api#oauth-reference",
                 "description_kind": "plain",
                 "required": true
               },
@@ -4272,6 +4319,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "status": {
+                "type": "string",
+                "description": "Whether the login attempt succeeded or failed.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "username": {
                 "type": "string",
                 "description": "The username of the User that was logged into.",
@@ -4302,6 +4355,7 @@
                       "id": "number",
                       "ip": "string",
                       "restricted": "bool",
+                      "status": "string",
                       "username": "string"
                     }
                   ]
@@ -4340,6 +4394,50 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_account_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backups_enabled": {
+                "type": "bool",
+                "description": "Account-wide backups default.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longview_subscription": {
+                "type": "string",
+                "description": "The Longview Pro tier you are currently subscribed to.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "managed": {
+                "type": "bool",
+                "description": "Enables monitoring for connectivity, response, and total request time.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_helper": {
+                "type": "bool",
+                "description": "Enables network helper across all users by default for new Linodes and Linode Configs.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "object_storage": {
+                "type": "string",
+                "description": "A string describing the status of this account’s Object Storage service enrollment.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -7082,6 +7180,56 @@
             "description_kind": "plain"
           }
         },
+        "linode_object_storage_bucket": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster": {
+                "type": "string",
+                "description": "The ID of the Object Storage Cluster this bucket is in.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "created": {
+                "type": "string",
+                "description": "When this bucket was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "The hostname where this bucket can be accessed.This hostname can be accessed through a browser if the bucket is made public.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The id of this bucket.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "label": {
+                "type": "string",
+                "description": "The name of this bucket.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "objects": {
+                "type": "number",
+                "description": "The number of objects stored in this bucket.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "size": {
+                "type": "number",
+                "description": "The size of the bucket in bytes.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "linode_object_storage_cluster": {
           "version": 0,
           "block": {
@@ -7218,6 +7366,15 @@
           "version": 0,
           "block": {
             "attributes": {
+              "capabilities": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of capabilities of this region.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "country": {
                 "type": "string",
                 "description": "The country where this Region resides.",
@@ -7230,6 +7387,108 @@
                 "description": "The unique ID of this Region.",
                 "description_kind": "plain",
                 "required": true
+              },
+              "label": {
+                "type": "string",
+                "description": "Detailed location information for this Region, including city, state or region, and country.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resolvers": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "ipv4": "string",
+                      "ipv6": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "This region’s current operational status.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_regions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "regions": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "capabilities": [
+                        "list",
+                        "string"
+                      ],
+                      "country": "string",
+                      "id": "string",
+                      "label": "string",
+                      "resolvers": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "ipv4": "string",
+                            "ipv6": "string"
+                          }
+                        ]
+                      ],
+                      "status": "string"
+                    }
+                  ]
+                ],
+                "description": "The returned list of regions.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"

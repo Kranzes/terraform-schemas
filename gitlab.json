@@ -100,13 +100,13 @@
               },
               "secret": {
                 "type": "string",
-                "description": "Application secret. Sensative and must be kept secret. This is only populated when creating a new application. This attribute is not available for imported resources.",
+                "description": "Application secret. Sensitive and must be kept secret. This is only populated when creating a new application. This attribute is not available for imported resources.",
                 "description_kind": "markdown",
                 "computed": true,
                 "sensitive": true
               }
             },
-            "description": "The `gitlab_application` resource allows to manage the lifecycle of applications in gitlab.\n\n~> In order to use a user for a user to create an application, they must have admin priviledges at the instance level.\nTo create an OIDC application, a scope of \"openid\".\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/applications.html)",
+            "description": "The `gitlab_application` resource allows to manage the lifecycle of applications in gitlab.\n\n~> In order to use a user for a user to create an application, they must have admin privileges at the instance level.\nTo create an OIDC application, a scope of \"openid\".\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/applications.html)",
             "description_kind": "markdown"
           }
         },
@@ -245,6 +245,13 @@
                 "optional": true,
                 "computed": true
               },
+              "can_create_group": {
+                "type": "bool",
+                "description": "Indicates whether users can create top-level groups. Introduced in GitLab 15.5.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "check_namespace_plan": {
                 "type": "bool",
                 "description": "Enabling this makes only licensed EE features available to projects if the project namespace’s plan includes the feature or if the project is public.",
@@ -338,7 +345,7 @@
               },
               "default_group_visibility": {
                 "type": "string",
-                "description": "What visibility level new groups receive. Can take private, internal and public as a parameter. Default is private.",
+                "description": "What visibility level new groups receive. Can take private, internal and public as a parameter.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -352,49 +359,49 @@
               },
               "default_project_visibility": {
                 "type": "string",
-                "description": "What visibility level new projects receive. Can take private, internal and public as a parameter. Default is private.",
+                "description": "What visibility level new projects receive. Can take private, internal and public as a parameter.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "default_projects_limit": {
                 "type": "number",
-                "description": "Project limit per user. Default is 100000.",
+                "description": "Project limit per user.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "default_snippet_visibility": {
                 "type": "string",
-                "description": "What visibility level new snippets receive. Can take private, internal and public as a parameter. Default is private.",
+                "description": "What visibility level new snippets receive. Can take private, internal and public as a parameter.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "delayed_group_deletion": {
                 "type": "bool",
-                "description": "Enable delayed group deletion. Default is true. Introduced in GitLab 15.0. From GitLab 15.1, disables and locks the group-level setting for delayed protect deletion when set to false.",
+                "description": "Enable delayed group deletion. Introduced in GitLab 15.0. From GitLab 15.1, disables and locks the group-level setting for delayed protect deletion when set to false.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "delayed_project_deletion": {
                 "type": "bool",
-                "description": "Enable delayed project deletion by default in new groups. Default is false. From GitLab 15.1, can only be enabled when delayed_group_deletion is true.",
+                "description": "Enable delayed project deletion by default in new groups. From GitLab 15.1, can only be enabled when delayed_group_deletion is true.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "delete_inactive_projects": {
                 "type": "bool",
-                "description": "Enable inactive project deletion feature. Default is false. Introduced in GitLab 14.10. Became operational in GitLab 15.0 (with feature flag inactive_projects_deletion, disabled by default).",
+                "description": "Enable inactive project deletion feature. Introduced in GitLab 14.10. Became operational in GitLab 15.0 (with feature flag inactive_projects_deletion).",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "deletion_adjourned_period": {
                 "type": "number",
-                "description": "The number of days to wait before deleting a project or group that is marked for deletion. Value must be between 1 and 90. Defaults to 7. From GitLab 15.1, a hook on deletion_adjourned_period sets the period to 1 on every update, and sets both delayed_project_deletion and delayed_group_deletion to false if the period is 0.",
+                "description": "The number of days to wait before deleting a project or group that is marked for deletion. Value must be between 1 and 90. From GitLab 15.1, a hook on deletion_adjourned_period sets the period to 1 on every update, and sets both delayed_project_deletion and delayed_group_deletion to false if the period is 0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -449,7 +456,7 @@
                   "list",
                   "string"
                 ],
-                "description": "Force people to use only corporate emails for sign-up. Default is null, meaning there is no restriction.",
+                "description": "Force people to use only corporate emails for sign-up. Null means there is no restriction.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -473,35 +480,35 @@
               },
               "dsa_key_restriction": {
                 "type": "number",
-                "description": "The minimum allowed bit length of an uploaded DSA key. Default is 0 (no restriction). -1 disables DSA keys.",
+                "description": "The minimum allowed bit length of an uploaded DSA key. 0 means no restriction. -1 disables DSA keys.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "ecdsa_key_restriction": {
                 "type": "number",
-                "description": "The minimum allowed curve size (in bits) of an uploaded ECDSA key. Default is 0 (no restriction). -1 disables ECDSA keys.",
+                "description": "The minimum allowed curve size (in bits) of an uploaded ECDSA key. 0 means no restriction. -1 disables ECDSA keys.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "ecdsa_sk_key_restriction": {
                 "type": "number",
-                "description": "The minimum allowed curve size (in bits) of an uploaded ECDSA_SK key. Default is 0 (no restriction). -1 disables ECDSA_SK keys.",
+                "description": "The minimum allowed curve size (in bits) of an uploaded ECDSA_SK key. 0 means no restriction. -1 disables ECDSA_SK keys.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "ed25519_key_restriction": {
                 "type": "number",
-                "description": "The minimum allowed curve size (in bits) of an uploaded ED25519 key. Default is 0 (no restriction). -1 disables ED25519 keys.",
+                "description": "The minimum allowed curve size (in bits) of an uploaded ED25519 key. 0 means no restriction. -1 disables ED25519 keys.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "ed25519_sk_key_restriction": {
                 "type": "number",
-                "description": "The minimum allowed curve size (in bits) of an uploaded ED25519_SK key. Default is 0 (no restriction). -1 disables ED25519_SK keys.",
+                "description": "The minimum allowed curve size (in bits) of an uploaded ED25519_SK key. 0 means no restriction. -1 disables ED25519_SK keys.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -776,7 +783,7 @@
               },
               "first_day_of_week": {
                 "type": "number",
-                "description": "Start day of the week for calendar views and date pickers. Valid values are 0 (default) for Sunday, 1 for Monday, and 6 for Saturday.",
+                "description": "Start day of the week for calendar views and date pickers. Valid values are 0 for Sunday, 1 for Monday, and 6 for Saturday.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -800,7 +807,7 @@
                   "list",
                   "string"
                 ],
-                "description": "List of usernames excluded from Git anti-abuse rate limits. Default: [], Maximum: 100 usernames. Introduced in GitLab 15.2.",
+                "description": "List of usernames excluded from Git anti-abuse rate limits. Maximum: 100 usernames. Introduced in GitLab 15.2.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -963,49 +970,49 @@
               },
               "in_product_marketing_emails_enabled": {
                 "type": "bool",
-                "description": "Enable in-product marketing emails. Enabled by default.",
+                "description": "Enable in-product marketing emails.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "inactive_projects_delete_after_months": {
                 "type": "number",
-                "description": "If delete_inactive_projects is true, the time (in months) to wait before deleting inactive projects. Default is 2. Introduced in GitLab 14.10. Became operational in GitLab 15.0.",
+                "description": "If delete_inactive_projects is true, the time (in months) to wait before deleting inactive projects. Introduced in GitLab 14.10. Became operational in GitLab 15.0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "inactive_projects_min_size_mb": {
                 "type": "number",
-                "description": "If delete_inactive_projects is true, the minimum repository size for projects to be checked for inactivity. Default is 0. Introduced in GitLab 14.10. Became operational in GitLab 15.0.",
+                "description": "If delete_inactive_projects is true, the minimum repository size for projects to be checked for inactivity. Introduced in GitLab 14.10. Became operational in GitLab 15.0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "inactive_projects_send_warning_email_after_months": {
                 "type": "number",
-                "description": "If delete_inactive_projects is true, sets the time (in months) to wait before emailing maintainers that the project is scheduled be deleted because it is inactive. Default is 1. Introduced in GitLab 14.10. Became operational in GitLab 15.0.",
+                "description": "If delete_inactive_projects is true, sets the time (in months) to wait before emailing maintainers that the project is scheduled be deleted because it is inactive. Introduced in GitLab 14.10. Became operational in GitLab 15.0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "invisible_captcha_enabled": {
                 "type": "bool",
-                "description": "Enable Invisible CAPTCHA spam detection during sign-up. Disabled by default.",
+                "description": "Enable Invisible CAPTCHA spam detection during sign-up.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "issues_create_limit": {
                 "type": "number",
-                "description": "Max number of issue creation requests per minute per user. Disabled by default.",
+                "description": "Max number of issue creation requests per minute per user.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "keep_latest_artifact": {
                 "type": "bool",
-                "description": "Prevent the deletion of the artifacts from the most recent successful jobs, regardless of the expiry time. Enabled by default.",
+                "description": "Prevent the deletion of the artifacts from the most recent successful jobs, regardless of the expiry time.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1062,28 +1069,28 @@
               },
               "max_export_size": {
                 "type": "number",
-                "description": "Maximum export size in MB. 0 for unlimited. Default = 0 (unlimited).",
+                "description": "Maximum export size in MB. 0 for unlimited.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "max_import_size": {
                 "type": "number",
-                "description": "Maximum import size in MB. 0 for unlimited. Default = 0 (unlimited) Modified from 50MB to 0 in GitLab 13.8.",
+                "description": "Maximum import size in MB. 0 for unlimited.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "max_number_of_repository_downloads": {
                 "type": "number",
-                "description": "Maximum number of unique repositories a user can download in the specified time period before they are banned. Default: 0, Maximum: 10,000 repositories. Introduced in GitLab 15.1.",
+                "description": "Maximum number of unique repositories a user can download in the specified time period before they are banned. Maximum: 10,000 repositories. Introduced in GitLab 15.1.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "max_number_of_repository_downloads_within_time_period": {
                 "type": "number",
-                "description": "Reporting time period (in seconds). Default: 0, Maximum: 864000 seconds (10 days). Introduced in GitLab 15.1.",
+                "description": "Reporting time period (in seconds). Maximum: 864000 seconds (10 days). Introduced in GitLab 15.1.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1177,14 +1184,14 @@
               },
               "password_authentication_enabled_for_git": {
                 "type": "bool",
-                "description": "Enable authentication for Git over HTTP(S) via a GitLab account password. Default is true.",
+                "description": "Enable authentication for Git over HTTP(S) via a GitLab account password.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "password_authentication_enabled_for_web": {
                 "type": "bool",
-                "description": "Enable authentication for the web interface via a GitLab account password. Default is true.",
+                "description": "Enable authentication for the web interface via a GitLab account password.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1233,14 +1240,14 @@
               },
               "pipeline_limit_per_project_user_sha": {
                 "type": "number",
-                "description": "Maximum number of pipeline creation requests per minute per user and commit. Disabled by default.",
+                "description": "Maximum number of pipeline creation requests per minute per user and commit.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "plantuml_enabled": {
                 "type": "bool",
-                "description": "(If enabled, requires: plantuml_url) Enable PlantUML integration. Default is false.",
+                "description": "(If enabled, requires: plantuml_url) Enable PlantUML integration.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1310,7 +1317,7 @@
               },
               "raw_blob_request_limit": {
                 "type": "number",
-                "description": "Max number of requests per minute for each raw path. Default: 300. To disable throttling set to 0.",
+                "description": "Max number of requests per minute for each raw path. To disable throttling set to 0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1398,28 +1405,28 @@
                   "list",
                   "string"
                 ],
-                "description": "Selected levels cannot be used by non-Administrator users for groups, projects or snippets. Can take private, internal and public as a parameter. Default is null which means there is no restriction.",
+                "description": "Selected levels cannot be used by non-Administrator users for groups, projects or snippets. Can take private, internal and public as a parameter. Null means there is no restriction.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "rsa_key_restriction": {
                 "type": "number",
-                "description": "The minimum allowed bit length of an uploaded RSA key. Default is 0 (no restriction). -1 disables RSA keys.",
+                "description": "The minimum allowed bit length of an uploaded RSA key. 0 means no restriction. -1 disables RSA keys.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "search_rate_limit": {
                 "type": "number",
-                "description": "Max number of requests per minute for performing a search while authenticated. Default: 30. To disable throttling set to 0.",
+                "description": "Max number of requests per minute for performing a search while authenticated. To disable throttling set to 0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "search_rate_limit_unauthenticated": {
                 "type": "number",
-                "description": "Max number of requests per minute for performing a search while unauthenticated. Default: 10. To disable throttling set to 0.",
+                "description": "Max number of requests per minute for performing a search while unauthenticated. To disable throttling set to 0.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1461,21 +1468,21 @@
               },
               "sidekiq_job_limiter_compression_threshold_bytes": {
                 "type": "number",
-                "description": "The threshold in bytes at which Sidekiq jobs are compressed before being stored in Redis. Default: 100 000 bytes (100KB).",
+                "description": "The threshold in bytes at which Sidekiq jobs are compressed before being stored in Redis.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "sidekiq_job_limiter_limit_bytes": {
                 "type": "number",
-                "description": "The threshold in bytes at which Sidekiq jobs are rejected. Default: 0 bytes (doesn’t reject any job).",
+                "description": "The threshold in bytes at which Sidekiq jobs are rejected. 0 means do not reject any job.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "sidekiq_job_limiter_mode": {
                 "type": "string",
-                "description": "track or compress. Sets the behavior for Sidekiq job size limits. Default: ‘compress’.",
+                "description": "track or compress. Sets the behavior for Sidekiq job size limits.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1489,7 +1496,7 @@
               },
               "signup_enabled": {
                 "type": "bool",
-                "description": "Enable registration. Default is true.",
+                "description": "Enable registration.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1533,7 +1540,7 @@
               },
               "snippet_size_limit": {
                 "type": "number",
-                "description": "Max snippet content size in bytes. Default: 52428800 Bytes (50MB).",
+                "description": "Max snippet content size in bytes.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1568,14 +1575,14 @@
               },
               "sourcegraph_enabled": {
                 "type": "bool",
-                "description": "Enables Sourcegraph integration. Default is false. If enabled, requires sourcegraph_url.",
+                "description": "Enables Sourcegraph integration. If enabled, requires sourcegraph_url.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "sourcegraph_public_only": {
                 "type": "bool",
-                "description": "Blocks Sourcegraph from being loaded on private and internal projects. Default is true.",
+                "description": "Blocks Sourcegraph from being loaded on private and internal projects.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1597,7 +1604,7 @@
               },
               "spam_check_endpoint_enabled": {
                 "type": "bool",
-                "description": "Enables spam checking using external Spam Check API endpoint. Default is false.",
+                "description": "Enables spam checking using external Spam Check API endpoint.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1758,7 +1765,7 @@
               },
               "time_tracking_limit_to_hours": {
                 "type": "bool",
-                "description": "Limit display of time tracking units to hours. Default is false.",
+                "description": "Limit display of time tracking units to hours.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -1856,7 +1863,7 @@
               },
               "wiki_page_max_content_bytes": {
                 "type": "number",
-                "description": "Maximum wiki page content size in bytes. Default: 52428800 Bytes (50 MB). The minimum value is 1024 bytes.",
+                "description": "Maximum wiki page content size in bytes. The minimum value is 1024 bytes.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -3141,7 +3148,7 @@
                 "required": true
               }
             },
-            "description": "The `gitlab_group_membership` resource allows to manage the lifecycle of a users group membersip.\n\n-> If a group should grant membership to another group use the `gitlab_group_share_group` resource instead.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/members.html)",
+            "description": "The `gitlab_group_membership` resource allows to manage the lifecycle of a users group membership.\n\n-> If a group should grant membership to another group use the `gitlab_group_share_group` resource instead.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/members.html)",
             "description_kind": "markdown"
           }
         },
@@ -4065,6 +4072,13 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "keep_latest_artifact": {
+                "type": "bool",
+                "description": "Disable or enable the ability to keep the latest artifact for this project.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "lfs_enabled": {
                 "type": "bool",
                 "description": "Enable LFS for the project.",
@@ -4536,7 +4550,7 @@
                     },
                     "file_name_regex": {
                       "type": "string",
-                      "description": "All commited filenames must not match this regex, e.g. `(jar|exe)$`.",
+                      "description": "All committed filenames must not match this regex, e.g. `(jar|exe)$`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -5231,7 +5245,7 @@
               },
               "due_date": {
                 "type": "string",
-                "description": "The due date. Date time string in the format YYYY-MM-DD, for example 2016-03-11.\n**Note:** removing a due date is currently not supported, see https://github.com/xanzy/go-gitlab/issues/1384 for details.\n\t\t\t\t",
+                "description": "The due date. Date time string in the format YYYY-MM-DD, for example 2016-03-11.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -5623,7 +5637,7 @@
                 "required": true
               }
             },
-            "description": "The `gitlab_project_membership` resource allows to manage the lifecycle of a users project membersip.\n\n-> If a project should grant membership to an entire group use the `gitlab_project_share_group` resource instead.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/members.html)",
+            "description": "The `gitlab_project_membership` resource allows to manage the lifecycle of a users project membership.\n\n-> If a project should grant membership to an entire group use the `gitlab_project_share_group` resource instead.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/members.html)",
             "description_kind": "markdown"
           }
         },
@@ -5651,7 +5665,7 @@
               },
               "expired": {
                 "type": "bool",
-                "description": "Bool, true if milestore expired.",
+                "description": "Bool, true if milestone expired.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -6348,7 +6362,7 @@
               },
               "tag_list": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "List of runner’s tags.",
@@ -6356,7 +6370,7 @@
                 "optional": true
               }
             },
-            "description": "The `gitlab_runner` resource allows to manage the lifecycle of a runner.\n\t\t\nA runner can either be registered at an instance level or group level. \nThe runner will be registered at a group level if the token used is from a group, or at an instance level if the token used is for the instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/runners.html#register-a-new-runner)",
+            "description": "The `gitlab_runner` resource allows to manage the lifecycle of a runner.\n\nA runner can either be registered at an instance level or group level.\nThe runner will be registered at a group level if the token used is from a group, or at an instance level if the token used is for the instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/runners.html#register-a-new-runner)",
             "description_kind": "markdown"
           }
         },
@@ -7410,7 +7424,7 @@
               },
               "user_id": {
                 "type": "number",
-                "description": "The ID of the user to add the GPG key to. If this field is omitted, this resource manages a GPG key for the current user. Otherwise, this resource manages a GPG key for the speicifed user, and an admin token is required.",
+                "description": "The ID of the user to add the GPG key to. If this field is omitted, this resource manages a GPG key for the current user. Otherwise, this resource manages a GPG key for the specified user, and an admin token is required.",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -8795,6 +8809,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "keep_latest_artifact": {
+                "type": "bool",
+                "description": "Disable or enable the ability to keep the latest artifact for this project.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "lfs_enabled": {
                 "type": "bool",
                 "description": "Enable LFS for the project.",
@@ -9354,7 +9374,7 @@
               },
               "due_date": {
                 "type": "string",
-                "description": "The due date. Date time string in the format YYYY-MM-DD, for example 2016-03-11.\n**Note:** removing a due date is currently not supported, see https://github.com/xanzy/go-gitlab/issues/1384 for details.\n\t\t\t\t",
+                "description": "The due date. Date time string in the format YYYY-MM-DD, for example 2016-03-11.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -9903,7 +9923,7 @@
               },
               "expired": {
                 "type": "bool",
-                "description": "Bool, true if milestore expired.",
+                "description": "Bool, true if milestone expired.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -10622,6 +10642,7 @@
                       "issues_access_level": "string",
                       "issues_enabled": "bool",
                       "jobs_enabled": "bool",
+                      "keep_latest_artifact": "bool",
                       "last_activity_at": "string",
                       "lfs_enabled": "bool",
                       "merge_commit_template": "string",

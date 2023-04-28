@@ -12,6 +12,30 @@
               "description_kind": "plain",
               "optional": true
             },
+            "http_retry_max": {
+              "type": "number",
+              "description": "The maximum number of retries on a failed API request.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "http_retry_wait_max": {
+              "type": "number",
+              "description": "The maximum wait time (in seconds) between failed API requests.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "http_retry_wait_min": {
+              "type": "number",
+              "description": "The minimum wait time (in seconds) between failed API requests.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "requests_per_second": {
+              "type": "number",
+              "description": "The rate of requests per second to limit the HTTP client.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "spaces_access_id": {
               "type": "string",
               "description": "The access key ID for Spaces API operations.",
@@ -2438,6 +2462,25 @@
               }
             },
             "block_types": {
+              "backup_restore": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "backup_created_at": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "database_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "maintenance_window": {
                 "nesting_mode": "list",
                 "block": {
@@ -3342,6 +3385,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "registry_integration": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
               },
               "service_subnet": {
                 "type": "string",
@@ -6274,6 +6322,11 @@
                 "sensitive": true
               },
               "user": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uuid": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
