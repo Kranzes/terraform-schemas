@@ -10,7 +10,8 @@
               "type": "string",
               "description": "(Required unless validate is false) Datadog API key. This can also be set via the DD_API_KEY environment variable.",
               "description_kind": "plain",
-              "optional": true
+              "optional": true,
+              "sensitive": true
             },
             "api_url": {
               "type": "string",
@@ -22,7 +23,8 @@
               "type": "string",
               "description": "(Required unless validate is false) Datadog APP key. This can also be set via the DD_APP_KEY environment variable.",
               "description_kind": "plain",
-              "optional": true
+              "optional": true,
+              "sensitive": true
             },
             "http_client_retry_backoff_base": {
               "type": "number",
@@ -37,8 +39,8 @@
               "optional": true
             },
             "http_client_retry_enabled": {
-              "type": "bool",
-              "description": "Enables request retries on HTTP status codes 429 and 5xx. Defaults to `true`.",
+              "type": "string",
+              "description": "Enables request retries on HTTP status codes 429 and 5xx. Valid values are [`true`, `false`]. Defaults to `true`.",
               "description_kind": "plain",
               "optional": true
             },
@@ -55,8 +57,8 @@
               "optional": true
             },
             "validate": {
-              "type": "bool",
-              "description": "Enables validation of the provided API and APP keys during provider initialization. Default is true. When false, api_key and app_key won't be checked.",
+              "type": "string",
+              "description": "Enables validation of the provided API and APP keys during provider initialization. Valid values are [`true`, `false`]. Default is true. When false, api_key and app_key won't be checked.",
               "description_kind": "plain",
               "optional": true
             }
@@ -71,8 +73,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The ID of this resource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "key": {
@@ -487,6 +489,15 @@
                   "string"
                 ],
                 "description": "UUIDs of roles whose associated users are authorized to edit the dashboard.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of tags assigned to the Dashboard. Only team names of the form `team:<name>` are supported.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -9196,7 +9207,7 @@
                                           "attributes": {
                                             "column": {
                                               "type": "string",
-                                              "description": "The facet path for the column",
+                                              "description": "The facet path for the column.",
                                               "description_kind": "plain",
                                               "required": true
                                             },
@@ -14190,6 +14201,30 @@
                                                     "description": "Widget query.",
                                                     "description_kind": "plain",
                                                     "required": true
+                                                  }
+                                                },
+                                                "block_types": {
+                                                  "sort": {
+                                                    "nesting_mode": "list",
+                                                    "block": {
+                                                      "attributes": {
+                                                        "column": {
+                                                          "type": "string",
+                                                          "description": "The facet path for the column.",
+                                                          "description_kind": "plain",
+                                                          "required": true
+                                                        },
+                                                        "order": {
+                                                          "type": "string",
+                                                          "description": "Widget sorting methods. Valid values are `asc`, `desc`.",
+                                                          "description_kind": "plain",
+                                                          "required": true
+                                                        }
+                                                      },
+                                                      "description": "The facet and order to sort the data, for example: `{\"column\": \"status.sli\", \"order\": \"desc\"}`.",
+                                                      "description_kind": "plain"
+                                                    },
+                                                    "max_items": 1
                                                   }
                                                 },
                                                 "description": "Updated SLO List widget.",
@@ -21797,7 +21832,7 @@
                               "attributes": {
                                 "column": {
                                   "type": "string",
-                                  "description": "The facet path for the column",
+                                  "description": "The facet path for the column.",
                                   "description_kind": "plain",
                                   "required": true
                                 },
@@ -26791,6 +26826,30 @@
                                         "description": "Widget query.",
                                         "description_kind": "plain",
                                         "required": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "sort": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "column": {
+                                              "type": "string",
+                                              "description": "The facet path for the column.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            },
+                                            "order": {
+                                              "type": "string",
+                                              "description": "Widget sorting methods. Valid values are `asc`, `desc`.",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description": "The facet and order to sort the data, for example: `{\"column\": \"status.sli\", \"order\": \"desc\"}`.",
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
                                       }
                                     },
                                     "description": "Updated SLO List widget.",
@@ -32587,6 +32646,182 @@
             "description_kind": "plain"
           }
         },
+        "datadog_integration_cloudflare_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_key": {
+                "type": "string",
+                "description": "The API key (or token) for the Cloudflare account.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "email": {
+                "type": "string",
+                "description": "The email associated with the Cloudflare account. If an API key is provided (and not a token), this field is also required.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Cloudflare account.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Provides a Datadog IntegrationCloudflareAccount resource. This can be used to create and manage Datadog integration_cloudflare_account.",
+            "description_kind": "plain"
+          }
+        },
+        "datadog_integration_confluent_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_key": {
+                "type": "string",
+                "description": "The API key associated with your Confluent account.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "api_secret": {
+                "type": "string",
+                "description": "The API secret associated with your Confluent account.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of strings representing tags. Can be a single key, or key-value pairs separated by a colon.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Provides a Datadog IntegrationConfluentAccount resource. This can be used to create and manage Datadog integration_confluent_account.",
+            "description_kind": "plain"
+          }
+        },
+        "datadog_integration_confluent_resource": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "Confluent Account ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resource_id": {
+                "type": "string",
+                "description": "The ID associated with a Confluent resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type of the Resource. Can be `kafka`, `connector`, `ksql`, or `schema_registry`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of strings representing tags. Can be a single key, or key-value pairs separated by a colon.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Provides a Datadog IntegrationConfluentResource resource. This can be used to create and manage Datadog integration_confluent_resource.",
+            "description_kind": "plain"
+          }
+        },
+        "datadog_integration_fastly_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_key": {
+                "type": "string",
+                "description": "The API key for the Fastly account.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Fastly account.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Provides a Datadog IntegrationFastlyAccount resource. This can be used to create and manage Datadog integration_fastly_account.",
+            "description_kind": "plain"
+          }
+        },
+        "datadog_integration_fastly_service": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "Fastly Account id.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_id": {
+                "type": "string",
+                "description": "The ID of the Fastly service.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of tags for the Fastly service.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Provides a Datadog IntegrationFastlyService resource. This can be used to create and manage Datadog integration_fastly_service.",
+            "description_kind": "plain"
+          }
+        },
         "datadog_integration_gcp": {
           "version": 0,
           "block": {
@@ -34927,7 +35162,7 @@
                   "set",
                   "string"
                 ],
-                "description": "Controls what granularity a monitor alerts on. Only available for monitors with groupings. For instance, a monitor grouped by `cluster`, `namespace`, and `pod` can be configured to only notify on each new `cluster` violating the alert conditions by setting `notify_by` to `['cluster']`. Tags mentioned in `notify_by` must be a subset of the grouping tags in the query. For example, a query grouped by `cluster` and `namespace` cannot notify on `region`. Setting `notify_by` to `[*]` configures the monitor to notify as a simple-alert. **NOTE:** Currently in private beta. To request access, contact Support at support@datadoghq.com",
+                "description": "Controls what granularity a monitor alerts on. Only available for monitors with groupings. For instance, a monitor grouped by `cluster`, `namespace`, and `pod` can be configured to only notify on each new `cluster` violating the alert conditions by setting `notify_by` to `['cluster']`. Tags mentioned in `notify_by` must be a subset of the grouping tags in the query. For example, a query grouped by `cluster` and `namespace` cannot notify on `region`. Setting `notify_by` to `[*]` configures the monitor to notify as a simple-alert.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -36960,7 +37195,7 @@
                                   "type": "string",
                                   "description": "Expected matching value.",
                                   "description_kind": "plain",
-                                  "required": true
+                                  "optional": true
                                 }
                               },
                               "description": "Expected structure if `operator` is `validatesJSONPath`. Exactly one nested block is allowed with the structure below.",
@@ -36982,7 +37217,7 @@
                                   "type": "string",
                                   "description": "Expected matching value.",
                                   "description_kind": "plain",
-                                  "required": true
+                                  "optional": true
                                 },
                                 "xpath": {
                                   "type": "string",
@@ -37451,7 +37686,7 @@
                             "type": "string",
                             "description": "Expected matching value.",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           }
                         },
                         "description": "Expected structure if `operator` is `validatesJSONPath`. Exactly one nested block is allowed with the structure below.",
@@ -37473,7 +37708,7 @@
                             "type": "string",
                             "description": "Expected matching value.",
                             "description_kind": "plain",
-                            "required": true
+                            "optional": true
                           },
                           "xpath": {
                             "type": "string",
@@ -37519,6 +37754,12 @@
                       "description": "Name of the step.",
                       "description_kind": "plain",
                       "required": true
+                    },
+                    "no_screenshot": {
+                      "type": "bool",
+                      "description": "Prevents saving screenshots of the step.",
+                      "description_kind": "plain",
+                      "optional": true
                     },
                     "timeout": {
                       "type": "number",
@@ -38502,7 +38743,7 @@
             "attributes": {
               "id": {
                 "type": "string",
-                "description": "Id for API Key.",
+                "description": "The ID of this resource.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -38639,6 +38880,118 @@
             "description_kind": "plain"
           }
         },
+        "datadog_hosts": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "filter": {
+                "type": "string",
+                "description": "String to filter search results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "from": {
+                "type": "number",
+                "description": "Number of seconds since UNIX epoch from which you want to search your hosts.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "host_list": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "aliases": [
+                        "list",
+                        "string"
+                      ],
+                      "apps": [
+                        "list",
+                        "string"
+                      ],
+                      "aws_name": "string",
+                      "host_name": "string",
+                      "id": "number",
+                      "is_muted": "bool",
+                      "last_reported_time": "number",
+                      "meta": [
+                        "object",
+                        {
+                          "agent_version": "string",
+                          "cpu_cores": "number",
+                          "gohai": "string",
+                          "machine": "string",
+                          "platform": "string",
+                          "processor": "string",
+                          "python_version": "string",
+                          "socket_fqdn": "string",
+                          "socket_hostname": "string"
+                        }
+                      ],
+                      "metrics": [
+                        "object",
+                        {
+                          "cpu": "number",
+                          "iowait": "number",
+                          "load": "number"
+                        }
+                      ],
+                      "mute_timeout": "number",
+                      "name": "string",
+                      "sources": [
+                        "list",
+                        "string"
+                      ],
+                      "up": "bool"
+                    }
+                  ]
+                ],
+                "description": "List of hosts (1000 Max).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "include_muted_hosts_data": {
+                "type": "bool",
+                "description": "Include information on the muted status of hosts and when the mute expires.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sort_dir": {
+                "type": "string",
+                "description": "Direction of sort.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sort_field": {
+                "type": "string",
+                "description": "Sort hosts by this field.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "total_matching": {
+                "type": "number",
+                "description": "Number of host matching the query.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_returned": {
+                "type": "number",
+                "description": "Number of host returned.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to retrieve information about your live hosts in Datadog.",
+            "description_kind": "plain"
+          }
+        },
         "datadog_integration_aws_logs_services": {
           "version": 0,
           "block": {
@@ -38729,8 +39082,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The ID of this resource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "logs_ipv4": {
@@ -39798,6 +40151,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the service level objective.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description": "A SLO ID to limit the search.",
@@ -39822,15 +40181,48 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "query": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "denominator": "string",
+                      "numerator": "string"
+                    }
+                  ]
+                ],
+                "description": "The metric query of good / total events",
+                "description_kind": "plain",
+                "computed": true
+              },
               "tags_query": {
                 "type": "string",
                 "description": "Filter results based on a single SLO tag.",
                 "description_kind": "plain",
                 "optional": true
               },
+              "target_threshold": {
+                "type": "number",
+                "description": "The primary target threshold of the service level objective.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeframe": {
+                "type": "string",
+                "description": "The primary timeframe of the service level objective.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "type": {
                 "type": "string",
                 "description": "The type of the service level objective. The mapping from these types to the types found in the Datadog Web UI can be found in the Datadog API [documentation page](https://docs.datadoghq.com/api/v1/service-level-objectives/#create-a-slo-object). Available values are: `metric` and `monitor`.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "warning_threshold": {
+                "type": "number",
+                "description": "The primary warning threshold of the service level objective.",
                 "description_kind": "plain",
                 "computed": true
               }
