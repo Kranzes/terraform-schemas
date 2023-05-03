@@ -1013,7 +1013,8 @@
                 ],
                 "description": "List of server groups to add server to",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "snapshots_retention": {
                 "type": "string",
@@ -1167,6 +1168,56 @@
               }
             },
             "description": "Provides a Brightbox Server Group resource",
+            "description_kind": "plain"
+          }
+        },
+        "brightbox_server_group_membership": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group": {
+                "type": "string",
+                "description": "Server Group ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "servers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of servers to add to group",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Provides non-exclusive mapping to Brightbox Server Groups",
             "description_kind": "plain"
           }
         },

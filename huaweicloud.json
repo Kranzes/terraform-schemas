@@ -2047,6 +2047,48 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_apig_acl_policy_associate": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of the dedicated instance to which the APIs and the ACL policy belong.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "policy_id": {
+                "type": "string",
+                "description": "The ACL Policy ID for APIs binding.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "publish_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The publish IDs corresponding to the APIs bound by the ACL policy.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region where the ACL policy and the APIs are located.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_apig_api": {
           "version": 0,
           "block": {
@@ -2983,6 +3025,345 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_apig_channel": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "balance_strategy": {
+                "type": "number",
+                "description": "The distribution algorithm.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The creation time of the channel.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of the dedicated instance to which the channel belongs.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "member_type": {
+                "type": "string",
+                "description": "The member type of the channel.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The channel name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "port": {
+                "type": "number",
+                "description": "The default port for health check in channel.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region where the dedicated instance is located.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "number",
+                "description": "The current status of the channel.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "number",
+                "description": "The type of the channel.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "health_check": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enable_client_ssl": {
+                      "type": "bool",
+                      "description": "Whether to enable two-way authentication.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "http_codes": {
+                      "type": "string",
+                      "description": "The response codes for determining a successful HTTP response.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "interval": {
+                      "type": "number",
+                      "description": "The interval between consecutive check, in second.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "The request method for health check.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The destination path for health check.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "The destination host port for health check.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "The rotocol for performing health check on backend servers.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "status": {
+                      "type": "number",
+                      "description": "The status of health check.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "threshold_abnormal": {
+                      "type": "number",
+                      "description": "The unhealthy threshold, which refers to the number of consecutive failed check required for a backend server to be considered unhealthy.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "threshold_normal": {
+                      "type": "number",
+                      "description": "The the healthy threshold, which refers to the number of consecutive successful checks required for a backend server to be considered healthy.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "timeout": {
+                      "type": "number",
+                      "description": "The timeout for determining whether a health check fails, in second.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The health configuration of cloud servers associated with the load balance channel for APIG regularly check.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "member": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "group_name": {
+                      "type": "string",
+                      "description": "The group name of the backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "The IP address of the backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "is_backup": {
+                      "type": "bool",
+                      "description": "Whether this member is the backup member.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "The port of the backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "number",
+                      "description": "The status of the backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description": "The weight of current backend server.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "The backend servers of the channel.",
+                  "description_kind": "plain"
+                }
+              },
+              "member_group": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "The description of the member group.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "microservice_labels": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "The microservice tags of the backend server group.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "microservice_port": {
+                      "type": "number",
+                      "description": "The microservice port of the backend server group.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "microservice_version": {
+                      "type": "string",
+                      "description": "The microservice version of the backend server group.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the member group.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description": "The weight of the current member group.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "The backend server groups of the channel.",
+                  "description_kind": "plain"
+                }
+              },
+              "microservice": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "cce_config": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cluster_id": {
+                            "type": "string",
+                            "description": "The ID of the CCE cluster.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "namespace": {
+                            "type": "string",
+                            "description": "The name of the CCE namespace.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "workload_name": {
+                            "type": "string",
+                            "description": "The workload name.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "workload_type": {
+                            "type": "string",
+                            "description": "The workload type.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "The CCE microservice details.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "cse_config": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "engine_id": {
+                            "type": "string",
+                            "description": "schema:Internal; The microservice engine ID.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "service_id": {
+                            "type": "string",
+                            "description": "schema:Internal; The microservice ID.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "schema:Internal; The CSE microservice details.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "The configuration of the microservice.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_apig_custom_authorizer": {
           "version": 0,
           "block": {
@@ -3550,6 +3931,146 @@
                     }
                   },
                   "description": "The API custom response rules definition.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_apig_signature": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "algorithm": {
+                "type": "string",
+                "description": "The signature algorithm.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The creation time of the signature.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of the dedicated instance to which the signature belongs.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The signature key.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The signature name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region where the signature is located.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "The signature secret.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The signature type.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The latest update time of the signature.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_apig_signature_associate": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "The ID of the dedicated instance to which the APIs and the signature belong.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "publish_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The publish IDs corresponding to the APIs bound by the signature.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region where the signature and the APIs are located.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "signature_id": {
+                "type": "string",
+                "description": "The signature ID for APIs binding.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
                   "description_kind": "plain"
                 }
               }
@@ -4509,6 +5030,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "agency_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "availability_zones": {
                 "type": [
                   "list",
@@ -4778,6 +5305,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "agency_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "availability_zones": {
                 "type": [
                   "list",
@@ -5031,6 +5564,93 @@
                       "optional": true
                     },
                     "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_as_instance_attach": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "append_instance": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "health_status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "instance_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "protected": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "scaling_group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "standby": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
@@ -7314,6 +7934,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enable_distribute_management": {
+                "type": "bool",
+                "description": "schema: Internal",
+                "description_kind": "plain",
+                "optional": true
+              },
               "eni_subnet_cidr": {
                 "type": "string",
                 "description_kind": "plain",
@@ -7640,6 +8266,12 @@
               },
               "eip": {
                 "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_distribute_management": {
+                "type": "bool",
+                "description": "schema: Internal",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -11412,6 +12044,137 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_ces_alarm_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "association_alarm_total": {
+                "type": "number",
+                "description": "Indicates the total num of the alarm that associated with the alarm template.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "delete_associate_alarm": {
+                "type": "bool",
+                "description": "Specifies whether delete the alarm rule which the alarm template associated with",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Specifies the description of the CES alarm template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the name of the CES alarm template.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Indicates the type of the CES alarm template.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "policies": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "alarm_level": {
+                      "type": "number",
+                      "description": "Specifies the alarm level.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "comparison_operator": {
+                      "type": "string",
+                      "description": "Specifies the comparison conditions for alarm threshold.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "count": {
+                      "type": "number",
+                      "description": "Specifies the number of consecutive triggering of alarms.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "dimension_name": {
+                      "type": "string",
+                      "description": "Specifies the Resource dimension.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "filter": {
+                      "type": "string",
+                      "description": "Specifies the data rollup methods.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "metric_name": {
+                      "type": "string",
+                      "description": "Specifies the alarm metric name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Specifies the namespace of the service.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "period": {
+                      "type": "number",
+                      "description": "Specifies the judgment period of alarm condition.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "suppress_duration": {
+                      "type": "number",
+                      "description": "Specifies the alarm suppression cycle.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "unit": {
+                      "type": "string",
+                      "description": "Specifies the unit string of the alarm threshold.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "number",
+                      "description": "Specifies the alarm threshold.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Specifies the policy list of the CES alarm template.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_ces_alarmrule": {
           "version": 0,
           "block": {
@@ -11478,6 +12241,13 @@
               },
               "region": {
                 "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "resource_group_id": {
+                "type": "string",
+                "description": "schema: Internal",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -11668,7 +12438,8 @@
                           "value": {
                             "type": "string",
                             "description_kind": "plain",
-                            "optional": true
+                            "optional": true,
+                            "computed": true
                           }
                         },
                         "description_kind": "plain"
@@ -11705,13 +12476,120 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_ces_resource_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "associated_eps_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the enterprise project IDs where the resources from.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The creation time.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description": "Specifies the enterprise project ID of the resource group.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the resource group name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies the key/value to match resources.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Specifies the resource group type.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "resources": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "namespace": {
+                      "type": "string",
+                      "description": "Specifies the namespace in **service.item** format.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "dimensions": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Specifies the dimension name.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Specifies the dimension value.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Specifies the list of dimensions.",
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1
+                    }
+                  },
+                  "description": "Specifies the list of resources to add into the group.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_cfw_address_group": {
           "version": 0,
           "block": {
             "attributes": {
               "address_type": {
                 "type": "number",
-                "description": "Specifies the Address type.",
+                "description": "schema: Computed; Specifies the Address type.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -12700,12 +13578,14 @@
               "agency_name": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "agent_list": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "auto_pay": {
                 "type": "string",
@@ -13192,12 +14072,14 @@
               "agency_name": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "agent_list": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "auto_pay": {
                 "type": "string",
@@ -18030,6 +18912,108 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_dcs_backup": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backup_format": {
+                "type": "string",
+                "description": "Specifies the format of the DCS instance backup.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "begin_time": {
+                "type": "string",
+                "description": "Indicates the time when the backup task is created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Specifies the description of DCS instance backup.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "Indicates the time at which DCS instance backup is completed.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Specifies the ID of the DCS instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "is_support_restore": {
+                "type": "string",
+                "description": "Indicates whether restoration is supported. Value Options: **TRUE**, **FALSE**.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Indicates the backup name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "size": {
+                "type": "number",
+                "description": "Indicates the size of the backup file (byte).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Indicates the backup status.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Indicates the backup type. Valid value:\n",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_dcs_instance": {
           "version": 0,
           "block": {
@@ -19220,6 +20204,62 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_dds_audit_log_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "audit_scope": {
+                "type": "string",
+                "description": "Specifies the audit scope.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_types": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the audit type.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Specifies the ID of the DDS instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "keep_days": {
+                "type": "number",
+                "description": "Specifies the number of days for storing audit logs.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reserve_auditlogs": {
+                "type": "string",
+                "description": "Specifies whether the historical audit logs are retained when SQL audit is disabled.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_dds_backup": {
           "version": 0,
           "block": {
@@ -19750,6 +20790,24 @@
                 },
                 "max_items": 1
               },
+              "configuration": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "datastore": {
                 "nesting_mode": "list",
                 "block": {
@@ -19994,6 +21052,24 @@
                 },
                 "max_items": 1
               },
+              "configuration": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "datastore": {
                 "nesting_mode": "list",
                 "block": {
@@ -20075,6 +21151,80 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_dds_parameter_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Specifies the parameter template description.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the parameter template name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "node_type": {
+                "type": "string",
+                "description": "Specifies the node type of parameter template.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "node_version": {
+                "type": "string",
+                "description": "Specifies the database version.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "parameter_values": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies the mapping between parameter names and parameter values.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parameters": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "name": "string",
+                      "readonly": "bool",
+                      "restart_required": "bool",
+                      "type": "string",
+                      "value": "string",
+                      "value_range": "string"
+                    }
+                  ]
+                ],
+                "description": "Indicates the parameters defined by users based on the default parameter templates.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -20369,6 +21519,41 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_dli_agency": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "roles": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The list of roles.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "Agency version information.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -21020,6 +22205,45 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_dli_global_variable": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_sensitive": {
+                "type": "bool",
+                "description": "Whether to set a variable as a sensitive variable. The default value is **false**.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of a Global variable.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "value": {
+                "type": "string",
+                "description": "The value of Global variable.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -21816,6 +23040,385 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_dli_template_flink": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the flink template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the flink template.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sql": {
+                "type": "string",
+                "description": "The statement of the flink template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "The key/value pairs to associate with the flink template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the flink template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_dli_template_spark": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the spark template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "The group of the spark template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the spark template.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "body": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "app_name": {
+                      "type": "string",
+                      "description": "Name of the package that is of the JAR or pyFile type.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "app_parameters": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Input parameters of the main class, that is application parameters.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "auto_recovery": {
+                      "type": "bool",
+                      "description": "Whether to enable the retry function.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "configurations": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "The configuration items of the DLI spark.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "driver_cores": {
+                      "type": "number",
+                      "description": "Number of CPU cores of the Spark application driver.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "driver_memory": {
+                      "type": "string",
+                      "description": "Driver memory of the Spark application, for example, 2 GB and 2048 MB.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "executor_cores": {
+                      "type": "number",
+                      "description": "Number of CPU cores of each Executor in the Spark application.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "executor_memory": {
+                      "type": "string",
+                      "description": "Executor memory of the Spark application, for example, 2 GB and 2048 MB.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "files": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Name of the package that is of the file type and has been uploaded to the DLI resource management system.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "jars": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Name of the package that is of the JAR type and has been uploaded to the DLI resource management system.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "main_class": {
+                      "type": "string",
+                      "description": "Java/Spark main class of the template.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "max_retry_times": {
+                      "type": "number",
+                      "description": "Maximum retry times.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "modules": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Name of the dependent system resource module.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The spark job name.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "num_executors": {
+                      "type": "number",
+                      "description": "Number of Executors in a Spark application.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "obs_bucket": {
+                      "type": "string",
+                      "description": "OBS bucket for storing the Spark jobs.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "python_files": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Name of the package that is of the PyFile type and has been uploaded to the DLI resource management system.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "queue_name": {
+                      "type": "string",
+                      "description": "The DLI queue name.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "specification": {
+                      "type": "string",
+                      "description": "Compute resource type. Currently, resource types A, B, and C are available.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "dependent_packages": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "User group name.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "block_types": {
+                          "resources": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "Resource name.",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "description": "Resource type.",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description": "User group resource.",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "The list of package resource objects.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "resources": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Resource name.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Resource type.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description": "The list of resource objects.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "The content of the spark template.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_dli_template_sql": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the SQL template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "group": {
+                "type": "string",
+                "description": "The group of the SQL template.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the SQL template.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "owner": {
+                "type": "string",
+                "description": "The user ID of owner.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sql": {
+                "type": "string",
+                "description": "The statement of the SQL template.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -31338,6 +32941,45 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_identity_group_role_assignment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "role_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_identity_group_v3": {
           "version": 0,
           "block": {
@@ -31754,6 +33396,11 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "group_id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -31784,6 +33431,11 @@
           "block": {
             "attributes": {
               "domain_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enterprise_project_id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
@@ -31884,6 +33536,35 @@
                 "type": "bool",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_identity_user_role_assignment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "role_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -33102,6 +34783,114 @@
               "visibility": {
                 "type": "string",
                 "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_images_image_share": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "source_image_id": {
+                "type": "string",
+                "description": "Specifies the ID of the source image.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target_project_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Specifies the IDs of the target projects.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_images_image_share_accepter": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "image_id": {
+                "type": "string",
+                "description": "Specifies the ID of the image.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vault_id": {
+                "type": "string",
+                "description": "Specifies the ID of a vault.",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               }
             },
@@ -43457,6 +45246,151 @@
             "description_kind": "plain"
           }
         },
+        "huaweicloud_obs_bucket_acl": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket": {
+                "type": "string",
+                "description": "Specifies the name of the bucket to which to set the acl.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "account_permission": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_to_acl": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to acl. Valid values are **READ_ACP** and **WRITE_ACP**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "access_to_bucket": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to bucket. Valid values are **READ** and **WRITE**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "account_id": {
+                      "type": "string",
+                      "description": "Specifies the account id to authorize. The account id cannot be the bucket owner, \nand must be unique.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Specifies the account permissions.",
+                  "description_kind": "plain"
+                }
+              },
+              "log_delivery_user_permission": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_to_acl": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to acl. Valid values are **READ_ACP** and **WRITE_ACP**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "access_to_bucket": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to bucket. Valid values are **READ** and **WRITE**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies the log delivery user permission.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "owner_permission": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_to_acl": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to acl. Valid values are **READ_ACP** and **WRITE_ACP**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "access_to_bucket": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to bucket. Valid values are **READ** and **WRITE**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies the bucket owner permission.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "public_permission": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_to_acl": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to acl. Valid values are **READ_ACP** and **WRITE_ACP**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "access_to_bucket": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the access to bucket. Valid values are **READ** and **WRITE**.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies the public permission.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_obs_bucket_object": {
           "version": 0,
           "block": {
@@ -43570,6 +45504,76 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_obs_bucket_replication": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "agency": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "destination_bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "rule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "history_enabled": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "storage_class": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -43831,6 +45835,295 @@
                 "block": {
                   "attributes": {
                     "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_oms_migration_task_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "complete_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "consistency_check": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "enable_failed_object_recording": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_kms": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "enable_requester_pays": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "fail_num": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "migrate_since": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "object_overwrite_mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "success_num": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_num": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_time": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "bandwidth_policy": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "end": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "max_bandwidth": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "start": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 5
+              },
+              "destination_object": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "bucket": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "data_source": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "save_prefix": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secret_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "sensitive": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "source_cdn": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "authentication_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "authentication_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "domain": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "source_object": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "app_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "bucket": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "data_source": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "list_file_bucket": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "list_file_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "object": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secret_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "sensitive": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
@@ -44119,6 +46412,31 @@
                 "computed": true
               }
             },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -44263,6 +46581,31 @@
                 "computed": true
               }
             },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -44294,8 +46637,26 @@
               }
             },
             "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "users": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "name": {
@@ -44306,7 +46667,8 @@
                     "readonly": {
                       "type": "bool",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     }
                   },
                   "description_kind": "plain"
@@ -44541,6 +46903,24 @@
                 },
                 "min_items": 1,
                 "max_items": 1
+              },
+              "parameters": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               },
               "timeouts": {
                 "nesting_mode": "single",
@@ -44824,6 +47204,24 @@
                 "min_items": 1,
                 "max_items": 1
               },
+              "parameters": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -44915,6 +47313,31 @@
                 "computed": true
               }
             },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -44955,6 +47378,31 @@
                 "computed": true
               }
             },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -44986,8 +47434,26 @@
               }
             },
             "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "users": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "name": {
@@ -44998,7 +47464,8 @@
                     "readonly": {
                       "type": "bool",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     }
                   },
                   "description_kind": "plain"
@@ -46384,7 +48851,8 @@
                                           "string"
                                         ],
                                         "description_kind": "plain",
-                                        "required": true
+                                        "optional": true,
+                                        "computed": true
                                       },
                                       "host": {
                                         "type": "string",
@@ -46395,12 +48863,14 @@
                                       "path": {
                                         "type": "string",
                                         "description_kind": "plain",
-                                        "required": true
+                                        "optional": true,
+                                        "computed": true
                                       },
                                       "port": {
                                         "type": "number",
                                         "description_kind": "plain",
-                                        "required": true
+                                        "optional": true,
+                                        "computed": true
                                       }
                                     },
                                     "description_kind": "plain"
@@ -46434,7 +48904,8 @@
                                           "string"
                                         ],
                                         "description_kind": "plain",
-                                        "required": true
+                                        "optional": true,
+                                        "computed": true
                                       },
                                       "host": {
                                         "type": "string",
@@ -46445,12 +48916,14 @@
                                       "path": {
                                         "type": "string",
                                         "description_kind": "plain",
-                                        "required": true
+                                        "optional": true,
+                                        "computed": true
                                       },
                                       "port": {
                                         "type": "number",
                                         "description_kind": "plain",
-                                        "required": true
+                                        "optional": true,
+                                        "computed": true
                                       }
                                     },
                                     "description_kind": "plain"
@@ -47547,6 +50020,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "auto_renew": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "availability_zone": {
                 "type": "string",
                 "description_kind": "plain",
@@ -47555,6 +50033,12 @@
               "available_capacity": {
                 "type": "string",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "charging_mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "crypt_key_id": {
@@ -47589,6 +50073,16 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "period": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "period_unit": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "region": {
                 "type": "string",
@@ -47659,10 +50153,62 @@
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_smn_message_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "content": {
+                "type": "string",
+                "description": "Specifies the template content, which supports plain text only.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the message template name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Specifies the protocol supported by the template.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tag_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Indicates the variable list.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -48221,6 +50767,332 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_swr_image_auto_sync": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description": "Indicates the creation time.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Specifies the name of the organization.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "override": {
+                "type": "bool",
+                "description": "Specifies whether to overwrite.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "Specifies the name of the repository.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target_organization": {
+                "type": "string",
+                "description": "Specifies the target organization name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target_region": {
+                "type": "string",
+                "description": "Specifies the target region name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Indicates the update time.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_swr_image_permissions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Specifies the name of the organization.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "Specifies the name of the repository.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "self_permission": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "permission": "string",
+                      "user_id": "string",
+                      "user_name": "string"
+                    }
+                  ]
+                ],
+                "description": "Indicates the permission information of current user.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "users": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "permission": {
+                      "type": "string",
+                      "description": "Specifies the user permission of the existing HuaweiCloud user.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "user_id": {
+                      "type": "string",
+                      "description": "Specifies the ID of the existing HuaweiCloud user.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "description": "Specifies the name of the existing HuaweiCloud user.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Specifies the users to access to the image (repository).",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_swr_image_retention_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "number": {
+                "type": "number",
+                "description": "Specifies the number of retention.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Specifies the name of the organization.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "Specifies the name of the repository.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Specifies the retention policy type.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "tag_selectors": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "kind": {
+                      "type": "string",
+                      "description": "Specifies the Matching rule.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "pattern": {
+                      "type": "string",
+                      "description": "Specifies the Matching pattern.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Specifies the image tags that are not counted in the retention policy",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "huaweicloud_swr_image_trigger": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description": "Specifies the ID of the cluster.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cluster_name": {
+                "type": "string",
+                "description": "Specifies the name of the cluster.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "condition_type": {
+                "type": "string",
+                "description": "Specifies the trigger condition type.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "condition_value": {
+                "type": "string",
+                "description": "Specifies the trigger condition value.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "container": {
+                "type": "string",
+                "description": "Specifies the name of the container to be updated.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Indicates the creation time.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "creator_name": {
+                "type": "string",
+                "description": "Indicates the creator name of the trigger.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "string",
+                "description": "Specifies whether to enable the trigger.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the trigger name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Specifies the namespace where the application is located.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Specifies the name of the organization.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "Specifies the name of the repository.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Specifies the trigger type.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "workload_name": {
+                "type": "string",
+                "description": "Specifies the name of the application.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "workload_type": {
+                "type": "string",
+                "description": "Specifies the type of the application.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -53386,6 +56258,71 @@
             "deprecated": true
           }
         },
+        "huaweicloud_waf_address_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Specifies the description of the address group.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description": "Specifies the enterprise project ID of WAF address group.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_addresses": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the IP addresses or IP address ranges.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the name of the address group.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "rules": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "policy_id": "string",
+                      "policy_name": "string",
+                      "rule_id": "string",
+                      "rule_name": "string"
+                    }
+                  ]
+                ],
+                "description": "The list of rules that use the IP address group.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "huaweicloud_waf_certificate": {
           "version": 0,
           "block": {
@@ -53394,6 +56331,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "expiration": {
                 "type": "string",
@@ -53627,6 +56569,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -53892,6 +56839,11 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -54088,6 +57040,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "full_detection": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -54195,6 +57152,11 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -54230,6 +57192,31 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "address_group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "address_group_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "address_group_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -54239,7 +57226,14 @@
               "ip_address": {
                 "type": "string",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "schema: Required",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "policy_id": {
                 "type": "string",
@@ -54280,6 +57274,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "field": {
                 "type": "string",
                 "description_kind": "plain",
@@ -54324,6 +57323,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -66481,7 +69485,8 @@
               "region": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "topic_urn": {
                 "type": "string",
@@ -68207,6 +71212,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "expiration": {
                 "type": "string",
                 "description_kind": "plain",
@@ -68376,6 +71386,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -68440,6 +71455,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "enterprise_project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",

@@ -6511,6 +6511,60 @@
             "description_kind": "plain"
           }
         },
+        "alicloud_arms_remote_write": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "remote_write_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "remote_write_yaml": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "alicloud_auto_provisioning_group": {
           "version": 0,
           "block": {
@@ -11157,6 +11211,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "auto_publish_route_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "cen_id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -16660,20 +16720,139 @@
             "description_kind": "plain"
           }
         },
+        "alicloud_config_remediation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config_rule_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invoke_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "params": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "remediation_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "remediation_source_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "remediation_template_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "remediation_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "alicloud_config_rule": {
           "version": 0,
           "block": {
             "attributes": {
+              "account_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "compliance": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "compliance_type": "string",
+                      "count": "number"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "compliance_pack_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "config_rule_arn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "config_rule_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "config_rule_trigger_types": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
+              "create_time": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "event_source": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               },
               "exclude_resource_ids_scope": {
                 "type": "string",
@@ -16700,15 +16879,10 @@
                 "optional": true,
                 "computed": true
               },
-              "member_id": {
+              "modified_timestamp": {
                 "type": "number",
                 "description_kind": "plain",
-                "optional": true
-              },
-              "multi_account": {
-                "type": "bool",
-                "description_kind": "plain",
-                "optional": true
+                "computed": true
               },
               "region_ids_scope": {
                 "type": "string",
@@ -16739,16 +16913,8 @@
                 "description_kind": "plain",
                 "required": true
               },
-              "scope_compliance_resource_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true
-              },
               "scope_compliance_resource_types": {
-                "type": [
-                  "list",
-                  "string"
-                ],
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -16798,6 +16964,11 @@
                 "block": {
                   "attributes": {
                     "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
@@ -18957,7 +19128,8 @@
               "config": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -34231,6 +34403,100 @@
             "description_kind": "plain"
           }
         },
+        "alicloud_eflo_subnet": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cidr": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "create_time": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "gmt_modified": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "message": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resource_group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "subnet_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "subnet_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vpd_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "alicloud_eflo_vpd": {
           "version": 0,
           "block": {
@@ -36208,6 +36474,18 @@
                 "nesting_mode": "set",
                 "block": {
                   "attributes": {
+                    "data_disk_encrypted": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "data_disk_kms_key_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
                     "key_pair_name": {
                       "type": "string",
                       "description_kind": "plain",
@@ -46524,6 +46802,11 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "effective_time": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enable_backup_log": {
                 "type": "number",
                 "description_kind": "plain",
@@ -55806,6 +56089,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "allow_shut_down": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "auto_renew_period": {
                 "type": "number",
                 "description_kind": "plain",
@@ -55953,6 +56241,32 @@
                 "optional": true,
                 "computed": true
               },
+              "scale_max": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scale_min": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scale_ro_num_max": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scale_ro_num_min": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "seconds_until_auto_pause": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "security_group_ids": {
                 "type": [
                   "set",
@@ -55970,6 +56284,11 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "serverless_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "source_resource_id": {
                 "type": "string",
@@ -59153,6 +59472,80 @@
                 },
                 "min_items": 1
               },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "alicloud_rds_db_instance_endpoint_address": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connection_string": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "connection_string_prefix": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "db_instance_endpoint_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "db_instance_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ip_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "port": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -64563,6 +64956,70 @@
             "description_kind": "plain"
           }
         },
+        "alicloud_service_catalog_portfolio": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "portfolio_arn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "portfolio_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "provider_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "alicloud_service_catalog_provisioned_product": {
           "version": 0,
           "block": {
@@ -67574,7 +68031,37 @@
               "user_type": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "alicloud_tag_policy_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -77456,6 +77943,68 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "alicloud_arms_remote_writes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_regex": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "output_file": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote_writes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cluster_id": "string",
+                      "id": "string",
+                      "remote_write_name": "string",
+                      "remote_write_yaml": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -97793,6 +98342,116 @@
             "description_kind": "plain"
           }
         },
+        "alicloud_eflo_subnets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_regex": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "output_file": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "page_number": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "page_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "resource_group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "subnet_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "subnet_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "subnets": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cidr": "string",
+                      "create_time": "string",
+                      "gmt_modified": "string",
+                      "id": "string",
+                      "message": "string",
+                      "resource_group_id": "string",
+                      "status": "string",
+                      "subnet_id": "string",
+                      "subnet_name": "string",
+                      "type": "string",
+                      "vpd_id": "string",
+                      "zone_id": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vpd_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "alicloud_eflo_vpds": {
           "version": 0,
           "block": {
@@ -106043,6 +106702,11 @@
             "attributes": {
               "availability_zone": {
                 "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_details": {
+                "type": "bool",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -116644,6 +117308,54 @@
             "description_kind": "plain"
           }
         },
+        "alicloud_rds_slots": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "db_instance_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "output_file": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "resource_group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "slots": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "database": "string",
+                      "plugin": "string",
+                      "slot_name": "string",
+                      "slot_status": "string",
+                      "slot_type": "string",
+                      "temporary": "string",
+                      "wal_delay": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "alicloud_regions": {
           "version": 0,
           "block": {
@@ -120179,6 +120891,96 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "alicloud_service_catalog_portfolios": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name_regex": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "output_file": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "page_number": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "page_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "portfolios": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "create_time": "string",
+                      "description": "string",
+                      "id": "string",
+                      "portfolio_arn": "string",
+                      "portfolio_id": "string",
+                      "portfolio_name": "string",
+                      "provider_name": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "product_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scope": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sort_by": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sort_order": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"

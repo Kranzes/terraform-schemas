@@ -2026,7 +2026,7 @@
               },
               "folder": {
                 "type": "string",
-                "description": "The id of the folder to save the dashboard in. This attribute is a string to reflect the type of the folder's id.",
+                "description": "The id or UID of the folder to save the dashboard in.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -2823,6 +2823,12 @@
                 "description": "Unique internal identifier.",
                 "description_kind": "markdown",
                 "computed": true
+              },
+              "prevent_destroy_if_not_empty": {
+                "type": "bool",
+                "description": "Prevent deletion of the folder if it is not empty (contains dashboards or alert rules). Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "title": {
                 "type": "string",
@@ -6044,15 +6050,17 @@
               },
               "logs_instance_id": {
                 "type": "number",
-                "description": "The ID of the logs instance to install SM on (stack's `logs_user_id` attribute).",
+                "description": "Deprecated: Not used anymore.",
                 "description_kind": "markdown",
-                "required": true
+                "deprecated": true,
+                "optional": true
               },
               "metrics_instance_id": {
                 "type": "number",
-                "description": "The ID of the metrics instance to install SM on (stack's `prometheus_user_id` attribute).",
+                "description": "Deprecated: Not used anymore.",
                 "description_kind": "markdown",
-                "required": true
+                "deprecated": true,
+                "optional": true
               },
               "metrics_publisher_key": {
                 "type": "string",
@@ -6068,13 +6076,20 @@
                 "computed": true
               },
               "stack_id": {
-                "type": "number",
-                "description": "The ID of the stack to install SM on.",
+                "type": "string",
+                "description": "The ID or slug of the stack to install SM on.",
                 "description_kind": "markdown",
                 "required": true
+              },
+              "stack_sm_api_url": {
+                "type": "string",
+                "description": "The URL of the SM API to install SM on. This depends on the stack region, find the list of API URLs here: https://grafana.com/docs/grafana-cloud/synthetic-monitoring/private-probes/#probe-api-server-url. A static mapping exists in the provider but it may not contain all the regions. If it does contain the stack's region, this field is computed automatically and readable.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               }
             },
-            "description": "\nSets up Synthetic Monitoring on a Grafana cloud stack and generates a token. \nOnce a Grafana Cloud stack is created, a user can either use this resource or go into the UI to install synthetic monitoring.\nThis resource cannot be imported but it can be used on an existing Synthetic Monitoring installation without issues.\n\n* [Official documentation](https://grafana.com/docs/grafana-cloud/synthetic-monitoring/installation/)\n* [API documentation](https://github.com/grafana/synthetic-monitoring-api-go-client/blob/main/docs/API.md#apiv1registerinstall)\n",
+            "description": "\nSets up Synthetic Monitoring on a Grafana cloud stack and generates a token. \nOnce a Grafana Cloud stack is created, a user can either use this resource or go into the UI to install synthetic monitoring.\nThis resource cannot be imported but it can be used on an existing Synthetic Monitoring installation without issues.\n\n**Note that this resource must be used on a provider configured with Grafana Cloud credentials.**\n\n* [Official documentation](https://grafana.com/docs/grafana-cloud/synthetic-monitoring/installation/)\n* [API documentation](https://github.com/grafana/synthetic-monitoring-api-go-client/blob/main/docs/API.md#apiv1registerinstall)\n",
             "description_kind": "markdown"
           }
         },

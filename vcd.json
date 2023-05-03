@@ -6,6 +6,12 @@
         "version": 0,
         "block": {
           "attributes": {
+            "allow_service_account_token_file": {
+              "type": "bool",
+              "description": "Set this to true if you understand the security risks of using Service Account token files and would like to suppress the warnings",
+              "description_kind": "plain",
+              "optional": true
+            },
             "allow_unverified_ssl": {
               "type": "bool",
               "description": "If set, VCDClient will permit unverifiable SSL certificates.",
@@ -20,7 +26,7 @@
             },
             "auth_type": {
               "type": "string",
-              "description": "'integrated', 'saml_adfs', 'token', and 'api_token' are the only ones supported now. 'integrated' is default.",
+              "description": "'integrated', 'saml_adfs', 'token', 'api_token' and 'service_account_token_file' are supported. 'integrated' is default.",
               "description_kind": "plain",
               "optional": true
             },
@@ -63,6 +69,12 @@
             "saml_adfs_rpt_id": {
               "type": "string",
               "description": "Allows to specify custom Relaying Party Trust Identifier for auth_type=saml_adfs",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "service_account_token_file": {
+              "type": "string",
+              "description": "The Service Account API token file instead of username/password for VCD API operations. (Requires VCD 10.4.0+)",
               "description_kind": "plain",
               "optional": true
             },
@@ -3441,6 +3453,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "member_group_id": {
+                "type": "string",
+                "description": "ID of Firewall Group to use for Pool Membership (VCD 10.4.1+)",
+                "description_kind": "plain",
+                "optional": true
+              },
               "name": {
                 "type": "string",
                 "description": "Name of ALB Pool",
@@ -3687,11 +3705,25 @@
                 "optional": true,
                 "computed": true
               },
+              "ipv6_service_network_specification": {
+                "type": "string",
+                "description": "The IPv6 network definition in Gateway CIDR format which will be used by Load Balancer service on Edge (VCD 10.4.0+)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "is_active": {
                 "type": "bool",
                 "description": "Defines if ALB is enabled on Edge Gateway",
                 "description_kind": "plain",
                 "required": true
+              },
+              "is_transparent_mode_enabled": {
+                "type": "bool",
+                "description": "Enabling transparent mode allows to configure Preserve Client IP on a Virtual Service (VCD 10.4.1+)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "org": {
                 "type": "string",
@@ -3761,6 +3793,13 @@
               },
               "id": {
                 "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_transparent_mode_enabled": {
+                "type": "bool",
+                "description": "Preserves Client IP on a Virtual Service (VCD 10.4.1+)",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -4226,6 +4265,25 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "total_allocated_ip_count": {
+                "type": "number",
+                "description": "Total number of IP addresses allocated for this gateway. Can be set with 'subnet_with_total_ip_count' definitions only",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "unused_ip_count": {
+                "type": "number",
+                "description": "Number of unused IP addresses",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "used_ip_count": {
+                "type": "number",
+                "description": "Number of used IP addresses",
+                "description_kind": "plain",
+                "computed": true
+              },
               "vdc": {
                 "type": "string",
                 "description": "The name of VDC to use, optional if defined at provider level",
@@ -4248,7 +4306,7 @@
                     },
                     "prefix_length": {
                       "type": "number",
-                      "description": "Netmask address for a subnet (e.g. 24 for /24)",
+                      "description": "Prefix length for a subnet (e.g. 24)",
                       "description_kind": "plain",
                       "required": true
                     },
@@ -4277,14 +4335,74 @@
                         },
                         "description": "Define one or more blocks to sub-allocate pools on the edge gateway",
                         "description_kind": "plain"
-                      },
-                      "min_items": 1
+                      }
                     }
                   },
-                  "description": "One or more blocks with external network information to be attached to this gateway's interface",
+                  "description": "One or more blocks with external network information to be attached to this gateway's interface including IP allocation ranges",
                   "description_kind": "plain"
-                },
-                "min_items": 1
+                }
+              },
+              "subnet_with_ip_count": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "allocated_ip_count": {
+                      "type": "number",
+                      "description": "Number of IP addresses to allocate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "gateway": {
+                      "type": "string",
+                      "description": "Gateway address for a subnet",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "prefix_length": {
+                      "type": "number",
+                      "description": "Prefix length for a subnet (e.g. 24)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "primary_ip": {
+                      "type": "string",
+                      "description": "Primary IP address for the edge gateway - will be auto-assigned if not defined",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Auto allocation of subnets by using per subnet IP allocation counts",
+                  "description_kind": "plain"
+                }
+              },
+              "subnet_with_total_ip_count": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "gateway": {
+                      "type": "string",
+                      "description": "Gateway address for a subnet",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "prefix_length": {
+                      "type": "number",
+                      "description": "Prefix length for a subnet (e.g. 24)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "primary_ip": {
+                      "type": "string",
+                      "description": "Primary IP address for the edge gateway - will be auto-assigned if not defined",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Subnet definitions for this Edge Gateway. IP allocation is controlled using 'total_allocated_ip_count'",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -4545,6 +4663,44 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_edgegateway_rate_limiting": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "edge_gateway_id": {
+                "type": "string",
+                "description": "Edge gateway ID for Rate limiting (QoS) configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "egress_profile_id": {
+                "type": "string",
+                "description": "Egress profile ID for Rate limiting (QoS) configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ingress_profile_id": {
+                "type": "string",
+                "description": "Ingress profile ID for Rate limiting (QoS) configuration",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_firewall": {
           "version": 0,
           "block": {
@@ -4725,6 +4881,24 @@
           "version": 0,
           "block": {
             "attributes": {
+              "authentication_mode": {
+                "type": "string",
+                "description": "One of 'PSK' (default), 'CERTIFICATE'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ca_certificate_id": {
+                "type": "string",
+                "description": "Optional CA certificate ID to use for authentication",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "certificate_id": {
+                "type": "string",
+                "description": "Optional certificate ID to use for authentication",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Description IP Sec VPN Tunnel",
@@ -4800,6 +4974,13 @@
                 "description_kind": "plain",
                 "required": true,
                 "sensitive": true
+              },
+              "remote_id": {
+                "type": "string",
+                "description": "Custom remote ID of the peer site. 'remote_ip_address' is used by default",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "remote_ip_address": {
                 "type": "string",
@@ -5135,6 +5316,126 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_network_dhcp_binding": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "binding_type": {
+                "type": "string",
+                "description": "Binding type 'IPV4' or 'IPV6'",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of DHCP binding",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_servers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The DNS server IPs to be assigned . 2 values maximum.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_address": {
+                "type": "string",
+                "description": "IP address of the DHCP binding",
+                "description_kind": "plain",
+                "required": true
+              },
+              "lease_time": {
+                "type": "number",
+                "description": "Lease time in seconds. Minimum value is 60 seconds",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "MAC address of the DHCP binding",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of DHCP binding",
+                "description_kind": "plain",
+                "required": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org_network_id": {
+                "type": "string",
+                "description": "Parent Org VDC network ID",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "dhcp_v4_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "gateway_ip_address": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "hostname": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "IPv4 specific DHCP Binding configuration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "dhcp_v6_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "dns_servers": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "IP address, CIDR, an IP range, or the keyword 'any'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sntp_servers": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "IPv6 specific DHCP Binding configuration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_network_imported": {
           "version": 0,
           "block": {
@@ -5163,6 +5464,18 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "dvpg_id": {
+                "type": "string",
+                "description": "ID of used Distributed Virtual Port Group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dvpg_name": {
+                "type": "string",
+                "description": "Name of existing Distributed Virtual Port Group",
+                "description_kind": "plain",
+                "optional": true
+              },
               "gateway": {
                 "type": "string",
                 "description": "Gateway IP address",
@@ -5183,7 +5496,7 @@
               },
               "nsxt_logical_switch_id": {
                 "type": "string",
-                "description": "ID of existing NSX-T Logical Switch",
+                "description": "ID of used NSX-T Logical Switch",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5191,7 +5504,7 @@
                 "type": "string",
                 "description": "Name of existing NSX-T Logical Switch",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "org": {
                 "type": "string",
@@ -5444,6 +5757,226 @@
                   "description_kind": "plain"
                 },
                 "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxv_distributed_firewall": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Shows whether the NSX-V distributed firewall is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "The ID of VDC",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "rule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "action": {
+                      "type": "string",
+                      "description": "Action of the rule (allow, deny)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "direction": {
+                      "type": "string",
+                      "description": "Direction of the rule (in, out, inout)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "enabled": {
+                      "type": "bool",
+                      "description": "Whether the rule is enabled",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "exclude_destination": {
+                      "type": "bool",
+                      "description": "If true, the content of the destination elements is reversed",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "exclude_source": {
+                      "type": "bool",
+                      "description": "If true, the content of the source elements is reversed",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "Firewall Rule ID",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "logged": {
+                      "type": "bool",
+                      "description": "Whether the rule traffic is logged",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Firewall Rule name",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "packet_type": {
+                      "type": "string",
+                      "description": "Packet type of the rule (any, ipv4, ipv6)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "application": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "destination_port": {
+                            "type": "string",
+                            "description": "Destination port for this application. Leaving it empty means 'any' port",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of application (Application, ApplicationGroup)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "Protocol of the application (one of TCP, UDP, ICMP) (When not using name/value)",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "source_port": {
+                            "type": "string",
+                            "description": "Source port for this application. Leaving it empty means 'any' port",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Type of application",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Value of the application",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Application definitions for this rule. An empty value means 'any'",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "applied_to": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the applied-to entity",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Type of the applied-to entity (one of Network, Edge, VirtualMachine, IPSet, VDC, Ipv4Address)",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Value of the applied-to entity",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of elements to which this rule applies",
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1
+                    },
+                    "destination": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the destination entity",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Type of the destination entity (one of Network, Edge, VirtualMachine, IpSet, VDC, Ipv4Address)",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Value of the destination entity",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of destination traffic for this rule. An empty value means 'any'",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "source": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the source entity",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Type of the source entity (one of Network, Edge, VirtualMachine, IpSet, VDC, Ipv4Address)",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description": "Value of the source entity",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "List of source traffic for this rule. An empty value means 'any'",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Ordered list of distributed firewall rules",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -6149,7 +6682,7 @@
               },
               "provider_type": {
                 "type": "string",
-                "description": "Identity provider type - 'SAML' or 'INTEGRATED' for LDAP",
+                "description": "Identity provider type for this this group. One of: 'INTEGRATED', 'SAML', 'OAUTH'.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -6599,6 +7132,13 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enable_nsxv_distributed_firewall": {
+                "type": "bool",
+                "description": "Set to true to enable distributed firewall - Only applies to NSX-V VDCs",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "enable_thin_provisioning": {
                 "type": "bool",
                 "description": "Boolean to request thin provisioning. Request will be honored only if the underlying datastore supports it. Thin provisioning saves storage space by committing it on demand. This allows over-allocation of storage.",
@@ -6940,6 +7480,227 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "computed_entity": {
+                "type": "string",
+                "description": "A computed representation of the actual Runtime Defined Entity JSON retrieved from VCD. Useful to see the actual entity contents if it is being changed by a third party in VCD",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "entity_in_sync": {
+                "type": "bool",
+                "description": "If true, `computed_entity` is equal to either `input_entity` or the contents of `input_entity_url`",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "An external entity's ID that this Runtime Defined Entity may have a relation to",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "input_entity": {
+                "type": "string",
+                "description": "A JSON representation of the Runtime Defined Entity that is defined by the user and is used to initialize/override its contents",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "input_entity_url": {
+                "type": "string",
+                "description": "URL that should point to a JSON representation of the Runtime Defined Entity and is used to initialize/override its contents",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Runtime Defined Entity. It can be non-unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization that will own this Runtime Defined Entity, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org_id": {
+                "type": "string",
+                "description": "The organization of the Runtime Defined Entity",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "owner_user_id": {
+                "type": "string",
+                "description": "The ID of the user that owns the Runtime Defined Entity",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rde_type_id": {
+                "type": "string",
+                "description": "The Runtime Defined Entity Type ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "resolve": {
+                "type": "bool",
+                "description": "If `true`, the Runtime Defined Entity will be resolved by this provider. If `false`, it won't beresolved and must be done either by an external component action or by an update. The Runtime Defined Entity can't bedeleted until the entity is resolved.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "resolve_on_removal": {
+                "type": "bool",
+                "description": "If `true`, the Runtime Defined Entity will be resolved before it gets deleted, to ensure forced deletion.Destroy will fail if it is not resolved.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Specifies whether the entity is correctly resolved or not. When created it will be in PRE_CREATED state. If the entity is correctly validated against its RDE Type schema, the state will be RESOLVED,otherwise it will be RESOLUTION_ERROR. If an entity resolution ends in a RESOLUTION_ERROR state, it will require to be updated to a correct JSON to be usable",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde_interface": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Runtime Defined Entity Interface",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nss": {
+                "type": "string",
+                "description": "A unique namespace associated with the Runtime Defined Entity Interface. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "readonly": {
+                "type": "bool",
+                "description": "True if the Runtime Defined Entity Interface cannot be modified",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vendor": {
+                "type": "string",
+                "description": "The vendor name. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "The Runtime Defined Entity Interface's version. The version must follow semantic versioning rules. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde_type": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "An external entity's ID that this definition may apply to",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "inherited_version": {
+                "type": "string",
+                "description": "To be used when creating a new version of a Runtime Defined Entity Type. Specifies the version of the type that will be the template for the authorization configuration of the new version.The Type ACLs and the access requirements of the Type Behaviors of the new version will be copied from those of the inherited version.If not set, then the new type version will not inherit another version and will have the default authorization settings, just like the first version of a new type",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "interface_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of Defined Interface URNs that this Runtime Defined Entity Type is referenced by",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nss": {
+                "type": "string",
+                "description": "A unique namespace associated with the Runtime Defined Entity Type. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "readonly": {
+                "type": "bool",
+                "description": "True if the Runtime Defined Entity Type cannot be modified",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schema": {
+                "type": "string",
+                "description": "The JSON-Schema valid definition of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "schema_url": {
+                "type": "string",
+                "description": "URL that should point to a JSON-Schema valid definition file of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vendor": {
+                "type": "string",
+                "description": "The vendor name for the Runtime Defined Entity Type. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "The version of the Runtime Defined Entity Type. The version string must follow semantic versioning rules. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -7884,9 +8645,11 @@
               },
               "netmask": {
                 "type": "string",
-                "description": "Netmask address for a subnet. Default is 255.255.255.0",
+                "description": "Netmask address for a subnet.",
                 "description_kind": "plain",
-                "optional": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "org": {
                 "type": "string",
@@ -7897,6 +8660,19 @@
               "org_network_name": {
                 "type": "string",
                 "description": "org network name to which vapp network is connected",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "prefix_length": {
+                "type": "string",
+                "description": "Prefix length for a subnet",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "reboot_vapp_on_removal": {
+                "type": "bool",
+                "description": "Specifies whether the vApp should be rebooted when the vApp network is removed. Default is false.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -8004,6 +8780,12 @@
                 "description": "Organization network name to which vApp network is connected to",
                 "description_kind": "plain",
                 "required": true
+              },
+              "reboot_vapp_on_removal": {
+                "type": "bool",
+                "description": "Specifies whether the vApp should be rebooted when the vApp network is removed. Default is false.",
+                "description_kind": "plain",
+                "optional": true
               },
               "retain_ip_mac_enabled": {
                 "type": "bool",
@@ -8342,6 +9124,16 @@
                 "description": "True if the update of resource should fail when virtual machine power off needed.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "security_tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Security tags to assign to this VM",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "sizing_policy_id": {
                 "type": "string",
@@ -9080,6 +9872,16 @@
                 "description": "True if the update of resource should fail when virtual machine power off needed.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "security_tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Security tags to assign to this VM",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "sizing_policy_id": {
                 "type": "string",
@@ -12800,6 +13602,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "member_group_id": {
+                "type": "string",
+                "description": "ID of Firewall Group to use for Pool Membership (VCD 10.4.1+)",
+                "description_kind": "plain",
+                "computed": true
+              },
               "name": {
                 "type": "string",
                 "description": "Name of ALB Pool",
@@ -12947,9 +13755,21 @@
                 "optional": true,
                 "computed": true
               },
+              "ipv6_service_network_specification": {
+                "type": "string",
+                "description": "The IPv6 network definition in Gateway CIDR format which will be used by Load Balancer service on Edge (VCD 10.4.0+)",
+                "description_kind": "plain",
+                "computed": true
+              },
               "is_active": {
                 "type": "bool",
                 "description": "Defines if ALB is enabled on Edge Gateway",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_transparent_mode_enabled": {
+                "type": "bool",
+                "description": "Enabling transparent mode allows to configure Preserve Client IP on a Virtual Service (VCD 10.4.1+)",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -13021,6 +13841,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "is_transparent_mode_enabled": {
+                "type": "bool",
+                "description": "Preserves Client IP on a Virtual Service when enabled (VCD 10.4.1+)",
+                "description_kind": "plain",
                 "computed": true
               },
               "name": {
@@ -13462,6 +14288,57 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "subnet_with_ip_count": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "allocated_ip_count": "number",
+                      "gateway": "string",
+                      "prefix_length": "number",
+                      "primary_ip": "string"
+                    }
+                  ]
+                ],
+                "description": "Exposes IP allocation subnet for this Edge Gateway including allocated IP count",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "subnet_with_total_ip_count": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "gateway": "string",
+                      "prefix_length": "number",
+                      "primary_ip": "string"
+                    }
+                  ]
+                ],
+                "description": "Exposes IP allocation subnet for this Edge Gateway",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_allocated_ip_count": {
+                "type": "number",
+                "description": "Total number of IP addresses allocated for this Edge Gateway",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "unused_ip_count": {
+                "type": "number",
+                "description": "Number of unused IP addresses",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "used_ip_count": {
+                "type": "number",
+                "description": "Number of used IP addresses",
+                "description_kind": "plain",
+                "computed": true
+              },
               "vdc": {
                 "type": "string",
                 "description": "The name of VDC to use, optional if defined at provider level",
@@ -13696,6 +14573,94 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_edgegateway_qos_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "burst_size": {
+                "type": "number",
+                "description": "Burst size in bytes",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "committed_bandwidth": {
+                "type": "number",
+                "description": "Committed bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of QoS profile in NSX-T manager",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "excess_action": {
+                "type": "string",
+                "description": "Excess action",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of QoS profile in NSX-T manager",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "ID of NSX-T manager",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_edgegateway_rate_limiting": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "edge_gateway_id": {
+                "type": "string",
+                "description": "Edge gateway ID for Rate Limiting (QoS) configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "egress_profile_id": {
+                "type": "string",
+                "description": "Egress profile ID for Rate Limiting (QoS) configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ingress_profile_id": {
+                "type": "string",
+                "description": "Ingress profile ID for Rate Limiting (QoS) configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_firewall": {
           "version": 0,
           "block": {
@@ -13825,6 +14790,24 @@
           "version": 0,
           "block": {
             "attributes": {
+              "authentication_mode": {
+                "type": "string",
+                "description": "One of 'PSK' (default), 'CERTIFICATE'",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ca_certificate_id": {
+                "type": "string",
+                "description": "Optional CA certificate ID to use for authentication",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "certificate_id": {
+                "type": "string",
+                "description": "Optional certificate ID to use for authentication",
+                "description_kind": "plain",
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description": "Description of NAT rule",
@@ -13897,6 +14880,12 @@
               "pre_shared_key": {
                 "type": "string",
                 "description": "Pre-Shared Key (PSK)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "remote_id": {
+                "type": "string",
+                "description": "ID of the remote peer site",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -14213,6 +15202,113 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_network_dhcp_binding": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "binding_type": {
+                "type": "string",
+                "description": "Binding type 'IPV4' or 'IPV6'",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of DHCP binding",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dhcp_v4_config": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "gateway_ip_address": "string",
+                      "hostname": "string"
+                    }
+                  ]
+                ],
+                "description": "IPv4 specific DHCP Binding configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dhcp_v6_config": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "dns_servers": [
+                        "set",
+                        "string"
+                      ],
+                      "sntp_servers": [
+                        "set",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "IPv6 specific DHCP Binding configuration",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dns_servers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "DNS server IPs",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_address": {
+                "type": "string",
+                "description": "IP address of the DHCP binding",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "lease_time": {
+                "type": "number",
+                "description": "Lease time in seconds",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "MAC address of the DHCP binding",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of DHCP binding",
+                "description_kind": "plain",
+                "required": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org_network_id": {
+                "type": "string",
+                "description": "Parent Org VDC network ID",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_network_imported": {
           "version": 0,
           "block": {
@@ -14238,6 +15334,12 @@
               "dns_suffix": {
                 "type": "string",
                 "description": "DNS suffix",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dvpg_id": {
+                "type": "string",
+                "description": "ID of used Distributed Virtual Port Group",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -14484,6 +15586,151 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxv_application": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "app_guid": {
+                "type": "string",
+                "description": "Application GUID name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Identifier of the application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the object",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ports": {
+                "type": "string",
+                "description": "Ports used by the application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Protocol used by the application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "source_port": {
+                "type": "string",
+                "description": "Source port used by the application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "The ID of VDC",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxv_application_finder": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "case_sensitive": {
+                "type": "bool",
+                "description": "Convert the search to case sensitive",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "objects": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "name": "string",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "Objects found with the combination of 'search_expression' + 'type'",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "search_expression": {
+                "type": "string",
+                "description": "Regular expression used to search applications or groups",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of object. One of 'application', 'application_group'",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "The ID of VDC",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxv_application_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "applications": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "name": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "Applications belonging to this application group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Identifier of the application group",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the object",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "The ID of VDC",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxv_dhcp_relay": {
           "version": 0,
           "block": {
@@ -14552,6 +15799,101 @@
                 "description": "The name of VDC to use, optional if defined at provider level",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxv_distributed_firewall": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "When true, the retrieved NSX-V distributed firewall is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "rule": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "action": "string",
+                      "application": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "destination_port": "string",
+                            "name": "string",
+                            "protocol": "string",
+                            "source_port": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "applied_to": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "destination": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "direction": "string",
+                      "enabled": "bool",
+                      "exclude_destination": "bool",
+                      "exclude_source": "bool",
+                      "id": "number",
+                      "logged": "bool",
+                      "name": "string",
+                      "packet_type": "string",
+                      "source": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "name": "string",
+                            "type": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Ordered list of distributed firewall rules",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "The ID of VDC",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -15132,7 +16474,7 @@
               },
               "provider_type": {
                 "type": "string",
-                "description": "Identity provider type - 'SAML' or 'INTEGRATED' for local or LDAP",
+                "description": "Identity provider type for this this group. One of: 'INTEGRATED', 'SAML', 'OAUTH'.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -15450,6 +16792,12 @@
               "enable_fast_provisioning": {
                 "type": "bool",
                 "description": "Request for fast provisioning. Request will be honored only if the underlying datas tore supports it. Fast provisioning can reduce the time it takes to create virtual machines by using vSphere linked clones. If you disable fast provisioning, all provisioning operations will result in full clones.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enable_nsxv_distributed_firewall": {
+                "type": "bool",
+                "description": "True if the NSX-V distributed firewall is enabled - Only applies to NSX-V VDCs",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -15844,6 +17192,189 @@
                 "description": "ID of the vCenter server that provides the resource pools and datastores",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "entity": {
+                "type": "string",
+                "description": "A JSON representation of the Runtime Defined Entity",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "An external entity's ID that this Runtime Defined Entity may have a relation to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Runtime Defined Entity",
+                "description_kind": "plain",
+                "required": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization that owns this Runtime Defined Entity, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org_id": {
+                "type": "string",
+                "description": "The organization of the Runtime Defined Entity",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "owner_user_id": {
+                "type": "string",
+                "description": "The ID of the user that owns the Runtime Defined Entity",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rde_type_id": {
+                "type": "string",
+                "description": "The Runtime Defined Entity Type ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Specifies whether the entity is correctly resolved or not. One of PRE_CREATED, RESOLVED or RESOLUTION_ERROR",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde_interface": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Runtime Defined Entity Interface",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nss": {
+                "type": "string",
+                "description": "A unique namespace associated with the Runtime Defined Entity Interface. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "readonly": {
+                "type": "bool",
+                "description": "True if the Runtime Defined Entity Interface cannot be modified",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vendor": {
+                "type": "string",
+                "description": "The vendor name. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "The Runtime Defined Entity Interface's version. The version follows semantic versioning rules. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde_type": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "An external entity's ID that this definition may apply to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "inherited_version": {
+                "type": "string",
+                "description": "Specifies the version of the type that will be the template for the authorization configuration of the new version. The Type ACLs and the access requirements of the Type Behaviors of the new version will be copied from those of the inherited version. If not set, then the new type version will not inherit another version and will have the default authorization settings, just like the first version of a new type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "interface_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of Defined Interface URNs that this Runtime Defined Entity Type is referenced by",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nss": {
+                "type": "string",
+                "description": "A unique namespace associated with the Runtime Defined Entity Type. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "readonly": {
+                "type": "bool",
+                "description": "True if the Runtime Defined Entity Type cannot be modified",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schema": {
+                "type": "string",
+                "description": "The JSON-Schema valid definition of the Runtime Defined Entity Type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vendor": {
+                "type": "string",
+                "description": "The vendor name of the Runtime Defined Entity Type. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "The version of the Runtime Defined Entity Type. The version string follows semantic versioning rules. Combination of `vendor`, `nss` and `version` must be unique",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -16829,6 +18360,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "prefix_length": {
+                "type": "string",
+                "description": "Subnet prefix length",
+                "description_kind": "plain",
+                "computed": true
+              },
               "retain_ip_mac_enabled": {
                 "type": "bool",
                 "description": "Specifies whether the network resources such as IP/MAC of router will be retained across deployments.",
@@ -17185,6 +18722,15 @@
                 "description": "VM placement policy ID.",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "security_tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Security tags assigned to this VM",
+                "description_kind": "plain",
                 "computed": true
               },
               "sizing_policy_id": {
@@ -17680,6 +19226,15 @@
                 "description": "VM placement policy ID.",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "security_tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Security tags assigned to this VM",
+                "description_kind": "plain",
                 "computed": true
               },
               "sizing_policy_id": {

@@ -3587,6 +3587,12 @@
                             "description_kind": "plain",
                             "required": true
                           },
+                          "node_role": {
+                            "type": "string",
+                            "description": "The EKS node group node role ARN",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "request_spot_instances": {
                             "type": "bool",
                             "description": "Enable EKS node group request spot instances",
@@ -3607,7 +3613,7 @@
                               "list",
                               "string"
                             ],
-                            "description": "The EKS node group spot instace types",
+                            "description": "The EKS node group spot instance types",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -7449,101 +7455,6 @@
                 },
                 "max_items": 1
               },
-              "scheduled_cluster_scan": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "enabled": {
-                      "type": "bool",
-                      "description": "Enable scheduled cluster scan",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "block_types": {
-                    "scan_config": {
-                      "nesting_mode": "list",
-                      "block": {
-                        "block_types": {
-                          "cis_scan_config": {
-                            "nesting_mode": "list",
-                            "block": {
-                              "attributes": {
-                                "debug_master": {
-                                  "type": "bool",
-                                  "description": "Debug master",
-                                  "description_kind": "plain",
-                                  "optional": true
-                                },
-                                "debug_worker": {
-                                  "type": "bool",
-                                  "description": "Debug worker",
-                                  "description_kind": "plain",
-                                  "optional": true
-                                },
-                                "override_benchmark_version": {
-                                  "type": "string",
-                                  "description": "Override Benchmark Version",
-                                  "description_kind": "plain",
-                                  "optional": true
-                                },
-                                "override_skip": {
-                                  "type": [
-                                    "list",
-                                    "string"
-                                  ],
-                                  "description_kind": "plain",
-                                  "optional": true
-                                },
-                                "profile": {
-                                  "type": "string",
-                                  "description": "Profile",
-                                  "description_kind": "plain",
-                                  "optional": true
-                                }
-                              },
-                              "description": "The cluster cis scan config",
-                              "description_kind": "plain"
-                            },
-                            "max_items": 1
-                          }
-                        },
-                        "description": "Cluster scan config",
-                        "description_kind": "plain"
-                      },
-                      "min_items": 1,
-                      "max_items": 1
-                    },
-                    "schedule_config": {
-                      "nesting_mode": "list",
-                      "block": {
-                        "attributes": {
-                          "cron_schedule": {
-                            "type": "string",
-                            "description": "Crontab schedule",
-                            "description_kind": "plain",
-                            "required": true
-                          },
-                          "retention": {
-                            "type": "number",
-                            "description": "Cluster scan retention",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "computed": true
-                          }
-                        },
-                        "description": "Schedule cluster scan config",
-                        "description_kind": "plain"
-                      },
-                      "min_items": 1,
-                      "max_items": 1
-                    }
-                  },
-                  "description": "Cluster scheduled scan",
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -8003,451 +7914,6 @@
               }
             },
             "block_types": {
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "create": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "delete": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "update": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "rancher2_cluster_logging": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "annotations": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description": "Annotations of the resource",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "cluster_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "enable_json_parsing": {
-                "type": "bool",
-                "description": "Optional enable json log parsing",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kind": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "labels": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description": "Labels of the resource",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "namespace_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "output_flush_interval": {
-                "type": "number",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "output_tags": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              }
-            },
-            "block_types": {
-              "custom_target_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "content": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "elasticsearch_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "auth_password": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "auth_username": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key_pass": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "date_format": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "index_prefix": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "ssl_verify": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "ssl_version": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "fluentd_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "compress": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "enable_tls": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "block_types": {
-                    "fluent_servers": {
-                      "nesting_mode": "list",
-                      "block": {
-                        "attributes": {
-                          "endpoint": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "required": true
-                          },
-                          "hostname": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true
-                          },
-                          "password": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "sensitive": true
-                          },
-                          "shared_key": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "sensitive": true
-                          },
-                          "standby": {
-                            "type": "bool",
-                            "description_kind": "plain",
-                            "optional": true
-                          },
-                          "username": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "sensitive": true
-                          },
-                          "weight": {
-                            "type": "number",
-                            "description_kind": "plain",
-                            "optional": true
-                          }
-                        },
-                        "description_kind": "plain"
-                      },
-                      "min_items": 1
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "kafka_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "broker_endpoints": {
-                      "type": [
-                        "list",
-                        "string"
-                      ],
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "topic": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "zookeeper_endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "splunk_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key_pass": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "index": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "source": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "ssl_verify": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "token": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true,
-                      "sensitive": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "syslog_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "enable_tls": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "program": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "protocol": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "severity": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "ssl_verify": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "token": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -11552,101 +11018,6 @@
                             },
                             "min_items": 1,
                             "max_items": 1
-                          },
-                          "scheduled_cluster_scan": {
-                            "nesting_mode": "list",
-                            "block": {
-                              "attributes": {
-                                "enabled": {
-                                  "type": "bool",
-                                  "description": "Enable scheduled cluster scan",
-                                  "description_kind": "plain",
-                                  "optional": true
-                                }
-                              },
-                              "block_types": {
-                                "scan_config": {
-                                  "nesting_mode": "list",
-                                  "block": {
-                                    "block_types": {
-                                      "cis_scan_config": {
-                                        "nesting_mode": "list",
-                                        "block": {
-                                          "attributes": {
-                                            "debug_master": {
-                                              "type": "bool",
-                                              "description": "Debug master",
-                                              "description_kind": "plain",
-                                              "optional": true
-                                            },
-                                            "debug_worker": {
-                                              "type": "bool",
-                                              "description": "Debug worker",
-                                              "description_kind": "plain",
-                                              "optional": true
-                                            },
-                                            "override_benchmark_version": {
-                                              "type": "string",
-                                              "description": "Override Benchmark Version",
-                                              "description_kind": "plain",
-                                              "optional": true
-                                            },
-                                            "override_skip": {
-                                              "type": [
-                                                "list",
-                                                "string"
-                                              ],
-                                              "description_kind": "plain",
-                                              "optional": true
-                                            },
-                                            "profile": {
-                                              "type": "string",
-                                              "description": "Profile",
-                                              "description_kind": "plain",
-                                              "optional": true
-                                            }
-                                          },
-                                          "description": "The cluster cis scan config",
-                                          "description_kind": "plain"
-                                        },
-                                        "max_items": 1
-                                      }
-                                    },
-                                    "description": "Cluster scan config",
-                                    "description_kind": "plain"
-                                  },
-                                  "min_items": 1,
-                                  "max_items": 1
-                                },
-                                "schedule_config": {
-                                  "nesting_mode": "list",
-                                  "block": {
-                                    "attributes": {
-                                      "cron_schedule": {
-                                        "type": "string",
-                                        "description": "Crontab schedule",
-                                        "description_kind": "plain",
-                                        "required": true
-                                      },
-                                      "retention": {
-                                        "type": "number",
-                                        "description": "Cluster scan retention",
-                                        "description_kind": "plain",
-                                        "optional": true,
-                                        "computed": true
-                                      }
-                                    },
-                                    "description": "Schedule cluster scan config",
-                                    "description_kind": "plain"
-                                  },
-                                  "min_items": 1,
-                                  "max_items": 1
-                                }
-                              },
-                              "description": "Cluster scheduled scan",
-                              "description_kind": "plain"
-                            },
-                            "max_items": 1
                           }
                         },
                         "description": "Cluster configuration",
@@ -13690,9 +13061,21 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "accelerated_networking": {
+                      "type": "bool",
+                      "description": "Use Accelerated Networking when creating a network interface for the Azure VM",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "availability_set": {
                       "type": "string",
                       "description": "Azure Availability Set to place the virtual machine into",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "availability_zone": {
+                      "type": "string",
+                      "description": "The Availability Zone that the Azure VM should be created in",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -13846,6 +13229,12 @@
                       "optional": true,
                       "sensitive": true
                     },
+                    "tags": {
+                      "type": "string",
+                      "description": "Tags to be applied to the Azure VM instance (e.g. key1,value1,key2,value2)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "tenant_id": {
                       "type": "string",
                       "description": "Azure Tenant ID",
@@ -13862,6 +13251,12 @@
                     "use_private_ip": {
                       "type": "bool",
                       "description": "Use private IP address of the machine to connect",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "use_public_ip_standard_sku": {
+                      "type": "bool",
+                      "description": "Use the standard SKU when creating a Public IP for the Azure VM instance",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -13986,19 +13381,28 @@
                       "type": "string",
                       "description": "Disk bus",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
+                    },
+                    "disk_info": {
+                      "type": "string",
+                      "description": "A JSON string specifying info for the disks e.g. `{\"disks\":[{\"imageName\":\"harvester-public/image-57hzg\",\"bootOrder\":1,\"size\":40},{\"storageClassName\":\"node-driver-test\",\"bootOrder\":2,\"size\":1}]}`",
+                      "description_kind": "plain",
+                      "required": true
                     },
                     "disk_size": {
                       "type": "string",
                       "description": "Disk size (in GiB)",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "image_name": {
                       "type": "string",
                       "description": "Image name",
                       "description_kind": "plain",
-                      "required": true
+                      "deprecated": true,
+                      "optional": true
                     },
                     "memory_size": {
                       "type": "string",
@@ -14012,17 +13416,25 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "network_info": {
+                      "type": "string",
+                      "description": "A JSON string specifying info for the networks e.g. `{\"interfaces\":[{\"networkName\":\"harvester-public/vlan1\"},{\"networkName\":\"harvester-public/vlan2\"}]}`",
+                      "description_kind": "plain",
+                      "required": true
+                    },
                     "network_model": {
                       "type": "string",
                       "description": "Network model",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "network_name": {
                       "type": "string",
                       "description": "Network name",
                       "description_kind": "plain",
-                      "required": true
+                      "deprecated": true,
+                      "optional": true
                     },
                     "ssh_password": {
                       "type": "string",
@@ -14039,7 +13451,13 @@
                     },
                     "user_data": {
                       "type": "string",
-                      "description": "UserData content of cloud-init, base64 is supported",
+                      "description": "UserData content of cloud-init, base64 is supported. If the image does not contain the qemu-guest-agent package, you must install and start qemu-guest-agent using userdata",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vm_affinity": {
+                      "type": "string",
+                      "description": "VM affinity, base64 is supported",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -15665,9 +15083,21 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "accelerated_networking": {
+                      "type": "bool",
+                      "description": "Enable Accelerated Networking when creating an Azure Network Interface",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "availability_set": {
                       "type": "string",
                       "description": "Azure Availability Set to place the virtual machine into",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "availability_zone": {
+                      "type": "string",
+                      "description": "The Azure Availability Zone the VM should be created in",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -15821,6 +15251,12 @@
                       "optional": true,
                       "sensitive": true
                     },
+                    "tags": {
+                      "type": "string",
+                      "description": "Tags to be applied to the Azure VM instance (e.g. key1,value1,key2,value2)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "update_domain_count": {
                       "type": "string",
                       "description": "Update domain count to use for availability set",
@@ -15830,6 +15266,12 @@
                     "use_private_ip": {
                       "type": "bool",
                       "description": "Use private IP address of the machine to connect",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "use_public_ip_standard_sku": {
+                      "type": "bool",
+                      "description": "Use the Standard SKU when creating a public IP for an Azure VM",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -15953,19 +15395,28 @@
                       "type": "string",
                       "description": "Disk bus",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
+                    },
+                    "disk_info": {
+                      "type": "string",
+                      "description": "A JSON string specifying info for the disks e.g. `{\"disks\":[{\"imageName\":\"harvester-public/image-57hzg\",\"bootOrder\":1,\"size\":40},{\"storageClassName\":\"node-driver-test\",\"bootOrder\":2,\"size\":1}]}`",
+                      "description_kind": "plain",
+                      "required": true
                     },
                     "disk_size": {
                       "type": "string",
                       "description": "Disk size (in GiB)",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "image_name": {
                       "type": "string",
                       "description": "Image name",
                       "description_kind": "plain",
-                      "required": true
+                      "deprecated": true,
+                      "optional": true
                     },
                     "memory_size": {
                       "type": "string",
@@ -15979,17 +15430,25 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "network_info": {
+                      "type": "string",
+                      "description": "A JSON string specifying info for the networks e.g. `{\"interfaces\":[{\"networkName\":\"harvester-public/vlan1\"},{\"networkName\":\"harvester-public/vlan2\"}]}`",
+                      "description_kind": "plain",
+                      "required": true
+                    },
                     "network_model": {
                       "type": "string",
                       "description": "Network model",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "network_name": {
                       "type": "string",
                       "description": "Network name",
                       "description_kind": "plain",
-                      "required": true
+                      "deprecated": true,
+                      "optional": true
                     },
                     "ssh_password": {
                       "type": "string",
@@ -16006,7 +15465,13 @@
                     },
                     "user_data": {
                       "type": "string",
-                      "description": "UserData content of cloud-init, base64 is supported",
+                      "description": "UserData content of cloud-init, base64 is supported. If the image does not contain the qemu-guest-agent package, you must install and start qemu-guest-agent using userdata",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vm_affinity": {
+                      "type": "string",
+                      "description": "VM affinity, base64 is supported",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -18289,451 +17754,6 @@
             "description_kind": "plain"
           }
         },
-        "rancher2_project_logging": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "annotations": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description": "Annotations of the resource",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "enable_json_parsing": {
-                "type": "bool",
-                "description": "Optional enable json log parsing",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kind": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "labels": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description": "Labels of the resource",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "namespace_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "output_flush_interval": {
-                "type": "number",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "output_tags": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "project_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              }
-            },
-            "block_types": {
-              "custom_target_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "content": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "elasticsearch_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "auth_password": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "auth_username": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key_pass": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "date_format": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "index_prefix": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "ssl_verify": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "ssl_version": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "fluentd_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "compress": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "enable_tls": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "block_types": {
-                    "fluent_servers": {
-                      "nesting_mode": "list",
-                      "block": {
-                        "attributes": {
-                          "endpoint": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "required": true
-                          },
-                          "hostname": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true
-                          },
-                          "password": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "sensitive": true
-                          },
-                          "shared_key": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "sensitive": true
-                          },
-                          "standby": {
-                            "type": "bool",
-                            "description_kind": "plain",
-                            "optional": true
-                          },
-                          "username": {
-                            "type": "string",
-                            "description_kind": "plain",
-                            "optional": true,
-                            "sensitive": true
-                          },
-                          "weight": {
-                            "type": "number",
-                            "description_kind": "plain",
-                            "optional": true
-                          }
-                        },
-                        "description_kind": "plain"
-                      },
-                      "min_items": 1
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "kafka_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "broker_endpoints": {
-                      "type": [
-                        "list",
-                        "string"
-                      ],
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "topic": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "zookeeper_endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "splunk_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key_pass": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "index": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "source": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "ssl_verify": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "token": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true,
-                      "sensitive": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "syslog_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "certificate": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_cert": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "client_key": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "enable_tls": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "endpoint": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "program": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "protocol": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "severity": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "ssl_verify": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "token": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "create": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "delete": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "update": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
         "rancher2_project_role_template_binding": {
           "version": 0,
           "block": {
@@ -20445,6 +19465,7 @@
                             "max_size": "number",
                             "min_size": "number",
                             "name": "string",
+                            "node_role": "string",
                             "request_spot_instances": "bool",
                             "resource_tags": [
                               "map",
@@ -21826,54 +20847,6 @@
                 "description_kind": "plain",
                 "computed": true
               },
-              "scheduled_cluster_scan": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "enabled": "bool",
-                      "scan_config": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "cis_scan_config": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "debug_master": "bool",
-                                  "debug_worker": "bool",
-                                  "override_benchmark_version": "string",
-                                  "override_skip": [
-                                    "list",
-                                    "string"
-                                  ],
-                                  "profile": "string"
-                                }
-                              ]
-                            ]
-                          }
-                        ]
-                      ],
-                      "schedule_config": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "cron_schedule": "string",
-                            "retention": "number"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description": "Cluster scheduled scan",
-                "description_kind": "plain",
-                "computed": true
-              },
               "system_project_id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -22186,208 +21159,6 @@
             "description_kind": "plain"
           }
         },
-        "rancher2_cluster_logging": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "annotations": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "cluster_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "custom_target_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "content": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "elasticsearch_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "auth_password": "string",
-                      "auth_username": "string",
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "client_key_pass": "string",
-                      "date_format": "string",
-                      "endpoint": "string",
-                      "index_prefix": "string",
-                      "ssl_verify": "bool",
-                      "ssl_version": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "enable_json_parsing": {
-                "type": "bool",
-                "description": "Optional enable json log parsing",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "fluentd_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "compress": "bool",
-                      "enable_tls": "bool",
-                      "fluent_servers": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "endpoint": "string",
-                            "hostname": "string",
-                            "password": "string",
-                            "shared_key": "string",
-                            "standby": "bool",
-                            "username": "string",
-                            "weight": "number"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kafka_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "broker_endpoints": [
-                        "list",
-                        "string"
-                      ],
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "topic": "string",
-                      "zookeeper_endpoint": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "kind": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "labels": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "namespace_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "output_flush_interval": {
-                "type": "number",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "output_tags": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "splunk_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "client_key_pass": "string",
-                      "endpoint": "string",
-                      "index": "string",
-                      "source": "string",
-                      "ssl_verify": "bool",
-                      "token": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "syslog_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "enable_tls": "bool",
-                      "endpoint": "string",
-                      "program": "string",
-                      "protocol": "string",
-                      "severity": "string",
-                      "ssl_verify": "bool",
-                      "token": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
         "rancher2_cluster_role_template_binding": {
           "version": 0,
           "block": {
@@ -22447,96 +21218,6 @@
               },
               "user_principal_id": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "rancher2_cluster_scan": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "annotations": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "cluster_id": {
-                "type": "string",
-                "description": "The cluster ID to scan",
-                "description_kind": "plain",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "labels": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description": "The cluster scan name",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "run_type": {
-                "type": "string",
-                "description": "The cluster scan run type",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "scan_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "cis_scan_config": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "debug_master": "bool",
-                            "debug_worker": "bool",
-                            "override_benchmark_version": "string",
-                            "override_skip": [
-                              "list",
-                              "string"
-                            ],
-                            "profile": "string"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description": "The cluster scan config",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "scan_type": {
-                "type": "string",
-                "description": "The cluster scan type",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "status": {
-                "type": "string",
-                "description": "The cluster scan status",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -23579,49 +22260,6 @@
                                     ]
                                   ],
                                   "win_prefix_path": "string"
-                                }
-                              ]
-                            ],
-                            "scheduled_cluster_scan": [
-                              "list",
-                              [
-                                "object",
-                                {
-                                  "enabled": "bool",
-                                  "scan_config": [
-                                    "list",
-                                    [
-                                      "object",
-                                      {
-                                        "cis_scan_config": [
-                                          "list",
-                                          [
-                                            "object",
-                                            {
-                                              "debug_master": "bool",
-                                              "debug_worker": "bool",
-                                              "override_benchmark_version": "string",
-                                              "override_skip": [
-                                                "list",
-                                                "string"
-                                              ],
-                                              "profile": "string"
-                                            }
-                                          ]
-                                        ]
-                                      }
-                                    ]
-                                  ],
-                                  "schedule_config": [
-                                    "list",
-                                    [
-                                      "object",
-                                      {
-                                        "cron_schedule": "string",
-                                        "retention": "number"
-                                      }
-                                    ]
-                                  ]
                                 }
                               ]
                             ],
@@ -26006,208 +24644,6 @@
                   ]
                 ],
                 "description": "Alert workload rule",
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "rancher2_project_logging": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "annotations": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "custom_target_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "content": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "elasticsearch_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "auth_password": "string",
-                      "auth_username": "string",
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "client_key_pass": "string",
-                      "date_format": "string",
-                      "endpoint": "string",
-                      "index_prefix": "string",
-                      "ssl_verify": "bool",
-                      "ssl_version": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "enable_json_parsing": {
-                "type": "bool",
-                "description": "Optional enable json log parsing",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "fluentd_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "compress": "bool",
-                      "enable_tls": "bool",
-                      "fluent_servers": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "endpoint": "string",
-                            "hostname": "string",
-                            "password": "string",
-                            "shared_key": "string",
-                            "standby": "bool",
-                            "username": "string",
-                            "weight": "number"
-                          }
-                        ]
-                      ]
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "kafka_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "broker_endpoints": [
-                        "list",
-                        "string"
-                      ],
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "topic": "string",
-                      "zookeeper_endpoint": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "kind": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "labels": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "namespace_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "output_flush_interval": {
-                "type": "number",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "output_tags": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "project_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "splunk_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "client_key_pass": "string",
-                      "endpoint": "string",
-                      "index": "string",
-                      "source": "string",
-                      "ssl_verify": "bool",
-                      "token": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
-              "syslog_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "certificate": "string",
-                      "client_cert": "string",
-                      "client_key": "string",
-                      "enable_tls": "bool",
-                      "endpoint": "string",
-                      "program": "string",
-                      "protocol": "string",
-                      "severity": "string",
-                      "ssl_verify": "bool",
-                      "token": "string"
-                    }
-                  ]
-                ],
                 "description_kind": "plain",
                 "computed": true
               }
