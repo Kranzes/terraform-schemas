@@ -2189,13 +2189,15 @@
                       "type": "string",
                       "description": "SAML single login URL for the connection.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "sign_out_endpoint": {
                       "type": "string",
                       "description": "SAML single logout URL for the connection.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "sign_saml_request": {
                       "type": "bool",
@@ -2213,7 +2215,8 @@
                       "type": "string",
                       "description": "X.509 signing certificate (encoded in PEM or CER) you retrieved from the IdP, Base64-encoded.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "strategy_version": {
                       "type": "number",
@@ -3971,7 +3974,7 @@
                     },
                     "provider": {
                       "type": "string",
-                      "description": "Provider to use, one of `guardian`, `sns`.",
+                      "description": "Provider to use, one of `direct`, `guardian`, `sns`.",
                       "description_kind": "markdown",
                       "optional": true
                     }
@@ -4042,6 +4045,59 @@
                           }
                         },
                         "description": "Configuration for the Guardian Custom App.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "direct_apns": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "bundle_id": {
+                            "type": "string",
+                            "description": "The Apple Push Notification service Bundle ID.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Indicates whether the Apple Push Notification service is enabled.",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "p12": {
+                            "type": "string",
+                            "description": "The base64 encoded certificate in P12 format.",
+                            "description_kind": "markdown",
+                            "required": true,
+                            "sensitive": true
+                          },
+                          "sandbox": {
+                            "type": "bool",
+                            "description": "Set to true to use the sandbox iOS app environment, otherwise set to false to use the production iOS app environment.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description": "Configuration for the Apple Push Notification service (APNs) settings.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "direct_fcm": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "server_key": {
+                            "type": "string",
+                            "description": "The Firebase Cloud Messaging Server Key. For security purposes, we don’t retrieve your existing FCM server key to check for drift.",
+                            "description_kind": "markdown",
+                            "required": true,
+                            "sensitive": true
+                          }
+                        },
+                        "description": "Configuration for Firebase Cloud Messaging (FCM) settings.",
                         "description_kind": "markdown"
                       },
                       "max_items": 1
@@ -4646,15 +4702,6 @@
                 "description_kind": "markdown",
                 "optional": true
               },
-              "options": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description": "Used to store additional metadata.",
-                "description_kind": "markdown",
-                "optional": true
-              },
               "signing_alg": {
                 "type": "string",
                 "description": "Algorithm used to sign JWTs. Options include `HS256` and `RS256`.",
@@ -5125,6 +5172,13 @@
                     "enable_public_signup_user_exists_error": {
                       "type": "bool",
                       "description": "Indicates whether the public sign up process shows a `user_exists` error if the user already exists.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "mfa_show_factor_list_on_enrollment": {
+                      "type": "bool",
+                      "description": "Used to allow users to pick which factor to enroll with from the list of available MFA factors.",
                       "description_kind": "markdown",
                       "optional": true,
                       "computed": true
@@ -7264,15 +7318,6 @@
                 "description_kind": "markdown",
                 "computed": true
               },
-              "options": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description": "Used to store additional metadata.",
-                "description_kind": "markdown",
-                "computed": true
-              },
               "resource_server_id": {
                 "type": "string",
                 "description": "The ID of the resource server. If not provided, `identifier` must be set.",
@@ -7490,6 +7535,7 @@
                       "enable_legacy_profile": "bool",
                       "enable_pipeline2": "bool",
                       "enable_public_signup_user_exists_error": "bool",
+                      "mfa_show_factor_list_on_enrollment": "bool",
                       "no_disclose_enterprise_connections": "bool",
                       "revoke_refresh_token_grant": "bool",
                       "universal_login": "bool",

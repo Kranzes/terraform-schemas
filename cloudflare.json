@@ -3861,7 +3861,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`.",
+                "description": "The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`.",
                 "description_kind": "markdown",
                 "required": true
               }
@@ -6235,7 +6235,7 @@
               },
               "dataset": {
                 "type": "string",
-                "description": "Uniquely identifies a resource (such as an s3 bucket) where data will be pushed. Additional configuration parameters supported by the destination may be included. See [Logpush destination documentation](https://developers.cloudflare.com/logs/reference/logpush-api-configuration#destination). Available values: `access_requests`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`.",
+                "description": "The kind of the dataset to use with the logpush job. Available values: `access_requests`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`, `device_posture_results`, `zero_trust_network_sessions`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -6278,6 +6278,24 @@
               "logpull_options": {
                 "type": "string",
                 "description": "Configuration string for the Logshare API. It specifies things like requested fields and timestamp formats. See [Logpush options documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#options).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "max_upload_bytes": {
+                "type": "number",
+                "description": "The maximum uncompressed file size of a batch of logs. Value must be between 5MB and 1GB.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "max_upload_interval_seconds": {
+                "type": "number",
+                "description": "The maximum interval in seconds for log batches. Value must be between 30 and 300.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "max_upload_records": {
+                "type": "number",
+                "description": "The maximum number of log lines per batch. Value must be between 1000 and 1,000,000.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -6653,6 +6671,15 @@
                         "string"
                       ],
                       "description": "A numerical limit. Example: `100`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "megabits_per_second": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Megabits per second threshold for dos alert.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -7579,6 +7606,16 @@
                             "description_kind": "markdown",
                             "optional": true
                           },
+                          "secrets": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Encrypted environment variables for Pages Functions.",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "sensitive": true
+                          },
                           "usage_model": {
                             "type": "string",
                             "description": "Usage model used for Pages Functions. Defaults to `bundled`.",
@@ -7698,6 +7735,16 @@
                             "description": "R2 Buckets used for Pages Functions.",
                             "description_kind": "markdown",
                             "optional": true
+                          },
+                          "secrets": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Encrypted environment variables for Pages Functions.",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "sensitive": true
                           },
                           "usage_model": {
                             "type": "string",
@@ -8409,6 +8456,65 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_regional_hostname": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "created_on": {
+                "type": "string",
+                "description": "The RFC3339 timestamp of when the hostname was created.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "The hostname to regionalize.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region_key": {
+                "type": "string",
+                "description": "The region key. See [the full region list](https://developers.cloudflare.com/data-localization/regional-services/get-started/).",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Provides a Data Localization Suite Regional Hostname.",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_ruleset": {
           "version": 0,
           "block": {
@@ -8748,6 +8854,21 @@
                           }
                         },
                         "block_types": {
+                          "algorithms": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "Name of the compression algorithm to use. Available values: `gzip`, `brotli`, `default`, `none`",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description": "Compression algorithms to use in order of preference.",
+                              "description_kind": "markdown"
+                            }
+                          },
                           "autominify": {
                             "nesting_mode": "list",
                             "block": {
@@ -10961,6 +11082,75 @@
               }
             },
             "description": "Provides a resource, that manages Cloudflare tunnel virtual networks\nfor Zero Trust. Tunnel virtual networks are used for segregation of\nTunnel IP Routes via Virtualized Networks to handle overlapping\nprivate IPs in your origins.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_turnstile_widget": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "bot_fight_mode": {
+                "type": "bool",
+                "description": "If bot_fight_mode is set to true, Cloudflare issues computationally expensive challenges in response to malicious bots (Enterprise only).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "domains": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Domains where the widget is deployed",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The identifier of this resource. This is the site key value.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Widget Mode",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Human readable widget name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "offlabel": {
+                "type": "bool",
+                "description": "Do not show any Cloudflare branding on the widget (Enterprise only).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region where this widget can be used.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "Secret key for this widget.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description": "The [Challenge Widget](https://developers.cloudflare.com/turnstile/) resource allows you to manage Cloudflare Turnstile Widgets.\n",
             "description_kind": "markdown"
           }
         },
