@@ -10,7 +10,12 @@
       systems = inputs.nixpkgs.lib.systems.flakeExposed;
       imports = [ inputs.hercules-ci-effects.flakeModule ];
 
-      perSystem = { pkgs, config, ... }: {
+      perSystem = { pkgs, system, config, ... }: {
+        _module.args.pkgs = import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+
         legacyPackages.generateSchema = pkgs.callPackage ./generator.nix { };
 
         packages = builtins.mapAttrs (provider: _: config.legacyPackages.generateSchema [ provider ]) pkgs.terraform-providers.actualProviders // {
