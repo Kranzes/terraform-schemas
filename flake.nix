@@ -25,9 +25,10 @@
 
       hercules-ci.flake-update = {
         enable = true;
-        updateBranch = "master";
-        createPullRequest = false;
-        # Update  everynight at midnight
+        baseMerge.enable = true;
+        baseMerge.method = "rebase";
+        autoMergeMethod = "rebase";
+        # Update everynight at midnight
         when = {
           hour = [ 0 ];
           minute = 0;
