@@ -111,6 +111,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "block_types": {
@@ -344,6 +349,121 @@
                 "description": "Version of your registry",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_cloud_project_containerregistry_oidc": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "delete_users": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "oidc_admin_group": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_auto_onboard": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_client_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "oidc_client_secret": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "oidc_endpoint": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "oidc_groups_claim": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "oidc_scope": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "oidc_user_claim": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_verify_cert": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "registry_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -840,6 +960,69 @@
               "topic": {
                 "type": "string",
                 "description": "Topic affected by this acl",
+                "description_kind": "plain",
+                "required": true
+              },
+              "username": {
+                "type": "string",
+                "description": "Username affected by this acl",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_cloud_project_database_kafka_schemaregistryacl": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description": "Id of the database cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "permission": {
+                "type": "string",
+                "description": "Permission to give to this username on this resource",
+                "description_kind": "plain",
+                "required": true
+              },
+              "resource": {
+                "type": "string",
+                "description": "Resource affected by this acl",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
                 "description_kind": "plain",
                 "required": true
               },
@@ -2303,7 +2486,7 @@
                             ],
                             "description": "annotations",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           },
                           "finalizers": {
                             "type": [
@@ -2312,7 +2495,7 @@
                             ],
                             "description": "finalizers",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           },
                           "labels": {
                             "type": [
@@ -2321,12 +2504,13 @@
                             ],
                             "description": "labels",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           }
                         },
                         "description": "metadata",
                         "description_kind": "plain"
                       },
+                      "min_items": 1,
                       "max_items": 1
                     },
                     "spec": {
@@ -2343,18 +2527,19 @@
                             ],
                             "description": "taints",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           },
                           "unschedulable": {
                             "type": "bool",
                             "description": "unschedulable",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           }
                         },
                         "description": "spec",
                         "description_kind": "plain"
                       },
+                      "min_items": 1,
                       "max_items": 1
                     }
                   },
@@ -4008,6 +4193,11 @@
                 "description_kind": "plain",
                 "deprecated": true,
                 "optional": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "block_types": {
@@ -4365,6 +4555,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "version": {
                 "type": "string",
                 "description": "Private database available versions",
@@ -4639,6 +4834,82 @@
                 "description": "Authorize this IP to access SFTP port",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_iam_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allow": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "except": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "identities": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "owner": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "read_only": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resources": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -5019,6 +5290,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "vrack_eligibility": {
                 "type": "bool",
                 "description": "Vrack eligibility",
@@ -5368,7 +5644,7 @@
               },
               "dedicated_ipfo": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description_kind": "plain",
@@ -6084,6 +6360,55 @@
             "description_kind": "plain"
           }
         },
+        "ovh_me_identity_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default_group": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "last_update": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "ovh_me_identity_user": {
           "version": 0,
           "block": {
@@ -6146,6 +6471,11 @@
               "status": {
                 "type": "string",
                 "description": "Current user's status",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "urn": {
+                "type": "string",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -6631,6 +6961,11 @@
               "service_name": {
                 "type": "string",
                 "description": "The internal name of your vrack",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "urn": {
+                "type": "string",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -7166,6 +7501,77 @@
                 "description": "Version of your registry",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_cloud_project_containerregistry_oidc": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "oidc_admin_group": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_auto_onboard": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_client_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_endpoint": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_groups_claim": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_scope": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_user_claim": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "oidc_verify_cert": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "registry_id": {
+                "type": "string",
+                "description": "Registry ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Service name",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -7769,6 +8175,83 @@
                   "string"
                 ],
                 "description": "List of acl ids",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "Id of the database cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "service_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_cloud_project_database_kafka_schemaregistryacl": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description": "Id of the database cluster",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Shema registry ACL ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permission": {
+                "type": "string",
+                "description": "Permission to give to this username on this resource",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resource": {
+                "type": "string",
+                "description": "Resource affected by this ACL",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "username": {
+                "type": "string",
+                "description": "Username affected by this ACL",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_cloud_project_database_kafka_schemaregistryacls": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acl_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of schema registry acl ids",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -9662,6 +10145,11 @@
                 "description": "The service name",
                 "description_kind": "plain",
                 "required": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -9922,6 +10410,11 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -10000,6 +10493,11 @@
                 "description": "The storage service name",
                 "description_kind": "plain",
                 "required": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               },
               "zpool_capacity": {
                 "type": "number",
@@ -10159,6 +10657,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "vnis": {
                 "type": [
                   "list",
@@ -10285,6 +10788,11 @@
                 ],
                 "description_kind": "plain",
                 "computed": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -10392,6 +10900,11 @@
               "type": {
                 "type": "string",
                 "description": "Private database type",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "urn": {
+                "type": "string",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -10629,6 +11142,163 @@
             "description_kind": "plain"
           }
         },
+        "ovh_iam_policies": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policies": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_iam_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allow": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "except": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "identities": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "owner": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "read_only": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "resources": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_iam_reference_actions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "actions": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "action": "string",
+                      "categories": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "string",
+                      "resource_type": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_iam_reference_resource_type": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "types": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "ovh_ip_service": {
           "version": 0,
           "block": {
@@ -10772,6 +11442,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "urn": {
+                "type": "string",
+                "description_kind": "plain",
                 "computed": true
               },
               "vrack_eligibility": {
@@ -11070,6 +11745,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "urn": {
+                "type": "string",
+                "description": "Identity URN of the account",
+                "description_kind": "plain",
+                "computed": true
+              },
               "vat": {
                 "type": "string",
                 "description": "VAT number",
@@ -11080,6 +11761,72 @@
                 "type": "string",
                 "description": "Zipcode",
                 "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_me_identity_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "creation": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default_group": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "last_update": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "ovh_me_identity_groups": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "groups": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               }
             },
@@ -11141,6 +11888,11 @@
               "status": {
                 "type": "string",
                 "description": "Current user's status",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "urn": {
+                "type": "string",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -11590,7 +12342,7 @@
             "attributes": {
               "assign": {
                 "type": "bool",
-                "description": "Assign a shopping cart to an loggedin client",
+                "description": "Assign a shopping cart to a logged in client",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -12175,6 +12927,11 @@
                 "computed": true
               },
               "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "urn": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true

@@ -129,31 +129,31 @@
             "attributes": {
               "cidr": {
                 "type": "string",
-                "description": "The network address in cidr format under which record has to be created.",
+                "description": "Network to allocate an IP address from, when the 'ipv6_addr' field is empty (dynamic allocation). The address is in CIDR format. For static allocation, leave this field empty.",
                 "description_kind": "plain",
                 "optional": true
               },
               "comment": {
                 "type": "string",
-                "description": "A description about AAAA record.",
+                "description": "Description of the AAAA-record.",
                 "description_kind": "plain",
                 "optional": true
               },
               "dns_view": {
                 "type": "string",
-                "description": "Dns View under which the zone has been created.",
+                "description": "DNS view which the zone does exist within.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ext_attrs": {
                 "type": "string",
-                "description": "The Extensible attributes of AAAA record to be added/updated, as a map in JSON format",
+                "description": "Extensible attributes of the AAAA-record to be added/updated, as a map in JSON format",
                 "description_kind": "plain",
                 "optional": true
               },
               "fqdn": {
                 "type": "string",
-                "description": "The name of the AAAA record in FQDN format.",
+                "description": "FQDN for the AAAA-record.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -165,21 +165,21 @@
               },
               "ipv6_addr": {
                 "type": "string",
-                "description": "IPv6 address for record creation. Set the field with valid IP for static allocation. If to be dynamically allocated set cidr field",
+                "description": "IP address to associate with the AAAA-record. For static allocation, set the field with a valid IP address. For dynamic allocation, leave this field empty and set 'cidr' and 'network_view' fields.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
               "network_view": {
                 "type": "string",
-                "description": "Network view name of NIOS server.",
+                "description": "Network view to use when allocating an IP address from a network dynamically. For static allocation, leave this field empty.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
               "ttl": {
                 "type": "number",
-                "description": "TTL attribute value for the record.",
+                "description": "TTL value for the AAAA-record.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -230,6 +230,44 @@
               "ttl": {
                 "type": "number",
                 "description": "TTL attribute value for the record.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_dns_view": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Comment for the DNS View object; maximum 256 characters.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the DNS view to be added/updated, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the DNS View to be specified",
+                "description_kind": "plain",
+                "required": true
+              },
+              "network_view": {
+                "type": "string",
+                "description": "The name of the Network View in which DNS View exists.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -388,161 +426,6 @@
             "description_kind": "plain"
           }
         },
-        "infoblox_ipv4_allocation": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cidr": {
-                "type": "string",
-                "description": "The address in cidr format.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "A description of IP address allocation.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "Dns View under which the zone has been created.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "enable_dns": {
-                "type": "bool",
-                "description": "flag that defines if the host record is to be used for DNS Purposes.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The extensible attributes for IP address allocation, as a map in JSON format",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "The host name for Host Record in FQDN format.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ip_addr": {
-                "type": "string",
-                "description": "IP address of cloud instance.Set a valid IP for static allocation and leave empty if dynamically allocated.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "network_view": {
-                "type": "string",
-                "description": "Network view name of NIOS server.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
-                "description_kind": "plain",
-                "optional": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "infoblox_ipv4_association": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cidr": {
-                "type": "string",
-                "description": "The address in cidr format.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "A description of the IP association.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "view in which record has to be created.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "duid": {
-                "type": "string",
-                "description": "DHCP unique identifier for IPv6.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "enable_dhcp": {
-                "type": "bool",
-                "description": "flag that defines if the host record is to be used for IPAM Purposes.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "enable_dns": {
-                "type": "bool",
-                "description": "flag that defines if the host record is to be used for DNS Purposes",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes for IP Association, as a map in JSON format",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "The host name for Host Record in FQDN format.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ip_addr": {
-                "type": "string",
-                "description": "IP address of cloud instance.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "mac_addr": {
-                "type": "string",
-                "description": "mac address of cloud instance.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "network_view": {
-                "type": "string",
-                "description": "Network view name of NIOS server.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
-                "description_kind": "plain",
-                "optional": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
         "infoblox_ipv4_network": {
           "version": 0,
           "block": {
@@ -568,7 +451,7 @@
               },
               "ext_attrs": {
                 "type": "string",
-                "description": "The Extensible attributes of the Network, as a map in JSON format",
+                "description": "The Extensible attributes of the Network",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -619,11 +502,18 @@
           "version": 0,
           "block": {
             "attributes": {
+              "allocate_prefix_len": {
+                "type": "number",
+                "description": "Set the parameter's value > 0 to allocate next available network container with corresponding prefix length from the network container defined by 'parent_cidr'",
+                "description_kind": "plain",
+                "optional": true
+              },
               "cidr": {
                 "type": "string",
                 "description": "The network container's address, in CIDR format.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "comment": {
                 "type": "string",
@@ -648,159 +538,10 @@
                 "description": "The name of network view for the network container.",
                 "description_kind": "plain",
                 "optional": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "infoblox_ipv6_allocation": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cidr": {
+              },
+              "parent_cidr": {
                 "type": "string",
-                "description": "The address in cidr format.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "A description of IP address allocation.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "Dns View under which the zone has been created.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "enable_dns": {
-                "type": "bool",
-                "description": "flag that defines if the host record is to be used for DNS Purposes.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The extensible attributes for IP address allocation, as a map in JSON format",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "The host name for Host Record in FQDN format.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ip_addr": {
-                "type": "string",
-                "description": "IP address of cloud instance.Set a valid IP for static allocation and leave empty if dynamically allocated.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "network_view": {
-                "type": "string",
-                "description": "Network view name of NIOS server.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
-                "description_kind": "plain",
-                "optional": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "infoblox_ipv6_association": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "cidr": {
-                "type": "string",
-                "description": "The address in cidr format.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "A description of the IP association.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "view in which record has to be created.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "duid": {
-                "type": "string",
-                "description": "DHCP unique identifier for IPv6.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "enable_dhcp": {
-                "type": "bool",
-                "description": "flag that defines if the host record is to be used for IPAM Purposes.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "enable_dns": {
-                "type": "bool",
-                "description": "flag that defines if the host record is to be used for DNS Purposes",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes for IP Association, as a map in JSON format",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "The host name for Host Record in FQDN format.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ip_addr": {
-                "type": "string",
-                "description": "IP address of cloud instance.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "mac_addr": {
-                "type": "string",
-                "description": "mac address of cloud instance.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "network_view": {
-                "type": "string",
-                "description": "Network view name of NIOS server.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
+                "description": "The parent network container block in CIDR format to allocate from.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -833,7 +574,7 @@
               },
               "ext_attrs": {
                 "type": "string",
-                "description": "The Extensible attributes of the Network, as a map in JSON format",
+                "description": "The Extensible attributes of the Network",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -884,11 +625,18 @@
           "version": 0,
           "block": {
             "attributes": {
+              "allocate_prefix_len": {
+                "type": "number",
+                "description": "Set the parameter's value > 0 to allocate next available network container with corresponding prefix length from the network container defined by 'parent_cidr'",
+                "description_kind": "plain",
+                "optional": true
+              },
               "cidr": {
                 "type": "string",
                 "description": "The network container's address, in CIDR format.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "comment": {
                 "type": "string",
@@ -911,6 +659,12 @@
               "network_view": {
                 "type": "string",
                 "description": "The name of network view for the network container.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parent_cidr": {
+                "type": "string",
+                "description": "The parent network container block in CIDR format to allocate from.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -1194,6 +948,94 @@
             },
             "description_kind": "plain"
           }
+        },
+        "infoblox_zone_auth": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "comment": {
+                "type": "string",
+                "description": "Comment for the zone; maximum 256 characters.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ext_attrs": {
+                "type": "string",
+                "description": "The Extensible attributes of the zone, as a map in JSON format",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fqdn": {
+                "type": "string",
+                "description": "The name of this DNS zone. For a reverse zone, this is in 'address/cidr' format. For other zones, this is in FQDN format. This value can be in unicode format. Note that for a reverse zone, the corresponding zone_format value should be set.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ns_group": {
+                "type": "string",
+                "description": "The name server group that serves DNS for this zone.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "restart_if_needed": {
+                "type": "bool",
+                "description": "Restarts the member service.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "soa_default_ttl": {
+                "type": "number",
+                "description": "The Time to Live (TTL) value of the SOA record of this zone. This value is the number of seconds that data is cached.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "soa_expire": {
+                "type": "number",
+                "description": "This setting defines the amount of time, in seconds, after which the secondary server stops giving out answers about the zone because the zone data is too old to be useful. The default is one week.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "soa_negative_ttl": {
+                "type": "number",
+                "description": "The negative Time to Live (TTL) value of the SOA of the zone indicates how long a secondary server can cache data for 'Does Not Respond' responses.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "soa_refresh": {
+                "type": "number",
+                "description": "This indicates the interval at which a secondary server sends a message to the primary server for a zone to check that its data is current, and retrieve fresh data if it is not.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "soa_retry": {
+                "type": "number",
+                "description": "This indicates how long a secondary server must wait before attempting to recontact the primary server after a connection failure between the two servers occurs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "view": {
+                "type": "string",
+                "description": "The name of the DNS view in which the zone resides. Example: 'external'",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "zone_format": {
+                "type": "string",
+                "description": "Determines the format of this zone. Valid values are: FORWARD, IPV4, IPV6; the default is FORWARD",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
         }
       },
       "data_source_schemas": {
@@ -1201,50 +1043,38 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "Description of the A-record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "Extensible attributes of the A-record, as a map in JSON format",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "A record FQDN.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "ip_addr": {
-                "type": "string",
-                "description": "IP address the A-record points to",
-                "description_kind": "plain",
-                "required": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL value for the A-record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "zone": {
-                "type": "string",
-                "description": "The zone which the record belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "fqdn": "string",
+                      "id": "string",
+                      "ip_addr": "string",
+                      "ttl": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of A records matching filters",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1256,27 +1086,11 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "The content of 'comment' field at the AAAA-record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes of the AAAA-record",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "The name of the AAAA-record in FQDN format.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
               },
@@ -1286,21 +1100,24 @@
                 "optional": true,
                 "computed": true
               },
-              "ipv6_addr": {
-                "type": "string",
-                "description": "IPv6 address of the AAAA-record.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "zone": {
-                "type": "string",
-                "description": "The zone which the record belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "fqdn": "string",
+                      "id": "string",
+                      "ipv6_addr": "string",
+                      "ttl": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of AAAA Records matching filters.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1312,50 +1129,78 @@
           "version": 0,
           "block": {
             "attributes": {
-              "alias": {
-                "type": "string",
-                "description": "The alias name in FQDN format.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
-              },
-              "canonical": {
-                "type": "string",
-                "description": "The Canonical name in FQDN format.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "A description about CNAME record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes of CNAME record, as a map in JSON format",
-                "description_kind": "plain",
-                "computed": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "alias": "string",
+                      "canonical": "string",
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "ttl": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of CNAME Records matching filters",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_dns_view": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
               },
-              "zone": {
+              "id": {
                 "type": "string",
-                "description": "The zone which the record belongs to.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "name": "string",
+                      "network_view": "string"
+                    }
+                  ]
+                ],
+                "description": "List of DNS View matching filters.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1367,32 +1212,37 @@
           "version": 0,
           "block": {
             "attributes": {
-              "cidr": {
-                "type": "string",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "A string describing the network",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes for network datasource, as a map in JSON format",
-                "description_kind": "plain",
-                "computed": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "network_view": {
-                "type": "string",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cidr": "string",
+                      "comment": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "network_view": "string"
+                    }
+                  ]
+                ],
+                "description": "List of networks matching filters.",
                 "description_kind": "plain",
-                "optional": true
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -1402,23 +1252,13 @@
           "version": 0,
           "block": {
             "attributes": {
-              "cidr": {
-                "type": "string",
-                "description": "The CIDR value of the network container.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
-              },
-              "comment": {
-                "type": "string",
-                "description": "Network container's description.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes for the network container.",
-                "description_kind": "plain",
-                "computed": true
               },
               "id": {
                 "type": "string",
@@ -1426,11 +1266,23 @@
                 "optional": true,
                 "computed": true
               },
-              "network_view": {
-                "type": "string",
-                "description": "Newtwork view's name the network container belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cidr": "string",
+                      "comment": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "network_view": "string"
+                    }
+                  ]
+                ],
+                "description": "List of networks matching filters.",
                 "description_kind": "plain",
-                "optional": true
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -1440,56 +1292,39 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "Description of the TXT-Record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "Extensible attributes of the TXT-record, as a map in JSON format.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "FQDN for the MX-Record.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "mail_exchanger": {
-                "type": "string",
-                "description": "A record used to specify mail server.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "preference": {
-                "type": "number",
-                "description": "Configures the preference (0-65535) for this MX record.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL value for the TXT-Record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "zone": {
-                "type": "string",
-                "description": "The zone which the record belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "fqdn": "string",
+                      "id": "string",
+                      "mail_exchanger": "string",
+                      "preference": "number",
+                      "ttl": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of MX Records matching filters",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1501,17 +1336,13 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "Network view's description",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
-                "computed": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes of the network view.",
-                "description_kind": "plain",
-                "computed": true
+                "required": true
               },
               "id": {
                 "type": "string",
@@ -1519,11 +1350,22 @@
                 "optional": true,
                 "computed": true
               },
-              "name": {
-                "type": "string",
-                "description": "Name of the view shown in NIOS's UI.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "List of network views matching filters.",
                 "description_kind": "plain",
-                "required": true
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -1533,23 +1375,13 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "PTR-record's description.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "The Extensible attributes of the PTR-record.",
-                "description_kind": "plain",
-                "computed": true
+                "required": true
               },
               "id": {
                 "type": "string",
@@ -1557,35 +1389,25 @@
                 "optional": true,
                 "computed": true
               },
-              "ip_addr": {
-                "type": "string",
-                "description": "IPv4/IPv6 address the PTR-record points from.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ptrdname": {
-                "type": "string",
-                "description": "The domain name in FQDN which the record points to.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "record_name": {
-                "type": "string",
-                "description": "The name of the DNS PTR-record in FQDN format",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL attribute value for the record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "zone": {
-                "type": "string",
-                "description": "The zone which the record belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "ip_addr": "string",
+                      "ptrdname": "string",
+                      "record_name": "string",
+                      "ttl": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of PTR Records matching filters",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1597,68 +1419,41 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "Description of the SRV record.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "Extensible attributes of the SRV-record to be added/updated, as a map in JSON format.",
-                "description_kind": "plain",
-                "computed": true
+                "required": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "name": {
-                "type": "string",
-                "description": "Combination of service name, protocol name and zone name.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "port": {
-                "type": "number",
-                "description": "Configures port (0-65535) for this SRV record.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "priority": {
-                "type": "number",
-                "description": "Configures the priority (0-65535) for this SRV record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "target": {
-                "type": "string",
-                "description": "Provides service for domain name in the SRV record.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL value for the SRV record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "weight": {
-                "type": "number",
-                "description": "Configures weight of the SRV record, valid values (0-65535).",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "zone": {
-                "type": "string",
-                "description": "The zone which the record belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "id": "string",
+                      "name": "string",
+                      "port": "number",
+                      "priority": "number",
+                      "target": "string",
+                      "ttl": "number",
+                      "weight": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of SRV Records matching filters",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -1670,50 +1465,80 @@
           "version": 0,
           "block": {
             "attributes": {
-              "comment": {
-                "type": "string",
-                "description": "Description of the TXT-Record.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "dns_view": {
-                "type": "string",
-                "description": "DNS view which the record's zone belongs to.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "ext_attrs": {
-                "type": "string",
-                "description": "Extensible attributes of the TXT-record, as a map in JSON format.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "fqdn": {
-                "type": "string",
-                "description": "FQDN for the TXT-Record.",
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "text": {
-                "type": "string",
-                "description": "Data of the TXT-Record.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "dns_view": "string",
+                      "ext_attrs": "string",
+                      "fqdn": "string",
+                      "id": "string",
+                      "text": "string",
+                      "ttl": "number",
+                      "zone": "string"
+                    }
+                  ]
+                ],
+                "description": "List of TXT Records matching filters",
                 "description_kind": "plain",
                 "computed": true
-              },
-              "ttl": {
-                "type": "number",
-                "description": "TTL value for the TXT-Record.",
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "infoblox_zone_auth": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "filters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
-              "zone": {
-                "type": "string",
-                "description": "The zone which the record belongs to.",
+              "results": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "ext_attrs": "string",
+                      "fqdn": "string",
+                      "id": "string",
+                      "ns_group": "string",
+                      "view": "string",
+                      "zone_format": "string"
+                    }
+                  ]
+                ],
+                "description": "List of zones matching filters",
                 "description_kind": "plain",
                 "computed": true
               }

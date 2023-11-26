@@ -1670,6 +1670,103 @@
             "description_kind": "plain"
           }
         },
+        "bigip_ltm_cipher_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allow": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Specifies the configuration of the allowed groups of ciphers. You can select a cipher rule from the Available Cipher Rules list",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Specifies descriptive text that identifies the cipher rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the cipher group,name should be in pattern ``partition` + `cipher group name``",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ordering": {
+                "type": "string",
+                "description": "Controls the order of the Cipher String list in the Cipher Audit section. Options are Default, Speed, Strength, FIPS, and Hardware. The rules are processed in the order listed",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "require": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Specifies the configuration of the restrict groups of ciphers. You can select a cipher rule from the Available Cipher Rules list",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "bigip_ltm_cipher_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cipher": {
+                "type": "string",
+                "description": "Specifies one or more Cipher Suites used.Note: For SM2, type the following cipher suite string: ECC-SM4-SM3.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Specifies descriptive text that identifies the cipher rule",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dh_groups": {
+                "type": "string",
+                "description": "Specifies the DH Groups Elliptic Curve Diffie-Hellman key exchange algorithms, separated by colons (:).Note: You can also type a special keyword, DEFAULT, which represents the recommended set of named groups",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the cipher rule,name should be in pattern ``partition` + `cipher rule name``",
+                "description_kind": "plain",
+                "required": true
+              },
+              "signature_algorithms": {
+                "type": "string",
+                "description": "Specifies the Signature Algorithms, separated by colons (:), that you want to include in the cipher rule. You can also type a special keyword, DEFAULT, which represents the recommended set of signature algorithms",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "bigip_ltm_datagroup": {
           "version": 0,
           "block": {
@@ -1774,6 +1871,12 @@
               "compatibility": {
                 "type": "string",
                 "description": "Specifies, when enabled, that the SSL options setting (in OpenSSL) is set to ALL. The default value is enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "custom_parent": {
+                "type": "string",
+                "description": "Custom parent monitor to inherit from.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2448,6 +2551,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "description": {
+                "type": "string",
+                "description": "Specifies descriptive text that identifies the ltm policy.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2464,6 +2573,7 @@
                 "type": "string",
                 "description": "Publish the Policy",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "requires": {
@@ -2486,6 +2596,12 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "Specifies descriptive text that identifies the irule attached to policy.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "name": {
                       "type": "string",
                       "description": "Rule name",
@@ -3820,6 +3936,13 @@
                 "optional": true,
                 "computed": true
               },
+              "monitor": {
+                "type": "string",
+                "description": "Specifies the health monitors that the system uses to monitor this pool member,value can be `none` (or) `default` (or) list of monitors joined with and ( ex: `/Common/test_monitor_pa_tc1 and /Common/gateway_icmp`)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "node": {
                 "type": "string",
                 "description": "Poolmember to add/remove to/from the pool. Format node_address:port. e.g 1.1.1.1:80",
@@ -3845,6 +3968,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Specifies the state the pool member should be in, value can be `enabled` (or) `disabled` (or) forced_offline",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -4069,6 +4198,12 @@
                 "description": "Name of the Ssl Profile",
                 "description_kind": "plain",
                 "required": true
+              },
+              "ocsp_stapling": {
+                "type": "string",
+                "description": "Specifies whether the system uses OCSP stapling.",
+                "description_kind": "plain",
+                "optional": true
               },
               "partition": {
                 "type": "string",
@@ -4822,6 +4957,76 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              }
+            },
+            "block_types": {
+              "enforcement": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "known_methods": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies which HTTP methods count as being known. Removing RFC-defined methods from this list will cause the HTTP filter to not recognize them.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "max_header_count": {
+                      "type": "number",
+                      "description": "Specifies the maximum number of headers allowed in HTTP request/response.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "max_header_size": {
+                      "type": "number",
+                      "description": "Specifies the maximum header size.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "unknown_method": {
+                      "type": "string",
+                      "description": "Specifies whether to allow, reject or switch to pass-through mode when an unknown HTTP method is parsed.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "http_strict_transport_security": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "include_subdomains": {
+                      "type": "string",
+                      "description": "Specifies whether to include the includeSubdomains directive in the HSTS header.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "maximum_age": {
+                      "type": "number",
+                      "description": "Specifies the maximum age to assume the connection should remain secure.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mode": {
+                      "type": "string",
+                      "description": "Specifies whether to include the HSTS response header.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "preload": {
+                      "type": "string",
+                      "description": "Specifies whether to include the preload directive in the HSTS header.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -5945,6 +6150,7 @@
                   "set",
                   "string"
                 ],
+                "description": "Specifies the policies for the virtual server",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6597,11 +6803,29 @@
                 "optional": true,
                 "computed": true
               },
+              "issuer_cert": {
+                "type": "string",
+                "description": "Specifies the issuer certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "monitoring_type": {
+                "type": "string",
+                "description": "Specifies the type of monitoring used",
+                "description_kind": "plain",
+                "optional": true
+              },
               "name": {
                 "type": "string",
                 "description": "Name of SSL Certificate with .crt extension",
                 "description_kind": "plain",
                 "required": true
+              },
+              "ocsp": {
+                "type": "string",
+                "description": "Specifies the OCSP responder",
+                "description_kind": "plain",
+                "optional": true
               },
               "partition": {
                 "type": "string",
@@ -6652,6 +6876,91 @@
               "passphrase": {
                 "type": "string",
                 "description": "Passphrase on key.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "bigip_ssl_key_cert": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cert_content": {
+                "type": "string",
+                "description": "The content of the cert.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "cert_full_path": {
+                "type": "string",
+                "description": "Full Path Name of ssl certificate",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cert_monitoring_type": {
+                "type": "string",
+                "description": "Specifies the type of monitoring used.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cert_name": {
+                "type": "string",
+                "description": "The name of the cert.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cert_ocsp": {
+                "type": "string",
+                "description": "Specifies the OCSP responder",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issuer_cert": {
+                "type": "string",
+                "description": "Specifies the issuer certificate",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key_content": {
+                "type": "string",
+                "description": "The content of the key.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "key_full_path": {
+                "type": "string",
+                "description": "Full Path Name of ssl key",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key_name": {
+                "type": "string",
+                "description": "The name of the key.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "partition": {
+                "type": "string",
+                "description": "Partition on the ssl certificate and key.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passphrase": {
+                "type": "string",
+                "description": "Passphrase on the key.",
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
@@ -6745,13 +7054,15 @@
                 "type": "string",
                 "description": "BIG-IP password",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "execute_action": {
                 "type": "string",
                 "description": "BIG-IP password",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -6775,13 +7086,13 @@
                 "type": "string",
                 "description": "Address of the Iapp which needs to be Iappensed",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "name": {
                 "type": "string",
                 "description": "Address of the Iapp which needs to be Iappensed",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "partition": {
                 "type": "string",
@@ -6965,6 +7276,123 @@
               "timezone": {
                 "type": "string",
                 "description": "Specifies the time zone that you want to use for the system time",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "bigip_sys_ocsp": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cache_error_timeout": {
+                "type": "number",
+                "description": "Specifies the lifetime of an error response in the cache, in seconds. This value must be greater than connection_timeout",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cache_timeout": {
+                "type": "string",
+                "description": "Specifies the lifetime of the OCSP response in the cache, in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "clock_skew": {
+                "type": "number",
+                "description": "Specifies the tolerable absolute difference in the clocks of the responder and the BIG-IP system, in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "concurrent_connections_limit": {
+                "type": "number",
+                "description": "Specifies the maximum number of connections per second allowed for the OCSP certificate validator",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "connection_timeout": {
+                "type": "number",
+                "description": "Specifies the time interval that the BIG-IP system waits for before ending the connection to the OCSP responder, in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_resolver": {
+                "type": "string",
+                "description": "Specifies the internal DNS resolver the BIG-IP system uses to fetch the OCSP response. It should be of the pattern '/partition/resolver-name'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the name of the OCSP responder. It should be of the pattern '/partition/name'",
+                "description_kind": "plain",
+                "required": true
+              },
+              "passphrase": {
+                "type": "string",
+                "description": "Specifies a passphrase used to sign an OCSP request",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "proxy_server_pool": {
+                "type": "string",
+                "description": "Specifies the proxy server pool the BIG-IP system uses to fetch the OCSP response. It should be of the pattern '/partition/pool-name'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "responder_url": {
+                "type": "string",
+                "description": "Specifies the URL of the OCSP responder",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "route_domain": {
+                "type": "string",
+                "description": "Specifies the route domain for the OCSP responder",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sign_hash": {
+                "type": "string",
+                "description": "Specifies the hash algorithm used to sign an OCSP request",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "signer_cert": {
+                "type": "string",
+                "description": "Specifies a certificate used to sign an OCSP request. It should be of the pattern '/partition/cert-name'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "signer_key": {
+                "type": "string",
+                "description": "Specifies a key used to sign an OCSP request. It should be of the pattern '/partition/key-name'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status_age": {
+                "type": "number",
+                "description": "Specifies the maximum allowed lag time that the BIG-IP system accepts for the 'thisUpdate' time in the OCSP response, in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "strict_resp_cert_check": {
+                "type": "string",
+                "description": "Specifies whether the responder's certificate is checked for an OCSP signing extension",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "trusted_responders": {
+                "type": "string",
+                "description": "Specifies the certificates used for validating the OCSP response",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -7523,6 +7951,12 @@
                 "nesting_mode": "set",
                 "block": {
                   "attributes": {
+                    "allowed": {
+                      "type": "bool",
+                      "description": "Determines whether the file type is allowed or disallowed. In either of these cases the VIOL_FILETYPE violation is issued (if enabled) for an incoming request- \n 1. No allowed file type matched the file type of the request. \n 2. The file type of the request matched a disallowed file type",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "name": {
                       "type": "string",
                       "description_kind": "plain",
@@ -7542,10 +7976,70 @@
                 "nesting_mode": "set",
                 "block": {
                   "attributes": {
-                    "name": {
-                      "type": "string",
+                    "attack_signatures_check": {
+                      "type": "bool",
+                      "description": "Specifies when checked (enabled) that you want attack signatures and threat campaigns to be detected on this GraphQL profile and possibly override the security policy settings of an attack signature or threat campaign specifically for this GraphQL profile. After you enable this setting, the system displays a list of attack signatures and and threat campaigns. The default is enabled",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "metachar_elementcheck": {
+                      "type": "bool",
+                      "description": "Specifies when checked (enabled) that the system enforces the security policy settings of a meta character for the GraphQL profile. After you enable this setting, the system displays a list of meta characters. The default is enabled",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Specifies the unique name of the GraphQL profile you are creating or editing",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "defense_attributes": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "allow_introspection_queries": {
+                            "type": "bool",
+                            "description": "Introspection queries can also be enforced to prevent attackers from using them to\nunderstand the API structure and potentially breach an application",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "maximum_batched_queries": {
+                            "type": "string",
+                            "description": "Specifies the highest number of batched queries allowed by the security policy. The default setting is 10",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "maximum_structure_depth": {
+                            "type": "string",
+                            "description": "Specifies the greatest nesting depth found in the GraphQL structure allowed by the security policy. The default setting is a specified depth of 10.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "maximum_total_length": {
+                            "type": "string",
+                            "description": "Specifies the longest length, in bytes, allowed by the security policy of the request payload, or parameter value, where the GraphQL data was found. The default setting is a specified length of 100000 bytes",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "maximum_value_length": {
+                            "type": "string",
+                            "description": "Specifies the longest length (in bytes) of the longest GraphQL element value in the document allowed by the security policy. The default setting is a specified length of 10000 bytes",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "tolerate_parsing_warnings": {
+                            "type": "bool",
+                            "description": "Specifies, when checked (enabled), that the system does not report when the security enforcer encounters warnings while parsing GraphQL content. Specifies when cleared (disabled), that the security policy reports when the security enforcer encounters warnings while parsing GraphQL content. The default setting is disabled",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "defense_attributes settings for policy",
+                        "description_kind": "plain"
+                      }
                     }
                   },
                   "description": "graphql_profile settings for policy",
@@ -7563,6 +8057,56 @@
                     }
                   },
                   "description": "specify the list of host name that is used to access the application",
+                  "description_kind": "plain"
+                }
+              },
+              "ip_exceptions": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "block_requests": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Specifies a brief description of the IP address",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ignore_anomalies": {
+                      "type": "bool",
+                      "description": "Specifies when enabled that the system considers this IP address legitimate and does not take it into account when performing brute force prevention",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ignore_ipreputation": {
+                      "type": "bool",
+                      "description": "Specifies when enabled that the system considers this IP address legitimate even if it is found in the IP Intelligence database (a database of questionable IP addresses)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Specifies the IP address that you want the system to trust",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ip_mask": {
+                      "type": "string",
+                      "description": "Specifies the netmask of the exceptional IP address. This is an optional field",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "trustedby_policybuilder": {
+                      "type": "bool",
+                      "description": "Specifies when enabled the Policy Builder considers traffic from this IP address as being safe",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "An IP address exception is an IP address that you want the system to treat in a specific way for a security policy. For example, you can specify IP addresses from which the system should always trust traffic, IP addresses for which you do not want the system to generate learning suggestions for the traffic, and IP addresses for which you want to exclude information from the logs",
                   "description_kind": "plain"
                 }
               },

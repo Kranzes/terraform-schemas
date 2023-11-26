@@ -153,6 +153,12 @@
               "description_kind": "plain",
               "optional": true
             },
+            "system_scope": {
+              "type": "bool",
+              "description": "If set to `true`, system scoped authorization will be enabled. Defaults to `false` (Identity v3).",
+              "description_kind": "plain",
+              "optional": true
+            },
             "tenant_id": {
               "type": "string",
               "description": "The ID of the Tenant (Identity v2) or Project (Identity v3)\nto login with.",
@@ -191,7 +197,7 @@
             },
             "user_id": {
               "type": "string",
-              "description": "Username to login with.",
+              "description": "User ID to login with.",
               "description_kind": "plain",
               "optional": true
             },
@@ -371,7 +377,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_blockstorage_quotaset_v3": {
@@ -594,7 +601,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_blockstorage_volume_attach_v3": {
@@ -893,7 +901,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_blockstorage_volume_v2": {
@@ -1051,7 +1060,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_blockstorage_volume_v3": {
@@ -1700,6 +1710,11 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "multiattach": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "source_type": {
                       "type": "string",
                       "description_kind": "plain",
@@ -2018,7 +2033,8 @@
               "private_key": {
                 "type": "string",
                 "description_kind": "plain",
-                "computed": true
+                "computed": true,
+                "sensitive": true
               },
               "public_key": {
                 "type": "string",
@@ -3360,11 +3376,11 @@
               },
               "records": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "region": {
                 "type": "string",
@@ -3771,6 +3787,107 @@
                 }
               }
             },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "openstack_fw_group_v2": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admin_state_up": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "egress_firewall_policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ingress_firewall_policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ports": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "shared": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -3831,6 +3948,87 @@
                 ],
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "openstack_fw_policy_v2": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "audited": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "rules": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "shared": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -3934,6 +4132,94 @@
                 ],
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "openstack_fw_rule_v2": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "destination_ip_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "destination_port": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_version": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "protocol": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "shared": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_ip_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_port": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -4164,6 +4450,51 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "openstack_identity_inherit_role_assignment_v3": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "role_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -5768,7 +6099,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_lb_member_v2": {
@@ -6065,7 +6397,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_lb_monitor_v2": {
@@ -6264,7 +6597,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_lb_pool_v2": {
@@ -6574,7 +6908,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_networking_addressscope_v2": {
@@ -6931,7 +7266,8 @@
                     "segmentation_id": {
                       "type": "number",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     }
                   },
                   "description_kind": "plain"
@@ -9265,6 +9601,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "state": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "block_types": {
@@ -10262,7 +10603,8 @@
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_blockstorage_snapshot_v3": {
@@ -10386,7 +10728,8 @@
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "openstack_blockstorage_volume_v3": {
@@ -10854,6 +11197,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "user_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -11148,6 +11497,15 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "kubeconfig": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
               },
               "labels": {
                 "type": [
@@ -11610,6 +11968,89 @@
             "description_kind": "plain"
           }
         },
+        "openstack_fw_group_v2": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admin_state_up": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "egress_firewall_policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ingress_firewall_policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ports": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "shared": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "openstack_fw_policy_v1": {
           "version": 0,
           "block": {
@@ -11658,6 +12099,177 @@
                 "type": "bool",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "openstack_fw_policy_v2": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "audited": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "policy_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "rules": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "shared": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "openstack_fw_rule_v2": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "destination_ip_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "destination_port": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "firewall_policy_id": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_version": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "protocol": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "rule_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "shared": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "source_ip_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_port": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "tenant_id": {
                 "type": "string",
@@ -11925,6 +12537,11 @@
                 "optional": true
               },
               "parent_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true

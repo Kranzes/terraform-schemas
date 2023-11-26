@@ -17,6 +17,12 @@
               "description": "Base URL to CloudAMQP Customer website",
               "description_kind": "plain",
               "optional": true
+            },
+            "enable_faster_instance_destroy": {
+              "type": "bool",
+              "description": "Skips destroying backend resources on 'terraform destroy'",
+              "description_kind": "plain",
+              "optional": true
             }
           },
           "description_kind": "plain"
@@ -320,6 +326,31 @@
                 "computed": true
               }
             },
+            "block_types": {
+              "copy_settings": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "settings": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Settings to be copied. [alarms, config, definitions, firewall, logs, metrics, plugins]",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "subscription_id": {
+                      "type": "string",
+                      "description": "Instance identifier of the CloudAMQP instance to copy settings from",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -539,6 +570,18 @@
               "email": {
                 "type": "string",
                 "description": "The email address registred for the integration service. (Librato)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "iam_external_id": {
+                "type": "string",
+                "description": "External identifier that match the role you created. (Cloudwatch)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "iam_role": {
+                "type": "string",
+                "description": "The ARN of the role to be assumed when publishing metrics. (Cloudwatch)",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -999,7 +1042,7 @@
               },
               "queue_index_embed_msgs_below": {
                 "type": "number",
-                "description": "Size in bytes below which to embed messages in the queue index.",
+                "description": "Size in bytes below which to embed messages in the queue index. 0 will turn off payload embedding in the queue index.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -1210,6 +1253,12 @@
               "vpc_id": {
                 "type": "string",
                 "description": "VPC instance identifier",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "wait_on_peering_status": {
+                "type": "bool",
+                "description": "Wait until peering status change to 'connected'",
                 "description_kind": "plain",
                 "optional": true
               }

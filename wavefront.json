@@ -106,6 +106,14 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "runbook_links": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
               "severity": {
                 "type": "string",
                 "description_kind": "plain",
@@ -132,6 +140,47 @@
                 ],
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "block_types": {
+              "alert_triage_dashboards": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "dashboard_id": {
+                      "type": "string",
+                      "description": "Dashboard ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Dashboard Description",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "parameters": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "constants": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -1087,6 +1136,12 @@
                                   "description_kind": "plain",
                                   "required": true
                                 },
+                                "no_default_events": {
+                                  "type": "bool",
+                                  "description": "Show events related to the sources included in queries",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
                                 "summarization": {
                                   "type": "string",
                                   "description": "Summarization strategy for the chart. MEAN is default = ['MEAN', 'MEDIAN', 'MIN', 'MAX', 'SUM', 'COUNT', 'LAST', 'FIRST']",
@@ -1704,10 +1759,26 @@
           "version": 0,
           "block": {
             "attributes": {
+              "accounts": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "groups": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -1720,10 +1791,46 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "namespaces": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
               "scope": {
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "sources": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "tags": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -2079,6 +2186,32 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "alert_triage_dashboards": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "dashboard_id": "string",
+                      "description": "string",
+                      "parameters": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "constants": [
+                              "map",
+                              "string"
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "alert_type": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2186,6 +2319,14 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "runbook_links": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "severity": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2243,6 +2384,28 @@
                     "object",
                     {
                       "additional_information": "string",
+                      "alert_triage_dashboards": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "dashboard_id": "string",
+                            "description": "string",
+                            "parameters": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "constants": [
+                                    "map",
+                                    "string"
+                                  ]
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
                       "alert_type": "string",
                       "can_modify": [
                         "list",
@@ -2286,6 +2449,10 @@
                       "notification_resend_frequency_minutes": "number",
                       "process_rate_minutes": "number",
                       "resolve_after_minutes": "number",
+                      "runbook_links": [
+                        "list",
+                        "string"
+                      ],
                       "severity": "string",
                       "severity_list": [
                         "list",

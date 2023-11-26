@@ -58,6 +58,12 @@
               "description_kind": "plain",
               "optional": true
             },
+            "skip_implicit_reboots": {
+              "type": "bool",
+              "description": "If true, Linode Instances will not be rebooted on config and interface changes.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "skip_instance_delete_poll": {
               "type": "bool",
               "description": "Skip waiting for a linode_instance resource to finish deleting.",
@@ -106,8 +112,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The email of the current account.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "longview_subscription": {
@@ -175,233 +181,6 @@
             "description_kind": "plain"
           }
         },
-        "linode_database_mongodb": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "allow_list": {
-                "type": [
-                  "set",
-                  "string"
-                ],
-                "description": "A list of IP addresses that can access the Managed Database. Each item can be a single IP address or a range in CIDR format.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "ca_cert": {
-                "type": "string",
-                "description": "The base64-encoded SSL CA certificate for the Managed Database instance.",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "cluster_size": {
-                "type": "number",
-                "description": "The number of Linode Instance nodes deployed to the Managed Database. Defaults to 1.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "compression_type": {
-                "type": "string",
-                "description": "The type of data compression for this Database.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "created": {
-                "type": "string",
-                "description": "When this Managed Database was created.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "encrypted": {
-                "type": "bool",
-                "description": "Whether the Managed Databases is encrypted.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "engine": {
-                "type": "string",
-                "description": "The Managed Database engine.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "engine_id": {
-                "type": "string",
-                "description": "The Managed Database engine in engine/version format. (e.g. mongodb/4.4.10)",
-                "description_kind": "plain",
-                "required": true
-              },
-              "host_primary": {
-                "type": "string",
-                "description": "The primary host for the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "host_secondary": {
-                "type": "string",
-                "description": "The secondary host for the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "label": {
-                "type": "string",
-                "description": "A unique, user-defined string referring to the Managed Database.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "peers": {
-                "type": [
-                  "set",
-                  "string"
-                ],
-                "description": "A set of peer addresses for this Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "port": {
-                "type": "number",
-                "description": "The access port for this Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "region": {
-                "type": "string",
-                "description": "The region to use for the Managed Database.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "replica_set": {
-                "type": "string",
-                "description": "Label for configuring a MongoDB replica set. Choose the same label on multiple Databases to include them in the same replica set.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "root_password": {
-                "type": "string",
-                "description": "The randomly-generated root password for the Managed Database instance.",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "root_username": {
-                "type": "string",
-                "description": "The root username for the Managed Database instance.",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "ssl_connection": {
-                "type": "bool",
-                "description": "Whether to require SSL credentials to establish a connection to the Managed Database.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "status": {
-                "type": "string",
-                "description": "The operating status of the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "storage_engine": {
-                "type": "string",
-                "description": "The type of storage engine for this Database.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "type": {
-                "type": "string",
-                "description": "The Linode Instance type used by the Managed Database for its nodes.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "updated": {
-                "type": "string",
-                "description": "When this Managed Database was last updated.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "version": {
-                "type": "string",
-                "description": "The Managed Database engine version.",
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "block_types": {
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "create": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "delete": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "update": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
-              },
-              "updates": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "day_of_week": {
-                      "type": "string",
-                      "description": "The day to perform maintenance.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "duration": {
-                      "type": "number",
-                      "description": "The maximum maintenance window time in hours.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "frequency": {
-                      "type": "string",
-                      "description": "Whether maintenance occurs on a weekly or monthly basis.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "hour_of_day": {
-                      "type": "number",
-                      "description": "The hour to begin maintenance based in UTC time.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "week_of_month": {
-                      "type": "number",
-                      "description": "The week of the month to perform monthly frequency updates. Required for monthly frequency updates.",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description": "Configuration settings for automated patch update maintenance for the Managed Database.",
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
         "linode_database_mysql": {
           "version": 0,
           "block": {
@@ -449,7 +228,7 @@
               },
               "engine_id": {
                 "type": "string",
-                "description": "The Managed Database engine in engine/version format. (e.g. mysql/8.0.26)",
+                "description": "The Managed Database engine in engine/version format. (e.g. mysql/8.0.30)",
                 "description_kind": "plain",
                 "required": true
               },
@@ -649,7 +428,7 @@
               },
               "engine_id": {
                 "type": "string",
-                "description": "The Managed Database engine in engine/version format. (e.g. mongodb/4.4.10)",
+                "description": "The Managed Database engine in engine/version format. (e.g. mysql/8.0.30)",
                 "description_kind": "plain",
                 "required": true
               },
@@ -1001,6 +780,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "created": {
+                "type": "string",
+                "description": "When this firewall was created",
+                "description_kind": "plain",
+                "computed": true
+              },
               "devices": {
                 "type": [
                   "list",
@@ -1053,6 +838,16 @@
                 "optional": true,
                 "computed": true
               },
+              "nodebalancers": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "The IDs of NodeBalancers to apply this firewall to.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "outbound_policy": {
                 "type": "string",
                 "description": "The default behavior for outbound traffic. This setting can be overridden by updating the outbound.action property for an individual Firewall Rule.",
@@ -1073,6 +868,12 @@
                 "description": "An array of tags applied to this object. Tags are for organizational purposes only.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "When this firewall was last updated",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "block_types": {
@@ -1091,7 +892,7 @@
                         "list",
                         "string"
                       ],
-                      "description": "A list of IP addresses, CIDR blocks, or 0.0.0.0/0 (to allow all) this rule applies to.",
+                      "description": "A list of CIDR blocks or 0.0.0.0/0 (to allow all) this rule applies to.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1142,7 +943,7 @@
                         "list",
                         "string"
                       ],
-                      "description": "A list of IP addresses, CIDR blocks, or 0.0.0.0/0 (to allow all) this rule applies to.",
+                      "description": "A list of CIDR blocks or 0.0.0.0/0 (to allow all) this rule applies to.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1230,6 +1031,21 @@
           "version": 0,
           "block": {
             "attributes": {
+              "capabilities": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The capabilities of this Image.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cloud_init": {
+                "type": "bool",
+                "description": "Whether this image supports cloud-init.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "created": {
                 "type": "string",
                 "description": "When this Image was created.",
@@ -1430,6 +1246,12 @@
                 "description": "The display group of the Linode instance.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "has_user_data": {
+                "type": "bool",
+                "description": "Whether or not this Instance was created with user-data.",
+                "description_kind": "plain",
+                "computed": true
               },
               "host_uuid": {
                 "type": "string",
@@ -1641,6 +1463,12 @@
                       "description": "Optional field for arbitrary User comments on this Config.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of this Config.",
+                      "description_kind": "plain",
+                      "computed": true
                     },
                     "kernel": {
                       "type": "string",
@@ -1992,7 +1820,8 @@
                     }
                   },
                   "description": "Configuration profiles define the VM settings and boot behavior of the Linode Instance.",
-                  "description_kind": "plain"
+                  "description_kind": "plain",
+                  "deprecated": true
                 }
               },
               "disk": {
@@ -2082,7 +1911,8 @@
                       "computed": true
                     }
                   },
-                  "description_kind": "plain"
+                  "description_kind": "plain",
+                  "deprecated": true
                 }
               },
               "interface": {
@@ -2109,6 +1939,21 @@
                     }
                   },
                   "description": "An array of Network Interfaces for this Linode to be created with. If an explicit config or disk is defined, interfaces must be declared in the config block.",
+                  "description_kind": "plain"
+                }
+              },
+              "metadata": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "user_data": {
+                      "type": "string",
+                      "description": "The base64-encoded user-defined data exposed to this instance through the Linode Metadata service. Refer to the base64encode(...) function for information on encoding content for this field.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Various fields related to the Linode Metadata service.",
                   "description_kind": "plain"
                 }
               },
@@ -2170,7 +2015,7 @@
               },
               "label": {
                 "type": "string",
-                "description": "The Config’s label for display purposes only.",
+                "description": "The Config's label for display purposes only.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -2207,6 +2052,33 @@
               }
             },
             "block_types": {
+              "device": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "device_name": {
+                      "type": "string",
+                      "description": "The Disk ID to map to this disk slot",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "disk_id": {
+                      "type": "number",
+                      "description": "The Disk ID to map to this disk slot",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "volume_id": {
+                      "type": "number",
+                      "description": "The Block Storage volume ID to map to this disk slot",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Blocks for device disks in a Linode's configuration profile.",
+                  "description_kind": "plain"
+                }
+              },
               "devices": {
                 "nesting_mode": "list",
                 "block": {
@@ -2388,8 +2260,9 @@
                       "max_items": 1
                     }
                   },
-                  "description": "A dictionary of device disks to use as a device map in a Linode’s configuration profile.",
-                  "description_kind": "plain"
+                  "description": "A dictionary of device disks to use as a device map in a Linode's configuration profile.",
+                  "description_kind": "plain",
+                  "deprecated": true
                 },
                 "max_items": 1
               },
@@ -2455,7 +2328,7 @@
                       "required": true
                     }
                   },
-                  "description": "An array of Network Interfaces to add to this Linode’s Configuration Profile.",
+                  "description": "An array of Network Interfaces to add to this Linode's Configuration Profile.",
                   "description_kind": "plain"
                 }
               }
@@ -2579,7 +2452,7 @@
               },
               "apply_immediately": {
                 "type": "bool",
-                "description": "If true, the instance will be rebooted to update network interfaces.",
+                "description": "If true, the instance will be rebooted to update network interfaces. This functionality is not affected by the `skip_implicit_reboots` provider argument.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2677,8 +2550,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The unique ID for this Resource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "is_bgp": {
@@ -2698,7 +2571,7 @@
                   "set",
                   "number"
                 ],
-                "description": "A list of Linodes targeted by this IPv6 range. Includes Linodes with IP sharing.",
+                "description": "A list of Linodes targeted by this IPv6 range.Includes Linodes with IP sharing.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -2917,13 +2790,20 @@
                 "type": "number",
                 "description": "Throttle connections per second (0-20). Set to 0 (zero) to disable throttling.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "created": {
                 "type": "string",
                 "description": "When this NodeBalancer was created.",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "firewall_id": {
+                "type": "number",
+                "description": "ID for the firewall you'd like to use with this NodeBalancer.",
+                "description_kind": "plain",
+                "optional": true
               },
               "hostname": {
                 "type": "string",
@@ -2933,8 +2813,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The unique ID of the Linode NodeBalancer.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "ipv4": {
@@ -2959,7 +2839,8 @@
                 "type": "string",
                 "description": "The region where this NodeBalancer will be deployed.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "tags": {
                 "type": [
@@ -2968,7 +2849,8 @@
                 ],
                 "description": "An array of tags applied to this object. Tags are for organizational purposes only.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "transfer": {
                 "type": [
@@ -3231,6 +3113,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "endpoint": {
+                "type": "string",
+                "description": "The endpoint for the bucket used for s3 connections.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "hostname": {
                 "type": "string",
                 "description": "The hostname where this bucket can be accessed. This hostname can be accessed through a browser if the bucket is made public.",
@@ -3384,8 +3272,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The unique ID of this Object Storage key.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "label": {
@@ -3410,7 +3298,7 @@
             },
             "block_types": {
               "bucket_access": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "bucket_name": {
@@ -3427,7 +3315,7 @@
                     },
                     "permissions": {
                       "type": "string",
-                      "description": "This Limited Access Key’s permissions for the selected bucket.",
+                      "description": "This Limited Access Key's permissions for the selected bucket.",
                       "description_kind": "plain",
                       "required": true
                     }
@@ -3511,6 +3399,13 @@
                 "optional": true,
                 "computed": true
               },
+              "endpoint": {
+                "type": "string",
+                "description": "The endpoint for the bucket used for s3 connections.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "etag": {
                 "type": "string",
                 "description": "The specific version of this object.",
@@ -3585,8 +3480,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "Unique identification field for this RDNS Resource. The public Linode IPv4 or IPv6 address to operate on. ",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "rdns": {
@@ -3599,27 +3494,8 @@
                 "type": "bool",
                 "description": "If true, the RDNS assignment will be retried within the operation timeout period.",
                 "description_kind": "plain",
-                "optional": true
-              }
-            },
-            "block_types": {
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "create": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "update": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -3637,8 +3513,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The unique identifier for this SSH key.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "label": {
@@ -3687,13 +3563,13 @@
               },
               "id": {
                 "type": "string",
+                "description": "The StackScript's unique ID.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "images": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "An array of Image IDs representing the Images that this StackScript is compatible for deploying with.",
@@ -3704,7 +3580,8 @@
                 "type": "bool",
                 "description": "This determines whether other users can use your StackScript. Once a StackScript is made public, it cannot be made private.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "label": {
                 "type": "string",
@@ -3716,7 +3593,8 @@
                 "type": "string",
                 "description": "This field allows you to add notes for the set of revisions made to this StackScript.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "script": {
                 "type": "string",
@@ -3747,7 +3625,6 @@
                 ],
                 "description": "This is a list of fields defined with a special syntax inside this StackScript that allow for supplying customized parameters during deployment.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "user_gravatar_id": {
@@ -3778,9 +3655,10 @@
               },
               "expiry": {
                 "type": "string",
-                "description": "When this token will expire. Personal Access Tokens cannot be renewed, so after this time the token will be completely unusable and a new token will need to be generated. Tokens may be created with 'null' as their expiry and will never expire unless revoked. Format: 2006-01-02T15:04:05Z07:00",
+                "description": "When this token will expire. Personal Access Tokens cannot be renewed, so after this time the token will be completely unusable and a new token will need to be generated. Tokens may be created with 'null' as their expiry and will never expire unless revoked. Format: 2006-01-02T15:04:05Z",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -4259,8 +4137,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The Email of the Account.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "last_name": {
@@ -4315,7 +4193,7 @@
               },
               "restricted": {
                 "type": "bool",
-                "description": "TTrue if the User that was logged into was a restricted User, false otherwise.",
+                "description": "True if the User that was logged into was a restricted User, false otherwise.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -4341,33 +4219,14 @@
             "attributes": {
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "logins": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "datetime": "string",
-                      "id": "number",
-                      "ip": "string",
-                      "restricted": "bool",
-                      "status": "string",
-                      "username": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of account logins.",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
             "block_types": {
               "filter": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -4384,7 +4243,7 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
@@ -4392,6 +4251,51 @@
                       "required": true
                     }
                   },
+                  "description_kind": "plain"
+                }
+              },
+              "logins": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "datetime": {
+                      "type": "string",
+                      "description": "The time when the login was initiated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of this login object.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ip": {
+                      "type": "string",
+                      "description": "The remote IP address that requested the login.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "restricted": {
+                      "type": "bool",
+                      "description": "True if the User that was logged into was a restricted User, false otherwise.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Whether the login attempt succeeded or failed.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username of the User that was logged into.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of account logins.",
                   "description_kind": "plain"
                 }
               }
@@ -4411,8 +4315,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The email of the current account.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "longview_subscription": {
@@ -4435,7 +4339,7 @@
               },
               "object_storage": {
                 "type": "string",
-                "description": "A string describing the status of this account’s Object Storage service enrollment.",
+                "description": "A string describing the status of this account's Object Storage service enrollment.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -4447,23 +4351,6 @@
           "version": 0,
           "block": {
             "attributes": {
-              "backups": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "created": "string",
-                      "id": "number",
-                      "label": "string",
-                      "type": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of backups.",
-                "description_kind": "plain",
-                "computed": true
-              },
               "database_id": {
                 "type": "number",
                 "description": "The ID of the Managed Database.",
@@ -4477,88 +4364,9 @@
                 "required": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "latest": {
-                "type": "bool",
-                "description": "If true, only the latest backup will be returned.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "order": {
-                "type": "string",
-                "description": "The order in which results should be returned.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "order_by": {
-                "type": "string",
-                "description": "The attribute to order the results by.",
-                "description_kind": "plain",
-                "optional": true
-              }
-            },
-            "block_types": {
-              "filter": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "match_by": {
-                      "type": "string",
-                      "description": "The type of comparison to use for this filter.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "The name of the attribute to filter on.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "values": {
-                      "type": [
-                        "list",
-                        "string"
-                      ],
-                      "description": "The value(s) to be used in the filter.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "linode_database_engines": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "engines": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "engine": "string",
-                      "id": "string",
-                      "version": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of engines.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "latest": {
@@ -4581,8 +4389,41 @@
               }
             },
             "block_types": {
-              "filter": {
+              "backups": {
                 "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "A time value given in a combined date and time format that represents when the database backup was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the database backup object.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The database backup’s label, for display purposes only.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The type of database backup, determined by how the backup was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of backups.",
+                  "description_kind": "plain"
+                }
+              },
+              "filter": {
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -4599,7 +4440,7 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
@@ -4614,186 +4455,91 @@
             "description_kind": "plain"
           }
         },
-        "linode_database_mongodb": {
+        "linode_database_engines": {
           "version": 0,
           "block": {
             "attributes": {
-              "allow_list": {
-                "type": [
-                  "set",
-                  "string"
-                ],
-                "description": "A list of IP addresses that can access the Managed Database. Each item can be a single IP address or a range in CIDR format.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "ca_cert": {
-                "type": "string",
-                "description": "The base64-encoded SSL CA certificate for the Managed Database instance.",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "cluster_size": {
-                "type": "number",
-                "description": "The number of Linode Instance nodes deployed to the Managed Database. Defaults to 1.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "compression_type": {
-                "type": "string",
-                "description": "The type of data compression for this Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "created": {
-                "type": "string",
-                "description": "When this Managed Database was created.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "database_id": {
-                "type": "number",
-                "description": "The ID of the MongoDB database.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "encrypted": {
-                "type": "bool",
-                "description": "Whether the Managed Databases is encrypted.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "engine": {
-                "type": "string",
-                "description": "The Managed Database engine.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "engine_id": {
-                "type": "string",
-                "description": "The Managed Database engine in engine/version format. (e.g. mongodb/4.4.10)",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "host_primary": {
-                "type": "string",
-                "description": "The primary host for the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "host_secondary": {
-                "type": "string",
-                "description": "The secondary host for the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "label": {
-                "type": "string",
-                "description": "A unique, user-defined string referring to the Managed Database.",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
                 "computed": true
               },
-              "peers": {
-                "type": [
-                  "set",
-                  "string"
-                ],
-                "description": "A set of peer addresses for this Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "port": {
-                "type": "number",
-                "description": "The access port for this Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "region": {
-                "type": "string",
-                "description": "The region to use for the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "replica_set": {
-                "type": "string",
-                "description": "Label for configuring a MongoDB replica set. Choose the same label on multiple Databases to include them in the same replica set.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "root_password": {
-                "type": "string",
-                "description": "The randomly-generated root password for the Managed Database instance.",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "root_username": {
-                "type": "string",
-                "description": "The root username for the Managed Database instance.",
-                "description_kind": "plain",
-                "computed": true,
-                "sensitive": true
-              },
-              "ssl_connection": {
+              "latest": {
                 "type": "bool",
-                "description": "Whether to require SSL credentials to establish a connection to the Managed Database.",
+                "description": "If true, only the latest engine version will be returned.",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
-              "status": {
+              "order": {
                 "type": "string",
-                "description": "The operating status of the Managed Database.",
+                "description": "The order in which results should be returned.",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
-              "storage_engine": {
+              "order_by": {
                 "type": "string",
-                "description": "The type of storage engine for this Database.",
+                "description": "The attribute to order the results by.",
                 "description_kind": "plain",
-                "computed": true
-              },
-              "type": {
-                "type": "string",
-                "description": "The Linode Instance type used by the Managed Database for its nodes.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "updated": {
-                "type": "string",
-                "description": "When this Managed Database was last updated.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "updates": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "day_of_week": "string",
-                      "duration": "number",
-                      "frequency": "string",
-                      "hour_of_day": "number",
-                      "week_of_month": "number"
+                "optional": true
+              }
+            },
+            "block_types": {
+              "engines": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "engine": {
+                      "type": "string",
+                      "description": "The Managed Database engine type.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The Managed Database engine ID in engine/version format.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "The Managed Database engine version.",
+                      "description_kind": "plain",
+                      "computed": true
                     }
-                  ]
-                ],
-                "description": "Configuration settings for automated patch update maintenance for the Managed Database.",
-                "description_kind": "plain",
-                "computed": true
+                  },
+                  "description": "The returned list of engines.",
+                  "description_kind": "plain"
+                }
               },
-              "version": {
-                "type": "string",
-                "description": "The Managed Database engine version.",
-                "description_kind": "plain",
-                "computed": true
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -4833,9 +4579,10 @@
               },
               "database_id": {
                 "type": "number",
-                "description": "The ID of the MySQL database.",
+                "description": "The ID of the MySQL database. DEPRECATED: Use ID instead",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true
               },
               "encrypted": {
                 "type": "bool",
@@ -4851,7 +4598,7 @@
               },
               "engine_id": {
                 "type": "string",
-                "description": "The Managed Database engine in engine/version format. (e.g. mysql/8.0.26)",
+                "description": "The Managed Database engine in engine/version format. (e.g. mysql/8.0.30)",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -4868,10 +4615,10 @@
                 "computed": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Unique identifier for this DataSource. The ID of the MySQL database.",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "label": {
                 "type": "string",
@@ -5077,9 +4824,10 @@
               },
               "database_id": {
                 "type": "number",
-                "description": "The ID of the MongoDB database.",
+                "description": "The ID of the PostgreSQL database. DEPRECATED: Use ID instead",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true
               },
               "encrypted": {
                 "type": "bool",
@@ -5112,10 +4860,10 @@
                 "computed": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "Unique identifier for this DataSource. The ID of the PostgreSQL database.",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "label": {
                 "type": "string",
@@ -5217,50 +4965,11 @@
           "version": 0,
           "block": {
             "attributes": {
-              "databases": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "allow_list": [
-                        "list",
-                        "string"
-                      ],
-                      "cluster_size": "number",
-                      "created": "string",
-                      "encrypted": "bool",
-                      "engine": "string",
-                      "host_primary": "string",
-                      "host_secondary": "string",
-                      "id": "number",
-                      "instance_uri": "string",
-                      "label": "string",
-                      "region": "string",
-                      "replication_type": "string",
-                      "ssl_connection": "bool",
-                      "status": "string",
-                      "type": "string",
-                      "updated": "string",
-                      "version": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of databases.",
-                "description_kind": "plain",
-                "computed": true
-              },
               "id": {
                 "type": "string",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
-              },
-              "latest": {
-                "type": "bool",
-                "description": "If true, only the latest created database will be returned.",
-                "description_kind": "plain",
-                "optional": true
               },
               "order": {
                 "type": "string",
@@ -5276,8 +4985,122 @@
               }
             },
             "block_types": {
-              "filter": {
+              "databases": {
                 "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "allow_list": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "A list of IP addresses that can access the Managed Database. Each item can be a single IP address or a range in CIDR format.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "cluster_size": {
+                      "type": "number",
+                      "description": "The number of Linode Instance nodes deployed to the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "created": {
+                      "type": "string",
+                      "description": "When this Managed Database was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "encrypted": {
+                      "type": "bool",
+                      "description": "Whether the Managed Databases is encrypted.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "engine": {
+                      "type": "string",
+                      "description": "The Managed Database engine type.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "host_primary": {
+                      "type": "string",
+                      "description": "The primary host for the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "host_secondary": {
+                      "type": "string",
+                      "description": "The secondary/private host for the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "A unique ID that can be used to identify and reference the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "instance_uri": {
+                      "type": "string",
+                      "description": "he API route for the database instance.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "A unique, user-defined string referring to the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "The Region ID for the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "replication_type": {
+                      "type": "string",
+                      "description": "The replication method used for the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ssl_connection": {
+                      "type": "bool",
+                      "description": "Whether to require SSL credentials to establish a connection to the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The operating status of the Managed Database.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The Linode Instance type used by the Managed Database for its nodes.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "When this Managed Database was last updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "The Managed Database engine version.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of databases.",
+                  "description_kind": "plain"
+                }
+              },
+              "filter": {
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -5294,7 +5117,7 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
@@ -5330,13 +5153,13 @@
               },
               "domain": {
                 "type": "string",
-                "description": "The domain this Domain represents. These must be unique in Linode's system; there cannot be two Domain records representing the same domain.",
+                "description": "The domain this Domain represents. These must be unique in our system; you cannot have two Domains representing the same domain.",
                 "description_kind": "plain",
                 "optional": true
               },
               "expire_sec": {
                 "type": "number",
-                "description": "The amount of time in seconds that may pass before this Domain is no longer authoritative. Valid values are 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
+                "description": "The amount of time in seconds that may pass before this Domain is no longer Valid values are 0, 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5347,8 +5170,8 @@
                 "computed": true
               },
               "id": {
-                "type": "string",
-                "description": "The unique ID assigned to this domain",
+                "type": "number",
+                "description": "The Domain's unique ID.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5363,13 +5186,13 @@
               },
               "refresh_sec": {
                 "type": "number",
-                "description": "The amount of time in seconds before this Domain should be refreshed. Valid values are 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
+                "description": "The amount of time in seconds before this Domain should be refreshed. Valid values are 0, 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
                 "description_kind": "plain",
                 "computed": true
               },
               "retry_sec": {
                 "type": "number",
-                "description": "The interval, in seconds, at which a failed refresh should be retried. Valid values are 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
+                "description": "The interval, in seconds, at which a failed refresh should be retried. Valid values are 0, 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5396,7 +5219,7 @@
               },
               "ttl_sec": {
                 "type": "number",
-                "description": "'Time to Live' - the amount of time in seconds that this Domain's records may be cached by resolvers or other domain servers. Valid values are 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
+                "description": "'Time to Live' - the amount of time in seconds that this Domain's records may be cached by resolvers or other domain servers. Valid values are 0, 30, 120, 300, 3600, 7200, 14400, 28800, 57600, 86400, 172800, 345600, 604800, 1209600, and 2419200 - any other value will be rounded to the nearest valid value.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5502,8 +5325,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The unique ID for this DataSource",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "zone_file": {
@@ -5513,7 +5336,7 @@
                 ],
                 "description": "Lines of the zone file for the last rendered zone for this domain.",
                 "description_kind": "plain",
-                "optional": true
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -5523,6 +5346,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "created": {
+                "type": "string",
+                "description": "When this Firewall was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "devices": {
                 "type": [
                   "list",
@@ -5595,7 +5424,16 @@
                   "set",
                   "number"
                 ],
-                "description": "The IDs of Linodes to apply this firewall to.",
+                "description": "The IDs of Linodes assigned to this Firewall.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodebalancers": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "The IDs of NodeBalancers assigned to this Firewall.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5644,6 +5482,296 @@
                 "description": "An array of tags applied to this object. Tags are for organizational purposes only.",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "When this Firewall was last updated.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_firewalls": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "firewalls": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "When this Firewall was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "disabled": {
+                      "type": "bool",
+                      "description": "If true, the Firewall is inactive.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID assigned to this Firewall.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "inbound_policy": {
+                      "type": "string",
+                      "description": "The default behavior for inbound traffic.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The label for the Firewall. For display purposes only. If no label is provided, a default will be assigned.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "linodes": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "The IDs of Linodes assigned to this Firewall.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "nodebalancers": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "The IDs of NodeBalancers assigned to this Firewall..",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "outbound_policy": {
+                      "type": "string",
+                      "description": "The default behavior for outbound traffic.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The status of the firewall.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "tags": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "An array of tags applied to this object. Tags are for organizational purposes only.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "When this Firewall was last updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "devices": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "entity_id": {
+                            "type": "number",
+                            "description": "The ID of the underlying entity this device references (i.e. the Linode's ID).",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "id": {
+                            "type": "number",
+                            "description": "The unique ID of the Firewall Device.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "The label of the underlying entity this device references.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "The type of Firewall Device.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "The URL of the underlying entity this device references.",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description": "The devices associated with this firewall.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "inbound": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "action": {
+                            "type": "string",
+                            "description": "Controls whether traffic is accepted or dropped by this rule (ACCEPT, DROP).",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ipv4": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "A list of IPv4 addresses or networks in IP/mask format.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ipv6": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "A list of IPv6 addresses or networks in IP/mask format.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "The label of this rule for display purposes only.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ports": {
+                            "type": "string",
+                            "description": "A string representation of ports and/or port ranges (i.e. \"443\" or \"80-90, 91\").",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "The network protocol this rule controls. (TCP, UDP, ICMP)",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description": "A set of firewall rules that specify what inbound network traffic is allowed.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "outbound": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "action": {
+                            "type": "string",
+                            "description": "Controls whether traffic is accepted or dropped by this rule (ACCEPT, DROP).",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ipv4": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "A list of IPv4 addresses or networks in IP/mask format.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ipv6": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "A list of IPv6 addresses or networks in IP/mask format.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "The label of this rule for display purposes only.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ports": {
+                            "type": "string",
+                            "description": "A string representation of ports and/or port ranges (i.e. \"443\" or \"80-90, 91\").",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "The network protocol this rule controls. (TCP, UDP, ICMP)",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description": "A set of firewall rules that specify what outbound network traffic is allowed.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "The returned list of Firewalls.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -5653,6 +5781,15 @@
           "version": 0,
           "block": {
             "attributes": {
+              "capabilities": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The capabilities of this Image.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "created": {
                 "type": "string",
                 "description": "When this Image was created.",
@@ -5735,32 +5872,7 @@
             "attributes": {
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "images": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "created": "string",
-                      "created_by": "string",
-                      "deprecated": "bool",
-                      "description": "string",
-                      "expiry": "string",
-                      "id": "string",
-                      "is_public": "bool",
-                      "label": "string",
-                      "size": "number",
-                      "status": "string",
-                      "type": "string",
-                      "vendor": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of Images.",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5785,7 +5897,7 @@
             },
             "block_types": {
               "filter": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -5802,7 +5914,7 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
@@ -5810,6 +5922,96 @@
                       "required": true
                     }
                   },
+                  "description_kind": "plain"
+                }
+              },
+              "images": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "capabilities": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The capabilities of this Image.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "created": {
+                      "type": "string",
+                      "description": "When this Image was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "created_by": {
+                      "type": "string",
+                      "description": "The name of the User who created this Image.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "deprecated": {
+                      "type": "bool",
+                      "description": "Whether or not this Image is deprecated. Will only be True for deprecated public Images.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A detailed description of this Image.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "expiry": {
+                      "type": "string",
+                      "description": "Only Images created automatically (from a deleted Linode; type=automatic) will expire.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The unique ID assigned to this Image.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "is_public": {
+                      "type": "bool",
+                      "description": "True if the Image is public.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "A short description of the Image. Labels cannot contain special characters.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description": "The minimum size this Image needs to deploy. Size is in MB.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The current status of this Image.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "How the Image was created. 'Manual' Images can be created at any time. 'Automatic' images are created automatically from a deleted Linode.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "vendor": {
+                      "type": "string",
+                      "description": "The upstream distribution vendor. Nil for private Images.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of Images.",
                   "description_kind": "plain"
                 }
               }
@@ -5894,9 +6096,9 @@
                 "computed": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "The ID of the Backup",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "in_progress": {
@@ -5951,8 +6153,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Unique identifier for this DataSource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "ipv4": {
@@ -5968,7 +6170,9 @@
                           {
                             "address": "string",
                             "gateway": "string",
+                            "linode_id": "number",
                             "prefix": "number",
+                            "public": "bool",
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
@@ -5983,7 +6187,9 @@
                           {
                             "address": "string",
                             "gateway": "string",
+                            "linode_id": "number",
                             "prefix": "number",
+                            "public": "bool",
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
@@ -5998,7 +6204,9 @@
                           {
                             "address": "string",
                             "gateway": "string",
+                            "linode_id": "number",
                             "prefix": "number",
+                            "public": "bool",
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
@@ -6013,7 +6221,9 @@
                           {
                             "address": "string",
                             "gateway": "string",
+                            "linode_id": "number",
                             "prefix": "number",
+                            "public": "bool",
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
@@ -6047,34 +6257,32 @@
                         ]
                       ],
                       "link_local": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "address": "string",
-                            "gateway": "string",
-                            "prefix": "number",
-                            "rdns": "string",
-                            "region": "string",
-                            "subnet_mask": "string",
-                            "type": "string"
-                          }
-                        ]
+                        "object",
+                        {
+                          "address": "string",
+                          "gateway": "string",
+                          "linode_id": "number",
+                          "prefix": "number",
+                          "public": "bool",
+                          "rdns": "string",
+                          "region": "string",
+                          "subnet_mask": "string",
+                          "type": "string"
+                        }
                       ],
                       "slaac": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "address": "string",
-                            "gateway": "string",
-                            "prefix": "number",
-                            "rdns": "string",
-                            "region": "string",
-                            "subnet_mask": "string",
-                            "type": "string"
-                          }
-                        ]
+                        "object",
+                        {
+                          "address": "string",
+                          "gateway": "string",
+                          "linode_id": "number",
+                          "prefix": "number",
+                          "public": "bool",
+                          "rdns": "string",
+                          "region": "string",
+                          "subnet_mask": "string",
+                          "type": "string"
+                        }
                       ]
                     }
                   ]
@@ -6117,6 +6325,17 @@
                                   "monthly": "number"
                                 }
                               ]
+                            ],
+                            "region_prices": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "hourly": "number",
+                                  "id": "string",
+                                  "monthly": "number"
+                                }
+                              ]
                             ]
                           }
                         ]
@@ -6124,6 +6343,7 @@
                     }
                   ]
                 ],
+                "description": "Information about the optional Backup service offered for Linodes.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -6179,6 +6399,22 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "region_prices": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "hourly": "number",
+                      "id": "string",
+                      "monthly": "number"
+                    }
+                  ]
+                ],
+                "description": "A list of region-specific prices for this plan.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "transfer": {
                 "type": "number",
                 "description": "The monthly outbound transfer amount, in MB.",
@@ -6201,8 +6437,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "order": {
@@ -6216,14 +6452,44 @@
                 "description": "The attribute to order the results by.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               },
               "types": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "addons": [
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "addons": {
+                      "type": [
                         "list",
                         [
                           "object",
@@ -6242,6 +6508,17 @@
                                         "monthly": "number"
                                       }
                                     ]
+                                  ],
+                                  "region_prices": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "hourly": "number",
+                                        "id": "string",
+                                        "monthly": "number"
+                                      }
+                                    ]
                                   ]
                                 }
                               ]
@@ -6249,13 +6526,49 @@
                           }
                         ]
                       ],
-                      "class": "string",
-                      "disk": "number",
-                      "id": "string",
-                      "label": "string",
-                      "memory": "number",
-                      "network_out": "number",
-                      "price": [
+                      "description": "Information about the optional Backup service offered for Linodes.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "class": {
+                      "type": "string",
+                      "description": "The class of the Linode Type. There are currently three classes of Linodes: nanode, standard, highmem, dedicated",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "disk": {
+                      "type": "number",
+                      "description": "The Disk size, in MB, of the Linode Type.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The unique ID assigned to this Instance type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The Linode Type's label is for display purposes only.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "memory": {
+                      "type": "number",
+                      "description": "Amount of RAM included in this Linode Type.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "network_out": {
+                      "type": "number",
+                      "description": "The Mbits outbound bandwidth allocation.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "price": {
+                      "type": [
                         "list",
                         [
                           "object",
@@ -6265,43 +6578,40 @@
                           }
                         ]
                       ],
-                      "transfer": "number",
-                      "vcpus": "number"
-                    }
-                  ]
-                ],
-                "description": "The returned list of Types.",
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "block_types": {
-              "filter": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "match_by": {
-                      "type": "string",
-                      "description": "The type of comparison to use for this filter.",
+                      "description": "Cost in US dollars, broken down into hourly and monthly charges.",
                       "description_kind": "plain",
-                      "optional": true
+                      "computed": true
                     },
-                    "name": {
-                      "type": "string",
-                      "description": "The name of the attribute to filter on.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "values": {
+                    "region_prices": {
                       "type": [
                         "list",
-                        "string"
+                        [
+                          "object",
+                          {
+                            "hourly": "number",
+                            "id": "string",
+                            "monthly": "number"
+                          }
+                        ]
                       ],
-                      "description": "The value(s) to be used in the filter.",
+                      "description": "A list of region-specific prices for this plan.",
                       "description_kind": "plain",
-                      "required": true
+                      "computed": true
+                    },
+                    "transfer": {
+                      "type": "number",
+                      "description": "The monthly outbound transfer amount, in MB.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "vcpus": {
+                      "type": "number",
+                      "description": "The number of VCPU cores this Linode Type offers.",
+                      "description_kind": "plain",
+                      "computed": true
                     }
                   },
+                  "description": "The returned list of instance types.",
                   "description_kind": "plain"
                 }
               }
@@ -6474,6 +6784,7 @@
                                 }
                               ]
                             ],
+                            "id": "number",
                             "interface": [
                               "list",
                               [
@@ -6507,6 +6818,7 @@
                         ]
                       ],
                       "group": "string",
+                      "has_user_data": "bool",
                       "host_uuid": "string",
                       "id": "number",
                       "image": "string",
@@ -6599,8 +6911,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The unique ID for this DataSource",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "is_bgp": {
@@ -6614,7 +6926,7 @@
                   "set",
                   "number"
                 ],
-                "description": "A list of Linodes targeted by this IPv6 range. Includes Linodes with IP sharing.",
+                "description": "The IDs of Linodes to apply this firewall to.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -6647,6 +6959,12 @@
               "architecture": {
                 "type": "string",
                 "description": "The architecture of this Kernel.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "built": {
+                "type": "string",
+                "description": "The date on which this Kernel was built.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -6691,6 +7009,126 @@
                 "description": "If this Kernel is suitable for Xen Linodes.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_kernels": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "kernels": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "architecture": {
+                      "type": "string",
+                      "description": "The architecture of this Kernel.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "built": {
+                      "type": "string",
+                      "description": "The date on which this Kernel was built.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "deprecated": {
+                      "type": "bool",
+                      "description": "Whether or not this Kernel is deprecated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The unique ID of this Kernel.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "kvm": {
+                      "type": "bool",
+                      "description": "If this Kernel is suitable for KVM Linodes.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The friendly name of this Kernel.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "pvops": {
+                      "type": "bool",
+                      "description": "If this Kernel is suitable for paravirtualized operations.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "version": {
+                      "type": "string",
+                      "description": "Linux Kernel version.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "xen": {
+                      "type": "bool",
+                      "description": "If this Kernel is suitable for Xen Linodes.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of Kernels.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -6822,8 +7260,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "Unique identification field for this list of LKE Versions.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "versions": {
@@ -6862,8 +7300,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "A unique identifier for this datasource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "linode_id": {
@@ -6913,7 +7351,7 @@
           }
         },
         "linode_nodebalancer": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "client_conn_throttle": {
@@ -7000,7 +7438,7 @@
           }
         },
         "linode_nodebalancer_config": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "algorithm": {
@@ -7180,6 +7618,151 @@
             "description_kind": "plain"
           }
         },
+        "linode_nodebalancers": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "nodebalancers": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "client_conn_throttle": {
+                      "type": "number",
+                      "description": "Throttle connections per second (0-20). Set to 0 (zero) to disable throttling.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "created": {
+                      "type": "string",
+                      "description": "When this NodeBalancer was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "hostname": {
+                      "type": "string",
+                      "description": "This NodeBalancer's hostname, ending with .nodebalancer.linode.com",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of the Linode NodeBalancer.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ipv4": {
+                      "type": "string",
+                      "description": "The Public IPv4 Address of this NodeBalancer",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ipv6": {
+                      "type": "string",
+                      "description": "The Public IPv6 Address of this NodeBalancer",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The label of the Linode NodeBalancer.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "The region where this NodeBalancer will be deployed.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "tags": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "An array of tags applied to this object. Tags are for organizational purposes only.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "transfer": {
+                      "type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "in": "number",
+                            "out": "number",
+                            "total": "number"
+                          }
+                        ]
+                      ],
+                      "description": "Information about the amount of transfer this NodeBalancer has had so far this month.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "When this NodeBalancer was last updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of NodeBalancers.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "linode_object_storage_bucket": {
           "version": 0,
           "block": {
@@ -7238,7 +7821,6 @@
                 "type": "string",
                 "description": "The base URL for this cluster.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "id": {
@@ -7251,21 +7833,18 @@
                 "type": "string",
                 "description": "The region this cluster is located in.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "static_site_domain": {
                 "type": "string",
                 "description": "The base URL for this cluster used when hosting static sites.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "status": {
                 "type": "string",
                 "description": "This cluster's status.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               }
             },
@@ -7299,8 +7878,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "Unique identification field for this datasource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "ip_whitelist_enabled": {
@@ -7368,7 +7947,7 @@
             "attributes": {
               "capabilities": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "A list of capabilities of this region.",
@@ -7379,7 +7958,6 @@
                 "type": "string",
                 "description": "The country where this Region resides.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "id": {
@@ -7394,25 +7972,33 @@
                 "description_kind": "plain",
                 "computed": true
               },
-              "resolvers": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "ipv4": "string",
-                      "ipv6": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "computed": true
-              },
               "status": {
                 "type": "string",
                 "description": "This region’s current operational status.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "block_types": {
+              "resolvers": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "ipv4": {
+                      "type": "string",
+                      "description": "The IPv4 addresses for this region’s DNS resolvers, separated by commas.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ipv6": {
+                      "type": "string",
+                      "description": "The IPv6 addresses for this region’s DNS resolvers, separated by commas.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -7424,45 +8010,14 @@
             "attributes": {
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "regions": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "capabilities": [
-                        "list",
-                        "string"
-                      ],
-                      "country": "string",
-                      "id": "string",
-                      "label": "string",
-                      "resolvers": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "ipv4": "string",
-                            "ipv6": "string"
-                          }
-                        ]
-                      ],
-                      "status": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of regions.",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
             "block_types": {
               "filter": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -7479,12 +8034,75 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
                       "description_kind": "plain",
                       "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "regions": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "capabilities": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "A list of capabilities of this region.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "The country where this Region resides.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The unique ID of this Region.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "Detailed location information for this Region, including city, state or region, and country.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "This region’s current operational status.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "resolvers": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ipv4": {
+                            "type": "string",
+                            "description": "The IPv4 addresses for this region’s DNS resolvers, separated by commas.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ipv6": {
+                            "type": "string",
+                            "description": "The IPv6 addresses for this region’s DNS resolvers, separated by commas.",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
                     }
                   },
                   "description_kind": "plain"
@@ -7506,9 +8124,9 @@
               },
               "id": {
                 "type": "string",
+                "description": "A unique identifier for this datasource.",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "label": {
                 "type": "string",
@@ -7521,6 +8139,96 @@
                 "description": "The public SSH Key, which is used to authenticate to the root user of the Linodes you deploy.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_sshkeys": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "sshkeys": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "The date this key was added.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "A unique identifier for this datasource.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The label of the Linode SSH Key.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ssh_key": {
+                      "type": "string",
+                      "description": "The public SSH Key, which is used to authenticate to the root user of the Linodes you deploy.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of SSH Keys.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -7555,14 +8263,14 @@
                 "computed": true
               },
               "id": {
-                "type": "number",
-                "description": "The unique ID of this Stackscript.",
+                "type": "string",
+                "description": "The StackScript's unique ID.",
                 "description_kind": "plain",
                 "required": true
               },
               "images": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "An array of Image IDs representing the Images that this StackScript is compatible for deploying with.",
@@ -7616,7 +8324,6 @@
                 ],
                 "description": "This is a list of fields defined with a special syntax inside this StackScript that allow for supplying customized parameters during deployment.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "user_gravatar_id": {
@@ -7641,8 +8348,8 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "latest": {
@@ -7662,54 +8369,11 @@
                 "description": "The attribute to order the results by.",
                 "description_kind": "plain",
                 "optional": true
-              },
-              "stackscripts": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "created": "string",
-                      "deployments_active": "number",
-                      "deployments_total": "number",
-                      "description": "string",
-                      "id": "number",
-                      "images": [
-                        "list",
-                        "string"
-                      ],
-                      "is_public": "bool",
-                      "label": "string",
-                      "rev_note": "string",
-                      "script": "string",
-                      "updated": "string",
-                      "user_defined_fields": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "default": "string",
-                            "example": "string",
-                            "label": "string",
-                            "many_of": "string",
-                            "name": "string",
-                            "one_of": "string"
-                          }
-                        ]
-                      ],
-                      "user_gravatar_id": "string",
-                      "username": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of StackScripts.",
-                "description_kind": "plain",
-                "computed": true
               }
             },
             "block_types": {
               "filter": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -7726,7 +8390,7 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
@@ -7734,6 +8398,115 @@
                       "required": true
                     }
                   },
+                  "description_kind": "plain"
+                }
+              },
+              "stackscripts": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "The date this StackScript was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "deployments_active": {
+                      "type": "number",
+                      "description": "Count of currently active, deployed Linodes created from this StackScript.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "deployments_total": {
+                      "type": "number",
+                      "description": "The total number of times this StackScript has been deployed.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A description for the StackScript.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The StackScript's unique ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "images": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "An array of Image IDs representing the Images that this StackScript is compatible for deploying with.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "is_public": {
+                      "type": "bool",
+                      "description": "This determines whether other users can use your StackScript. Once a StackScript is made public, it cannot be made private.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The StackScript's label is for display purposes only.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "rev_note": {
+                      "type": "string",
+                      "description": "This field allows you to add notes for the set of revisions made to this StackScript.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "script": {
+                      "type": "string",
+                      "description": "The script to execute when provisioning a new Linode with this StackScript.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "The date this StackScript was updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "user_defined_fields": {
+                      "type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "default": "string",
+                            "example": "string",
+                            "label": "string",
+                            "many_of": "string",
+                            "name": "string",
+                            "one_of": "string"
+                          }
+                        ]
+                      ],
+                      "description": "This is a list of fields defined with a special syntax inside this StackScript that allow for supplying customized parameters during deployment.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "user_gravatar_id": {
+                      "type": "string",
+                      "description": "The Gravatar ID for the User who created the StackScript.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The User who created the StackScript.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of StackScripts.",
                   "description_kind": "plain"
                 }
               }
@@ -7745,10 +8518,61 @@
           "version": 0,
           "block": {
             "attributes": {
+              "database_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "domain_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "email": {
                 "type": "string",
                 "description": "The email address for this User, for account management communications, and may be used for other communications as configured.",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "firewall_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "global_grants": {
@@ -7778,8 +8602,82 @@
               },
               "id": {
                 "type": "string",
+                "description": "Unique identifier for this DataSource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "image_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "linode_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longview_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "nodebalancer_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "password_created": {
+                "type": "string",
+                "description": "The date and time when this User’s current password was created.User passwords are first created during the Account sign-up process, and updated using the Reset Password webpage.null if this User has not created a password yet.",
+                "description_kind": "plain",
                 "computed": true
               },
               "restricted": {
@@ -7797,194 +8695,70 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "stackscript_grant": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
+                    }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tfa_enabled": {
+                "type": "bool",
+                "description": "A boolean value indicating if the User has Two Factor Authentication (TFA) enabled.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "username": {
                 "type": "string",
                 "description": "This User's username. This is used for logging in, and may also be displayed alongside actions the User performs (for example, in Events or public StackScripts).",
                 "description_kind": "plain",
                 "required": true
-              }
-            },
-            "block_types": {
-              "domain_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
               },
-              "firewall_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
-              },
-              "image_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
-              },
-              "linode_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
-              },
-              "longview_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
-              },
-              "nodebalancer_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
-              },
-              "stackscript_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
+              "verified_phone_number": {
+                "type": "string",
+                "description": "The phone number verified for this User Profile with the Phone Number Verify command.null if this User Profile has no verified phone number.",
+                "description_kind": "plain",
+                "computed": true
               },
               "volume_grant": {
-                "nesting_mode": "set",
-                "block": {
-                  "attributes": {
-                    "id": {
-                      "type": "number",
-                      "description": "The ID of the entity this grant applies to.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "permissions": {
-                      "type": "string",
-                      "description": "The level of access this User has to this entity. If null, this User has no access.",
-                      "description_kind": "plain",
-                      "required": true
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "label": "string",
+                      "permissions": "string"
                     }
-                  },
-                  "description": "A set containing all of the user's active grants.",
-                  "description_kind": "plain"
-                }
+                  ]
+                ],
+                "description": "A set containing all of the user's active grants.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
           }
         },
-        "linode_vlans": {
+        "linode_users": {
           "version": 0,
           "block": {
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The data source's unique ID.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "order": {
@@ -7998,31 +8772,11 @@
                 "description": "The attribute to order the results by.",
                 "description_kind": "plain",
                 "optional": true
-              },
-              "vlans": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "created": "string",
-                      "label": "string",
-                      "linodes": [
-                        "list",
-                        "number"
-                      ],
-                      "region": "string"
-                    }
-                  ]
-                ],
-                "description": "The returned list of VLANs.",
-                "description_kind": "plain",
-                "computed": true
               }
             },
             "block_types": {
               "filter": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "match_by": {
@@ -8039,7 +8793,7 @@
                     },
                     "values": {
                       "type": [
-                        "list",
+                        "set",
                         "string"
                       ],
                       "description": "The value(s) to be used in the filter.",
@@ -8047,6 +8801,337 @@
                       "required": true
                     }
                   },
+                  "description_kind": "plain"
+                }
+              },
+              "users": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "database_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "domain_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The email address for this User, for account management communications, and may be used for other communications as configured.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "firewall_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "global_grants": {
+                      "type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "account_access": "string",
+                            "add_databases": "bool",
+                            "add_domains": "bool",
+                            "add_firewalls": "bool",
+                            "add_images": "bool",
+                            "add_linodes": "bool",
+                            "add_longview": "bool",
+                            "add_nodebalancers": "bool",
+                            "add_stackscripts": "bool",
+                            "add_volumes": "bool",
+                            "cancel_account": "bool",
+                            "longview_subscription": "bool"
+                          }
+                        ]
+                      ],
+                      "description": "A structure containing the Account-level grants a User has.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier for this DataSource.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "image_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "linode_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "longview_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "nodebalancer_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "password_created": {
+                      "type": "string",
+                      "description": "The date and time when this User’s current password was created.User passwords are first created during the Account sign-up process, and updated using the Reset Password webpage.null if this User has not created a password yet.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "restricted": {
+                      "type": "bool",
+                      "description": "If true, this User must be granted access to perform actions or access entities on this Account.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ssh_keys": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of SSH Key labels added by this User. These are the keys that will be deployed if this User is included in the authorized_users field of a create Linode, rebuild Linode, or create Disk request.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "stackscript_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "tfa_enabled": {
+                      "type": "bool",
+                      "description": "A boolean value indicating if the User has Two Factor Authentication (TFA) enabled.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "This User's username. This is used for logging in, and may also be displayed alongside actions the User performs (for example, in Events or public StackScripts).",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "verified_phone_number": {
+                      "type": "string",
+                      "description": "The phone number verified for this User Profile with the Phone Number Verify command.null if this User Profile has no verified phone number.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "volume_grant": {
+                      "type": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "label": "string",
+                            "permissions": "string"
+                          }
+                        ]
+                      ],
+                      "description": "A set containing all of the user's active grants.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of Users.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_vlans": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "vlans": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "When this VLAN was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The unique label of this VLAN.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "linodes": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "The Linodes currently attached to this VLAN.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "The region this VLAN is located in.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of VLANs.",
                   "description_kind": "plain"
                 }
               }
@@ -8120,6 +9205,135 @@
                 "description": "Datetime string representing when the Volume was last updated.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_volumes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "volumes": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "Datetime string representing when the Volume was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "filesystem_path": {
+                      "type": "string",
+                      "description": "The full filesystem path for the Volume based on the Volume's label. Path is /dev/disk/by-id/scsi-0LinodeVolume + Volume label.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique id of this Volume.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The Volume's label. For display purposes only.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "linode_id": {
+                      "type": "number",
+                      "description": "If a Volume is attached to a specific Linode, the ID of that Linode will be displayed here.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "The datacenter where this Volume is located.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description": "The size of this Volume in GiB.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The status of the Volume. Can be one of active | creating | resizing | contact_support",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "tags": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "An array of tags applied to this Volume. Tags are for organizational purposes only.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "Datetime string representing when the Volume was last updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The return list of Volumes.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"

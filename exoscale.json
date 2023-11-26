@@ -35,12 +35,6 @@
               "description_kind": "plain",
               "optional": true
             },
-            "gzip_user_data": {
-              "type": "bool",
-              "description": "Defines if the user-data of compute instances should be gzipped (by default: true)",
-              "description_kind": "markdown",
-              "optional": true
-            },
             "key": {
               "type": "string",
               "description": "Exoscale API key",
@@ -378,7 +372,7 @@
               },
               "user_data": {
                 "type": "string",
-                "description": "cloud-init configuration (no need to base64-encode or gzip it as the provider will take care of it).",
+                "description": "cloud-init configuration.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -511,6 +505,12 @@
                 "description_kind": "markdown",
                 "required": true
               },
+              "private": {
+                "type": "bool",
+                "description": "Whether the instance is private (no public IP addresses; default: false)",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "private_network_ids": {
                 "type": [
                   "set",
@@ -569,7 +569,7 @@
               },
               "user_data": {
                 "type": "string",
-                "description": "[cloud-init](https://cloudinit.readthedocs.io/) configuration (no need to base64-encode or gzip it as the provider will take care of it).",
+                "description": "[cloud-init](https://cloudinit.readthedocs.io/) configuration.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -589,7 +589,8 @@
                       "type": "string",
                       "description": "The IPv4 address to request as static DHCP lease if the network interface is attached to a *managed* private network.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "network_id": {
                       "type": "string",
@@ -636,7 +637,7 @@
           }
         },
         "exoscale_database": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "ca_certificate": {
@@ -659,8 +660,8 @@
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "maintenance_dow": {
@@ -703,7 +704,7 @@
               },
               "plan": {
                 "type": "string",
-                "description": "The plan of the database service (use the [Exoscale CLI](https://github.com/exoscale/cli/) - `exo dbaas type show <TYPE>` - for reference).",
+                "description": "The plan of the database service (use the [Exoscale CLI](https://github.com/exoscale/cli/) - `exo dbaas type show <TYPE> --plans` - for reference).",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -717,11 +718,12 @@
                 "type": "bool",
                 "description": "The database service protection boolean flag against termination/power-off.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "type": {
                 "type": "string",
-                "description": "❗ The type of the database service (`kafka`, `mysql`, `opensearch`, `pg`, `redis`).",
+                "description": "❗ The type of the database service (`kafka`, `mysql`, `opensearch`, `pg`, `redis`, `grafana`).",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -731,13 +733,6 @@
                 "description_kind": "markdown",
                 "computed": true
               },
-              "uri": {
-                "type": "string",
-                "description": "The database service connection URI.",
-                "description_kind": "markdown",
-                "computed": true,
-                "sensitive": true
-              },
               "zone": {
                 "type": "string",
                 "description": "❗ The Exoscale [Zone](https://www.exoscale.com/datacenters/) name.",
@@ -746,8 +741,34 @@
               }
             },
             "block_types": {
+              "grafana": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "grafana_settings": {
+                      "type": "string",
+                      "description": "Grafana configuration settings in JSON format (`exo dbaas type show grafana --settings=grafana` for reference).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "ip_filter": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "A list of CIDR blocks to allow incoming connections from.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "*grafana* database service type specific arguments. Structure is documented below.",
+                  "description_kind": "markdown"
+                }
+              },
               "kafka": {
-                "nesting_mode": "list",
+                "nesting_mode": "single",
                 "block": {
                   "attributes": {
                     "enable_cert_auth": {
@@ -761,13 +782,15 @@
                       "type": "bool",
                       "description": "Enable Kafka Connect.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "enable_kafka_rest": {
                       "type": "bool",
                       "description": "Enable Kafka REST.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "enable_sasl_auth": {
                       "type": "bool",
@@ -780,7 +803,8 @@
                       "type": "bool",
                       "description": "Enable Schema Registry.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "ip_filter": {
                       "type": [
@@ -828,13 +852,12 @@
                       "computed": true
                     }
                   },
-                  "description": "*kafka* database service type specific arguments.",
+                  "description": "*kafka* database service type specific arguments. Structure is documented below.",
                   "description_kind": "markdown"
-                },
-                "max_items": 1
+                }
               },
               "mysql": {
-                "nesting_mode": "list",
+                "nesting_mode": "single",
                 "block": {
                   "attributes": {
                     "admin_password": {
@@ -842,15 +865,13 @@
                       "description": "A custom administrator account password (may only be set at creation time).",
                       "description_kind": "markdown",
                       "optional": true,
-                      "computed": true,
                       "sensitive": true
                     },
                     "admin_username": {
                       "type": "string",
                       "description": "A custom administrator account username (may only be set at creation time).",
                       "description_kind": "markdown",
-                      "optional": true,
-                      "computed": true
+                      "optional": true
                     },
                     "backup_schedule": {
                       "type": "string",
@@ -884,13 +905,12 @@
                       "computed": true
                     }
                   },
-                  "description": "*mysql* database service type specific arguments.",
+                  "description": "*mysql* database service type specific arguments. Structure is documented below.",
                   "description_kind": "markdown"
-                },
-                "max_items": 1
+                }
               },
               "opensearch": {
-                "nesting_mode": "list",
+                "nesting_mode": "single",
                 "block": {
                   "attributes": {
                     "fork_from_service": {
@@ -904,7 +924,7 @@
                         "set",
                         "string"
                       ],
-                      "description": "Allow incoming connections from this list of CIDR address block, e.g. `[\"10.20.0.0/16\"]`",
+                      "description": "Allow incoming connections from this list of CIDR address block, e.g. `[\"10.20.0.0/16\"]",
                       "description_kind": "markdown",
                       "optional": true,
                       "computed": true
@@ -923,7 +943,7 @@
                     },
                     "recovery_backup_name": {
                       "type": "string",
-                      "description": "❗ ",
+                      "description": "❗ Name of a backup to recover from",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -931,11 +951,12 @@
                       "type": "string",
                       "description": "OpenSearch-specific settings, in json. e.g.`jsonencode({thread_pool_search_size: 64})`. Use `exo x get-dbaas-settings-opensearch` to get a list of available settings.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "version": {
                       "type": "string",
-                      "description": "❗ OpenSearch major version.",
+                      "description": "❗ OpenSearch major version (`exo dbaas type show opensearch` for reference)",
                       "description_kind": "markdown",
                       "optional": true,
                       "computed": true
@@ -943,31 +964,31 @@
                   },
                   "block_types": {
                     "dashboards": {
-                      "nesting_mode": "list",
+                      "nesting_mode": "single",
                       "block": {
                         "attributes": {
                           "enabled": {
                             "type": "bool",
-                            "description": "{Type -  schema.TypeBool, Optional -  true, Default -  true}",
+                            "description": "Enable or disable OpenSearch Dashboards (default: true).",
                             "description_kind": "markdown",
                             "optional": true
                           },
                           "max_old_space_size": {
                             "type": "number",
-                            "description": "{Type -  schema.TypeInt, Optional -  true, Default -  128}",
+                            "description": "Limits the maximum amount of memory (in MiB) the OpenSearch Dashboards process can use. This sets the max_old_space_size option of the nodejs running the OpenSearch Dashboards. Note: the memory reserved by OpenSearch Dashboards is not available for OpenSearch. (default: 128).",
                             "description_kind": "markdown",
                             "optional": true
                           },
                           "request_timeout": {
                             "type": "number",
-                            "description": "{Type -  schema.TypeInt, Optional -  true, Default -  30000}",
+                            "description": "Timeout in milliseconds for requests made by OpenSearch Dashboards towards OpenSearch (default: 30000)",
                             "description_kind": "markdown",
                             "optional": true
                           }
                         },
-                        "description_kind": "plain"
-                      },
-                      "max_items": 1
+                        "description": "OpenSearch Dashboards settings",
+                        "description_kind": "markdown"
+                      }
                     },
                     "index_pattern": {
                       "nesting_mode": "list",
@@ -997,7 +1018,7 @@
                       }
                     },
                     "index_template": {
-                      "nesting_mode": "list",
+                      "nesting_mode": "single",
                       "block": {
                         "attributes": {
                           "mapping_nested_objects_limit": {
@@ -1021,17 +1042,15 @@
                         },
                         "description": "Template settings for all new indexes",
                         "description_kind": "markdown"
-                      },
-                      "max_items": 1
+                      }
                     }
                   },
-                  "description": "*opensearch* database service type specific arguments.",
+                  "description": "*opensearch* database service type specific arguments. Structure is documented below.",
                   "description_kind": "markdown"
-                },
-                "max_items": 1
+                }
               },
               "pg": {
-                "nesting_mode": "list",
+                "nesting_mode": "single",
                 "block": {
                   "attributes": {
                     "admin_password": {
@@ -1039,15 +1058,13 @@
                       "description": "A custom administrator account password (may only be set at creation time).",
                       "description_kind": "markdown",
                       "optional": true,
-                      "computed": true,
                       "sensitive": true
                     },
                     "admin_username": {
                       "type": "string",
                       "description": "A custom administrator account username (may only be set at creation time).",
                       "description_kind": "markdown",
-                      "optional": true,
-                      "computed": true
+                      "optional": true
                     },
                     "backup_schedule": {
                       "type": "string",
@@ -1097,11 +1114,10 @@
                   },
                   "description": "*pg* database service type specific arguments. Structure is documented below.",
                   "description_kind": "markdown"
-                },
-                "max_items": 1
+                }
               },
               "redis": {
-                "nesting_mode": "list",
+                "nesting_mode": "single",
                 "block": {
                   "attributes": {
                     "ip_filter": {
@@ -1124,8 +1140,7 @@
                   },
                   "description": "*redis* database service type specific arguments. Structure is documented below.",
                   "description_kind": "markdown"
-                },
-                "max_items": 1
+                }
               },
               "timeouts": {
                 "nesting_mode": "single",
@@ -1133,21 +1148,25 @@
                   "attributes": {
                     "create": {
                       "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "delete": {
                       "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "read": {
                       "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "update": {
                       "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -1572,6 +1591,293 @@
             "description_kind": "plain"
           }
         },
+        "exoscale_iam_api_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The IAM API Key to match.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "❗ IAM API Key name.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "role_id": {
+                "type": "string",
+                "description": "❗ IAM API role ID.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "Secret for the IAM API Key.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Manage Exoscale [IAM](https://community.exoscale.com/documentation/iam/) API Key.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "exoscale_iam_org_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_service_strategy": {
+                "type": "string",
+                "description": "Default service strategy (`allow` or `deny`).",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "services": {
+                "nested_type": {
+                  "attributes": {
+                    "rules": {
+                      "nested_type": {
+                        "attributes": {
+                          "action": {
+                            "type": "string",
+                            "description": "IAM policy rule action (`allow` or `deny`).",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "expression": {
+                            "type": "string",
+                            "description": "IAM policy rule expression.",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "resources": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "List of resources that IAM policy rule applies to.",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "nesting_mode": "list"
+                      },
+                      "description": "List of IAM service rules (if type is `rules`).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Service type (`rules`, `allow`, or `deny`).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "map"
+                },
+                "description": "IAM policy services.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Manage Exoscale [IAM](https://community.exoscale.com/documentation/iam/) Organization Policy.",
+            "description_kind": "markdown"
+          }
+        },
+        "exoscale_iam_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "A free-form text describing the IAM Role",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "editable": {
+                "type": "bool",
+                "description": "Defines if IAM Role Policy is editable or not.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "IAM Role labels.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of IAM Role.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "permissions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "IAM Role permissions.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "policy": {
+                "nested_type": {
+                  "attributes": {
+                    "default_service_strategy": {
+                      "type": "string",
+                      "description": "Default service strategy (`allow` or `deny`).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "services": {
+                      "nested_type": {
+                        "attributes": {
+                          "rules": {
+                            "nested_type": {
+                              "attributes": {
+                                "action": {
+                                  "type": "string",
+                                  "description": "IAM policy rule action (`allow` or `deny`).",
+                                  "description_kind": "markdown",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "expression": {
+                                  "type": "string",
+                                  "description": "IAM policy rule expression.",
+                                  "description_kind": "markdown",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "resources": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "List of resources that IAM policy rule applies to.",
+                                  "description_kind": "markdown",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "nesting_mode": "list"
+                            },
+                            "description": "List of IAM service rules (if type is `rules`).",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Service type (`rules`, `allow`, or `deny`).",
+                            "description_kind": "markdown",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "nesting_mode": "map"
+                      },
+                      "description": "IAM policy services.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "IAM Policy.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Manage Exoscale [IAM](https://community.exoscale.com/documentation/iam/) Role.\n",
+            "description_kind": "markdown"
+          }
+        },
         "exoscale_instance_pool": {
           "version": 0,
           "block": {
@@ -1705,7 +2011,7 @@
               },
               "user_data": {
                 "type": "string",
-                "description": "[cloud-init](http://cloudinit.readthedocs.io/) configuration to apply to the managed instances (no need to base64-encode or gzip it as the provider will take care of it).",
+                "description": "[cloud-init](http://cloudinit.readthedocs.io/) configuration to apply to the managed instances.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -2221,7 +2527,7 @@
               },
               "instance_pool_id": {
                 "type": "string",
-                "description": "The [exoscale_instance_pool](./instance_pool.md) (ID) to forward traffic to.",
+                "description": "❗ The [exoscale_instance_pool](./instance_pool.md) (ID) to forward traffic to.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -2321,7 +2627,7 @@
                       "optional": true
                     }
                   },
-                  "description": "The service health checking configuration (may only bet set at creation time).",
+                  "description": "The service health checking configuration.",
                   "description_kind": "markdown"
                 },
                 "min_items": 1
@@ -2380,6 +2686,15 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of key/value labels.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "name": {
                 "type": "string",
@@ -2571,7 +2886,7 @@
             "attributes": {
               "cidr": {
                 "type": "string",
-                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination IP subnet (in [CIDR notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)) to match (conflicts with `user_security_group`/`user_security_group_id`).",
+                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination IP subnet (in [CIDR notation](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation)) to match (conflicts with `public_security_group`/`user_security_group`/`user_security_group_id`).",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -2611,6 +2926,13 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "public_security_group": {
+                "type": "string",
+                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination public security group name to match (conflicts with `cidr`/`user_security_group`/`user_security_group_id`).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "security_group": {
                 "type": "string",
                 "description": "❗ The parent security group name. Please use the `security_group_id` argument along the [exoscale_security_group](../data-sources/security_group.md) data source instead.",
@@ -2640,7 +2962,7 @@
               },
               "user_security_group": {
                 "type": "string",
-                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination security group name to match (conflicts with `cidr`/`user_security_group_id`). Please use the `user_security_group_id` argument along the [exoscale_security_group](../data-sources/security_group.md) data source instead.",
+                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination security group name to match (conflicts with `cidr`/`public_security_group`/`user_security_group_id`). Please use the `user_security_group_id` argument along the [exoscale_security_group](../data-sources/security_group.md) data source instead.",
                 "description_kind": "markdown",
                 "deprecated": true,
                 "optional": true,
@@ -2648,7 +2970,7 @@
               },
               "user_security_group_id": {
                 "type": "string",
-                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination security group ID to match (conflicts with `cidr`/`user_security_group)`).",
+                "description": "❗ An (`INGRESS`) source / (`EGRESS`) destination security group ID to match (conflicts with `cidr`/`public_security_group`/`user_security_group)`).",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -2905,7 +3227,8 @@
               },
               "cni": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The CNI plugin that is to be used. Defaults to \"calico\".",
+                "description_kind": "markdown",
                 "optional": true
               },
               "control_plane_ca": {
@@ -3302,6 +3625,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "storage_lvm": {
+                "type": "bool",
+                "description": "Create nodes with non-standard partitioning for persistent storage (requires min 100G of disk space) (may only be set at creation time).",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "taints": {
                 "type": [
                   "map",
@@ -3650,7 +3979,7 @@
                 ],
                 "description": "The list of attached [exoscale_anti_affinity_group](../resources/anti_affinity_group.md) (IDs).",
                 "description_kind": "markdown",
-                "optional": true
+                "computed": true
               },
               "created_at": {
                 "type": "string",
@@ -3704,7 +4033,7 @@
                 ],
                 "description": "A map of key/value labels.",
                 "description_kind": "markdown",
-                "optional": true
+                "computed": true
               },
               "manager_id": {
                 "type": "string",
@@ -3956,9 +4285,9 @@
               },
               "zone": {
                 "type": "string",
-                "description": "Match against this string. If you supply a string that begins and ends with a \"/\" it will be matched as a regex.",
+                "description": "The Exoscale [Zone](https://www.exoscale.com/datacenters/) name.",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               }
             },
             "description": "List Exoscale [Compute Instances](https://community.exoscale.com/documentation/compute/).\n\nCorresponding resource: [exoscale_compute_instance](../resources/compute_instance.md).",
@@ -4046,8 +4375,64 @@
             "description_kind": "markdown"
           }
         },
+        "exoscale_database_uri": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The database name to match.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the database service (`kafka`, `mysql`, `opensearch`, `pg`, `redis`).",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uri": {
+                "type": "string",
+                "description": "The database service connection URI.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The Exoscale Zone name.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Fetch Exoscale [Database](https://community.exoscale.com/documentation/dbaas/) URI data.\n\nCorresponding resource: [exoscale_database](../resources/database.md).",
+            "description_kind": "markdown"
+          }
+        },
         "exoscale_domain": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "id": {
@@ -4068,7 +4453,7 @@
           }
         },
         "exoscale_domain_record": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "domain": {
@@ -4224,6 +4609,271 @@
               }
             },
             "description": "Fetch Exoscale [Elastic IPs (EIP)](https://community.exoscale.com/documentation/compute/eip/) data.\n\nCorresponding resource: [exoscale_elastic_ip](../resources/elastic_ip.md).",
+            "description_kind": "markdown"
+          }
+        },
+        "exoscale_iam_api_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The IAM API Key to match.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "IAM API Key name.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "role_id": {
+                "type": "string",
+                "description": "IAM API Key role ID.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Fetch Exoscale [IAM](https://community.exoscale.com/documentation/iam/) API Key.\n\nCorresponding resource: [exoscale_iam_role](../resources/iam_api_key.md).",
+            "description_kind": "markdown"
+          }
+        },
+        "exoscale_iam_org_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_service_strategy": {
+                "type": "string",
+                "description": "Default service strategy (`allow` or `deny`).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "services": {
+                "nested_type": {
+                  "attributes": {
+                    "rules": {
+                      "nested_type": {
+                        "attributes": {
+                          "action": {
+                            "type": "string",
+                            "description": "IAM policy rule action (`allow` or `deny`).",
+                            "description_kind": "markdown",
+                            "computed": true
+                          },
+                          "expression": {
+                            "type": "string",
+                            "description": "IAM policy rule expression.",
+                            "description_kind": "markdown",
+                            "computed": true
+                          },
+                          "resources": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "List of resources that IAM policy rule applies to.",
+                            "description_kind": "markdown",
+                            "computed": true
+                          }
+                        },
+                        "nesting_mode": "list"
+                      },
+                      "description": "List of IAM service rules (if type is `rules`).",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Service type (`rules`, `allow`, or `deny`).",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "map"
+                },
+                "description": "IAM policy services.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Fetch Exoscale [IAM](https://community.exoscale.com/documentation/iam/) Organization Policy.\n\nCorresponding resource: [exoscale_iam_org_policy](../resources/iam_org_policy.md).",
+            "description_kind": "markdown"
+          }
+        },
+        "exoscale_iam_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "A free-form text describing the IAM Role",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "editable": {
+                "type": "bool",
+                "description": "Defines if IAM Role Policy is editable or not.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The role ID to match (conflicts with `name`).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "IAM Role labels.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "the role name to match (conflicts with `id`).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "permissions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "IAM Role permissions.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "policy": {
+                "nested_type": {
+                  "attributes": {
+                    "default_service_strategy": {
+                      "type": "string",
+                      "description": "Default service strategy (`allow` or `deny`).",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "services": {
+                      "nested_type": {
+                        "attributes": {
+                          "rules": {
+                            "nested_type": {
+                              "attributes": {
+                                "action": {
+                                  "type": "string",
+                                  "description": "IAM policy rule action (`allow` or `deny`).",
+                                  "description_kind": "markdown",
+                                  "computed": true
+                                },
+                                "expression": {
+                                  "type": "string",
+                                  "description": "IAM policy rule expression.",
+                                  "description_kind": "markdown",
+                                  "computed": true
+                                },
+                                "resources": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "List of resources that IAM policy rule applies to.",
+                                  "description_kind": "markdown",
+                                  "computed": true
+                                }
+                              },
+                              "nesting_mode": "list"
+                            },
+                            "description": "List of IAM service rules (if type is `rules`).",
+                            "description_kind": "markdown",
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Service type (`rules`, `allow`, or `deny`).",
+                            "description_kind": "markdown",
+                            "computed": true
+                          }
+                        },
+                        "nesting_mode": "map"
+                      },
+                      "description": "IAM policy services.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "IAM Policy.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Fetch Exoscale [IAM](https://community.exoscale.com/documentation/iam/) Role.\n\nCorresponding resource: [exoscale_iam_role](../resources/iam_role.md).",
             "description_kind": "markdown"
           }
         },
@@ -4564,6 +5214,135 @@
             "description_kind": "markdown"
           }
         },
+        "exoscale_nlb_service_list": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "nlb_id": {
+                "type": "string",
+                "description": "The NLB ID to match (conflicts with `name`).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "nlb_name": {
+                "type": "string",
+                "description": "The NLB name to match (conflicts with `id`).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "services": {
+                "nested_type": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "NLB service description.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "healthcheck": {
+                      "type": [
+                        "object",
+                        {
+                          "interval": "number",
+                          "mode": "string",
+                          "port": "number",
+                          "retries": "number",
+                          "timeout": "number",
+                          "tls_sni": "string",
+                          "uri": "string"
+                        }
+                      ],
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "NLB service ID.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "instance_pool_id": {
+                      "type": "string",
+                      "description": "The [exoscale_instance_pool](./instance_pool.md) (ID) to forward traffic to.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "NLB Service name.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Port exposed on the NLB's public IP.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Network traffic protocol.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "NLB Service State.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "strategy": {
+                      "type": "string",
+                      "description": "The strategy (`round-robin`|`source-hash`).",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "target_port": {
+                      "type": "number",
+                      "description": "Port on which the network traffic will be forwarded to on the receiving instance.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "The list of [exoscale_nlb_service](./nlb_service.md).",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "zone": {
+                "type": "string",
+                "description": "The Exoscale [Zone](https://www.exoscale.com/datacenters/) name.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Fetch Exoscale [Network Load Balancers (NLB)](https://community.exoscale.com/documentation/compute/network-load-balancer/) Services.\n\nCorresponding resource: [exoscale_nlb](../resources/nlb.md).",
+            "description_kind": "plain"
+          }
+        },
         "exoscale_private_network": {
           "version": 0,
           "block": {
@@ -4583,6 +5362,15 @@
               "id": {
                 "type": "string",
                 "description": "The private network ID to match (conflicts with `name`).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of key/value labels.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -4616,9 +5404,18 @@
           }
         },
         "exoscale_security_group": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
+              "external_sources": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The list of external network sources, in [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notatio) notation.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description": "The security group ID to match (conflicts with `name`)",
@@ -4665,7 +5462,8 @@
               },
               "cni": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The CNI plugin that is to be used. Defaults to \"calico\".",
+                "description_kind": "markdown",
                 "optional": true
               },
               "control_plane_ca": {
@@ -4992,9 +5790,9 @@
               },
               "zone": {
                 "type": "string",
-                "description": "Match against this string. If you supply a string that begins and ends with a \"/\" it will be matched as a regex.",
+                "description": "The Exoscale [Zone](https://www.exoscale.com/datacenters/) name.",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -5110,6 +5908,12 @@
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
+              },
+              "storage_lvm": {
+                "type": "bool",
+                "description": "Create nodes with non-standard partitioning for persistent storage (requires min 100G of disk space) (may only be set at creation time).",
+                "description_kind": "markdown",
+                "optional": true
               },
               "taints": {
                 "type": [
@@ -5250,6 +6054,7 @@
                       ],
                       "size": "number",
                       "state": "string",
+                      "storage_lvm": "bool",
                       "taints": [
                         "map",
                         "string"
@@ -5272,6 +6077,12 @@
               "state": {
                 "type": "string",
                 "description": "Match against this string. If you supply a string that begins and ends with a \"/\" it will be matched as a regex.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "storage_lvm": {
+                "type": "bool",
+                "description": "Match against this bool",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -5298,9 +6109,9 @@
               },
               "zone": {
                 "type": "string",
-                "description": "Match against this string. If you supply a string that begins and ends with a \"/\" it will be matched as a regex.",
+                "description": "The Exoscale [Zone](https://www.exoscale.com/datacenters/) name.",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -5343,6 +6154,24 @@
             },
             "description": "Fetch Exoscale [Compute Instance Templates](https://community.exoscale.com/documentation/compute/custom-templates/) data.",
             "description_kind": "markdown"
+          }
+        },
+        "exoscale_zones": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "zones": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of zones",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Lists all zones.",
+            "description_kind": "plain"
           }
         }
       }

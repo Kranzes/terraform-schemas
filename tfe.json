@@ -103,6 +103,38 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "organization_scoped": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tfe_agent_pool_allowed_workspaces": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "agent_pool_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "allowed_workspace_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -538,6 +570,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "expired_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "force_regenerate": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -795,6 +832,30 @@
             "description_kind": "plain"
           }
         },
+        "tfe_project_policy_set": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_set_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tfe_project_variable_set": {
           "version": 0,
           "block": {
@@ -924,6 +985,152 @@
             "description_kind": "plain"
           }
         },
+        "tfe_saml_settings": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "acs_consumer_url": {
+                "type": "string",
+                "description": "ACS Consumer (Recipient) URL",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "attr_groups": {
+                "type": "string",
+                "description": "Team Attribute Name specifies the name of the SAML attribute that determines team membership",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "attr_site_admin": {
+                "type": "string",
+                "description": "Specifies the role for site admin access. Overrides the \"Site Admin Role\" method",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "attr_username": {
+                "type": "string",
+                "description": "Username Attribute Name specifies the name of the SAML attribute that determines the user's username",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "authn_requests_signed": {
+                "type": "bool",
+                "description": "Ensure that <samlp:AuthnRequest> messages are signed",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "certificate": {
+                "type": "string",
+                "description": "The certificate used for request and assertion signing",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "debug": {
+                "type": "bool",
+                "description": "When sign-on fails and this is enabled, the SAMLResponse XML will be displayed on the login page",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether or not SAML single sign-on is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "idp_cert": {
+                "type": "string",
+                "description": "Identity Provider Certificate specifies the PEM encoded X.509 Certificate as provided by the IdP configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "metadata_url": {
+                "type": "string",
+                "description": "Metadata (Audience) URL",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "old_idp_cert": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "private_key": {
+                "type": "string",
+                "description": "The private key used for request and assertion signing",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "signature_digest_method": {
+                "type": "string",
+                "description": "Signature Digest Method. Must be either `SHA1` or `SHA256`. Defaults to `SHA256`",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "signature_signing_method": {
+                "type": "string",
+                "description": "Signature Signing Method. Must be either `SHA1` or `SHA256`. Defaults to `SHA256`",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "site_admin_role": {
+                "type": "string",
+                "description": "Specifies the role for site admin access, provided in the list of roles sent in the Team Attribute Name attribute",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "slo_endpoint_url": {
+                "type": "string",
+                "description": "Single Log Out URL specifies the HTTPS endpoint on your IdP for single logout requests. This value is provided by the IdP configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "sso_api_token_session_timeout": {
+                "type": "number",
+                "description": "Specifies the Single Sign On session timeout in seconds. Defaults to 14 days",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sso_endpoint_url": {
+                "type": "string",
+                "description": "Single Sign On URL specifies the HTTPS endpoint on your IdP for single sign-on requests. This value is provided by the IdP configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "team_management_enabled": {
+                "type": "bool",
+                "description": "Set it to false if you would rather use Terraform Enterprise to manage team membership",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "want_assertions_signed": {
+                "type": "bool",
+                "description": "Ensure that <saml:Assertion> elements are signed",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tfe_sentinel_policy": {
           "version": 0,
           "block": {
@@ -1034,6 +1241,11 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "manage_membership": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "manage_modules": {
                       "type": "bool",
                       "description_kind": "plain",
@@ -1291,6 +1503,90 @@
                 "required": true
               }
             },
+            "block_types": {
+              "project_access": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "settings": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "teams": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "workspace_access": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "delete": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "locking": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "move": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "run_tasks": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "runs": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "sentinel_mocks": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "state_versions": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "variables": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -1298,6 +1594,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "expired_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "force_regenerate": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -1384,39 +1685,52 @@
             "attributes": {
               "category": {
                 "type": "string",
+                "description": "Whether this is a Terraform or environment variable. Valid values are \"terraform\" or \"env\".",
                 "description_kind": "plain",
                 "required": true
               },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "hcl": {
                 "type": "bool",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
+                "description": "Service-generated identifier for the variable",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "key": {
                 "type": "string",
+                "description": "Name of the variable.",
                 "description_kind": "plain",
                 "required": true
+              },
+              "readable_value": {
+                "type": "string",
+                "description": "A non-sensitive read-only copy of the variable value, which can be viewed or referenced in plan outputs without being redacted. Will only be present if the variable is not sensitive",
+                "description_kind": "plain",
+                "computed": true
               },
               "sensitive": {
                 "type": "bool",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "value": {
                 "type": "string",
+                "description": "Value of the variable",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true,
                 "sensitive": true
               },
               "variable_set_id": {
@@ -1464,6 +1778,11 @@
                 "optional": true,
                 "computed": true
               },
+              "priority": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "workspace_ids": {
                 "type": [
                   "set",
@@ -1497,6 +1816,11 @@
                 "optional": true
               },
               "auto_apply": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "auto_apply_run_trigger": {
                 "type": "bool",
                 "description_kind": "plain",
                 "optional": true
@@ -1712,6 +2036,129 @@
             "description_kind": "plain"
           }
         },
+        "tfe_workspace_policy_set_exclusion": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy_set_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "workspace_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tfe_workspace_run": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "workspace_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "apply": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "manual_confirm": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "retry": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "retry_attempts": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "retry_backoff_max": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "retry_backoff_min": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wait_for_run": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "destroy": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "manual_confirm": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "retry": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "retry_attempts": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "retry_backoff_max": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "retry_backoff_min": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wait_for_run": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "tfe_workspace_run_task": {
           "version": 0,
           "block": {
@@ -1780,6 +2227,14 @@
           "version": 0,
           "block": {
             "attributes": {
+              "allowed_workspace_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1795,6 +2250,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "organization_scoped": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -2064,6 +2524,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "organization_membership_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "user_id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2193,7 +2659,7 @@
           }
         },
         "tfe_outputs": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "id": {
@@ -2238,6 +2704,14 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "excluded_workspace_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "global": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -2277,6 +2751,14 @@
                 "computed": true
               },
               "policy_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_ids": {
                 "type": [
                   "set",
                   "string"
@@ -2340,6 +2822,120 @@
                 ],
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tfe_saml_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acs_consumer_url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "attr_groups": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "attr_site_admin": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "attr_username": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "authn_requests_signed": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "certificate": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "debug": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "idp_cert": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "metadata_url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "old_idp_cert": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "private_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "signature_digest_method": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "signature_signing_method": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "site_admin_role": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "slo_endpoint_url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sso_api_token_session_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sso_endpoint_url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "team_management_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "want_assertions_signed": {
+                "type": "bool",
+                "description_kind": "plain",
                 "computed": true
               }
             },
@@ -2419,7 +3015,7 @@
           }
         },
         "tfe_team_access": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "access": {
@@ -2466,7 +3062,7 @@
           }
         },
         "tfe_team_project_access": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "access": {
@@ -2480,6 +3076,20 @@
                 "optional": true,
                 "computed": true
               },
+              "project_access": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "settings": "string",
+                      "teams": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "project_id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2489,6 +3099,62 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "workspace_access": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "create": "bool",
+                      "delete": "bool",
+                      "locking": "bool",
+                      "move": "bool",
+                      "run_tasks": "bool",
+                      "runs": "string",
+                      "sentinel_mocks": "string",
+                      "state_versions": "string",
+                      "variables": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tfe_teams": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ids": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -2523,6 +3189,20 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "priority": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "variable_ids": {
                 "type": [
@@ -2625,7 +3305,7 @@
           }
         },
         "tfe_workspace": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "allow_destroy_plan": {
@@ -2639,6 +3319,11 @@
                 "computed": true
               },
               "auto_apply": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "auto_apply_run_trigger": {
                 "type": "bool",
                 "description_kind": "plain",
                 "computed": true

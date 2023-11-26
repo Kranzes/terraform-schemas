@@ -1240,6 +1240,12 @@
                       "description_kind": "plain",
                       "required": true
                     },
+                    "rocket_storage": {
+                      "type": "number",
+                      "description": "Rocket storage per worker node (in GiB).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "storage": {
                       "type": "number",
                       "description": "Storage per worker node (in GiB).",
@@ -1363,6 +1369,11 @@
                       "type": "string",
                       "description_kind": "plain",
                       "required": true
+                    },
+                    "proxy_protocol": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
                     },
                     "weight": {
                       "type": "number",
@@ -2243,7 +2254,8 @@
                 }
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "gridscale_mysql": {
@@ -2649,6 +2661,13 @@
                 "computed": true,
                 "sensitive": true
               },
+              "comment": {
+                "type": "string",
+                "description": "Comment for the access_key.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2661,6 +2680,13 @@
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
+              },
+              "user_uuid": {
+                "type": "string",
+                "description": "If a user_uuid is set, a user-specific key will get created. \n\t\t\t\tIf no user_uuid is set along a user with write-access to the contract will still only create \n\t\t\t\ta user-specific key for themselves while a user with admin-access to the contract will create \n\t\t\t\ta contract-level admin key.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -3623,6 +3649,13 @@
               "usage_in_minutes_memory": {
                 "type": "number",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "user_data_base64": {
+                "type": "string",
+                "description": "For system configuration on first boot. May contain cloud-config data or shell scripting, encoded as base64 string. Supported tools are cloud-init, Cloudbase-init, and Ignition.",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               }
             },
@@ -6094,6 +6127,7 @@
                     "object",
                     {
                       "host": "string",
+                      "proxy_protocol": "string",
                       "weight": "number"
                     }
                   ]
@@ -6543,6 +6577,12 @@
                 "computed": true,
                 "sensitive": true
               },
+              "comment": {
+                "type": "string",
+                "description": "Comment for the access_key.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -6561,6 +6601,12 @@
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
+              },
+              "user_uuid": {
+                "type": "string",
+                "description": "If a user_uuid is set, a user-specific key will get created. \n\t\t\t\tIf no user_uuid is set along a user with write-access to the contract will still only create \n\t\t\t\ta user-specific key for themselves while a user with admin-access to the contract will create \n\t\t\t\ta contract-level admin key.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -7149,6 +7195,12 @@
               },
               "usage_in_minutes_memory": {
                 "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_data_base64": {
+                "type": "string",
+                "description": "For system configuration on first boot. May contain cloud-config data or shell scripting, encoded as base64 string. Supported tools are cloud-init, Cloudbase-init, and Ignition.",
                 "description_kind": "plain",
                 "computed": true
               }

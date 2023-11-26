@@ -111,7 +111,6 @@
                 "description": "List of datastores IDs part of the cluster",
                 "description_kind": "plain",
                 "deprecated": true,
-                "optional": true,
                 "computed": true
               },
               "default_tags": {
@@ -130,8 +129,7 @@
                 ],
                 "description": "List of hosts IDs part of the cluster",
                 "description_kind": "plain",
-                "deprecated": true,
-                "optional": true
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -171,7 +169,6 @@
                 "description": "List of virtual network IDs part of the cluster",
                 "description_kind": "plain",
                 "deprecated": true,
-                "optional": true,
                 "computed": true
               }
             },
@@ -219,13 +216,6 @@
                 "type": "bool",
                 "description": "If yes, the available capacity of the Datastore is checked before creating a new image",
                 "description_kind": "plain",
-                "optional": true
-              },
-              "cluster_id": {
-                "type": "number",
-                "description": "ID of the cluster",
-                "description_kind": "plain",
-                "deprecated": true,
                 "optional": true
               },
               "cluster_ids": {
@@ -646,7 +636,8 @@
                     }
                   },
                   "description": "Define user quota",
-                  "description_kind": "plain"
+                  "description_kind": "plain",
+                  "deprecated": true
                 }
               },
               "sunstone": {
@@ -732,6 +723,153 @@
                 "description": "List of user IDs admins of the group",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_group_quotas": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group_id": {
+                "type": "number",
+                "description": "ID of the group to apply the quota",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "datastore": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "Datastore ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "images": {
+                      "type": "number",
+                      "description": "Maximum number of Images allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description": "Maximum size in MB allowed on the datastore (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Datastore quotas",
+                  "description_kind": "plain"
+                }
+              },
+              "image": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "Image ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "running_vms": {
+                      "type": "number",
+                      "description": "Maximum number of Running VMs allowed for this image (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Image quotas",
+                  "description_kind": "plain"
+                }
+              },
+              "network": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "Network ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "leases": {
+                      "type": "number",
+                      "description": "Maximum number of Leases allowed for this network (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Network quotas",
+                  "description_kind": "plain"
+                }
+              },
+              "vm": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cpu": {
+                      "type": "number",
+                      "description": "Maximum number of CPU allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "memory": {
+                      "type": "number",
+                      "description": "Maximum Memory (MB) allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "running_cpu": {
+                      "type": "number",
+                      "description": "Maximum number of 'running' CPUs allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "running_memory": {
+                      "type": "number",
+                      "description": "'Running' Memory (MB) allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "running_vms": {
+                      "type": "number",
+                      "description": "Maximum number of Running VMs allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "system_disk_size": {
+                      "type": "number",
+                      "description": "Maximum System Disk size (MB) allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vms": {
+                      "type": "number",
+                      "description": "Maximum number of VMs allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VM quotas",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -1344,6 +1482,26 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -2072,7 +2230,8 @@
                     }
                   },
                   "description": "Define user quota",
-                  "description_kind": "plain"
+                  "description_kind": "plain",
+                  "deprecated": true
                 }
               },
               "template_section": {
@@ -2094,6 +2253,153 @@
                     }
                   },
                   "description": "Add custom section to the resource",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "opennebula_user_quotas": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_id": {
+                "type": "number",
+                "description": "ID of the user to apply the quota",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "datastore": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "Datastore ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "images": {
+                      "type": "number",
+                      "description": "Maximum number of Images allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size": {
+                      "type": "number",
+                      "description": "Maximum size in MB allowed on the datastore (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Datastore quotas",
+                  "description_kind": "plain"
+                }
+              },
+              "image": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "Image ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "running_vms": {
+                      "type": "number",
+                      "description": "Maximum number of Running VMs allowed for this image (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Image quotas",
+                  "description_kind": "plain"
+                }
+              },
+              "network": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "Network ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "leases": {
+                      "type": "number",
+                      "description": "Maximum number of Leases allowed for this network (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Network quotas",
+                  "description_kind": "plain"
+                }
+              },
+              "vm": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cpu": {
+                      "type": "number",
+                      "description": "Maximum number of CPU allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "memory": {
+                      "type": "number",
+                      "description": "Maximum Memory (MB) allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "running_cpu": {
+                      "type": "number",
+                      "description": "Maximum number of 'running' CPUs allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "running_memory": {
+                      "type": "number",
+                      "description": "'Running' Memory (MB) allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "running_vms": {
+                      "type": "number",
+                      "description": "Maximum number of Running VMs allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "system_disk_size": {
+                      "type": "number",
+                      "description": "Maximum System Disk size (MB) allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vms": {
+                      "type": "number",
+                      "description": "Maximum number of VMs allowed (default: default quota)",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VM quotas",
                   "description_kind": "plain"
                 }
               }
@@ -2709,6 +3015,28 @@
                 },
                 "max_items": 1
               },
+              "raw": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data": {
+                      "type": "string",
+                      "description": "Low-level data to pass to the hypervisor",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Name of the hypervisor: kvm, lxd, vmware",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Low-level hypervisor tuning",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "template_section": {
                 "nesting_mode": "set",
                 "block": {
@@ -2958,17 +3286,6 @@
                 "description": "List of cluster IDs hosting the virtual Network",
                 "description_kind": "plain",
                 "optional": true
-              },
-              "clusters": {
-                "type": [
-                  "set",
-                  "number"
-                ],
-                "description": "List of cluster IDs hosting the virtual Network, if not set it uses the default cluster",
-                "description_kind": "plain",
-                "deprecated": true,
-                "optional": true,
-                "computed": true
               },
               "default_tags": {
                 "type": [
@@ -3932,6 +4249,28 @@
                 },
                 "max_items": 1
               },
+              "raw": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data": {
+                      "type": "string",
+                      "description": "Low-level data to pass to the hypervisor",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Name of the hypervisor: kvm, lxd, vmware",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Low-level hypervisor tuning",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "template_section": {
                 "nesting_mode": "set",
                 "block": {
@@ -4847,7 +5186,7 @@
               },
               "order": {
                 "type": "string",
-                "description": "Ordering of the sort: asc or desc",
+                "description": "Ordering of the sort: ASC or DESC",
                 "description_kind": "plain",
                 "optional": true
               },

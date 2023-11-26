@@ -12,11 +12,23 @@
               "description_kind": "plain",
               "optional": true
             },
+            "auth_password": {
+              "type": "string",
+              "description": "Password used to request a token for the Rundeck API.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "auth_token": {
               "type": "string",
               "description": "Auth token to use with the Rundeck API.",
               "description_kind": "plain",
-              "required": true
+              "optional": true
+            },
+            "auth_username": {
+              "type": "string",
+              "description": "Username used to request a token for the Rundeck API.",
+              "description_kind": "plain",
+              "optional": true
             },
             "url": {
               "type": "string",
@@ -130,6 +142,11 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "nodes_selected_by_default": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "preserve_options_order": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -152,6 +169,11 @@
                 "optional": true
               },
               "retry": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "retry_delay": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
@@ -606,6 +628,11 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "hidden": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "label": {
                       "type": "string",
                       "description_kind": "plain",
@@ -636,6 +663,11 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "storage_path": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "validation_regex": {
                       "type": "string",
                       "description_kind": "plain",
@@ -657,6 +689,70 @@
                   },
                   "description_kind": "plain"
                 }
+              },
+              "orchestrator": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "attribute": {
+                      "type": "string",
+                      "description": "The Node Attribute that shoud be used to rank nodes in High/Low Orchestrator.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "count": {
+                      "type": "number",
+                      "description": "Value for the subset orchestrator",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "percent": {
+                      "type": "number",
+                      "description": "Value for the maxPercentage orchestrator",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sort": {
+                      "type": "string",
+                      "description": "Option of `highest` or `lowest` for High/Low Orchestrator",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Option of `subset`, `rankTiered`, `maxPercentage`, `orchestrator-highest-lowest-attribute`",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "rundeck_password": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password to store",
+                "description_kind": "plain",
+                "required": true
+              },
+              "path": {
+                "type": "string",
+                "description": "Path to the key within the key store",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"

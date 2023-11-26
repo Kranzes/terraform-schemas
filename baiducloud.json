@@ -1351,6 +1351,70 @@
             "description_kind": "plain"
           }
         },
+        "baiducloud_bcc_key_pair": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_time": {
+                "type": "string",
+                "description": "The creation time of key pair.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of key pair.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description": "The fingerprint of key pair.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_count": {
+                "type": "number",
+                "description": "The number of instances bound to key pair.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of key pair.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "private_key_file": {
+                "type": "string",
+                "description": "The path of the file in which to save the private key.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "public_key": {
+                "type": "string",
+                "description": "The public key of keypair. This field can be set to import an existing public key.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region_id": {
+                "type": "string",
+                "description": "The id of the region to which key pair belongs.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Use this resource to manage BCC key pair. \n\nMore information can be found in the [Developer Guide](https://cloud.baidu.com/doc/BCC/s/ykckicewc). \n\n",
+            "description_kind": "plain"
+          }
+        },
         "baiducloud_bec_vm_instance": {
           "version": 0,
           "block": {
@@ -6942,7 +7006,7 @@
               },
               "storage_type": {
                 "type": "string",
-                "description": "CDS dist storage type, support hp1, std1, cloud_hp1 and hdd, default hp1, see https://cloud.baidu.com/doc/BCC/s/6jwvyo0q2/#storagetype for detail",
+                "description": "CDS dist storage type, support hp1, std1, cloud_hp1, hdd and enhanced_ssd_pl1, default hp1, see https://cloud.baidu.com/doc/BCC/s/6jwvyo0q2/#storagetype for detail",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -8751,6 +8815,76 @@
             "description_kind": "plain"
           }
         },
+        "baiducloud_iam_access_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Date and time in RFC3339 format that the access key was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the access key is enabled. Default to `true`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "encrypted_secret": {
+                "type": "string",
+                "description": "Encrypted secret, base64 encoded, if `pgp_key` was specified. The encrypted secret may be decrypted using the command line, for example: `terraform output -raw encrypted_secret | base64 --decode | keybase pgp decrypt`.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key_fingerprint": {
+                "type": "string",
+                "description": "Fingerprint of the PGP key used to encrypt the secret.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "last_used_time": {
+                "type": "string",
+                "description": "Date and time in RFC3339 format that the access key was last used.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "pgp_key": {
+                "type": "string",
+                "description": "Either a base-64 encoded PGP public key, or a keybase username in the form `keybase:some_person_that_exists`, for use in the `encrypted_secret` output attribute. If providing a base-64 encoded PGP public key, make sure to provide the \"raw\" version and not the \"armored\" one (e.g. avoid passing the `-a` option to `gpg --export`).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "Secret access key. Note that this will be written to the state file. If you use this, please protect your backend state file judiciously. Alternatively, you may supply a `pgp_key` instead, which will prevent the secret from being stored in plaintext, at the cost of preventing the use of the secret key in automation.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "secret_file": {
+                "type": "string",
+                "description": "The path of the file in which to save the access key.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The name of the IAM user associated with this access key.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Use this resource to manage IAM access key. \n\nMore information can be found in the [Developer Guide](https://cloud.baidu.com/doc/IAM/s/mjx35fixq). \n\n",
+            "description_kind": "plain"
+          }
+        },
         "baiducloud_iam_group": {
           "version": 0,
           "block": {
@@ -9334,6 +9468,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "resource_group_id": {
+                "type": "string",
+                "description": "Resource group Id of the instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "root_disk_size_in_gb": {
                 "type": "number",
                 "description": "System disk size(GB) of the instance to be created. The value range is [40,500]GB, Default to 40GB, and more than 40GB is charged according to the cloud disk price. Note that the specified system disk size needs to meet the minimum disk space limit of the mirror used.",
@@ -9361,6 +9501,12 @@
                 "description": "Status of the instance.",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "stop_with_no_charge": {
+                "type": "bool",
+                "description": "Whether to enable stopping charging after shutdown for postpaid instance without local disks. Defaults to false.",
+                "description_kind": "plain",
+                "optional": true
               },
               "subnet_id": {
                 "type": "string",
@@ -9749,7 +9895,7 @@
               },
               "spec": {
                 "type": "string",
-                "description": "Specification of the NAT gateway, available values are small(supports up to 5 public IPs), medium(up to 10 public IPs) and large(up to 15 public IPs). Default to small.",
+                "description": "Specification of the NAT gateway, available values are small(supports up to 5 public IPs), medium(up to 10 public IPs) and large(up to 15 public IPs).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -10612,6 +10758,67 @@
                   "description_kind": "plain"
                 }
               },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "baiducloud_rds_security_ip": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "e_tag": {
+                "type": "string",
+                "description": "ETag of the instance.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "ID of the instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "security_ips": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "securityIps",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -12767,6 +12974,48 @@
                 }
               }
             },
+            "description_kind": "plain"
+          }
+        },
+        "baiducloud_bcc_key_pairs": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key_pairs": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "created_time": "string",
+                      "description": "string",
+                      "fingerprint": "string",
+                      "instance_count": "number",
+                      "keypair_id": "string",
+                      "name": "string",
+                      "public_key": "string",
+                      "region_id": "string"
+                    }
+                  ]
+                ],
+                "description": "The key pair list.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of key pair. Use this to filter key pair list.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Use this data source to query BCC key pairs. \n\n",
             "description_kind": "plain"
           }
         },
@@ -16064,6 +16313,44 @@
             "description_kind": "plain"
           }
         },
+        "baiducloud_iam_access_keys": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_keys": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "access_key_id": "string",
+                      "create_time": "string",
+                      "enabled": "bool",
+                      "last_used_time": "string"
+                    }
+                  ]
+                ],
+                "description": "The access key list.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The name of the IAM user associated with the access keys.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Use this data source to query IAM access keys. \n\n",
+            "description_kind": "plain"
+          }
+        },
         "baiducloud_images": {
           "version": 0,
           "block": {
@@ -16802,6 +17089,40 @@
                   "description": "only support filter string/int/bool value",
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "baiducloud_rds_security_ips": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "ID of the instance",
+                "description_kind": "plain",
+                "required": true
+              },
+              "security_ips": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "ip": "string"
+                    }
+                  ]
+                ],
+                "description": "security_ips",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"

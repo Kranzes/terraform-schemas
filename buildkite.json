@@ -8,30 +8,71 @@
           "attributes": {
             "api_token": {
               "type": "string",
-              "description": "API token with GraphQL access and `write_pipelines, read_pipelines` scopes",
-              "description_kind": "plain",
-              "required": true
+              "description": "API token with GraphQL access and `write_pipelines`, `read_pipelines` and `write_suites` REST API scopes. You can generate a token from [your settings page](https://buildkite.com/user/api-access-tokens/new?description=terraform&scopes[]=write_pipelines&scopes[]=write_suites&scopes[]=read_pipelines&scopes[]=graphql). If not provided, the value is taken from the `BUILDKITE_API_TOKEN` environment variable.",
+              "description_kind": "markdown",
+              "optional": true,
+              "sensitive": true
+            },
+            "archive_pipeline_on_delete": {
+              "type": "bool",
+              "description": "Enable this to archive pipelines when destroying the resource. This is opposed to completely deleting pipelines.",
+              "description_kind": "markdown",
+              "optional": true
             },
             "graphql_url": {
               "type": "string",
-              "description": "Base URL for the GraphQL API to use",
-              "description_kind": "plain",
+              "description": "Base URL for the GraphQL API to use. If not provided, the value is taken from the `BUILDKITE_GRAPHQL_URL` environment variable.",
+              "description_kind": "markdown",
               "optional": true
             },
             "organization": {
               "type": "string",
-              "description": "The Buildkite organization slug",
-              "description_kind": "plain",
-              "required": true
+              "description": "The Buildkite organization slug. This can be found on the [settings](https://buildkite.com/organizations/~/settings) page. If not provided, the value is taken from the `BUILDKITE_ORGANIZATION_SLUG` environment variable.",
+              "description_kind": "markdown",
+              "optional": true
             },
             "rest_url": {
               "type": "string",
-              "description": "Base URL for the REST API to use",
+              "description": "Base URL for the REST API to use. If not provided, the value is taken from the `BUILDKITE_REST_URL` environment variable.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "timeouts": {
+              "nested_type": {
+                "attributes": {
+                  "create": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "delete": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "read": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "update": {
+                    "type": "string",
+                    "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).",
+                    "description_kind": "plain",
+                    "optional": true
+                  }
+                },
+                "nesting_mode": "single"
+              },
               "description_kind": "plain",
               "optional": true
             }
           },
-          "description_kind": "plain"
+          "description": "This provider can be used to manage resources on [buildkite.com](https://buildkite.com).\n",
+          "description_kind": "markdown"
         }
       },
       "resource_schemas": {
@@ -41,486 +82,201 @@
             "attributes": {
               "description": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The description of the agent token. Used to help identify its use.",
+                "description_kind": "markdown",
                 "optional": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The GraphQL ID of the agent token.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "token": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
+                "description": "The token value used by an agent to register with the API.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
               },
               "uuid": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the agent token.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "This resource allows you to create and manage non-clustered agent tokens.\nYou can find out more about clusters in the Buildkite [documentation](https://buildkite.com/docs/agent/v3/tokens).\n",
+            "description_kind": "markdown"
           }
         },
-        "buildkite_organization_settings": {
+        "buildkite_cluster": {
           "version": 0,
           "block": {
             "attributes": {
-              "allowed_api_ip_addresses": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description_kind": "plain",
+              "color": {
+                "type": "string",
+                "description": "A color representation of the Cluster. Accepts hex codes, eg #BADA55.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "This is a description for the cluster, this may describe the usage for it, the region, or something else\nwhich would help identify the Cluster's purpose.\n",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "emoji": {
+                "type": "string",
+                "description": "An emoji to use with the Cluster, this can either be set using :buildkite: notation, or with the\nemoji itself, such as 🚀.\n",
+                "description_kind": "markdown",
                 "optional": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The GraphQL ID of the cluster.",
+                "description_kind": "markdown",
                 "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Cluster. Can only contain numbers and letters, no spaces or special characters.",
+                "description_kind": "markdown",
+                "required": true
               },
               "uuid": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the cluster.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "This resource allows you to create and manage a Buildkite Cluster to run your builds in.\nClusters are useful for grouping agents by there capabilities or permissions.\nFind out more information in our [documentation](https://buildkite.com/docs/clusters/overview).\n",
+            "description_kind": "markdown"
           }
         },
-        "buildkite_pipeline": {
+        "buildkite_cluster_agent_token": {
           "version": 0,
           "block": {
             "attributes": {
-              "allow_rebuilds": {
-                "type": "bool",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "badge_url": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "branch_configuration": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "cancel_intermediate_builds": {
-                "type": "bool",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "cancel_intermediate_builds_branch_filter": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
               "cluster_id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "description": "The GraphQL ID of the Cluster that this Cluster Agent Token belongs to.",
+                "description_kind": "markdown",
+                "required": true
               },
-              "default_branch": {
+              "cluster_uuid": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The UUID of the Cluster that this token belongs to.",
+                "description_kind": "markdown",
                 "computed": true
-              },
-              "default_timeout_in_minutes": {
-                "type": "number",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "deletion_protection": {
-                "type": "bool",
-                "description": "If set to 'true', deletion of a pipeline via `terraform destroy` will fail, until set to 'false'.",
-                "description_kind": "plain",
-                "optional": true
               },
               "description": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "description": "A description about what this cluster agent token is used for.",
+                "description_kind": "markdown",
+                "required": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The GraphQL ID of the token.",
+                "description_kind": "markdown",
                 "computed": true
               },
-              "maximum_timeout_in_minutes": {
-                "type": "number",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "name": {
+              "token": {
                 "type": "string",
-                "description_kind": "plain",
-                "required": true
+                "description": "The token value used by an agent to register with the API.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
               },
-              "repository": {
+              "uuid": {
                 "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "skip_intermediate_builds": {
-                "type": "bool",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "skip_intermediate_builds_branch_filter": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "slug": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "steps": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "tags": {
-                "type": [
-                  "set",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "optional": true
-              },
-              "team": {
-                "type": [
-                  "set",
-                  [
-                    "object",
-                    {
-                      "access_level": "string",
-                      "slug": "string"
-                    }
-                  ]
-                ],
-                "description_kind": "plain",
-                "optional": true
-              },
-              "webhook_url": {
-                "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the token.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "block_types": {
-              "provider_settings": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "build_branches": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "build_pull_request_forks": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "build_pull_request_labels_changed": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "build_pull_request_ready_for_review": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "build_pull_requests": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "build_tags": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "cancel_deleted_branch_builds": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "filter_condition": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "filter_enabled": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "prefix_pull_request_fork_branch_names": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "publish_blocked_as_pending": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "publish_commit_status": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "publish_commit_status_per_step": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "pull_request_branch_filter_configuration": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "pull_request_branch_filter_enabled": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "separate_pull_request_statuses": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "skip_pull_request_builds_for_existing_commits": {
-                      "type": "bool",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "trigger_mode": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    }
-                  },
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              }
-            },
-            "description_kind": "plain"
+            "description": "A Cluster Agent Token is a token used to connect an agent to a cluster in Buildkite.",
+            "description_kind": "markdown"
           }
         },
-        "buildkite_pipeline_schedule": {
+        "buildkite_cluster_default_queue": {
           "version": 0,
           "block": {
             "attributes": {
-              "branch": {
+              "cluster_id": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The GraphQL ID of the cluster to which to add a default queue.",
+                "description_kind": "markdown",
                 "required": true
-              },
-              "commit": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "cronline": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "enabled": {
-                "type": "bool",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "env": {
-                "type": [
-                  "map",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "optional": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The GraphQL ID of the cluster.",
+                "description_kind": "markdown",
                 "computed": true
               },
-              "label": {
+              "queue_id": {
                 "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "message": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "pipeline_id": {
-                "type": "string",
-                "description_kind": "plain",
+                "description": "The GraphQL ID of the cluster queue to set as default on the cluster.",
+                "description_kind": "markdown",
                 "required": true
               },
               "uuid": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the cluster.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "This resource allows you to manage a default queue for a Buildkite Cluster.\nFind out more information in our [documentation](https://buildkite.com/docs/clusters/overview).\n",
+            "description_kind": "markdown"
           }
         },
-        "buildkite_team": {
+        "buildkite_cluster_queue": {
           "version": 0,
           "block": {
             "attributes": {
-              "default_member_role": {
+              "cluster_id": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The ID of the cluster that this cluster queue belongs to.",
+                "description_kind": "markdown",
                 "required": true
               },
-              "default_team": {
-                "type": "bool",
-                "description_kind": "plain",
-                "required": true
+              "cluster_uuid": {
+                "type": "string",
+                "description": "The UUID of the cluster this queue belongs to.",
+                "description_kind": "markdown",
+                "computed": true
               },
               "description": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "A description for the cluster queue. ",
+                "description_kind": "markdown",
                 "optional": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The GraphQL ID of the cluster queue.",
+                "description_kind": "markdown",
                 "computed": true
               },
-              "members_can_create_pipelines": {
-                "type": "bool",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "name": {
+              "key": {
                 "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "privacy": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "slug": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "uuid": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "description_kind": "plain"
-          }
-        },
-        "buildkite_team_member": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "role": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "team_id": {
-                "type": "string",
-                "description_kind": "plain",
-                "required": true
-              },
-              "user_id": {
-                "type": "string",
-                "description_kind": "plain",
+                "description": "The key of the cluster queue.",
+                "description_kind": "markdown",
                 "required": true
               },
               "uuid": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the cluster queue.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
-          }
-        }
-      },
-      "data_source_schemas": {
-        "buildkite_meta": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "webhook_ips": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description_kind": "plain",
-                "computed": true
-              }
-            },
-            "description_kind": "plain"
+            "description": "A Cluster Queue is a queue belonging to a specific Cluster for its Agents to target builds on. ",
+            "description_kind": "markdown"
           }
         },
         "buildkite_organization": {
@@ -532,66 +288,425 @@
                   "list",
                   "string"
                 ],
-                "description_kind": "plain",
+                "description": "A list of IP addresses in CIDR format that are allowed to access the Buildkite API.If not set, all IP addresses are allowed (the same as setting 0.0.0.0/0).\n\n-> The \"Allowed API IP Addresses\" feature must be enabled on your organization in order to manage the `allowed_api_ip_addresses` attribute.",
+                "description_kind": "markdown",
                 "optional": true
+              },
+              "enforce_2fa": {
+                "type": "bool",
+                "description": "Sets whether the organization requires two-factor authentication for all members.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The GraphQL ID of the organization.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "uuid": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the organization.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "This resource allows you to manage the settings for an organization.\n\nThe user of your API token must be an organization administrator to manage organization settings.\n",
+            "description_kind": "markdown"
           }
         },
         "buildkite_pipeline": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
+              "allow_rebuilds": {
+                "type": "bool",
+                "description": "Whether rebuilds are allowed for this pipeline.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "badge_url": {
+                "type": "string",
+                "description": "The badge URL showing build state.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "branch_configuration": {
+                "type": "string",
+                "description": "Configure the pipeline to only build on this branch conditional.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "cancel_intermediate_builds": {
+                "type": "bool",
+                "description": "Whether to cancel builds when a new commit is pushed to a matching branch.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "cancel_intermediate_builds_branch_filter": {
+                "type": "string",
+                "description": "Filter the `cancel_intermediate_builds` setting based on this branch condition.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "Attach this pipeline to the given cluster GraphQL ID.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "default_branch": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Default branch of the pipeline.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "default_timeout_in_minutes": {
+                "type": "number",
+                "description": "Set pipeline wide timeout for command steps.",
+                "description_kind": "markdown",
+                "optional": true,
                 "computed": true
               },
               "description": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "Description for the pipeline. Can include emoji 🙌.",
+                "description_kind": "markdown",
+                "optional": true,
                 "computed": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The GraphQL ID of the pipeline.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "maximum_timeout_in_minutes": {
+                "type": "number",
+                "description": "Set pipeline wide maximum timeout for command steps.",
+                "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
+                "description": "Name to give the pipeline.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "provider_settings": {
+                "nested_type": {
+                  "attributes": {
+                    "build_branches": {
+                      "type": "bool",
+                      "description": "Whether to create builds when branches are pushed.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "build_pull_request_forks": {
+                      "type": "bool",
+                      "description": "Whether to create builds for pull requests from third-party forks.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "build_pull_request_labels_changed": {
+                      "type": "bool",
+                      "description": "Whether to create builds for pull requests when labels are added or removed.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "build_pull_request_ready_for_review": {
+                      "type": "bool",
+                      "description": "Whether to create a build when a pull request changes to \"Ready for review\".",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "build_pull_requests": {
+                      "type": "bool",
+                      "description": "Whether to create builds for commits that are part of a pull request.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "build_tags": {
+                      "type": "bool",
+                      "description": "Whether to create builds when tags are pushed.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "cancel_deleted_branch_builds": {
+                      "type": "bool",
+                      "description": "Automatically cancel running builds for a branch if the branch is deleted.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "filter_condition": {
+                      "type": "string",
+                      "description": "The condition to evaluate when deciding if a build should run. More details available in [the documentation](https://buildkite.com/docs/pipelines/conditionals#conditionals-in-pipelines).",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "filter_enabled": {
+                      "type": "bool",
+                      "description": "Whether to filter builds to only run when the condition in `filter_condition` is true.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "prefix_pull_request_fork_branch_names": {
+                      "type": "bool",
+                      "description": "Prefix branch names for third-party fork builds to ensure they don't trigger branch conditions. For example, the main branch from some-user will become some-user:main.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "publish_blocked_as_pending": {
+                      "type": "bool",
+                      "description": "The status to use for blocked builds. Pending can be used with [required status checks](https://help.github.com/en/articles/enabling-required-status-checks) to prevent merging pull requests with blocked builds.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "publish_commit_status": {
+                      "type": "bool",
+                      "description": "Whether to update the status of commits in Bitbucket or GitHub.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "publish_commit_status_per_step": {
+                      "type": "bool",
+                      "description": "Whether to create a separate status for each job in a build, allowing you to see the status of each job directly in Bitbucket or GitHub.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "pull_request_branch_filter_configuration": {
+                      "type": "string",
+                      "description": "Filter pull requests builds by the branch filter.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "pull_request_branch_filter_enabled": {
+                      "type": "bool",
+                      "description": "Filter pull request builds.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "separate_pull_request_statuses": {
+                      "type": "bool",
+                      "description": "Whether to create a separate status for pull request builds, allowing you to require a passing pull request build in your [required status checks](https://help.github.com/en/articles/enabling-required-status-checks) in GitHub.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "skip_builds_for_existing_commits": {
+                      "type": "bool",
+                      "description": "Whether to skip creating a new build if an existing build for the commit and branch already exists.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "skip_pull_request_builds_for_existing_commits": {
+                      "type": "bool",
+                      "description": "Whether to skip creating a new build for a pull request if an existing build for the commit and branch already exists.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "trigger_mode": {
+                      "type": "string",
+                      "description": "What type of event to trigger builds on. Must be one of:\n\t- `code` will create builds when code is pushed to GitHub.\n\t- `deployment` will create builds when a deployment is created in GitHub.\n\t- `fork` will create builds when the GitHub repository is forked.\n\t- `none` will not create any builds based on GitHub activity.\n\n\t-> `trigger_mode` is only valid if the pipeline uses a GitHub repository.\n",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "Control settings depending on the VCS provider used in `repository`.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "repository": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "URL to the repository this pipeline is configured for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "skip_intermediate_builds": {
+                "type": "bool",
+                "description": "Whether to skip queued builds if a new commit is pushed to a matching branch.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "skip_intermediate_builds_branch_filter": {
+                "type": "string",
+                "description": "Filter the `skip_intermediate_builds` setting based on this branch condition.",
+                "description_kind": "markdown",
+                "optional": true,
                 "computed": true
               },
               "slug": {
                 "type": "string",
-                "description_kind": "plain",
-                "required": true
+                "description": "The slug generated for the pipeline.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "steps": {
+                "type": "string",
+                "description": "The YAML steps to configure for the pipeline. Defaults to `buildkite-agent pipeline upload`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Tags to attribute to the pipeline. Useful for searching by in the UI.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               },
               "webhook_url": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The webhook URL used to trigger builds from VCS providers.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "This resource allows you to create and manage pipelines for repositories.\n\nMore information on pipelines can be found in the [documentation](https://buildkite.com/docs/pipelines).\n",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_pipeline_schedule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "branch": {
+                "type": "string",
+                "description": "The branch that the schedule should run on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "commit": {
+                "type": "string",
+                "description": "The commit that the schedule should run on.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "cronline": {
+                "type": "string",
+                "description": "The cronline that describes when the schedule should run. See[here](https://buildkite.com/docs/pipelines/scheduled-builds#schedule-intervals) for supported syntax.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the schedule is enabled or not.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "env": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "The environment variables that scheduled builds should use.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the schedule.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "label": {
+                "type": "string",
+                "description": "A label to describe the schedule.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "message": {
+                "type": "string",
+                "description": "The message the builds show for builds created by this schedule.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "pipeline_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the pipeline that this schedule belongs to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the schedule.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "A pipeline schedule is a schedule that triggers a pipeline to run at a specific time.\n\nYou can find more information in the [documentation](https://buildkite.com/docs/pipelines/scheduled-builds).\n",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_pipeline_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_level": {
+                "type": "string",
+                "description": "The access level for the team. Either `READ_ONLY`, `BUILD_AND_READ` or `MANAGE_BUILD_AND_READ`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the pipeline-team relationship.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "pipeline_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the pipeline.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "team_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the team.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the pipeline-team relationship.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Manage team access to a pipeline.",
+            "description_kind": "markdown"
           }
         },
         "buildkite_team": {
@@ -600,51 +715,409 @@
             "attributes": {
               "default_member_role": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
+                "description": "The default role for new members of the team. This can be either `MEMBER` or `MAINTAINER`.",
+                "description_kind": "markdown",
+                "required": true
               },
               "default_team": {
                 "type": "bool",
-                "description_kind": "plain",
-                "computed": true
+                "description": "Whether this is the default team for the organization.",
+                "description_kind": "markdown",
+                "required": true
               },
               "description": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
+                "description": "A description for the team. This is displayed in the Buildkite UI.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The GraphQL ID of the team.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "members_can_create_pipelines": {
                 "type": "bool",
-                "description_kind": "plain",
+                "description": "Whether members of the team can create Pipelines.",
+                "description_kind": "markdown",
+                "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
+                "description": "The name of the team.",
+                "description_kind": "markdown",
+                "required": true
               },
               "privacy": {
                 "type": "string",
-                "description_kind": "plain",
-                "computed": true
+                "description": "The privacy setting for the team. This can be either `VISIBLE` or `SECRET`.",
+                "description_kind": "markdown",
+                "required": true
               },
               "slug": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The generated slug for the team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the team.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "A Cluster is a group of Agents that can be used to run your builds. Clusters are useful for grouping Agents by their capabilities, such as operating system, hardware, or location. ",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_team_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the team membership.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The role for the user. Either `MEMBER` or `MAINTAINER`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "team_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the team.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "user_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the user.",
+                "description_kind": "markdown",
                 "required": true
               },
               "uuid": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The UUID of the team membership.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "A team member resource allows for the management of team membership for existing organization users.",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_test_suite": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_token": {
+                "type": "string",
+                "description": "The API token to use to send test run data to the API.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              },
+              "default_branch": {
+                "type": "string",
+                "description": "The default branch for the repository this test suite is for.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the test suite.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name to give the test suite.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The generated slug of the test suite.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "team_owner_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the team to mark as the owner/admin of the test suite.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the test suite.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "A test suite is a collection of tests. A run is to a suite what a build is to a Pipeline.Use this resource to manage [Test Suites](https://buildkite.com/docs/test-analytics) on Buildkite.",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_test_suite_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_level": {
+                "type": "string",
+                "description": "The access level the team has on the test suite. Either `READ_ONLY` or `MANAGE_AND_READ`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the test suite-team relationship.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "team_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the team.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "test_suite_id": {
+                "type": "string",
+                "description": "The GraphQL ID of the test suite.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the test suite-team relationship.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Manage team access to a test suite.",
+            "description_kind": "markdown"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "buildkite_cluster": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "color": {
+                "type": "string",
+                "description": "The color of the cluster.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the cluster.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "emoji": {
+                "type": "string",
+                "description": "The emoji of the cluster.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the cluster.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the cluster to retrieve.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the cluster",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to retrieve a cluster by name. You can find out more about clusters in the Buildkite [documentation](https://buildkite.com/docs/clusters/overview).",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_meta": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "Fixed value: `https://api.buildkite.com/v2/meta`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "webhook_ips": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IPs in CIDR format.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to look up the source IP addresses that Buildkite may use to send external requests,\nincluding webhooks and API calls to source control systems (like GitHub Enterprise Server and BitBucket Server).\n\nMore info in the Buildkite [documentation](https://buildkite.com/docs/apis/rest-api/meta).\n",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allowed_api_ip_addresses": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of IP addresses in CIDR format that are allowed to access the Buildkite API for this organization.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the organization.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the organization.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to look up the organization settings.",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_pipeline": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_branch": {
+                "type": "string",
+                "description": "The default branch to prefill when new builds are created or triggered.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the pipeline.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the pipeline.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the pipeline.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The git URL of the repository.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The slug of the pipeline.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "webhook_url": {
+                "type": "string",
+                "description": "The Buildkite webhook URL that triggers builds on this pipeline.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to look up properties on a specific pipeline. This is particularly useful for looking up the webhook URL for each pipeline.\n\nMore info in the Buildkite [documentation](https://buildkite.com/docs/pipelines).\n",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_team": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_member_role": {
+                "type": "string",
+                "description": "The default member role of the team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "default_team": {
+                "type": "bool",
+                "description": "Whether the team is the default team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the team to find. Use either ID or slug.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "members_can_create_pipelines": {
+                "type": "bool",
+                "description": "Whether members can create pipelines.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "privacy": {
+                "type": "string",
+                "description": "The privacy setting of the team.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The slug of the team to find. Use either ID or slug.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the team.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to retrieve a team by slug or id. You can find out more about teams in the Buildkite\n[documentation](https://buildkite.com/docs/pipelines/permissions).\n",
+            "description_kind": "markdown"
           }
         }
       }

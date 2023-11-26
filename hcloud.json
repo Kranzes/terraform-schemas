@@ -8,19 +8,21 @@
           "attributes": {
             "endpoint": {
               "type": "string",
+              "description": "The Hetzner Cloud API endpoint, can be used to override the default API Endpoint https://api.hetzner.cloud/v1.",
               "description_kind": "plain",
               "optional": true
             },
             "poll_interval": {
               "type": "string",
+              "description": "The interval at which actions are polled by the client. Default `500ms`. Increase this interval if you run into rate limiting errors.",
               "description_kind": "plain",
               "optional": true
             },
             "token": {
               "type": "string",
-              "description": "The API token to access the Hetzner cloud.",
+              "description": "The Hetzner Cloud API token, can also be specified with the HCLOUD_TOKEN environment variable.",
               "description_kind": "plain",
-              "required": true,
+              "optional": true,
               "sensitive": true
             }
           },
@@ -748,6 +750,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "expose_routes_to_vswitch": {
+                "type": "bool",
+                "description": "Enable or disable exposing the routes to the vSwitch connection. The exposing only takes effect if a vSwitch connection is active.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -989,6 +997,11 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "primary_ip_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
               "server_id": {
                 "type": "number",
                 "description_kind": "plain",
@@ -1117,6 +1130,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "shutdown_before_deletion": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
               },
               "ssh_keys": {
                 "type": [
@@ -1518,7 +1536,7 @@
       },
       "data_source_schemas": {
         "hcloud_certificate": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "certificate": {
@@ -2074,6 +2092,11 @@
                 "optional": true,
                 "computed": true
               },
+              "include_deprecated": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "labels": {
                 "type": [
                   "map",
@@ -2177,6 +2200,11 @@
                 ],
                 "description_kind": "plain",
                 "computed": true
+              },
+              "include_deprecated": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
               },
               "most_recent": {
                 "type": "bool",
@@ -2611,6 +2639,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "expose_routes_to_vswitch": {
+                "type": "bool",
+                "description": "Indicates if the routes from this network should be exposed to the vSwitch connection. The exposing only takes effect if a vSwitch connection is active.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "number",
                 "description_kind": "plain",
@@ -2666,6 +2700,7 @@
                     "object",
                     {
                       "delete_protection": "bool",
+                      "expose_routes_to_vswitch": "bool",
                       "id": "number",
                       "ip_range": "string",
                       "labels": [
@@ -3053,6 +3088,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "deprecation_announced": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3069,6 +3110,16 @@
                 "optional": true,
                 "computed": true
               },
+              "included_traffic": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_deprecated": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
               "memory": {
                 "type": "number",
                 "description_kind": "plain",
@@ -3083,6 +3134,12 @@
               "storage_type": {
                 "type": "string",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "unavailable_after": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               }
             },
@@ -3135,12 +3192,16 @@
                       "architecture": "string",
                       "cores": "number",
                       "cpu_type": "string",
+                      "deprecation_announced": "string",
                       "description": "string",
                       "disk": "number",
                       "id": "number",
+                      "included_traffic": "number",
+                      "is_deprecated": "bool",
                       "memory": "number",
                       "name": "string",
-                      "storage_type": "string"
+                      "storage_type": "string",
+                      "unavailable_after": "string"
                     }
                   ]
                 ],

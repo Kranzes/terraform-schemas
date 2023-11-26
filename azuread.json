@@ -30,9 +30,21 @@
               "description_kind": "plain",
               "optional": true
             },
+            "client_id_file_path": {
+              "type": "string",
+              "description": "The path to a file containing the Client ID which should be used for service principal authentication",
+              "description_kind": "plain",
+              "optional": true
+            },
             "client_secret": {
               "type": "string",
               "description": "The application password to use when authenticating as a Service Principal using a Client Secret",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "client_secret_file_path": {
+              "type": "string",
+              "description": "The path to a file containing the application password to use when authenticating as a Service Principal using a Client Secret",
               "description_kind": "plain",
               "optional": true
             },
@@ -1166,7 +1178,7 @@
           }
         },
         "azuread_application": {
-          "version": 1,
+          "version": 2,
           "block": {
             "attributes": {
               "app_role_ids": {
@@ -1181,6 +1193,13 @@
               "application_id": {
                 "type": "string",
                 "description": "The Application ID (also called Client ID)",
+                "description_kind": "plain",
+                "deprecated": true,
+                "computed": true
+              },
+              "client_id": {
+                "type": "string",
+                "description": "The Client ID (also called Application ID)",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -1791,15 +1810,181 @@
             "description_kind": "plain"
           }
         },
+        "azuread_application_api_access": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "api_client_id": {
+                "type": "string",
+                "description": "The client ID of the API to which access is being granted",
+                "description_kind": "plain",
+                "required": true
+              },
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which this API access is granted",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "role_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A set of role IDs to be granted to the application, as published by the API",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "scope_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A set of scope IDs to be granted to the application, as published by the API",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_app_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allowed_member_types": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Specifies whether this app role definition can be assigned to users and groups by setting to `User`, or to other applications (that are accessing this application in a standalone scenario) by setting to `Application`, or to both",
+                "description_kind": "plain",
+                "required": true
+              },
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which this app role should be applied",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the app role that appears when the role is being assigned and, if the role functions as an application permissions, during the consent experiences",
+                "description_kind": "plain",
+                "required": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "Display name for the app role that appears during app role assignment and in consent experiences",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "role_id": {
+                "type": "string",
+                "description": "The unique identifier of the app role",
+                "description_kind": "plain",
+                "required": true
+              },
+              "value": {
+                "type": "string",
+                "description": "The value that is used for the `roles` claim in ID tokens and OAuth access tokens that are authenticating an assigned service or user principal",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_application_certificate": {
           "version": 0,
           "block": {
             "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application for which this certificate should be created",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "application_object_id": {
                 "type": "string",
                 "description": "The object ID of the application for which this certificate should be created",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "encoding": {
                 "type": "string",
@@ -1848,7 +2033,7 @@
               },
               "value": {
                 "type": "string",
-                "description": "The certificate data, which can be PEM encoded, base64 encoded DER or hexadecimal encoded DER. See also the `encoding` argumen",
+                "description": "The certificate data, which can be PEM encoded, base64 encoded DER or hexadecimal encoded DER. See also the `encoding` argument",
                 "description_kind": "plain",
                 "required": true,
                 "sensitive": true
@@ -1887,15 +2072,75 @@
             "description_kind": "plain"
           }
         },
+        "azuread_application_fallback_public_client": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which the fallback public client setting should be applied",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Specifies explicitly whether the application is a public client. Appropriate for apps using token grant flows that don't use a redirect URI",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_application_federated_identity_credential": {
           "version": 0,
           "block": {
             "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application for which this federated identity credential should be created",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "application_object_id": {
                 "type": "string",
                 "description": "The object ID of the application for which this federated identity credential should be created",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "audiences": {
                 "type": [
@@ -1976,15 +2221,420 @@
             "description_kind": "plain"
           }
         },
+        "azuread_application_from_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID for this application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "application_object_id": {
+                "type": "string",
+                "description": "The object ID for this application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name for the application",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "service_principal_id": {
+                "type": "string",
+                "description": "The resource ID for this service principal",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_principal_object_id": {
+                "type": "string",
+                "description": "The object ID for this service principal",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_id": {
+                "type": "string",
+                "description": "The UUID of the template to instantiate for this application",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_identifier_uri": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which the identifier URI should be added",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "identifier_uri": {
+                "type": "string",
+                "description": "The user-defined URI that uniquely identifies an application within its Azure AD tenant, or within a verified custom domain if the application is multi-tenant",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_known_clients": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which this API access is granted",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "known_client_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of known client IDs, used for bundling consent if you have a solution that includes an API and a client application",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_optional_claims": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which these optional claims belong",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "access_token": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "additional_properties": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of additional properties of the claim. If a property exists in this list, it modifies the behaviour of the optional claim",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "essential": {
+                      "type": "bool",
+                      "description": "Whether the claim specified by the client is necessary to ensure a smooth authorization experience",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the optional claim",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "The source of the claim. If `source` is absent, the claim is a predefined optional claim. If `source` is `user`, the value of `name` is the extension property from the user object",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "id_token": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "additional_properties": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of additional properties of the claim. If a property exists in this list, it modifies the behaviour of the optional claim",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "essential": {
+                      "type": "bool",
+                      "description": "Whether the claim specified by the client is necessary to ensure a smooth authorization experience",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the optional claim",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "The source of the claim. If `source` is absent, the claim is a predefined optional claim. If `source` is `user`, the value of `name` is the extension property from the user object",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "saml2_token": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "additional_properties": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of additional properties of the claim. If a property exists in this list, it modifies the behaviour of the optional claim",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "essential": {
+                      "type": "bool",
+                      "description": "Whether the claim specified by the client is necessary to ensure a smooth authorization experience",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the optional claim",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "The source of the claim. If `source` is absent, the claim is a predefined optional claim. If `source` is `user`, the value of `name` is the extension property from the user object",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_owner": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which the owner should be added",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "owner_object_id": {
+                "type": "string",
+                "description": "Object ID of the principal that will be granted ownership of the application",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_application_password": {
           "version": 1,
           "block": {
             "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application for which this password should be created",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "application_object_id": {
                 "type": "string",
                 "description": "The object ID of the application for which this password should be created",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "display_name": {
                 "type": "string",
@@ -2075,21 +2725,131 @@
             "description_kind": "plain"
           }
         },
+        "azuread_application_permission_scope": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admin_consent_description": {
+                "type": "string",
+                "description": "Delegated permission description that appears in all tenant-wide admin consent experiences, intended to be read by an administrator granting the permission on behalf of all users",
+                "description_kind": "plain",
+                "required": true
+              },
+              "admin_consent_display_name": {
+                "type": "string",
+                "description": "Display name for the delegated permission, intended to be read by an administrator granting the permission on behalf of all users",
+                "description_kind": "plain",
+                "required": true
+              },
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which this permission scope should be applied",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "scope_id": {
+                "type": "string",
+                "description": "The unique identifier of the permission scope",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Whether this delegated permission should be considered safe for non-admin users to consent to on behalf of themselves, or whether an administrator should be required for consent to the permissions",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user_consent_description": {
+                "type": "string",
+                "description": "Delegated permission description that appears in the end user consent experience, intended to be read by a user consenting on their own behalf",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user_consent_display_name": {
+                "type": "string",
+                "description": "Display name for the delegated permission that appears in the end user consent experience",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "value": {
+                "type": "string",
+                "description": "The value that is used for the `scp` claim in OAuth access tokens",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_application_pre_authorized": {
           "version": 0,
           "block": {
             "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which this pre-authorized application should be added",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "application_object_id": {
                 "type": "string",
                 "description": "The object ID of the application to which this pre-authorized application should be added",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "authorized_app_id": {
                 "type": "string",
                 "description": "The application ID of the pre-authorized application",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "authorized_client_id": {
+                "type": "string",
+                "description": "The client ID of the pre-authorized application",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -2105,6 +2865,297 @@
                 "description": "The IDs of the permission scopes required by the pre-authorized application",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_redirect_uris": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "The resource ID of the application to which these redirect URIs belong",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "redirect_uris": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A set of redirect URIs",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of redirect URIs to assign to the application",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_application_registration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "client_id": {
+                "type": "string",
+                "description": "The Client ID (also called Application ID)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the application as shown to end users",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "disabled_by_microsoft": {
+                "type": "string",
+                "description": "If the application has been disabled by Microsoft, this shows the status or reason",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name for the application",
+                "description_kind": "plain",
+                "required": true
+              },
+              "group_membership_claims": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Configures the `groups` claim that the app expects issued in a user or OAuth access token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "homepage_url": {
+                "type": "string",
+                "description": "URL of the home page for the application",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "implicit_access_token_issuance_enabled": {
+                "type": "bool",
+                "description": "Whether this application can request an access token using OAuth implicit flow",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "implicit_id_token_issuance_enabled": {
+                "type": "bool",
+                "description": "Whether this application can request an ID token using OAuth implicit flow",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "logout_url": {
+                "type": "string",
+                "description": "URL of the logout page for the application, where the session is cleared for single sign-out",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "marketing_url": {
+                "type": "string",
+                "description": "URL of the marketing page for the application",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "notes": {
+                "type": "string",
+                "description": "User-specified notes relevant for the management of the application",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "object_id": {
+                "type": "string",
+                "description": "The object ID of the application within the tenant",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "privacy_statement_url": {
+                "type": "string",
+                "description": "URL of the privacy statement for the application",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "publisher_domain": {
+                "type": "string",
+                "description": "The verified publisher domain for the application",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "requested_access_token_version": {
+                "type": "number",
+                "description": "The access token version expected by this resource",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_management_reference": {
+                "type": "string",
+                "description": "References application or contact information from a service or asset management database",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "sign_in_audience": {
+                "type": "string",
+                "description": "The Microsoft account types that are supported for the current application",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "support_url": {
+                "type": "string",
+                "description": "URL of the support page for the application",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "terms_of_service_url": {
+                "type": "string",
+                "description": "URL of the terms of service statement for the application",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_authentication_strength_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allowed_combinations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The allowed MFA methods for this policy",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description for the authentication strength policy",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "display_name": {
+                "type": "string",
+                "description": "The display name for the authentication strength policy",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -2203,6 +3254,14 @@
                       "description_kind": "plain",
                       "required": true
                     },
+                    "service_principal_risk_levels": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "sign_in_risk_levels": {
                       "type": [
                         "list",
@@ -2253,6 +3312,31 @@
                         "description_kind": "plain"
                       },
                       "min_items": 1,
+                      "max_items": 1
+                    },
+                    "client_applications": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "excluded_service_principals": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "included_service_principals": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
                       "max_items": 1
                     },
                     "devices": {
@@ -2386,6 +3470,86 @@
                             "optional": true
                           }
                         },
+                        "block_types": {
+                          "excluded_guests_or_external_users": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "guest_or_external_user_types": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "external_tenants": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "members": {
+                                        "type": [
+                                          "list",
+                                          "string"
+                                        ],
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "membership_kind": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "included_guests_or_external_users": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "guest_or_external_user_types": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "external_tenants": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "members": {
+                                        "type": [
+                                          "list",
+                                          "string"
+                                        ],
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "membership_kind": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
                         "description_kind": "plain"
                       },
                       "min_items": 1,
@@ -2401,13 +3565,18 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "authentication_strength_policy_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "built_in_controls": {
                       "type": [
                         "list",
                         "string"
                       ],
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "custom_authentication_factors": {
                       "type": [
@@ -2433,7 +3602,6 @@
                   },
                   "description_kind": "plain"
                 },
-                "min_items": 1,
                 "max_items": 1
               },
               "session_controls": {
@@ -2450,6 +3618,11 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "disable_resilience_defaults": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "persistent_browser_mode": {
                       "type": "string",
                       "description_kind": "plain",
@@ -2457,6 +3630,16 @@
                     },
                     "sign_in_frequency": {
                       "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sign_in_frequency_authentication_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sign_in_frequency_interval": {
+                      "type": "string",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -2658,11 +3841,6 @@
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
-                    },
-                    "update": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
                     }
                   },
                   "description_kind": "plain"
@@ -2720,6 +3898,74 @@
               "role_id": {
                 "type": "string",
                 "description": "The object ID of the directory role for this assignment",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "azuread_directory_role_eligibility_schedule_request": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "directory_scope_id": {
+                "type": "string",
+                "description": "Identifier of the directory object representing the scope of the role eligibility schedule request",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "justification": {
+                "type": "string",
+                "description": "Justification for why the role is assigned",
+                "description_kind": "plain",
+                "required": true
+              },
+              "principal_id": {
+                "type": "string",
+                "description": "The object ID of the member principal",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role_definition_id": {
+                "type": "string",
+                "description": "The object ID of the directory role for this role eligibility schedule request",
                 "description_kind": "plain",
                 "required": true
               }
@@ -3408,12 +4654,21 @@
                 "type": "string",
                 "description": "The application ID (client ID) of the application for which to create a service principal",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "application_tenant_id": {
                 "type": "string",
                 "description": "The tenant ID where the associated application is registered",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "client_id": {
+                "type": "string",
+                "description": "The client ID of the application for which to create a service principal",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "description": {
@@ -4892,7 +6147,7 @@
           }
         },
         "azuread_application": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "api": {
@@ -4963,6 +6218,14 @@
               "application_id": {
                 "type": "string",
                 "description": "The Application ID (also called Client ID)",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "client_id": {
+                "type": "string",
+                "description": "The Client ID (also called Application ID)",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -5506,6 +6769,60 @@
             "description_kind": "plain"
           }
         },
+        "azuread_directory_role_templates": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "object_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The object IDs of the role templates",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "role_templates": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "display_name": "string",
+                      "object_id": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of role templates",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_directory_roles": {
           "version": 0,
           "block": {
@@ -5756,6 +7073,7 @@
                 "type": "string",
                 "description": "The mail alias for the group, unique in the organisation",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "members": {
@@ -5978,6 +7296,74 @@
             "description_kind": "plain"
           }
         },
+        "azuread_named_location": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "country": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "countries_and_regions": [
+                        "list",
+                        "string"
+                      ],
+                      "include_unknown_countries_and_regions": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "display_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "ip_ranges": [
+                        "list",
+                        "string"
+                      ],
+                      "trusted": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "azuread_service_principal": {
           "version": 0,
           "block": {
@@ -6037,6 +7423,7 @@
                 "type": "string",
                 "description": "The application ID (client ID) of the application associated with this service principal",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true,
                 "computed": true
               },
@@ -6044,6 +7431,13 @@
                 "type": "string",
                 "description": "The tenant ID where the associated application is registered",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "client_id": {
+                "type": "string",
+                "description": "The client ID of the application associated with this service principal",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "description": {
@@ -6264,6 +7658,17 @@
                 ],
                 "description": "The application IDs (client IDs) of the applications associated with the service principals",
                 "description_kind": "plain",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "client_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The client IDs of the applications associated with the service principals",
+                "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
@@ -6315,6 +7720,7 @@
                       "app_role_assignment_required": "bool",
                       "application_id": "string",
                       "application_tenant_id": "string",
+                      "client_id": "string",
                       "display_name": "string",
                       "object_id": "string",
                       "preferred_single_sign_on_mode": "string",
@@ -6438,6 +7844,7 @@
                 "type": "string",
                 "description": "The employee identifier assigned to the user by the organisation",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "employee_type": {
@@ -6662,6 +8069,16 @@
           "version": 0,
           "block": {
             "attributes": {
+              "employee_ids": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The employee identifier assigned to the user by the organisation",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -6718,6 +8135,7 @@
                     {
                       "account_enabled": "bool",
                       "display_name": "string",
+                      "employee_id": "string",
                       "mail": "string",
                       "mail_nickname": "string",
                       "object_id": "string",

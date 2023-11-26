@@ -35,6 +35,113 @@
         }
       },
       "resource_schemas": {
+        "fastly_configstore": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "force_destroy": {
+                "type": "bool",
+                "description": "Allow the Config Store to be deleted, even if it contains entries. Defaults to false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A unique name to identify the Config Store. It is important to note that changing this attribute will delete and recreate the Config Store, and discard the current entries. You MUST first delete the associated resource_link block from your service before modifying this field.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_configstore_entries": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "entries": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map representing an entry in the Config Store, (key/value)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manage_entries": {
+                "type": "bool",
+                "description": "Have Terraform manage the entries (default: false). If set to `true` Terraform will remove any entries that were added externally from the config seeded values.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "store_id": {
+                "type": "string",
+                "description": "An alphanumeric string identifying the Config Store.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_kvstore": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "force_destroy": {
+                "type": "bool",
+                "description": "Allow the KV Store to be deleted, even if it contains entries. Defaults to false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A unique name to identify the KV Store. It is important to note that changing this attribute will delete and recreate the KV Store, and discard the current entries. You MUST first delete the associated resource_link block from your service before modifying this field.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_secretstore": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A human-readable name for the Secret Store. The value must contain only letters, numbers, dashes (-), underscores (_), or periods (.). It is important to note that changing this attribute will delete and recreate the Secret Store, and discard the current entries. You MUST first delete the associated resource_link block from your service before modifying this field.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "fastly_service_acl_entries": {
           "version": 0,
           "block": {
@@ -292,6 +399,12 @@
                     "port": {
                       "type": "number",
                       "description": "The port number on which the Backend responds. Default `80`",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "share_key": {
+                      "type": "string",
+                      "description": "Value that when shared across backends will enable those backends to share the same health check.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -963,7 +1076,7 @@
                       "type": "string",
                       "description": "The ID of your Google Cloud Platform project",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "secret_key": {
                       "type": "string",
@@ -1568,6 +1681,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "file_max_bytes": {
+                      "type": "number",
+                      "description": "Maximum size of an uploaded log file, if non-zero.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "gzip_level": {
                       "type": "number",
                       "description": "Level of Gzip compression from `0-9`. `0` means no compression. `1` is the fastest and the least compressed version, `9` is the slowest and the most compressed version. Default `0`",
@@ -1944,16 +2063,15 @@
                     },
                     "source_code_hash": {
                       "type": "string",
-                      "description": "Used to trigger updates. Must be set to a SHA512 hash of the package file specified with the filename. The usual way to set this is filesha512(\"package.tar.gz\") (Terraform 0.11.12 and later) or filesha512(file(\"package.tar.gz\")) (Terraform 0.11.11 and earlier), where \"package.tar.gz\" is the local filename of the Wasm deployment package",
+                      "description": "Used to trigger updates. Must be set to a SHA512 hash of all files (in sorted order) within the package. The usual way to set this is using the fastly_package_hash data source.",
                       "description_kind": "plain",
                       "optional": true,
                       "computed": true
                     }
                   },
-                  "description": "The `package` block supports uploading or modifying Wasm packages for use in a Fastly Compute@Edge service. See Fastly's documentation on [Compute@Edge](https://developer.fastly.com/learning/compute/)",
+                  "description": "The `package` block supports uploading or modifying Wasm packages for use in a Fastly Compute service (if omitted, ensure `activate = false` is set on `fastly_service_compute` to avoid service validation errors). See Fastly's documentation on [Compute](https://developer.fastly.com/learning/compute/)",
                   "description_kind": "plain"
                 },
-                "min_items": 1,
                 "max_items": 1
               },
               "product_enablement": {
@@ -1968,9 +2086,9 @@
                     },
                     "name": {
                       "type": "string",
-                      "description": "Used internally by the provider to identify modified settings",
+                      "description": "Used by the provider to identify modified settings (changing this value will force the entire block to be deleted, then recreated)",
                       "description_kind": "plain",
-                      "computed": true
+                      "optional": true
                     },
                     "websockets": {
                       "type": "bool",
@@ -1982,6 +2100,33 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              },
+              "resource_link": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "link_id": {
+                      "type": "string",
+                      "description": "An alphanumeric string identifying the resource link.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the resource link.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "resource_id": {
+                      "type": "string",
+                      "description": "The ID of the underlying linked resource.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "A resource link represents a link between a shared resource (such as an KV Store or Config Store) and a service version.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -2285,6 +2430,12 @@
                     "request_condition": {
                       "type": "string",
                       "description": "Name of a condition, which if met, will select this backend during a request.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "share_key": {
+                      "type": "string",
+                      "description": "Value that when shared across backends will enable those backends to share the same health check.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3501,7 +3652,7 @@
                       "type": "string",
                       "description": "The ID of your Google Cloud Platform project",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "response_condition": {
                       "type": "string",
@@ -4400,6 +4551,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "file_max_bytes": {
+                      "type": "number",
+                      "description": "Maximum size of an uploaded log file, if non-zero.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "format": {
                       "type": "string",
                       "description": "Apache-style string or VCL variables to use for log formatting.",
@@ -4926,9 +5083,9 @@
                     },
                     "name": {
                       "type": "string",
-                      "description": "Used internally by the provider to identify modified settings",
+                      "description": "Used by the provider to identify modified settings (changing this value will force the entire block to be deleted, then recreated)",
                       "description_kind": "plain",
-                      "computed": true
+                      "optional": true
                     },
                     "origin_inspector": {
                       "type": "bool",
@@ -4953,7 +5110,7 @@
                   "attributes": {
                     "action": {
                       "type": "string",
-                      "description": "The action to take when a rate limiter violation is detected (one of: log_only, log_only, response_object)",
+                      "description": "The action to take when a rate limiter violation is detected (one of: log_only, response, response_object)",
                       "description_kind": "plain",
                       "required": true
                     },
@@ -5118,7 +5275,7 @@
                     },
                     "request_condition": {
                       "type": "string",
-                      "description": "Name of already defined `condition` to determine if this request setting should be applied",
+                      "description": "Name of already defined `condition` to determine if this request setting should be applied (should be unique across multiple instances of `request_setting`)",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -5627,6 +5784,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "mutual_authentication_id": {
+                "type": "string",
+                "description": "An alphanumeric string identifying a mutual authentication.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -5703,6 +5866,67 @@
               "updated_at": {
                 "type": "string",
                 "description": "Timestamp (GMT) when the certificate was last updated.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_tls_mutual_authentication": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cert_bundle": {
+                "type": "string",
+                "description": "One or more certificates. Enter each individual certificate blob on a new line. Must be PEM-formatted.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Date and time in ISO 8601 format.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enforced": {
+                "type": "bool",
+                "description": "Determines whether Mutual TLS will fail closed (enforced) or fail open. A true value will require a successful Mutual TLS handshake for the connection to continue and will fail closed if unsuccessful. A false value will fail open and allow the connection to proceed (if this attribute is not set we default to `false`).",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "include": {
+                "type": "string",
+                "description": "Comma-separated list of related objects to include (e.g. `tls_activations` will provide you with the TLS domain names that are related to your Mutual TLS authentication).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A custom name for your mutual authentication. If name is not supplied we will auto-generate one.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tls_activations": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of alphanumeric strings identifying TLS activations.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Date and time in ISO 8601 format.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -6037,6 +6261,35 @@
         }
       },
       "data_source_schemas": {
+        "fastly_configstores": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "stores": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "List of all Config Stores.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "fastly_datacenters": {
           "version": 0,
           "block": {
@@ -6135,6 +6388,96 @@
                   "string"
                 ],
                 "description": "The lexically ordered list of ipv6 CIDR blocks.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_kvstores": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "stores": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "List of all KV Stores.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_package_hash": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "content": {
+                "type": "string",
+                "description": "The contents of the Wasm deployment package as a base64 encoded string (e.g. could be provided using an input variable or via external data source output variable). Conflicts with `filename`. Exactly one of these two arguments must be specified",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "filename": {
+                "type": "string",
+                "description": "The path to the Wasm deployment package within your local filesystem. Conflicts with `content`. Exactly one of these two arguments must be specified",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hash": {
+                "type": "string",
+                "description": "A SHA512 hash of all files (in sorted order) within the package.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "fastly_secretstores": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "stores": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description": "List of all Secrets Stores.",
                 "description_kind": "plain",
                 "computed": true
               }

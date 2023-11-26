@@ -82,6 +82,12 @@
               "description_kind": "plain",
               "optional": true
             },
+            "skip_verify": {
+              "type": "bool",
+              "description": "Skip TLS verification on client side.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "vault_token": {
               "type": "string",
               "description": "Vault token if policies are specified in the job file.",
@@ -270,7 +276,7 @@
                 "type": "string",
                 "description": "Target of the binding.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "bind_type": {
                 "type": "string",
@@ -327,6 +333,42 @@
                 "description": "HCL or JSON representation of the rules to enforce on this policy. Use file() to specify a file as input.",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "block_types": {
+              "job_acl": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "group": {
+                      "type": "string",
+                      "description": "Group",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "job_id": {
+                      "type": "string",
+                      "description": "Job",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Namespace",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "task": {
+                      "type": "string",
+                      "description": "Task",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Workload identity association that should be applied to the policy.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -466,6 +508,517 @@
                   "description": "The roles that should be applied to the token. It may be used multiple times.",
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_csi_volume": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "capacity_max": {
+                "type": "string",
+                "description": "Defines how large the volume can be. The storage provider may return a volume that is smaller than this value.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "capacity_min": {
+                "type": "string",
+                "description": "Defines how small the volume can be. The storage provider may return a volume that is larger than this value.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "clone_id": {
+                "type": "string",
+                "description": "The volume ID to clone when creating this volume. Storage provider must support cloning. Conflicts with 'snapshot_id'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "controller_required": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The display name of the volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The namespace in which to create the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nodes_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "parameters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings passed directly to the CSI plugin to configure the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_id": {
+                "type": "string",
+                "description": "The ID of the CSI plugin that manages this volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugin_provider": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plugin_provider_version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schedulable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings used as credentials for publishing and unpublishing volumes.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "snapshot_id": {
+                "type": "string",
+                "description": "The snapshot ID to restore when creating this volume. Storage provider must support snapshots. Conflicts with 'clone_id'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "topologies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "segments": [
+                        "map",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "volume_id": {
+                "type": "string",
+                "description": "The unique ID of the volume, how jobs will refer to the volume.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "capability": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_mode": {
+                      "type": "string",
+                      "description": "Defines whether a volume should be available concurrently.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "attachment_mode": {
+                      "type": "string",
+                      "description": "The storage API that will be used by the volume.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Capabilities intended to be used in a job. At least one capability must be provided.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "mount_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fs_type": {
+                      "type": "string",
+                      "description": "The file system type.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mount_flags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The flags passed to mount.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Options for mounting 'block-device' volumes without a pre-formatted file system.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "topology_request": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "preferred": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "topology": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "segments": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Define the attributes for the topology request.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "Defines the location for the volume.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Preferred topologies indicate that the volume should be created in a location accessible from some of the listed topologies.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "required": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "topology": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "segments": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Define the attributes for the topology request.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "Defines the location for the volume.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Required topologies indicate that the volume must be created in a location accessible from all the listed topologies.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specify locations (region, zone, rack, etc.) where the provisioned volume is accessible from.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_csi_volume_registration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "context": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings passed directly to the CSI plugin to validate the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "controller_required": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "controllers_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "deregister_on_destroy": {
+                "type": "bool",
+                "description": "If true, the volume will be deregistered on destroy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "The ID of the physical volume from the storage provider.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The display name of the volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "The namespace in which to create the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "nodes_expected": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodes_healthy": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "parameters": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings passed directly to the CSI plugin to configure the volume.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_id": {
+                "type": "string",
+                "description": "The ID of the CSI plugin that manages this volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "plugin_provider": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "plugin_provider_version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schedulable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "An optional key-value map of strings used as credentials for publishing and unpublishing volumes.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "topologies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "segments": [
+                        "map",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "volume_id": {
+                "type": "string",
+                "description": "The unique ID of the volume, how jobs will refer to the volume.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "capability": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_mode": {
+                      "type": "string",
+                      "description": "Defines whether a volume should be available concurrently.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "attachment_mode": {
+                      "type": "string",
+                      "description": "The storage API that will be used by the volume.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Capabilities intended to be used in a job. At least one capability must be provided.",
+                  "description_kind": "plain"
+                }
+              },
+              "mount_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fs_type": {
+                      "type": "string",
+                      "description": "The file system type.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mount_flags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The flags passed to mount.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Options for mounting 'block-device' volumes without a pre-formatted file system.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "topology_request": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "required": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "topology": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "segments": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Define attributes for the topology request.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description": "Defines the location for the volume.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Required topologies indicate that the volume must be created in a location accessible from all the listed topologies.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specify locations (region, zone, rack, etc.) where the provisioned volume is accessible from.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -728,7 +1281,8 @@
                 "max_items": 1
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "nomad_job": {
@@ -742,6 +1296,7 @@
                 ],
                 "description": "The IDs for allocations associated with this job.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "consul_token": {
@@ -787,6 +1342,12 @@
               "detach": {
                 "type": "bool",
                 "description": "If true, the provider will return immediately after creating or updating, instead of monitoring.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hcl1": {
+                "type": "bool",
+                "description": "If true, the `jobspec` will be parsed using the HCL1 format.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -836,6 +1397,12 @@
                 "type": "bool",
                 "description": "Whether to purge the job when the resource is destroyed.",
                 "description_kind": "plain",
+                "optional": true
+              },
+              "read_allocation_ids": {
+                "type": "bool",
+                "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "region": {
@@ -928,6 +1495,7 @@
                       "type": "bool",
                       "description": "If true, the `jobspec` will be parsed as HCL2 instead of HCL.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     },
                     "vars": {
@@ -1007,7 +1575,7 @@
             },
             "block_types": {
               "capabilities": {
-                "nesting_mode": "set",
+                "nesting_mode": "list",
                 "block": {
                   "attributes": {
                     "disabled_task_drivers": {
@@ -1030,6 +1598,100 @@
                     }
                   },
                   "description": "Capabilities of the namespace.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "node_pool_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "allowed": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The list of node pools allowed to be used in this namespace. Cannot be used with denied.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description": "The node pool to use when none are specified in the job.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "denied": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The list of node pools not allowed to be used in this namespace. Cannot be used with allowed.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Node pool configuration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_node_pool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this node pool.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Metadata associated with the node pool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this node pool.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "scheduler_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "memory_oversubscription": {
+                      "type": "string",
+                      "description": "If true, the node pool will have memory oversubscription enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "scheduler_algorithm": {
+                      "type": "string",
+                      "description": "The scheduler algorithm to use in the node pool.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Scheduler configuration for the node pool.",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1177,6 +1839,42 @@
               "scope": {
                 "type": "string",
                 "description": "Specifies the scope for this policy. Only 'submit-job' is currently supported.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_variable": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "items": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of strings to be added as items in the variable",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Variable namespace",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "path": {
+                "type": "string",
+                "description": "The path at which the variable items will be stored, must be between 1 and 128 characters in length, be URL safe, and not include '@' or '.' characters",
                 "description_kind": "plain",
                 "required": true
               }
@@ -1422,7 +2120,8 @@
                 "max_items": 1
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         }
       },
@@ -1708,6 +2407,64 @@
               },
               "prefix": {
                 "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_allocations": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allocations": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "client_status": "string",
+                      "create_index": "number",
+                      "create_time": "number",
+                      "desired_status": "string",
+                      "eval_id": "string",
+                      "followup_eval_id": "string",
+                      "id": "string",
+                      "job_id": "string",
+                      "job_type": "string",
+                      "job_version": "number",
+                      "modify_index": "number",
+                      "modify_time": "number",
+                      "name": "string",
+                      "namespace": "string",
+                      "next_allocation": "string",
+                      "node_id": "string",
+                      "node_name": "string",
+                      "preempted_by_allocation": "string",
+                      "task_group": "string"
+                    }
+                  ]
+                ],
+                "description": "List of node pools returned",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "filter": {
+                "type": "string",
+                "description": "Specifies the expression used to filter the results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Specifies a string to filter node pools based on a name prefix.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -2070,6 +2827,27 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "node_pool_config": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "allowed": [
+                        "set",
+                        "string"
+                      ],
+                      "default": "string",
+                      "denied": [
+                        "set",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
               "quota": {
                 "type": "string",
                 "description_kind": "plain",
@@ -2096,6 +2874,111 @@
                 ],
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_node_pool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description for this node pool.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Metadata associated with the node pool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Unique name for this node pool.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "scheduler_config": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "memory_oversubscription": "string",
+                      "scheduler_algorithm": "string"
+                    }
+                  ]
+                ],
+                "description": "Scheduler configuration for the node pool.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_node_pools": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "filter": {
+                "type": "string",
+                "description": "Specifies the expression used to filter the results.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "node_pools": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "meta": [
+                        "map",
+                        "string"
+                      ],
+                      "name": "string",
+                      "scheduler_config": [
+                        "set",
+                        [
+                          "object",
+                          {
+                            "memory_oversubscription": "string",
+                            "scheduler_algorithm": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "List of node pools returned",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Specifies a string to filter node pools based on a name prefix.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -2367,6 +3250,42 @@
                 "description": "Specifies whether scheduler binpacks or spreads allocations on available nodes.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nomad_variable": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "items": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map of values from the stored variable",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Variable namespace",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "path": {
+                "type": "string",
+                "description": "The path of the variable",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"

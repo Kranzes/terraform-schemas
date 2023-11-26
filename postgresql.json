@@ -24,6 +24,18 @@
               "description_kind": "plain",
               "optional": true
             },
+            "azure_identity_auth": {
+              "type": "bool",
+              "description": "Use MS Azure identity OAuth token (see: https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-configure-sign-in-azure-ad-authentication)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "azure_tenant_id": {
+              "type": "string",
+              "description": "MS Azure tenant ID (see: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config.html)",
+              "description_kind": "plain",
+              "optional": true
+            },
             "connect_timeout": {
               "type": "number",
               "description": "Maximum wait for connection, in seconds. Zero or not specified means wait indefinitely.",
@@ -125,6 +137,12 @@
                     "description": "The SSL client certificate private key file path. The file must contain PEM encoded data.",
                     "description_kind": "plain",
                     "required": true
+                  },
+                  "sslinline": {
+                    "type": "bool",
+                    "description": "Must be set to true if you are inlining the cert/key instead of using a file path.",
+                    "description_kind": "plain",
+                    "optional": true
                   }
                 },
                 "description": "SSL client certificate if required by the database.",
@@ -370,6 +388,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "parallel": {
+                "type": "string",
+                "description": "If the function can be executed in parallel for a single query execution. One of: UNSAFE, RESTRICTED, SAFE",
+                "description_kind": "plain",
+                "optional": true
+              },
               "returns": {
                 "type": "string",
                 "description": "Function return type. If not specified, it will be calculated based on the output arguments",
@@ -383,6 +407,24 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "security_definer": {
+                "type": "bool",
+                "description": "If the function should execute with the permissions of the function owner instead of the permissions of the caller.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "strict": {
+                "type": "bool",
+                "description": "If the function should always return NULL if any of it's inputs is NULL.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "volatility": {
+                "type": "string",
+                "description": "Volatility of the function. One of: VOLATILE, STABLE, IMMUTABLE.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "block_types": {

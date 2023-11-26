@@ -71,6 +71,12 @@
               "description": "RPS limit to apply when making calls to the API. Alternatively, can be configured using the `CLOUDFLARE_RPS` environment variable.",
               "description_kind": "markdown",
               "optional": true
+            },
+            "user_agent_operator_suffix": {
+              "type": "string",
+              "description": "A value to append to the HTTP User Agent for all API calls. This value is not something most users need to modify however, if you are using a non-standard provider or operator configuration, this is recommended to assist in uniquely identifying your traffic. **Setting this value will remove the Terraform version from the HTTP User Agent string and may have unintended consequences**. Alternatively, can be configured using the `CLOUDFLARE_USER_AGENT_OPERATOR_SUFFIX` environment variable.",
+              "description_kind": "markdown",
+              "optional": true
             }
           },
           "description_kind": "plain"
@@ -123,13 +129,28 @@
               },
               "custom_deny_url": {
                 "type": "string",
-                "description": "Option that redirects to a custom URL when a user is denied access to the application.",
+                "description": "Option that redirects to a custom URL when a user is denied access to the application via identity based rules.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "custom_non_identity_deny_url": {
+                "type": "string",
+                "description": "Option that redirects to a custom URL when a user is denied access to the application via non identity rules.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "custom_pages": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The custom pages selected for the application.",
                 "description_kind": "markdown",
                 "optional": true
               },
               "domain": {
                 "type": "string",
-                "description": "The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.",
+                "description": "The primary hostname and path that Access will secure. If the app is visible in the App Launcher dashboard, this is the domain that will be displayed.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -170,6 +191,15 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "self_hosted_domains": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of domains that access will secure. Only present for self_hosted, vnc, and ssh applications. Always includes the value set as `domain`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "service_auth_401_redirect": {
                 "type": "bool",
                 "description": "Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.",
@@ -185,6 +215,15 @@
               "skip_interstitial": {
                 "type": "bool",
                 "description": "Option to skip the authorization interstitial when using the CLI. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The itags associated with the application.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -279,17 +318,88 @@
                       "description_kind": "markdown",
                       "required": true
                     },
+                    "idp_entity_id": {
+                      "type": "string",
+                      "description": "The unique identifier for the SaaS application.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
                     "name_id_format": {
                       "type": "string",
                       "description": "The format of the name identifier sent to the SaaS application. Defaults to `email`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "public_key": {
+                      "type": "string",
+                      "description": "The public certificate that will be used to verify identities.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
                     "sp_entity_id": {
                       "type": "string",
                       "description": "A globally unique name for an identity or service provider.",
                       "description_kind": "markdown",
                       "required": true
+                    },
+                    "sso_endpoint": {
+                      "type": "string",
+                      "description": "The endpoint where the SaaS application will send login requests.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "custom_attribute": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "friendly_name": {
+                            "type": "string",
+                            "description": "A friendly name for the attribute as provided to the SaaS app.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the attribute as provided to the SaaS app.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "name_format": {
+                            "type": "string",
+                            "description": "A globally unique name for an identity or service provider.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "required": {
+                            "type": "bool",
+                            "description": "True if the attribute must be always present.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "source": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "name": {
+                                  "type": "string",
+                                  "description": "The name of the attribute as provided by the IDP.",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1,
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Custom attribute mapped from IDPs.",
+                        "description_kind": "markdown"
+                      }
                     }
                   },
                   "description": "SaaS configuration for the Access Application.",
@@ -346,6 +456,57 @@
               }
             },
             "description": "Cloudflare Access can replace traditional SSH key models with\nshort-lived certificates issued to your users based on the token\ngenerated by their Access login.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_access_custom_page": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. Conflicts with `zone_id`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "app_count": {
+                "type": "number",
+                "description": "Number of apps to display on the custom page.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "custom_html": {
+                "type": "string",
+                "description": "Custom HTML to display on the custom page.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Friendly name of the Access Custom Page configuration.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of Access custom page to create. Available values: `identity_denied`, `forbidden`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. Conflicts with `account_id`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Provides a resource to customize the pages your end users will see\nwhen trying to reach applications behind Cloudflare Access.\n",
             "description_kind": "markdown"
           }
         },
@@ -453,7 +614,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "An IPv4 or IPv6 CIDR block.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "ip_list": {
@@ -461,7 +623,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "The ID of an existing IP list to reference.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "login_method": {
@@ -482,6 +645,32 @@
                     }
                   },
                   "block_types": {
+                    "auth_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ac_id": {
+                            "type": "string",
+                            "description": "The ACID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The ID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_provider_id": {
+                            "type": "string",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "azure": {
                       "nesting_mode": "list",
                       "block": {
@@ -693,7 +882,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "An IPv4 or IPv6 CIDR block.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "ip_list": {
@@ -701,7 +891,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "The ID of an existing IP list to reference.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "login_method": {
@@ -722,6 +913,32 @@
                     }
                   },
                   "block_types": {
+                    "auth_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ac_id": {
+                            "type": "string",
+                            "description": "The ACID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The ID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_provider_id": {
+                            "type": "string",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "azure": {
                       "nesting_mode": "list",
                       "block": {
@@ -934,7 +1151,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "An IPv4 or IPv6 CIDR block.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "ip_list": {
@@ -942,7 +1160,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "The ID of an existing IP list to reference.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "login_method": {
@@ -963,6 +1182,32 @@
                     }
                   },
                   "block_types": {
+                    "auth_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ac_id": {
+                            "type": "string",
+                            "description": "The ACID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The ID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_provider_id": {
+                            "type": "string",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "azure": {
                       "nesting_mode": "list",
                       "block": {
@@ -1129,7 +1374,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The provider type to use. Available values: `centrify`, `facebook`, `google-apps`, `oidc`, `github`, `google`, `saml`, `linkedin`, `azureAD`, `okta`, `onetimepin`, `onelogin`, `yandex`.",
+                "description": "The provider type to use. Available values: `azureAD`, `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`, `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`, `yandex`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -1169,6 +1414,11 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "authorization_server_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "centrify_account": {
                       "type": "string",
                       "description_kind": "plain",
@@ -1203,12 +1453,22 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "conditional_access_enabled": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "directory_id": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "email_attribute_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "email_claim_name": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true
@@ -1233,6 +1493,11 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "ping_env_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "pkce_enabled": {
                       "type": "bool",
                       "description_kind": "plain",
@@ -1241,7 +1506,6 @@
                     "redirect_url": {
                       "type": "string",
                       "description_kind": "plain",
-                      "optional": true,
                       "computed": true
                     },
                     "scopes": {
@@ -1301,7 +1565,8 @@
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true,
-                      "computed": true
+                      "computed": true,
+                      "sensitive": true
                     },
                     "user_deprovision": {
                       "type": "bool",
@@ -1442,6 +1707,12 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "session_duration": {
+                "type": "string",
+                "description": "How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "ui_read_only_toggle_reason": {
                 "type": "string",
                 "description": "A description of the reason why the UI read only field is being toggled.",
@@ -1463,6 +1734,27 @@
               }
             },
             "block_types": {
+              "custom_pages": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "forbidden": {
+                      "type": "string",
+                      "description": "The id of the forbidden page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "identity_denied": {
+                      "type": "string",
+                      "description": "The id of the identity denied page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "Custom pages for your Zero Trust organization.",
+                  "description_kind": "markdown"
+                }
+              },
               "login_design": {
                 "nesting_mode": "list",
                 "block": {
@@ -1567,6 +1859,12 @@
               "purpose_justification_required": {
                 "type": "bool",
                 "description": "Whether to prompt the user for a justification for accessing the resource.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "session_duration": {
+                "type": "string",
+                "description": "How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -1681,7 +1979,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "An IPv4 or IPv6 CIDR block.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "ip_list": {
@@ -1689,7 +1988,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "The ID of an existing IP list to reference.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "login_method": {
@@ -1710,6 +2010,32 @@
                     }
                   },
                   "block_types": {
+                    "auth_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ac_id": {
+                            "type": "string",
+                            "description": "The ACID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The ID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_provider_id": {
+                            "type": "string",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "azure": {
                       "nesting_mode": "list",
                       "block": {
@@ -1922,7 +2248,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "An IPv4 or IPv6 CIDR block.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "ip_list": {
@@ -1930,7 +2257,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "The ID of an existing IP list to reference.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "login_method": {
@@ -1951,6 +2279,32 @@
                     }
                   },
                   "block_types": {
+                    "auth_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ac_id": {
+                            "type": "string",
+                            "description": "The ACID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The ID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_provider_id": {
+                            "type": "string",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "azure": {
                       "nesting_mode": "list",
                       "block": {
@@ -2164,7 +2518,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "An IPv4 or IPv6 CIDR block.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "ip_list": {
@@ -2172,7 +2527,8 @@
                         "list",
                         "string"
                       ],
-                      "description_kind": "plain",
+                      "description": "The ID of an existing IP list to reference.",
+                      "description_kind": "markdown",
                       "optional": true
                     },
                     "login_method": {
@@ -2193,6 +2549,32 @@
                     }
                   },
                   "block_types": {
+                    "auth_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ac_id": {
+                            "type": "string",
+                            "description": "The ACID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The ID of the Authentication Context.",
+                            "description_kind": "markdown",
+                            "required": true
+                          },
+                          "identity_provider_id": {
+                            "type": "string",
+                            "description": "The ID of the Azure Identity provider.",
+                            "description_kind": "markdown",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "azure": {
                       "nesting_mode": "list",
                       "block": {
@@ -2425,6 +2807,13 @@
                 "computed": true,
                 "sensitive": true
               },
+              "duration": {
+                "type": "string",
+                "description": "Length of time the service token is valid for. Available values: `8760h`, `17520h`, `43800h`, `87600h`, `forever`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "expires_at": {
                 "type": "string",
                 "description": "Date when the token expires.",
@@ -2457,6 +2846,46 @@
               }
             },
             "description": "Access Service Tokens are used for service-to-service communication\nwhen an application is behind Cloudflare Access.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_access_tag": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. Conflicts with `zone_id`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "app_count": {
+                "type": "number",
+                "description": "Number of apps associated with the tag.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Friendly name of the Access Tag.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. Conflicts with `account_id`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Provides a resource to customize the pages your end users will see\nwhen trying to reach applications behind Cloudflare Access.\n",
             "description_kind": "markdown"
           }
         },
@@ -2675,6 +3104,156 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_api_shield_operation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "endpoint": {
+                "type": "string",
+                "description": "The endpoint which can contain path parameter templates in curly braces, each will be replaced from left to right with `{varN}`, starting with `{var1}`. This will then be [Cloudflare-normalized](https://developers.cloudflare.com/rules/normalization/how-it-works/). **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "host": {
+                "type": "string",
+                "description": "RFC3986-compliant host. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "method": {
+                "type": "string",
+                "description": "The HTTP method used to access the endpoint. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a resource to manage an operation in API Shield Endpoint Management.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_api_shield_operation_schema_validation_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mitigation_action": {
+                "type": "string",
+                "description": "The mitigation action to apply to this operation.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "operation_id": {
+                "type": "string",
+                "description": "Operation ID these settings should apply to. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a resource to manage operation-level settings in API Shield Schema Validation 2.0.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_api_shield_schema": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "kind": {
+                "type": "string",
+                "description": "Kind of schema. Defaults to `openapi_v3`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the schema. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "source": {
+                "type": "string",
+                "description": "Schema file bytes. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "validation_enabled": {
+                "type": "bool",
+                "description": "Flag whether schema is enabled for validation.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a resource to manage a schema in API Shield Schema Validation 2.0.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_api_shield_schema_validation_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "validation_default_mitigation_action": {
+                "type": "string",
+                "description": "The default mitigation action used when there is no mitigation action defined on the operation.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "validation_override_mitigation_action": {
+                "type": "string",
+                "description": "When set, this overrides both zone level and operation level mitigation actions.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a resource to manage settings in API Shield Schema Validation 2.0.\n",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_api_token": {
           "version": 0,
           "block": {
@@ -2826,6 +3405,7 @@
                 "type": "string",
                 "description": "Whether tiered caching is enabled. Available values: `on`, `off`.",
                 "description_kind": "markdown",
+                "deprecated": true,
                 "optional": true
               },
               "zone_id": {
@@ -2966,6 +3546,87 @@
               }
             },
             "description": "Provides a Cloudflare Authenticated Origin Pulls certificate\nresource. An uploaded client certificate is required to use Per-Zone\n or Per-Hostname Authenticated Origin Pulls.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_bot_management": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "auto_update_model": {
+                "type": "bool",
+                "description": "Automatically update to the newest bot detection models created by Cloudflare as they are released. [Learn more.](https://developers.cloudflare.com/bots/reference/machine-learning-models#model-versions-and-release-notes).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "enable_js": {
+                "type": "bool",
+                "description": "Use lightweight, invisible JavaScript detections to improve Bot Management. [Learn more about JavaScript Detections](https://developers.cloudflare.com/bots/reference/javascript-detections/).",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "fight_mode": {
+                "type": "bool",
+                "description": "Whether to enable Bot Fight Mode.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "optimize_wordpress": {
+                "type": "bool",
+                "description": "Whether to optimize Super Bot Fight Mode protections for Wordpress.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "sbfm_definitely_automated": {
+                "type": "string",
+                "description": "Super Bot Fight Mode (SBFM) action to take on definitely automated requests.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "sbfm_likely_automated": {
+                "type": "string",
+                "description": "Super Bot Fight Mode (SBFM) action to take on likely automated requests.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "sbfm_static_resource_protection": {
+                "type": "bool",
+                "description": "Super Bot Fight Mode (SBFM) to enable static resource protection. Enable if static resources on your application need bot protection. Note: Static resource protection can also result in legitimate traffic being blocked.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "sbfm_verified_bots": {
+                "type": "string",
+                "description": "Super Bot Fight Mode (SBFM) action to take on verified bots requests.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "suppress_session_score": {
+                "type": "bool",
+                "description": "Whether to disable tracking the highest bot score for a session in the Bot Management cookie.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "using_latest_model": {
+                "type": "bool",
+                "description": "A read-only field that indicates whether the zone currently is running the latest ML model.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a resource to configure Bot Management.\n\nSpecifically, this resource can be used to manage:\n\n- **Bot Fight Mode**\n- **Super Bot Fight Mode**\n- **Bot Management for Enterprise**\n",
             "description_kind": "markdown"
           }
         },
@@ -3221,6 +3882,12 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "bundle_method": {
+                      "type": "string",
+                      "description": "A ubiquitous bundle has the highest probability of being verified everywhere, even by clients using outdated or unusual trust stores. An optimal bundle uses the shortest chain and newest intermediates. And the force bundle verifies the chain, but does not otherwise modify it. Available values: `ubiquitous`, `optimal`, `force`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "certificate_authority": {
                       "type": "string",
                       "description_kind": "plain",
@@ -3342,7 +4009,7 @@
                       }
                     }
                   },
-                  "description": "SSL configuration of the certificate.",
+                  "description": "SSL properties used when creating the custom hostname.",
                   "description_kind": "markdown"
                 }
               }
@@ -3554,6 +4221,39 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_d1_database": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The identifier of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the D1 Database.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "version": {
+                "type": "string",
+                "description": "The backend version of the database.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The [D1 Database](https://developers.cloudflare.com/d1/) resource allows you to manage Cloudflare D1 databases.\n",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_device_dex_test": {
           "version": 0,
           "block": {
@@ -3762,7 +4462,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The device posture integration type. Available values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`, `kolide`.",
+                "description": "The device posture integration type. Available values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`, `kolide`, `sentinelone_s2s`, `tanium_s2s`.",
                 "description_kind": "markdown",
                 "required": true
               }
@@ -3861,7 +4561,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`.",
+                "description": "The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `client_certificate`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`, `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.",
                 "description_kind": "markdown",
                 "required": true
               }
@@ -3871,12 +4571,30 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "active_threats": {
+                      "type": "number",
+                      "description": "The number of active threats from SentinelOne.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "certificate_id": {
+                      "type": "string",
+                      "description": "The UUID of a Cloudflare managed certificate.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "check_disks": {
                       "type": [
                         "set",
                         "string"
                       ],
                       "description": "Specific volume(s) to check for encryption.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "cn": {
+                      "type": "string",
+                      "description": "The common name for a certificate.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -3892,9 +4610,21 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "count_operator": {
+                      "type": "string",
+                      "description": "The count comparison operator for kolide. Available values: `>`, `>=`, `<`, `<=`, `==`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "domain": {
                       "type": "string",
                       "description": "The domain that the client must join.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "eid_last_seen": {
+                      "type": "string",
+                      "description": "The datetime a device last seen in RFC 3339 format from Tanium.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -3915,6 +4645,32 @@
                     "id": {
                       "type": "string",
                       "description": "The Teams List id.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "infected": {
+                      "type": "bool",
+                      "description": "True if SentinelOne device is infected.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "is_active": {
+                      "type": "bool",
+                      "description": "True if SentinelOne device is active.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "issue_count": {
+                      "type": "string",
+                      "description": "The number of issues for kolide.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "network_status": {
+                      "type": "string",
+                      "description": "The network status from SentinelOne. Available values: `connected`, `disconnected`, `disconnecting`, `connecting`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -3961,6 +4717,12 @@
                       "optional": true,
                       "computed": true
                     },
+                    "risk_level": {
+                      "type": "string",
+                      "description": "The risk level from Tanium. Available values: `low`, `medium`, `high`, `critical`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "running": {
                       "type": "bool",
                       "description": "Checks if the application should be running.",
@@ -3983,6 +4745,12 @@
                     "thumbprint": {
                       "type": "string",
                       "description": "The thumbprint of the file certificate.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "total_score": {
+                      "type": "number",
+                      "description": "The total score from Tanium.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -4067,6 +4835,12 @@
                 "description": "Whether the policy refers to the default account policy.",
                 "description_kind": "markdown",
                 "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of Policy.",
+                "description_kind": "markdown",
+                "required": true
               },
               "disable_auto_fallback": {
                 "type": "bool",
@@ -4637,7 +5411,8 @@
               }
             },
             "description": "Filter expressions that can be referenced across multiple features,\ne.g. Firewall Rules. See [what is a filter](https://developers.cloudflare.com/firewall/api/cf-filters/what-is-a-filter/)\nfor more details and available fields and operators.\n",
-            "description_kind": "markdown"
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "cloudflare_firewall_rule": {
@@ -4697,7 +5472,8 @@
               }
             },
             "description": "Define Firewall rules using filter expressions for more control over\nhow traffic is matched to the rule. A filter expression permits\nselecting traffic by multiple criteria allowing greater freedom in\nrule creation.\n\nFilter expressions needs to be created first before using Firewall\nRule.\n",
-            "description_kind": "markdown"
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "cloudflare_gre_tunnel": {
@@ -4974,6 +5750,110 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_hostname_tls_setting": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "Hostname that belongs to this zone name. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "setting": {
+                "type": "string",
+                "description": "TLS setting name. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "value": {
+                "type": "string",
+                "description": "TLS setting value.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a Cloudflare per-hostname TLS setting resource. Used to set TLS settings for hostnames under the specified zone.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_hostname_tls_setting_ciphers": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hostname": {
+                "type": "string",
+                "description": "Hostname that belongs to this zone name. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ports": {
+                "type": [
+                  "list",
+                  "number"
+                ],
+                "description": "Ports to use within the IP rule.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "value": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Ciphers suites value.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a Cloudflare per-hostname TLS setting resource, specifically for ciphers suites. Used to set ciphers suites for hostnames under the specified zone.\n",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_ipsec_tunnel": {
           "version": 0,
           "block": {
@@ -5088,6 +5968,69 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_keyless_certificate": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bundle_method": {
+                "type": "string",
+                "description": "A ubiquitous bundle has the highest probability of being verified everywhere, even by clients using outdated or unusual trust stores. An optimal bundle uses the shortest chain and newest intermediates. And the force bundle verifies the chain, but does not otherwise modify it. Available values: `ubiquitous`, `optimal`, `force`. Defaults to `ubiquitous`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "certificate": {
+                "type": "string",
+                "description": "The zone's SSL certificate or SSL certificate and intermediate(s). **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the KeyLess SSL is on.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "host": {
+                "type": "string",
+                "description": "The KeyLess SSL host.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The KeyLess SSL name.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "port": {
+                "type": "number",
+                "description": "The KeyLess SSL port used to communicate between Cloudflare and the client's KeyLess SSL server. Defaults to `24008`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the KeyLess SSL.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a resource, that manages Keyless certificates.\n",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_list": {
           "version": 0,
           "block": {
@@ -5112,7 +6055,7 @@
               },
               "kind": {
                 "type": "string",
-                "description": "The type of items the list will contain. **Modifying this attribute will force creation of a new resource.**",
+                "description": "The type of items the list will contain. Available values: `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -5140,6 +6083,11 @@
                       "nesting_mode": "list",
                       "block": {
                         "attributes": {
+                          "asn": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "ip": {
                             "type": "string",
                             "description_kind": "plain",
@@ -5147,6 +6095,20 @@
                           }
                         },
                         "block_types": {
+                          "hostname": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "url_hostname": {
+                                  "type": "string",
+                                  "description": "The FQDN to match on. Wildcard sub-domain matching is allowed. Eg. *.abc.com.",
+                                  "description_kind": "markdown",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
                           "redirect": {
                             "nesting_mode": "list",
                             "block": {
@@ -5208,7 +6170,7 @@
                 }
               }
             },
-            "description": "Provides Lists (IPs, Redirects) to be used in Edge Rules Engine\nacross all zones within the same account.\n",
+            "description": "Provides Lists (IPs, Redirects, Hostname, ASNs) to be used in Edge\nRules Engine across all zones within the same account.\n",
             "description_kind": "markdown"
           }
         },
@@ -5221,6 +6183,12 @@
                 "description": "The account identifier to target for the resource.",
                 "description_kind": "markdown",
                 "required": true
+              },
+              "asn": {
+                "type": "number",
+                "description": "Autonomous system number to include in the list. Must provide only one of `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
               },
               "comment": {
                 "type": "string",
@@ -5236,7 +6204,7 @@
               },
               "ip": {
                 "type": "string",
-                "description": "IP address to include in the list. Must provide only one of `ip`, `redirect`. **Modifying this attribute will force creation of a new resource.**",
+                "description": "IP address to include in the list. Must provide only one of `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -5248,6 +6216,22 @@
               }
             },
             "block_types": {
+              "hostname": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "url_hostname": {
+                      "type": "string",
+                      "description": "The FQDN to match on.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Redirect configuration to store in the list. Must provide only one of `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
               "redirect": {
                 "nesting_mode": "list",
                 "block": {
@@ -5295,7 +6279,7 @@
                       "required": true
                     }
                   },
-                  "description": "Redirect configuration to store in the list. Must provide only one of `ip`, `redirect`. **Modifying this attribute will force creation of a new resource.**",
+                  "description": "Redirect configuration to store in the list. Must provide only one of `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
                   "description_kind": "markdown"
                 },
                 "max_items": 1
@@ -5368,7 +6352,7 @@
               },
               "session_affinity": {
                 "type": "string",
-                "description": "Specifies the type of session affinity the load balancer should use unless specified as `none` or `\"\"` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `\"\"`, `none`, `cookie`, `ip_cookie`. Defaults to `none`.",
+                "description": "Specifies the type of session affinity the load balancer should use unless specified as `none` or `\"\"` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `\"\"`, `none`, `cookie`, `ip_cookie`, `header`. Defaults to `none`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -5380,7 +6364,7 @@
               },
               "steering_policy": {
                 "type": "string",
-                "description": "The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `\"\"` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `\"\"` Defaults to `\"\"`.",
+                "description": "The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `\"\"` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `\"\"` Defaults to `\"\"`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -5504,7 +6488,7 @@
                       "optional": true
                     }
                   },
-                  "description": "Configures pool weights for random steering. When the [`steering_policy=\"random\"`](#steering_policy), a random pool is selected with probability proportional to these pool weights.",
+                  "description": "Configures pool weights. When [`steering_policy=\"random\"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy=\"least_outstanding_requests\"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy=\"least_connections\"`](#steering_policy), pool weights are used to scale each pool's open connections.",
                   "description_kind": "markdown"
                 }
               },
@@ -5625,7 +6609,7 @@
                           },
                           "session_affinity": {
                             "type": "string",
-                            "description": "Configure cookie attributes for session affinity cookie.",
+                            "description": "Configure attributes for session affinity.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -5637,7 +6621,7 @@
                           },
                           "steering_policy": {
                             "type": "string",
-                            "description": "The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `\"\"` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `\"\"` Defaults to `\"\"`.",
+                            "description": "The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `\"\"` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `\"\"` Defaults to `\"\"`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -5753,7 +6737,7 @@
                                   "optional": true
                                 }
                               },
-                              "description": "Configures pool weights for random steering. When the [`steering_policy=\"random\"`](#steering_policy), a random pool is selected with probability proportional to these pool weights.",
+                              "description": "Configures pool weights. When [`steering_policy=\"random\"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy=\"least_outstanding_requests\"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy=\"least_connections\"`](#steering_policy), pool weights are used to scale each pool's open connections.",
                               "description_kind": "markdown"
                             }
                           },
@@ -5785,6 +6769,21 @@
                             "nesting_mode": "set",
                             "block": {
                               "attributes": {
+                                "headers": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Configures the HTTP header names to use when header session affinity is enabled.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "require_all_headers": {
+                                  "type": "bool",
+                                  "description": "Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
                                 "samesite": {
                                   "type": "string",
                                   "description": "Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure=\"Never\"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`.",
@@ -5804,7 +6803,7 @@
                                   "optional": true
                                 }
                               },
-                              "description": "Configure cookie attributes for session affinity cookie. Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.",
+                              "description": "Configure attributes for session affinity. Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.",
                               "description_kind": "markdown"
                             }
                           }
@@ -5828,6 +6827,21 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "headers": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Configures the HTTP header names to use when header session affinity is enabled.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "require_all_headers": {
+                      "type": "bool",
+                      "description": "Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "samesite": {
                       "type": "string",
                       "description": "Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure=\"Never\"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`. Defaults to `Auto`.",
@@ -5847,7 +6861,7 @@
                       "optional": true
                     }
                   },
-                  "description": "Configure cookie attributes for session affinity cookie.",
+                  "description": "Configure attributes for session affinity.",
                   "description_kind": "markdown"
                 }
               }
@@ -5869,6 +6883,18 @@
               "allow_insecure": {
                 "type": "bool",
                 "description": "Do not validate the certificate when monitor use HTTPS.  Only valid if `type` is \"http\" or \"https\".",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "consecutive_down": {
+                "type": "number",
+                "description": "To be marked unhealthy the monitored origin must fail this healthcheck N consecutive times. Defaults to `0`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "consecutive_up": {
+                "type": "number",
+                "description": "To be marked healthy the monitored origin must pass this healthcheck N consecutive times. Defaults to `0`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -6122,7 +7148,7 @@
                   "attributes": {
                     "policy": {
                       "type": "string",
-                      "description": "Origin steering policy to be used. Available values: `\"\"`, `hash`, `random`. Defaults to `random`.",
+                      "description": "Origin steering policy to be used. Value `random` selects an origin randomly. Value `hash` selects an origin by computing a hash over the CF-Connecting-IP address. Value `least_outstanding_requests` selects an origin by taking into consideration origin weights, as well as each origin's number of outstanding requests. Origins with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects an origin by taking into consideration origin weights, as well as each origin's number of open connections. Origins with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Available values: `\"\"`, `hash`, `random`, `least_outstanding_requests`, `least_connections`. Defaults to `random`.",
                       "description_kind": "markdown",
                       "optional": true
                     }
@@ -6155,7 +7181,7 @@
                     },
                     "weight": {
                       "type": "number",
-                      "description": "The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Defaults to `1`.",
+                      "description": "The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. When [`origin_steering.policy=\"least_outstanding_requests\"`](#policy), weight is used to scale the origin's outstanding requests. When [`origin_steering.policy=\"least_connections\"`](#policy), weight is used to scale the origin's open connections. Defaults to `1`.",
                       "description_kind": "markdown",
                       "optional": true
                     }
@@ -6235,7 +7261,7 @@
               },
               "dataset": {
                 "type": "string",
-                "description": "The kind of the dataset to use with the logpush job. Available values: `access_requests`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`, `device_posture_results`, `zero_trust_network_sessions`.",
+                "description": "The kind of the dataset to use with the logpush job. Available values: `access_requests`, `casb_findings`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`, `device_posture_results`, `zero_trust_network_sessions`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -6555,7 +7581,7 @@
               },
               "alert_type": {
                 "type": "string",
-                "description": "The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `access_custom_certificate_expiration_type`, `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`, `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`, `block_notification_new_block`, `block_notification_review_rejected`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`, `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`, `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`, `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`, `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`, `http_alert_origin_error`, `load_balancing_health_alert`, `load_balancing_pool_enablement_alert`, `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`, `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`, `sentinel_alert`, `stream_live_notifications`, `tunnel_health_event`, `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`, `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.",
+                "description": "The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `advanced_http_alert_error`, `access_custom_certificate_expiration_type`, `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`, `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`, `block_notification_new_block`, `block_notification_review_rejected`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`, `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`, `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`, `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`, `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`, `http_alert_origin_error`, `incident_alert`, `load_balancing_health_alert`, `load_balancing_pool_enablement_alert`, `pages_event_alert`, `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`, `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`, `sentinel_alert`, `stream_live_notifications`, `tunnel_health_event`, `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`, `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -6620,12 +7646,48 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "actions": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Targeted actions for alert.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "alert_trigger_preferences": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Alert trigger preferences. Example: `slo`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "enabled": {
                       "type": [
                         "set",
                         "string"
                       ],
                       "description": "State of the pool to alert on.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "environment": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Environment of pages. Available values: `ENVIRONMENT_PREVIEW`, `ENVIRONMENT_PRODUCTION`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "event": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Pages event to alert. Available values: `EVENT_DEPLOYMENT_STARTED`, `EVENT_DEPLOYMENT_FAILED`, `EVENT_DEPLOYMENT_SUCCESS`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -6647,12 +7709,30 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "group_by": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Alert grouping.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "health_check_id": {
                       "type": [
                         "set",
                         "string"
                       ],
                       "description": "Identifier health check. Required when using `filters.0.status`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "incident_impact": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The incident impact level that will trigger the dispatch of a notification. Available values: `INCIDENT_IMPACT_NONE`, `INCIDENT_IMPACT_MINOR`, `INCIDENT_IMPACT_MAJOR`, `INCIDENT_IMPACT_CRITICAL`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -6719,6 +7799,15 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "project_id": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Identifier of pages project.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "protocol": {
                       "type": [
                         "set",
@@ -6763,7 +7852,7 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
-                    "target_host": {
+                    "target_hostname": {
                       "type": [
                         "set",
                         "string"
@@ -6778,6 +7867,15 @@
                         "string"
                       ],
                       "description": "Target domain to alert on.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "where": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Filter for alert.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -6901,6 +7999,60 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_observatory_scheduled_test": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "frequency": {
+                "type": "string",
+                "description": "The frequency to run the test. Available values: `DAILY`, `WEEKLY`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region to run the test in. Available values: `us-central1`, `us-east1`, `us-east4`, `us-south1`, `us-west1`, `southamerica-east1`, `europe-north1`, `europe-southwest1`, `europe-west1`, `europe-west2`, `europe-west3`, `europe-west4`, `europe-west8`, `europe-west9`, `asia-east1`, `asia-south1`, `asia-southeast1`, `me-west1`, `australia-southeast1`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The page to run the test on. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Provides a Cloudflare Observatory Scheduled Test resource.",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_origin_ca_certificate": {
           "version": 0,
           "block": {
@@ -6915,7 +8067,7 @@
                 "type": "string",
                 "description": "The Certificate Signing Request. Must be newline-encoded. **Modifying this attribute will force creation of a new resource.**",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               },
               "expires_on": {
                 "type": "string",
@@ -7466,7 +8618,7 @@
               },
               "name": {
                 "type": "string",
-                "description": "Name of the project. **Modifying this attribute will force creation of a new resource.**",
+                "description": "Name of the project.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -7502,7 +8654,7 @@
                     },
                     "root_dir": {
                       "type": "string",
-                      "description": "Directory to run the command.",
+                      "description": "Your project's root directory, where Cloudflare runs the build command. If your site is not in a subdirectory, leave this path value empty.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -7519,7 +8671,7 @@
                       "optional": true
                     }
                   },
-                  "description": "Configuration for the project build process.",
+                  "description": "Configuration for the project build process. Read more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).",
                   "description_kind": "markdown"
                 },
                 "max_items": 1
@@ -7560,7 +8712,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "D1 Databases used for Pages Functions.",
+                            "description": "D1 Databases used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7569,7 +8721,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "Durable Object namespaces used for Pages Functions.",
+                            "description": "Durable Object namespaces used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7578,7 +8730,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "Environment variables for Pages Functions.",
+                            "description": "Environment variables for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7593,7 +8745,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "KV namespaces used for Pages Functions.",
+                            "description": "KV namespaces used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7602,7 +8754,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "R2 Buckets used for Pages Functions.",
+                            "description": "R2 Buckets used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7611,7 +8763,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "Encrypted environment variables for Pages Functions.",
+                            "description": "Encrypted environment variables for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true,
                             "sensitive": true
@@ -7624,6 +8776,23 @@
                           }
                         },
                         "block_types": {
+                          "placement": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description": "Placement Mode for the Pages Function.",
+                                  "description_kind": "markdown",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description": "Configuration for placement in the Cloudflare Pages project.",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
                           "service_binding": {
                             "nesting_mode": "set",
                             "block": {
@@ -7655,7 +8824,6 @@
                         "description": "Configuration for preview deploys.",
                         "description_kind": "markdown"
                       },
-                      "min_items": 1,
                       "max_items": 1
                     },
                     "production": {
@@ -7690,7 +8858,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "D1 Databases used for Pages Functions.",
+                            "description": "D1 Databases used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7699,7 +8867,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "Durable Object namespaces used for Pages Functions.",
+                            "description": "Durable Object namespaces used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7708,7 +8876,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "Environment variables for Pages Functions.",
+                            "description": "Environment variables for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7723,7 +8891,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "KV namespaces used for Pages Functions.",
+                            "description": "KV namespaces used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7732,7 +8900,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "R2 Buckets used for Pages Functions.",
+                            "description": "R2 Buckets used for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7741,7 +8909,7 @@
                               "map",
                               "string"
                             ],
-                            "description": "Encrypted environment variables for Pages Functions.",
+                            "description": "Encrypted environment variables for Pages Functions. Defaults to `map[]`.",
                             "description_kind": "markdown",
                             "optional": true,
                             "sensitive": true
@@ -7754,6 +8922,23 @@
                           }
                         },
                         "block_types": {
+                          "placement": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description": "Placement Mode for the Pages Function.",
+                                  "description_kind": "markdown",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description": "Configuration for placement in the Cloudflare Pages project.",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
                           "service_binding": {
                             "nesting_mode": "set",
                             "block": {
@@ -7785,7 +8970,6 @@
                         "description": "Configuration for production deploys.",
                         "description_kind": "markdown"
                       },
-                      "min_items": 1,
                       "max_items": 1
                     }
                   },
@@ -7818,7 +9002,7 @@
                           },
                           "owner": {
                             "type": "string",
-                            "description": "Project owner username.",
+                            "description": "Project owner username. **Modifying this attribute will force creation of a new resource.**",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -7835,7 +9019,8 @@
                             ],
                             "description": "Branches will be excluded from automatic deployment.",
                             "description_kind": "markdown",
-                            "optional": true
+                            "optional": true,
+                            "computed": true
                           },
                           "preview_branch_includes": {
                             "type": [
@@ -7844,7 +9029,8 @@
                             ],
                             "description": "Branches will be included for automatic deployment.",
                             "description_kind": "markdown",
-                            "optional": true
+                            "optional": true,
+                            "computed": true
                           },
                           "preview_deployment_setting": {
                             "type": "string",
@@ -7866,7 +9052,7 @@
                           },
                           "repo_name": {
                             "type": "string",
-                            "description": "Project repository name.",
+                            "description": "Project repository name. **Modifying this attribute will force creation of a new resource.**",
                             "description_kind": "markdown",
                             "optional": true
                           }
@@ -7877,7 +9063,7 @@
                       "max_items": 1
                     }
                   },
-                  "description": "Configuration for the project source.",
+                  "description": "Configuration for the project source. Read more about the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).",
                   "description_kind": "markdown"
                 },
                 "max_items": 1
@@ -7911,6 +9097,40 @@
               }
             },
             "description": "Provides the ability to manage Cloudflare Workers Queue features.",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_r2_bucket": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The identifier of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description": "The location hint of the R2 bucket.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the R2 bucket.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The [R2 Bucket](https://developers.cloudflare.com/r2/) resource allows you to manage Cloudflare R2 buckets.\n",
             "description_kind": "markdown"
           }
         },
@@ -8209,7 +9429,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The type of the record. Available values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`, `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`, `TLSA`, `URI`, `PTR`, `HTTPS`. **Modifying this attribute will force creation of a new resource.**",
+                "description": "The type of the record. Available values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`, `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`, `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute will force creation of a new resource.**",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -8515,6 +9735,33 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_regional_tiered_cache": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "value": {
+                "type": "string",
+                "description": "Value of the Regional Tiered Cache zone setting.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Instructs Cloudflare to check a regional hub data center on the way to your upper tier.\nThis can help improve performance for smart and custom tiered cache topologies.\n",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_ruleset": {
           "version": 0,
           "block": {
@@ -8540,7 +9787,7 @@
               },
               "kind": {
                 "type": "string",
-                "description": "Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `schema`, `zone`.",
+                "description": "Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `zone`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -8552,15 +9799,9 @@
               },
               "phase": {
                 "type": "string",
-                "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `http_response_compression`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
+                "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.",
                 "description_kind": "markdown",
                 "required": true
-              },
-              "shareable_entitlement_name": {
-                "type": "string",
-                "description": "Name of entitlement that is shareable between entities.",
-                "description_kind": "markdown",
-                "optional": true
               },
               "zone_id": {
                 "type": "string",
@@ -8576,7 +9817,7 @@
                   "attributes": {
                     "action": {
                       "type": "string",
-                      "description": "Action to perform in the ruleset rule. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
+                      "description": "Action to perform in the ruleset rule. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -8604,27 +9845,25 @@
                       "type": "string",
                       "description": "Unique rule identifier.",
                       "description_kind": "markdown",
-                      "optional": true,
                       "computed": true
                     },
                     "last_updated": {
                       "type": "string",
                       "description": "The most recent update to this rule.",
                       "description_kind": "markdown",
-                      "optional": true,
                       "computed": true
                     },
                     "ref": {
                       "type": "string",
                       "description": "Rule reference.",
                       "description_kind": "markdown",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "version": {
                       "type": "string",
                       "description": "Version of the ruleset to deploy.",
                       "description_kind": "markdown",
-                      "optional": true,
                       "computed": true
                     }
                   },
@@ -8633,6 +9872,15 @@
                       "nesting_mode": "list",
                       "block": {
                         "attributes": {
+                          "additional_cacheable_ports": {
+                            "type": [
+                              "set",
+                              "number"
+                            ],
+                            "description": "Specifies uncommon ports to allow cacheable assets to be served from.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
                           "automatic_https_rewrites": {
                             "type": "bool",
                             "description": "Turn on or off Cloudflare Automatic HTTPS rewrites.",
@@ -8731,6 +9979,12 @@
                             "description_kind": "markdown",
                             "optional": true
                           },
+                          "origin_cache_control": {
+                            "type": "bool",
+                            "description": "Enable or disable the use of a more compliant Cache Control parsing mechanism, enabled by default for most zones.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
                           "origin_error_page_passthru": {
                             "type": "bool",
                             "description": "Pass-through error page for origin.",
@@ -8742,7 +9996,7 @@
                               "set",
                               "string"
                             ],
-                            "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `http_response_compression`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
+                            "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -8758,6 +10012,12 @@
                               "string"
                             ],
                             "description": "Products to target with the actions. Available values: `bic`, `hot`, `ratelimit`, `securityLevel`, `uablock`, `waf`, `zonelockdown`.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "read_timeout": {
+                            "type": "number",
+                            "description": "Specifies a maximum timeout for reading content from an origin server.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -8860,7 +10120,7 @@
                               "attributes": {
                                 "name": {
                                   "type": "string",
-                                  "description": "Name of the compression algorithm to use. Available values: `gzip`, `brotli`, `default`, `none`",
+                                  "description": "Name of the compression algorithm to use. Available values: `gzip`, `brotli`, `auto`, `default`, `none`",
                                   "description_kind": "markdown",
                                   "required": true
                                 }
@@ -8902,15 +10162,15 @@
                               "attributes": {
                                 "default": {
                                   "type": "number",
-                                  "description": "Default browser TTL.",
+                                  "description": "Default browser TTL. This value is required when override_origin is set",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
                                 "mode": {
                                   "type": "string",
-                                  "description": "Mode of the browser TTL.",
+                                  "description": "Mode of the browser TTL. Available values: `override_origin`, `respect_origin`, `bypass`",
                                   "description_kind": "markdown",
-                                  "optional": true
+                                  "required": true
                                 }
                               },
                               "description": "List of browser TTL parameters to apply to the request.",
@@ -8989,7 +10249,8 @@
                                               "type": "bool",
                                               "description": "Exclude the origin header from the custom key.",
                                               "description_kind": "markdown",
-                                              "optional": true
+                                              "optional": true,
+                                              "computed": true
                                             },
                                             "include": {
                                               "type": [
@@ -9090,15 +10351,15 @@
                               "attributes": {
                                 "default": {
                                   "type": "number",
-                                  "description": "Default edge TTL",
+                                  "description": "Default edge TTL.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
                                 "mode": {
                                   "type": "string",
-                                  "description": "Mode of the edge TTL.",
+                                  "description": "Mode of the edge TTL. Available values: `override_origin`, `respect_origin`, `bypass_by_default`",
                                   "description_kind": "markdown",
-                                  "optional": true
+                                  "required": true
                                 }
                               },
                               "block_types": {
@@ -9245,7 +10506,7 @@
                                   "optional": true
                                 }
                               },
-                              "description": "List of HTTP header modifications to perform in the ruleset rule.",
+                              "description": "List of HTTP header modifications to perform in the ruleset rule. Note: Headers are order dependent and must be provided sorted alphabetically ascending based on the `name` value.",
                               "description_kind": "markdown"
                             }
                           },
@@ -9291,7 +10552,7 @@
                               "attributes": {
                                 "action": {
                                   "type": "string",
-                                  "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
+                                  "description": "Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.",
                                   "description_kind": "markdown",
                                   "optional": true
                                 },
@@ -9315,7 +10576,7 @@
                                     "attributes": {
                                       "action": {
                                         "type": "string",
-                                        "description": "Action to perform in the tag-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
+                                        "description": "Action to perform in the tag-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -9342,7 +10603,7 @@
                                     "attributes": {
                                       "action": {
                                         "type": "string",
-                                        "description": "Action to perform in the rule-level override. Available values: `allow`, `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`, `compress_response`.",
+                                        "description": "Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.",
                                         "description_kind": "markdown",
                                         "optional": true
                                       },
@@ -9532,7 +10793,7 @@
                             "optional": true
                           }
                         },
-                        "description": "List parameters to configure how the rule generates logs.",
+                        "description": "List parameters to configure how the rule generates logs. Only valid for skip action.",
                         "description_kind": "markdown"
                       }
                     },
@@ -9577,7 +10838,7 @@
                             "type": "bool",
                             "description": "Whether to include requests to origin within the Rate Limiting count.",
                             "description_kind": "markdown",
-                            "optional": true
+                            "required": true
                           },
                           "score_per_period": {
                             "type": "number",
@@ -9612,9 +10873,10 @@
             "attributes": {
               "argo_smart_routing": {
                 "type": "bool",
-                "description": "Enables Argo Smart Routing. Defaults to `false`.",
+                "description": "Enables Argo Smart Routing.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -9624,9 +10886,10 @@
               },
               "ip_firewall": {
                 "type": "bool",
-                "description": "Enables the IP Firewall for this application. Defaults to `true`.",
+                "description": "Enables the IP Firewall for this application.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "origin_direct": {
                 "type": [
@@ -9651,21 +10914,24 @@
               },
               "proxy_protocol": {
                 "type": "string",
-                "description": "Enables a proxy protocol to the origin. Available values: `off`, `v1`, `v2`, `simple`. Defaults to `off`.",
+                "description": "Enables a proxy protocol to the origin. Available values: `off`, `v1`, `v2`, `simple`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "tls": {
                 "type": "string",
-                "description": "TLS configuration option for Cloudflare to connect to your origin. Available values: `off`, `flexible`, `full`, `strict`. Defaults to `off`.",
+                "description": "TLS configuration option for Cloudflare to connect to your origin. Available values: `off`, `flexible`, `full`, `strict`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "traffic_type": {
                 "type": "string",
-                "description": "Sets application type. Available values: `direct`, `http`, `https`. Defaults to `direct`.",
+                "description": "Sets application type. Available values: `direct`, `http`, `https`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "zone_id": {
                 "type": "string",
@@ -9926,6 +11192,18 @@
                 "optional": true,
                 "computed": true
               },
+              "non_identity_browser_isolation_enabled": {
+                "type": "bool",
+                "description": "Enable non-identity onramp for Browser Isolation. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "protocol_detection_enabled": {
+                "type": "bool",
+                "description": "Indicator that protocol detection is enabled.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "tls_decrypt_enabled": {
                 "type": "bool",
                 "description": "Indicator that decryption of TLS traffic is enabled.",
@@ -9934,7 +11212,7 @@
               },
               "url_browser_isolation_enabled": {
                 "type": "bool",
-                "description": "Safely browse websites in Browser Isolation through a URL.",
+                "description": "Safely browse websites in Browser Isolation through a URL. Defaults to `false`.",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -10022,6 +11300,22 @@
                     }
                   },
                   "description": "Configuration for a custom block page.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "body_scanning": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "inspection_mode": {
+                      "type": "string",
+                      "description": "Body scanning inspection mode. Available values: `deep`, `shallow`.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Configuration for body scanning.",
                   "description_kind": "markdown"
                 },
                 "max_items": 1
@@ -10156,6 +11450,12 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "root_ca": {
+                      "type": "bool",
+                      "description": "Whether root ca is enabled account wide for ZT clients.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
                     "tcp": {
                       "type": "bool",
                       "description": "Whether gateway proxy is enabled on gateway devices for TCP traffic.",
@@ -10170,6 +11470,22 @@
                     }
                   },
                   "description": "Configuration block for specifying which protocols are proxied.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              },
+              "ssh_session_log": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "public_key": {
+                      "type": "string",
+                      "description": "Public key used to encrypt ssh session.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description": "Configuration for SSH Session Logging.",
                   "description_kind": "markdown"
                 },
                 "max_items": 1
@@ -10837,6 +12153,176 @@
                             "required": true
                           }
                         },
+                        "block_types": {
+                          "origin_request": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "bastion_mode": {
+                                  "type": "bool",
+                                  "description": "Runs as jump host.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "ca_pool": {
+                                  "type": "string",
+                                  "description": "Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to `\"\"`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "connect_timeout": {
+                                  "type": "string",
+                                  "description": "Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by `tlsTimeout`. Defaults to `30s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "disable_chunked_encoding": {
+                                  "type": "bool",
+                                  "description": "Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to `false`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "http2_origin": {
+                                  "type": "bool",
+                                  "description": "Enables HTTP/2 support for the origin connection. Defaults to `false`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "http_host_header": {
+                                  "type": "string",
+                                  "description": "Sets the HTTP Host header on requests sent to the local service. Defaults to `\"\"`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "keep_alive_connections": {
+                                  "type": "number",
+                                  "description": "Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to `100`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "keep_alive_timeout": {
+                                  "type": "string",
+                                  "description": "Timeout after which an idle keepalive connection can be discarded. Defaults to `1m30s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "no_happy_eyeballs": {
+                                  "type": "bool",
+                                  "description": "Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to `false`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "no_tls_verify": {
+                                  "type": "bool",
+                                  "description": "Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to `false`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "origin_server_name": {
+                                  "type": "string",
+                                  "description": "Hostname that cloudflared should expect from your origin server certificate. Defaults to `\"\"`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "proxy_address": {
+                                  "type": "string",
+                                  "description": "cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to `127.0.0.1`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "proxy_port": {
+                                  "type": "number",
+                                  "description": "cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to `0`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "proxy_type": {
+                                  "type": "string",
+                                  "description": "cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: `\"\"`, `socks`. Defaults to `\"\"`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "tcp_keep_alive": {
+                                  "type": "string",
+                                  "description": "The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to `30s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "tls_timeout": {
+                                  "type": "string",
+                                  "description": "Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to `10s`.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "access": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "aud_tag": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description": "Audience tags of the access rule.",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "required": {
+                                        "type": "bool",
+                                        "description": "Whether the access rule is required.",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "team_name": {
+                                        "type": "string",
+                                        "description": "Name of the team to which the access rule applies.",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Access rules for the ingress service.",
+                                    "description_kind": "markdown"
+                                  },
+                                  "max_items": 1
+                                },
+                                "ip_rules": {
+                                  "nesting_mode": "set",
+                                  "block": {
+                                    "attributes": {
+                                      "allow": {
+                                        "type": "bool",
+                                        "description": "Whether to allow the IP prefix.",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "ports": {
+                                        "type": [
+                                          "list",
+                                          "number"
+                                        ],
+                                        "description": "Ports to use within the IP rule.",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      },
+                                      "prefix": {
+                                        "type": "string",
+                                        "description": "IP rule prefix.",
+                                        "description_kind": "markdown",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "IP rules for the proxy service.",
+                                    "description_kind": "markdown"
+                                  }
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
                         "description": "Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. [Read more](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/local-management/ingress/).",
                         "description_kind": "markdown"
                       },
@@ -10867,6 +12353,12 @@
                           "disable_chunked_encoding": {
                             "type": "bool",
                             "description": "Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to `false`.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "http2_origin": {
+                            "type": "bool",
+                            "description": "Enables HTTP/2 support for the origin connection. Defaults to `false`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -10938,6 +12430,37 @@
                           }
                         },
                         "block_types": {
+                          "access": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "aud_tag": {
+                                  "type": [
+                                    "set",
+                                    "string"
+                                  ],
+                                  "description": "Audience tags of the access rule.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "required": {
+                                  "type": "bool",
+                                  "description": "Whether the access rule is required.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                },
+                                "team_name": {
+                                  "type": "string",
+                                  "description": "Name of the team to which the access rule applies.",
+                                  "description_kind": "markdown",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Access rules for the ingress service.",
+                              "description_kind": "markdown"
+                            },
+                            "max_items": 1
+                          },
                           "ip_rules": {
                             "nesting_mode": "set",
                             "block": {
@@ -11099,7 +12622,8 @@
                 "type": "bool",
                 "description": "If bot_fight_mode is set to true, Cloudflare issues computationally expensive challenges in response to malicious bots (Enterprise only).",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "domains": {
                 "type": [
@@ -11119,9 +12643,9 @@
               },
               "mode": {
                 "type": "string",
-                "description": "Widget Mode",
+                "description": "Widget Mode. Available values: `non-interactive`, `invisible`, `managed`",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               },
               "name": {
                 "type": "string",
@@ -11140,7 +12664,8 @@
                 "type": "string",
                 "description": "Region where this widget can be used.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "secret": {
                 "type": "string",
@@ -11150,7 +12675,7 @@
                 "sensitive": true
               }
             },
-            "description": "The [Challenge Widget](https://developers.cloudflare.com/turnstile/) resource allows you to manage Cloudflare Turnstile Widgets.\n",
+            "description": "The [Turnstile Widget](https://developers.cloudflare.com/turnstile/) resource allows you to manage Cloudflare Turnstile Widgets.\n",
             "description_kind": "markdown"
           }
         },
@@ -11255,6 +12780,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "cookie_suffix": {
+                "type": "string",
+                "description": "A cookie suffix to be appended to the Cloudflare waiting room cookie name.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "custom_page_html": {
                 "type": "string",
                 "description": "This is a templated html file that will be rendered at the edge.",
@@ -11327,6 +12858,12 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "queueing_status_code": {
+                "type": "number",
+                "description": "HTTP status code returned to a user while in the queue. Defaults to `200`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "session_duration": {
                 "type": "number",
                 "description": "Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to `5`.",
@@ -11353,6 +12890,27 @@
               }
             },
             "block_types": {
+              "additional_routes": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description": "The additional host name for which the waiting room to be applied on (no wildcards).",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The path within the additional host to enable the waiting room on. Defaults to `/`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "A list of additional hostname and paths combination to be applied on the waiting room.",
+                  "description_kind": "markdown"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -11567,6 +13125,33 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_waiting_room_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "search_engine_crawler_bypass": {
+                "type": "bool",
+                "description": "Whether to allow verified search engine crawlers to bypass all waiting rooms on this zone. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Configure zone-wide settings for Cloudflare waiting rooms.",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_web3_hostname": {
           "version": 0,
           "block": {
@@ -11627,6 +13212,155 @@
               }
             },
             "description": "Manages Web3 hostnames for IPFS and Ethereum gateways.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_web_analytics_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "host": {
+                "type": "string",
+                "description": "The host to apply the rule to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "inclusive": {
+                "type": "bool",
+                "description": "Whether the rule includes or excludes the matched traffic from being measured in Web Analytics.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "is_paused": {
+                "type": "bool",
+                "description": "Whether the rule is paused or not.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "paths": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of paths to apply the rule to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "ruleset_id": {
+                "type": "string",
+                "description": "The Web Analytics ruleset id. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Provides a Cloudflare Web Analytics Rule resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_web_analytics_site": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "auto_install": {
+                "type": "bool",
+                "description": "Whether Cloudflare will automatically inject the JavaScript snippet for orange-clouded sites. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "host": {
+                "type": "string",
+                "description": "The hostname to use for gray-clouded sites. Must provide only one of `zone_tag`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ruleset_id": {
+                "type": "string",
+                "description": "The ID for the ruleset associated to this Web Analytics Site.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "site_tag": {
+                "type": "string",
+                "description": "The Web Analytics site tag.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "site_token": {
+                "type": "string",
+                "description": "The token for the Web Analytics site.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              },
+              "snippet": {
+                "type": "string",
+                "description": "The encoded JS snippet to add to your site's HTML page if auto_install is false.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              },
+              "zone_tag": {
+                "type": "string",
+                "description": "The zone identifier for orange-clouded sites. Must provide only one of `host`. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Provides a Cloudflare Web Analytics Site resource.",
             "description_kind": "markdown"
           }
         },
@@ -11835,6 +13569,20 @@
                     "namespace_id": {
                       "type": "string",
                       "description": "ID of the KV namespace you want to use.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "placement": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "mode": {
+                      "type": "string",
+                      "description": "The placement mode for the Worker. Available values: `smart`.",
                       "description_kind": "markdown",
                       "required": true
                     }
@@ -12100,7 +13848,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`. Defaults to `full`.",
+                "description": "A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`, `secondary`. Defaults to `full`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -12127,6 +13875,33 @@
               }
             },
             "description": "Provides a Cloudflare Zone resource. Zone is the basic resource for\nworking with Cloudflare and is roughly equivalent to a domain name\nthat the user purchases.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_zone_cache_reserve": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Whether to enable or disable Cache Reserve support for a given zone.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a Cloudflare Cache Reserve resource. Cache Reserve can\nincrease cache lifetimes by automatically storing all cacheable\nfiles in Cloudflare's persistent object storage buckets.\n\nNote: Using Cache Reserve without Tiered Cache is not recommended.\n",
             "description_kind": "markdown"
           }
         },
@@ -12338,6 +14113,46 @@
             "description_kind": "markdown"
           }
         },
+        "cloudflare_zone_hold": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "hold": {
+                "type": "bool",
+                "description": "Enablement status of the zone hold.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "hold_after": {
+                "type": "string",
+                "description": "The RFC3339 compatible timestamp when to automatically re-enable the zone hold.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "include_subdomains": {
+                "type": "bool",
+                "description": "Whether to extend to block any subdomain of the given zone.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a Cloudflare Zone Hold resource that prevents adding\nthe hostname to another account for use.\n",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_zone_lockdown": {
           "version": 0,
           "block": {
@@ -12443,6 +14258,7 @@
                       "early_hints": "string",
                       "email_obfuscation": "string",
                       "filter_logs_to_cloudflare": "string",
+                      "fonts": "string",
                       "h2_prioritization": "string",
                       "hotlink_protection": "string",
                       "http2": "string",
@@ -12644,6 +14460,12 @@
                       "computed": true
                     },
                     "filter_logs_to_cloudflare": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "fonts": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true,
@@ -12973,6 +14795,53 @@
         }
       },
       "data_source_schemas": {
+        "cloudflare_access_application": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. Must provide only one of `zone_id`, `account_id`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "aud": {
+                "type": "string",
+                "description": "Application Audience (AUD) Tag of the application.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain": {
+                "type": "string",
+                "description": "The primary hostname and path that Access will secure. Must provide only one of `name`, `domain`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Friendly name of the Access Application. Must provide only one of `name`, `domain`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource. Must provide only one of `zone_id`, `account_id`.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Use this data source to lookup a single [Access Application](https://developers.cloudflare.com/cloudflare-one/applications/)",
+            "description_kind": "markdown"
+          }
+        },
         "cloudflare_access_identity_provider": {
           "version": 0,
           "block": {
@@ -13096,13 +14965,13 @@
                   "string"
                 ],
                 "description": "Map of permissions for account level resources.",
-                "description_kind": "markdown",
+                "description_kind": "plain",
                 "computed": true
               },
               "id": {
                 "type": "string",
+                "description": "Checksum of permissions.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "permissions": {
@@ -13111,8 +14980,17 @@
                   "string"
                 ],
                 "description": "Map of all permissions available. Should not be used as some permissions will overlap resource scope. Instead, use resource level specific attributes.",
-                "description_kind": "markdown",
+                "description_kind": "plain",
                 "deprecated": true,
+                "computed": true
+              },
+              "r2": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Map of permissions for r2 level resources.",
+                "description_kind": "plain",
                 "computed": true
               },
               "user": {
@@ -13121,7 +14999,7 @@
                   "string"
                 ],
                 "description": "Map of permissions for user level resources.",
-                "description_kind": "markdown",
+                "description_kind": "plain",
                 "computed": true
               },
               "zone": {
@@ -13130,11 +15008,63 @@
                   "string"
                 ],
                 "description": "Map of permissions for zone level resources.",
-                "description_kind": "markdown",
+                "description_kind": "plain",
                 "computed": true
               }
             },
             "description": "Use this data source to look up [API Token Permission Groups](https://developers.cloudflare.com/api/tokens/create/permissions).\nCommonly used as references within [`cloudflare_token`](/docs/providers/cloudflare/r/api_token.html) resources.\n",
+            "description_kind": "plain"
+          }
+        },
+        "cloudflare_device_posture_rules": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Device Posture Rule.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "rules": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "expiration": "string",
+                      "id": "string",
+                      "name": "string",
+                      "schedule": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "A list of matching Device Posture Rules.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `client_certificate`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`, `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "Use this data source to lookup a list of [Device Posture Rule](https://developers.cloudflare.com/cloudflare-one/identity/devices)",
             "description_kind": "markdown"
           }
         },
@@ -13533,7 +15463,7 @@
           }
         },
         "cloudflare_record": {
-          "version": 2,
+          "version": 0,
           "block": {
             "attributes": {
               "hostname": {
@@ -13651,6 +15581,10 @@
                               [
                                 "object",
                                 {
+                                  "additional_cacheable_ports": [
+                                    "set",
+                                    "number"
+                                  ],
                                   "automatic_https_rewrites": "bool",
                                   "autominify": [
                                     "list",
@@ -13870,6 +15804,7 @@
                                       }
                                     ]
                                   ],
+                                  "origin_cache_control": "bool",
                                   "origin_error_page_passthru": "bool",
                                   "overrides": [
                                     "list",
@@ -13918,6 +15853,7 @@
                                     "set",
                                     "string"
                                   ],
+                                  "read_timeout": "number",
                                   "request_fields": [
                                     "set",
                                     "string"
@@ -14080,7 +16016,7 @@
                     },
                     "kind": {
                       "type": "string",
-                      "description": "Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `schema`, `zone`.",
+                      "description": "Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `zone`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -14092,7 +16028,7 @@
                     },
                     "phase": {
                       "type": "string",
-                      "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `http_response_compression`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.",
+                      "description": "Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -14109,6 +16045,117 @@
               }
             },
             "description": "Use this datasource to lookup Rulesets in an account or zone.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_tunnel": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of the tunnel.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the tunnel. **Modifying this attribute will force creation of a new resource.**",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "remote_config": {
+                "type": "bool",
+                "description": "Whether the tunnel can be configured remotely from the Zero Trust dashboard.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "The status of the tunnel. Available values: `inactive`, `degraded`, `healthy`, `down`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "tunnel_type": {
+                "type": "string",
+                "description": "The type of the tunnel. Available values: `cfd_tunnel`, `warp_connector`.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Use this datasource to lookup a tunnel in an account.",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_tunnel_virtual_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The account identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "The Virtual Network Comment.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_default": {
+                "type": "bool",
+                "description": "If true, only include deleted virtual networks. If false, exclude deleted virtual networks. If empty, all virtual networks will be included.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The Virtual Network Name.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Use this datasource to lookup a tunnel virtual network in an account.",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "email": {
+                "type": "string",
+                "description": "The user's email address.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The user's unique identifier.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The user's username.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to retrieve information about the currently authenticated user.",
             "description_kind": "markdown"
           }
         },
@@ -14181,6 +16228,33 @@
               }
             },
             "description": "Use this data source to look up [zone](https://api.cloudflare.com/#zone-properties)\ninfo. This is the singular alternative to `cloudflare_zones`.\n",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_zone_cache_reserve": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "The status of Cache Reserve support.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "zone_id": {
+                "type": "string",
+                "description": "The zone identifier to target for the resource.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Provides a Cloudflare data source to look up Cache Reserve\nstatus for a given zone.\n",
             "description_kind": "markdown"
           }
         },

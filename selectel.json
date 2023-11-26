@@ -6,11 +6,23 @@
         "version": 0,
         "block": {
           "attributes": {
-            "endpoint": {
+            "auth_url": {
               "type": "string",
-              "description": "Base endpoint to work with the Selectel API.",
+              "description": "Base url to work with auth API (Keystone URL). https://api.selvpc.ru/identity/v3/ used by default",
               "description_kind": "plain",
               "optional": true
+            },
+            "domain_name": {
+              "type": "string",
+              "description": "Your domain name i.e. your account id",
+              "description_kind": "plain",
+              "required": true
+            },
+            "password": {
+              "type": "string",
+              "description": "Service user password",
+              "description_kind": "plain",
+              "required": true
             },
             "project_id": {
               "type": "string",
@@ -24,9 +36,15 @@
               "description_kind": "plain",
               "optional": true
             },
-            "token": {
+            "user_domain_name": {
               "type": "string",
-              "description": "Token to authorize with the Selectel API.",
+              "description": "Used for service accounts in other domain. If you don't know exactly what this field means then don't use it",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "username": {
+              "type": "string",
+              "description": "Service user username",
               "description_kind": "plain",
               "required": true
             }
@@ -35,6 +53,96 @@
         }
       },
       "resource_schemas": {
+        "selectel_craas_registry_v1": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "endpoint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "selectel_craas_token_v1": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "token": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "token_ttl": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "username": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "selectel_dbaas_database_v1": {
           "version": 0,
           "block": {
@@ -118,6 +226,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "backup_retention_days": {
+                "type": "number",
+                "description": "Number of days to retain backups.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "config": {
                 "type": [
                   "map",
@@ -502,6 +616,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "backup_retention_days": {
+                "type": "number",
+                "description": "Number of days to retain backups.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "config": {
                 "type": [
                   "map",
@@ -740,6 +860,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "backup_retention_days": {
+                "type": "number",
+                "description": "Number of days to retain backups.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "config": {
                 "type": [
                   "map",
@@ -982,6 +1108,75 @@
             "description_kind": "plain"
           }
         },
+        "selectel_dbaas_postgresql_logical_replication_slot_v1": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "database_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "datastore_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "selectel_dbaas_prometheus_metric_token_v1": {
           "version": 0,
           "block": {
@@ -1045,6 +1240,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "backup_retention_days": {
+                "type": "number",
+                "description": "Number of days to retain backups.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "config": {
                 "type": [
                   "map",

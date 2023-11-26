@@ -885,6 +885,11 @@
                 "optional": true,
                 "computed": true
               },
+              "group_search_filter": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -936,6 +941,12 @@
                 "description_kind": "plain",
                 "required": true,
                 "sensitive": true
+              },
+              "start_tls": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "test_password": {
                 "type": "string",
@@ -1005,6 +1016,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "user_search_filter": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -1395,6 +1411,11 @@
                 "optional": true,
                 "computed": true
               },
+              "group_search_filter": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1446,6 +1467,12 @@
                 "description_kind": "plain",
                 "required": true,
                 "sensitive": true
+              },
+              "start_tls": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "test_password": {
                 "type": "string",
@@ -1515,6 +1542,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "user_search_filter": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -1554,6 +1586,11 @@
               },
               "enabled": {
                 "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "entity_id_field": {
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2399,7 +2436,7 @@
           }
         },
         "rancher2_cluster": {
-          "version": 1,
+          "version": 2,
           "block": {
             "attributes": {
               "annotations": {
@@ -2461,9 +2498,16 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "default_pod_security_admission_configuration_template_name": {
+                "type": "string",
+                "description": "Default pod security admission configuration template name",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "default_pod_security_policy_template_id": {
                 "type": "string",
-                "description": "Default pod security policy template id",
+                "description": "Default pod security policy template ID",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -3083,6 +3127,16 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "labels": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "The AKS node pool labels",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
                           "max_count": {
                             "type": "number",
                             "description": "The AKS node pool max count",
@@ -3092,6 +3146,12 @@
                           "max_pods": {
                             "type": "number",
                             "description": "The AKS node pool max pods",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "max_surge": {
+                            "type": "string",
+                            "description": "The AKS node pool max surge",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -3137,6 +3197,16 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "taints": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The AKS node pool taints",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
                           "vm_size": {
                             "type": "string",
                             "description": "The AKS node pool vm size",
@@ -3153,6 +3223,91 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              },
+              "cluster_agent_deployment_customization": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "override_affinity": {
+                      "type": "string",
+                      "description": "User defined affinity to override default agent affinity",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "append_tolerations": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "effect": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "key": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "seconds": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined tolerations to append to agent",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "override_resource_requirements": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cpu_limit": {
+                            "type": "string",
+                            "description": "The maximum CPU limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "cpu_request": {
+                            "type": "string",
+                            "description": "The minimum CPU required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_limit": {
+                            "type": "string",
+                            "description": "The maximum memory limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_request": {
+                            "type": "string",
+                            "description": "The minimum memory required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined resource requirements to set on the agent",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Optional customization for cluster agent",
+                  "description_kind": "plain"
+                }
               },
               "cluster_auth_endpoint": {
                 "nesting_mode": "list",
@@ -3688,6 +3843,91 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              },
+              "fleet_agent_deployment_customization": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "override_affinity": {
+                      "type": "string",
+                      "description": "User defined affinity to override default agent affinity",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "append_tolerations": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "effect": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "key": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "seconds": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined tolerations to append to agent",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "override_resource_requirements": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cpu_limit": {
+                            "type": "string",
+                            "description": "The maximum CPU limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "cpu_request": {
+                            "type": "string",
+                            "description": "The minimum CPU required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_limit": {
+                            "type": "string",
+                            "description": "The maximum memory limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_request": {
+                            "type": "string",
+                            "description": "The minimum memory required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined resource requirements to set on the agent",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Optional customization for fleet agent",
+                  "description_kind": "plain"
+                }
               },
               "gke_config": {
                 "nesting_mode": "list",
@@ -7019,14 +7259,6 @@
                             "nesting_mode": "list",
                             "block": {
                               "attributes": {
-                                "admission_configuration": {
-                                  "type": [
-                                    "map",
-                                    "string"
-                                  ],
-                                  "description_kind": "plain",
-                                  "optional": true
-                                },
                                 "always_pull_images": {
                                   "type": "bool",
                                   "description_kind": "plain",
@@ -7082,6 +7314,59 @@
                                 }
                               },
                               "block_types": {
+                                "admission_configuration": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "api_version": {
+                                        "type": "string",
+                                        "description": "Admission configuration ApiVersion",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "kind": {
+                                        "type": "string",
+                                        "description": "Admission configuration Kind",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "plugins": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "configuration": {
+                                              "type": "string",
+                                              "description": "Plugin configuration",
+                                              "description_kind": "plain",
+                                              "optional": true,
+                                              "computed": true
+                                            },
+                                            "name": {
+                                              "type": "string",
+                                              "description": "Plugin name",
+                                              "description_kind": "plain",
+                                              "optional": true,
+                                              "computed": true
+                                            },
+                                            "path": {
+                                              "type": "string",
+                                              "description": "Plugin path",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description": "Admission configuration plugins",
+                                          "description_kind": "plain"
+                                        }
+                                      }
+                                    },
+                                    "description": "Cluster admission configuration",
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
                                 "audit_log": {
                                   "nesting_mode": "list",
                                   "block": {
@@ -8321,6 +8606,13 @@
                           "default_cluster_role_for_project_members": {
                             "type": "string",
                             "description": "Default cluster role for project members",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "default_pod_security_admission_configuration_template_name": {
+                            "type": "string",
+                            "description": "Default pod security admission configuration template name",
                             "description_kind": "plain",
                             "optional": true,
                             "computed": true
@@ -10581,14 +10873,6 @@
                                         "nesting_mode": "list",
                                         "block": {
                                           "attributes": {
-                                            "admission_configuration": {
-                                              "type": [
-                                                "map",
-                                                "string"
-                                              ],
-                                              "description_kind": "plain",
-                                              "optional": true
-                                            },
                                             "always_pull_images": {
                                               "type": "bool",
                                               "description_kind": "plain",
@@ -10644,6 +10928,59 @@
                                             }
                                           },
                                           "block_types": {
+                                            "admission_configuration": {
+                                              "nesting_mode": "list",
+                                              "block": {
+                                                "attributes": {
+                                                  "api_version": {
+                                                    "type": "string",
+                                                    "description": "Admission configuration ApiVersion",
+                                                    "description_kind": "plain",
+                                                    "optional": true
+                                                  },
+                                                  "kind": {
+                                                    "type": "string",
+                                                    "description": "Admission configuration Kind",
+                                                    "description_kind": "plain",
+                                                    "optional": true
+                                                  }
+                                                },
+                                                "block_types": {
+                                                  "plugins": {
+                                                    "nesting_mode": "list",
+                                                    "block": {
+                                                      "attributes": {
+                                                        "configuration": {
+                                                          "type": "string",
+                                                          "description": "Plugin configuration",
+                                                          "description_kind": "plain",
+                                                          "optional": true,
+                                                          "computed": true
+                                                        },
+                                                        "name": {
+                                                          "type": "string",
+                                                          "description": "Plugin name",
+                                                          "description_kind": "plain",
+                                                          "optional": true,
+                                                          "computed": true
+                                                        },
+                                                        "path": {
+                                                          "type": "string",
+                                                          "description": "Plugin path",
+                                                          "description_kind": "plain",
+                                                          "optional": true
+                                                        }
+                                                      },
+                                                      "description": "Admission configuration plugins",
+                                                      "description_kind": "plain"
+                                                    }
+                                                  }
+                                                },
+                                                "description": "Cluster admission configuration",
+                                                "description_kind": "plain"
+                                              },
+                                              "max_items": 1
+                                            },
                                             "audit_log": {
                                               "nesting_mode": "list",
                                               "block": {
@@ -11092,7 +11429,7 @@
           }
         },
         "rancher2_cluster_v2": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "annotations": {
@@ -11151,6 +11488,12 @@
               "default_cluster_role_for_project_members": {
                 "type": "string",
                 "description": "Cluster V2 default cluster role for project members",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_pod_security_admission_configuration_template_name": {
+                "type": "string",
+                "description": "Cluster V2 default pod security admission configuration template name",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -11229,6 +11572,176 @@
                     }
                   },
                   "description": "Cluster V2 default agent env vars",
+                  "description_kind": "plain"
+                }
+              },
+              "cluster_agent_deployment_customization": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "override_affinity": {
+                      "type": "string",
+                      "description": "User defined affinity to override default agent affinity",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "append_tolerations": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "effect": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "key": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "seconds": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined tolerations to append to agent",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "override_resource_requirements": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cpu_limit": {
+                            "type": "string",
+                            "description": "The maximum CPU limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "cpu_request": {
+                            "type": "string",
+                            "description": "The minimum CPU required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_limit": {
+                            "type": "string",
+                            "description": "The maximum memory limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_request": {
+                            "type": "string",
+                            "description": "The minimum memory required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined resource requirements to set on the agent",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Optional customization for cluster agent",
+                  "description_kind": "plain"
+                }
+              },
+              "fleet_agent_deployment_customization": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "override_affinity": {
+                      "type": "string",
+                      "description": "User defined affinity to override default agent affinity",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "append_tolerations": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "effect": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "key": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "seconds": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined tolerations to append to agent",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "override_resource_requirements": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "cpu_limit": {
+                            "type": "string",
+                            "description": "The maximum CPU limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "cpu_request": {
+                            "type": "string",
+                            "description": "The minimum CPU required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_limit": {
+                            "type": "string",
+                            "description": "The maximum memory limit for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "memory_request": {
+                            "type": "string",
+                            "description": "The minimum memory required for agent",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "User defined resource requirements to set on the agent",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Optional customization for fleet agent",
                   "description_kind": "plain"
                 }
               },
@@ -11433,6 +11946,21 @@
                       },
                       "max_items": 1
                     },
+                    "machine_pool_defaults": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "hostname_length_limit": {
+                            "type": "number",
+                            "description": "maximum length for autogenerated hostname",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Default values for machine pool configurations if unset",
+                        "description_kind": "plain"
+                      }
+                    },
                     "machine_pools": {
                       "nesting_mode": "list",
                       "block": {
@@ -11468,6 +11996,12 @@
                           "etcd_role": {
                             "type": "bool",
                             "description": "Machine pool etcd role",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "hostname_length_limit": {
+                            "type": "number",
+                            "description": "maximum length for autogenerated hostname",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -11626,10 +12160,7 @@
                       "block": {
                         "attributes": {
                           "config": {
-                            "type": [
-                              "map",
-                              "string"
-                            ],
+                            "type": "string",
                             "description": "Machine selector config",
                             "description_kind": "plain",
                             "optional": true
@@ -12057,6 +12588,159 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "rancher2_custom_user_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_key": {
+                "type": "string",
+                "description": "Token access key",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "annotations": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Annotations of the resource",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description": "Cluster ID for scoped token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Token description",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Token enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expired": {
+                "type": "bool",
+                "description": "Token expired",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Labels of the resource",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Token name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The user password",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "renew": {
+                "type": "bool",
+                "description": "Renew expired or disabled token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret_key": {
+                "type": "string",
+                "description": "Token secret key",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "temp_token": {
+                "type": "string",
+                "description": "Generated API temporary token as helper. Should be empty",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "temp_token_id": {
+                "type": "string",
+                "description": "Generated API temporary token id as helper. Should be empty",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "token": {
+                "type": "string",
+                "description": "Token value",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "ttl": {
+                "type": "number",
+                "description": "Token time to live in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "user_id": {
+                "type": "string",
+                "description": "Token user ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The user username",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "block_types": {
@@ -12899,12 +13583,6 @@
                       "description_kind": "plain",
                       "optional": true
                     },
-                    "keypair_name": {
-                      "type": "string",
-                      "description": "AWS keypair to use; requires --amazonec2-ssh-keypath",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
                     "kms_key": {
                       "type": "string",
                       "description": "Custom KMS key ID using the AWS Managed CMK",
@@ -13388,7 +14066,7 @@
                       "type": "string",
                       "description": "A JSON string specifying info for the disks e.g. `{\"disks\":[{\"imageName\":\"harvester-public/image-57hzg\",\"bootOrder\":1,\"size\":40},{\"storageClassName\":\"node-driver-test\",\"bootOrder\":2,\"size\":1}]}`",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "disk_size": {
                       "type": "string",
@@ -13420,7 +14098,7 @@
                       "type": "string",
                       "description": "A JSON string specifying info for the networks e.g. `{\"interfaces\":[{\"networkName\":\"harvester-public/vlan1\"},{\"networkName\":\"harvester-public/vlan2\"}]}`",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "network_model": {
                       "type": "string",
@@ -14922,12 +15600,6 @@
                       "description_kind": "plain",
                       "optional": true
                     },
-                    "keypair_name": {
-                      "type": "string",
-                      "description": "AWS keypair to use; requires --amazonec2-ssh-keypath",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
                     "kms_key": {
                       "type": "string",
                       "description": "Custom KMS key ID using the AWS Managed CMK",
@@ -15402,7 +16074,7 @@
                       "type": "string",
                       "description": "A JSON string specifying info for the disks e.g. `{\"disks\":[{\"imageName\":\"harvester-public/image-57hzg\",\"bootOrder\":1,\"size\":40},{\"storageClassName\":\"node-driver-test\",\"bootOrder\":2,\"size\":1}]}`",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "disk_size": {
                       "type": "string",
@@ -15434,7 +16106,7 @@
                       "type": "string",
                       "description": "A JSON string specifying info for the networks e.g. `{\"interfaces\":[{\"networkName\":\"harvester-public/vlan1\"},{\"networkName\":\"harvester-public/vlan2\"}]}`",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     },
                     "network_model": {
                       "type": "string",
@@ -19098,7 +19770,7 @@
           }
         },
         "rancher2_cluster": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "agent_env_vars": {
@@ -19208,8 +19880,13 @@
                             ],
                             "count": "number",
                             "enable_auto_scaling": "bool",
+                            "labels": [
+                              "map",
+                              "string"
+                            ],
                             "max_count": "number",
                             "max_pods": "number",
+                            "max_surge": "string",
                             "min_count": "number",
                             "mode": "string",
                             "name": "string",
@@ -19217,6 +19894,10 @@
                             "os_disk_size_gb": "number",
                             "os_disk_type": "string",
                             "os_type": "string",
+                            "taints": [
+                              "list",
+                              "string"
+                            ],
                             "vm_size": "string"
                           }
                         ]
@@ -19363,9 +20044,16 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "default_pod_security_admission_configuration_template_name": {
+                "type": "string",
+                "description": "Default pod security admission configuration template name",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "default_pod_security_policy_template_id": {
                 "type": "string",
-                "description": "Default pod security policy template id",
+                "description": "Default pod security policy template ID",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20653,8 +21341,25 @@
                                 "object",
                                 {
                                   "admission_configuration": [
-                                    "map",
-                                    "string"
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "api_version": "string",
+                                        "kind": "string",
+                                        "plugins": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {
+                                              "configuration": "string",
+                                              "name": "string",
+                                              "path": "string"
+                                            }
+                                          ]
+                                        ]
+                                      }
+                                    ]
                                   ],
                                   "always_pull_images": "bool",
                                   "audit_log": [
@@ -21226,7 +21931,7 @@
           }
         },
         "rancher2_cluster_template": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "annotations": {
@@ -21315,6 +22020,7 @@
                               ]
                             ],
                             "default_cluster_role_for_project_members": "string",
+                            "default_pod_security_admission_configuration_template_name": "string",
                             "default_pod_security_policy_template_id": "string",
                             "desired_agent_image": "string",
                             "desired_auth_image": "string",
@@ -22072,8 +22778,25 @@
                                             "object",
                                             {
                                               "admission_configuration": [
-                                                "map",
-                                                "string"
+                                                "list",
+                                                [
+                                                  "object",
+                                                  {
+                                                    "api_version": "string",
+                                                    "kind": "string",
+                                                    "plugins": [
+                                                      "list",
+                                                      [
+                                                        "object",
+                                                        {
+                                                          "configuration": "string",
+                                                          "name": "string",
+                                                          "path": "string"
+                                                        }
+                                                      ]
+                                                    ]
+                                                  }
+                                                ]
                                               ],
                                               "always_pull_images": "bool",
                                               "audit_log": [
@@ -22375,6 +23098,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "default_pod_security_admission_configuration_template_name": {
+                "type": "string",
+                "description": "Cluster V2 default pod security admission configuration template name",
+                "description_kind": "plain",
+                "computed": true
+              },
               "default_pod_security_policy_template_name": {
                 "type": "string",
                 "description": "Cluster V2 default pod security policy template name",
@@ -22495,6 +23224,15 @@
                         ]
                       ],
                       "machine_global_config": "string",
+                      "machine_pool_defaults": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "hostname_length_limit": "number"
+                          }
+                        ]
+                      ],
                       "machine_pools": [
                         "list",
                         [
@@ -22508,6 +23246,7 @@
                             "control_plane_role": "bool",
                             "drain_before_delete": "bool",
                             "etcd_role": "bool",
+                            "hostname_length_limit": "number",
                             "labels": [
                               "map",
                               "string"
@@ -22564,10 +23303,7 @@
                         [
                           "object",
                           {
-                            "config": [
-                              "map",
-                              "string"
-                            ],
+                            "config": "string",
                             "machine_label_selector": [
                               "list",
                               [

@@ -68,6 +68,27 @@
               }
             },
             "block_types": {
+              "call": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of this alert channel",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "number": {
+                      "type": "string",
+                      "description": "The mobile number to receive the alerts",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "email": {
                 "nesting_mode": "set",
                 "block": {
@@ -262,6 +283,7 @@
                 "type": "bool",
                 "description": "Setting this to `true` will trigger a retry when a check fails from the failing region and another, randomly selected region before marking the check as failed.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "environment_variables": {
@@ -383,6 +405,12 @@
                 "deprecated": true,
                 "optional": true
               },
+              "ssl_check_domain": {
+                "type": "string",
+                "description": "A valid fully qualified domain name (FQDN) to check its SSL certificate.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "tags": {
                 "type": [
                   "set",
@@ -400,7 +428,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The type of the check. Possible values are `API`, and `BROWSER`.",
+                "description": "The type of the check. Possible values are `API`, `BROWSER`, and `MULTI_STEP`.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -653,6 +681,46 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              },
+              "retry_strategy": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "base_backoff_seconds": {
+                      "type": "number",
+                      "description": "The number of seconds to wait before the first retry attempt.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "max_duration_seconds": {
+                      "type": "number",
+                      "description": "The total amount of time to continue retrying the check (maximum 600 seconds).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "max_retries": {
+                      "type": "number",
+                      "description": "The maximum number of times to retry the check. Value must be between 1 and 10.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "same_region": {
+                      "type": "bool",
+                      "description": "Whether retries should be run in the same region as the initial check run.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Determines which type of retry strategy to use. Possible values are `FIXED`, `LINEAR`, or `EXPONENTIAL`.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "A strategy for retrying failed check runs.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description": "Checks allows you to monitor key webapp flows, backend API's and set up alerting, so you get a notification when things break or slow down.",
@@ -679,6 +747,7 @@
                 "type": "bool",
                 "description": "Setting this to `true` will trigger a retry when a check fails from the failing region and another, randomly selected region before marking the check as failed.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "environment_variables": {
@@ -985,6 +1054,46 @@
                   "description": "Key/value pairs for setting environment variables during check execution, add locked = true to keep value hidden. These are only relevant for browser checks. Use global environment variables whenever possible.",
                   "description_kind": "plain"
                 }
+              },
+              "retry_strategy": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "base_backoff_seconds": {
+                      "type": "number",
+                      "description": "The number of seconds to wait before the first retry attempt.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "max_duration_seconds": {
+                      "type": "number",
+                      "description": "The total amount of time to continue retrying the check (maximum 600 seconds).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "max_retries": {
+                      "type": "number",
+                      "description": "The maximum number of times to retry the check. Value must be between 1 and 10.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "same_region": {
+                      "type": "bool",
+                      "description": "Whether retries should be run in the same region as the initial check run.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Determines which type of retry strategy to use. Possible values are `FIXED`, `LINEAR`, or `EXPONENTIAL`.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "A strategy for retrying failed check runs.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description": "Check groups allow  you to group together a set of related checks, which can also share default settings for various attributes.",
@@ -1042,6 +1151,19 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "is_private": {
+                "type": "bool",
+                "description": "Set your dashboard as private and generate key.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The access key when the dashboard is private.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
               },
               "link": {
                 "type": "string",
@@ -1124,6 +1246,196 @@
                 "required": true
               }
             },
+            "description_kind": "plain"
+          }
+        },
+        "checkly_heartbeat": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "activated": {
+                "type": "bool",
+                "description": "Determines if the check is running or not. Possible values `true`, and `false`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "muted": {
+                "type": "bool",
+                "description": "Determines if any notifications will be sent out when a check fails/degrades/recovers.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the check.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of tags for organizing and filtering checks.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "use_global_alert_settings": {
+                "type": "bool",
+                "description": "When true, the account level alert settings will be used, not the alert setting defined on this check.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "alert_channel_subscription": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "activated": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "channel_id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "alert_settings": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "escalation_type": {
+                      "type": "string",
+                      "description": "Determines what type of escalation to use. Possible values are `RUN_BASED` or `TIME_BASED`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "reminders": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "amount": {
+                            "type": "number",
+                            "description": "How many reminders to send out after the initial alert notification. Possible values are `0`, `1`, `2`, `3`, `4`, `5`, and `100000`",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "interval": {
+                            "type": "number",
+                            "description": "Possible values are `5`, `10`, `15`, and `30`. (Default `5`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "run_based_escalation": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "failed_run_threshold": {
+                            "type": "number",
+                            "description": "After how many failed consecutive check runs an alert notification should be sent. Possible values are between 1 and 5. (Default `1`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "ssl_certificates": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "alert_threshold": {
+                            "type": "number",
+                            "description": "How long before SSL certificate expiry to send alerts. Possible values `3`, `7`, `14`, `30`. (Default `3`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Determines if alert notifications should be sent for expiring SSL certificates. Possible values `true`, and `false`. (Default `false`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain",
+                        "deprecated": true
+                      }
+                    },
+                    "time_based_escalation": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "minutes_failing_threshold": {
+                            "type": "number",
+                            "description": "After how many minutes after a check starts failing an alert should be sent. Possible values are `5`, `10`, `15`, and `30`. (Default `5`).",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "heartbeat": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "grace": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "grace_unit": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "period": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "period_unit": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ping_token": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description": "Heartbeats allows you to monitor your cron jobs and set up alerting, so you get a notification when things break or slow down.",
             "description_kind": "plain"
           }
         },

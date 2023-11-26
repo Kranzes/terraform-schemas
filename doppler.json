@@ -1,0 +1,570 @@
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/dopplerhq/doppler": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "doppler_token": {
+              "type": "string",
+              "description": "A Doppler token, either a personal or service token",
+              "description_kind": "plain",
+              "required": true
+            },
+            "host": {
+              "type": "string",
+              "description": "The Doppler API host (i.e. https://api.doppler.com)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "verify_tls": {
+              "type": "bool",
+              "description": "Whether or not to verify TLS",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "doppler_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "environment": {
+                "type": "string",
+                "description": "The name of the Doppler environment where the config is located",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Doppler config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project where the config is located",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Doppler environment",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project where the environment is located",
+                "description_kind": "plain",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The slug of the Doppler environment",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_project_role": {
+                "type": "string",
+                "description": "The default project role assigned to the group when added to a Doppler project",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The slug of the group",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_integration_aws_parameter_store": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "assume_role_arn": {
+                "type": "string",
+                "description": "The ARN of the AWS role for Doppler to assume",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the integration",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_integration_aws_secrets_manager": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "assume_role_arn": {
+                "type": "string",
+                "description": "The ARN of the AWS role for Doppler to assume",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the integration",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the Doppler project",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Doppler project",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_project_member_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "environments": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The environments in the project where this access will apply (null or omitted for roles with access to all environments)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "group_slug": {
+                "type": "string",
+                "description": "The slug of the Doppler group",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project where the access is applied",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The project role identifier for the access",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_project_member_service_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "environments": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The environments in the project where this access will apply (null or omitted for roles with access to all environments)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project where the access is applied",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The project role identifier for the access",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_account_slug": {
+                "type": "string",
+                "description": "The slug of the Doppler service account",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_secret": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "computed": {
+                "type": "string",
+                "description": "The computed secret value, after resolving secret references",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "config": {
+                "type": "string",
+                "description": "The name of the Doppler config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Doppler secret",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "value": {
+                "type": "string",
+                "description": "The raw secret value",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "visibility": {
+                "type": "string",
+                "description": "The visibility of the secret",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_secrets_sync_aws_parameter_store": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": "string",
+                "description": "The name of the Doppler config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "integration": {
+                "type": "string",
+                "description": "The slug of the integration to use for this sync",
+                "description_kind": "plain",
+                "required": true
+              },
+              "path": {
+                "type": "string",
+                "description": "The path to the parameters in AWS",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The AWS region",
+                "description_kind": "plain",
+                "required": true
+              },
+              "secure_string": {
+                "type": "bool",
+                "description": "Whether or not the parameters are stored as a secure string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "AWS tags to attach to the parameters",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_secrets_sync_aws_secrets_manager": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": "string",
+                "description": "The name of the Doppler config",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "integration": {
+                "type": "string",
+                "description": "The slug of the integration to use for this sync",
+                "description_kind": "plain",
+                "required": true
+              },
+              "path": {
+                "type": "string",
+                "description": "The path to the secret in AWS",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The AWS region",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_service_account": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the service account",
+                "description_kind": "plain",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The slug of the service account",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "workplace_permissions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of the workplace permissions for the service account (or use `workplace_role`)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "workplace_role": {
+                "type": "string",
+                "description": "The identifier of the workplace role for the service account (or use `workplace_permissions`)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "doppler_service_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access": {
+                "type": "string",
+                "description": "The access level (read or read/write)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "config": {
+                "type": "string",
+                "description": "The name of the Doppler config where the service token is located",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description": "The key for the Doppler service token",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Doppler service token",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project where the service token is located",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "doppler_secrets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": "string",
+                "description": "The name of the Doppler config (required for personal tokens)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "map": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A mapping of secret names to computed secret values",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name of the Doppler project (required for personal tokens)",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

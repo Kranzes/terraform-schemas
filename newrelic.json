@@ -108,21 +108,6 @@
                 "required": true
               }
             },
-            "block_types": {
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "create": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
-              }
-            },
             "description_kind": "plain"
           }
         },
@@ -151,7 +136,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "(Required) The type of channel. One of: (pagerduty, slack, user, victorops, webhook, email, opsgenie).",
+                "description": "(Required) The type of channel. One of: (email, opsgenie, pagerduty, slack, user, victorops, webhook).",
                 "description_kind": "plain",
                 "required": true
               }
@@ -385,7 +370,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The type of condition. One of: (apm_jvm_metric, apm_kt_metric, browser_metric, mobile_metric, servers_metric, apm_app_metric).",
+                "description": "The type of condition. One of: (browser_metric, mobile_metric, servers_metric, apm_app_metric, apm_jvm_metric, apm_kt_metric).",
                 "description_kind": "plain",
                 "required": true
               },
@@ -403,7 +388,7 @@
               },
               "violation_close_timer": {
                 "type": "number",
-                "description": "Automatically close instance-based incidents, including JVM health metric incidents, after the number of hours specified. Must be: 1, 2, 4, 8, 12 or 24.",
+                "description": "Automatically close instance-based incidents, including JVM health metric incidents, after the number of hours specified. Must be between 1 and 720 hours.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -814,6 +799,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "js_config": {
+                "type": "string",
+                "description": "JavaScript configuration of the browser application encoded into a string.",
+                "description_kind": "plain",
                 "computed": true
               },
               "loader_type": {
@@ -1700,6 +1691,610 @@
               }
             },
             "block_types": {
+              "alb": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "load_balancer_prefixes": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each name or prefix for the LBs that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.\n\n",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "ALB integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "api_gateway": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "stage_prefixes": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.\n\n",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "API Gateway integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "auto_scaling": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "AutoScaling integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_app_sync": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Appsync integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_athena": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Athena integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_cognito": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Cognito integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_connect": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Connect integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_direct_connect": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Direct Connect integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_fsx": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Fsx integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_glue": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Glue integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_kinesis_analytics": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Kinesis Analytics integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_media_convert": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Media Convert integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_media_package_vod": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Media PackageVod integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_mq": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Mq integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_msk": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Msk integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_neptune": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Neptune integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_qldb": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Qldb integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_route53resolver": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Route53resolver integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_states": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws states integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_transit_gateway": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Transit Gateway integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_waf": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Waf integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "aws_wafv2": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Aws Wafv2 integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "billing": {
                 "nesting_mode": "list",
                 "block": {
@@ -1712,6 +2307,46 @@
                     }
                   },
                   "description": "Billing integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "cloudfront": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fetch_lambdas_at_edge": {
+                      "type": "bool",
+                      "description": "Specify if Lambdas@Edge should be monitored. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.\n\n",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Cloudfront integration",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1745,6 +2380,15 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "metrics_polling_interval": {
                       "type": "number",
                       "description": "The data polling interval in seconds.",
@@ -1752,7 +2396,449 @@
                       "optional": true
                     }
                   },
-                  "description": "Billing integration",
+                  "description": "Doc DB integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "dynamodb": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Dynamo DB integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "ebs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "EBS integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "ec2": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "duplicate_ec2_tags": {
+                      "type": "bool",
+                      "description": "Specify if the old legacy metadata and tag names have to be kept, it will consume more ingest data size",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_ip_addresses": {
+                      "type": "bool",
+                      "description": "Specify if IP addresses of ec2 instance should be collected",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.\n\n",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Ec2 integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "ecs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Ecs integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "efs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Efs integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "elasticache": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.\n\n",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Elasticache integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "elasticbeanstalk": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Elastic Bean Stalk integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "elasticsearch": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_nodes": {
+                      "type": "bool",
+                      "description": "Specify if metrics should be collected for nodes. Turning it on will increase the number of API calls made to CloudWatch.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.\n\n",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Elastic Search integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "elb": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Elb integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "emr": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Emr integration",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1773,7 +2859,7 @@
                 },
                 "max_items": 1
               },
-              "s3": {
+              "iam": {
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
@@ -1782,9 +2868,419 @@
                       "description": "The data polling interval in seconds.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Iam integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "iot": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Iot integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "kinesis": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_shards": {
+                      "type": "bool",
+                      "description": "Specify if Shards should be monitored. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Kinesis integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "kinesis_firehose": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Kinesis Firehose integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "lambda": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Lambda integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "rds": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Rds integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "redshift": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Redshift integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "route53": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Route53 integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "s3": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "description": "S3 integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "ses": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Ses integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "sns": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Sns integration",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "sqs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "aws_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each AWS region that includes the resources that you want to monitor.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_extended_inventory": {
+                      "type": "bool",
+                      "description": "Determine if extra inventory data be collected or not. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "fetch_tags": {
+                      "type": "bool",
+                      "description": "Specify if tags should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "queue_prefixes": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each name or prefix for the Queues that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_key": {
+                      "type": "string",
+                      "description": "Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag_value": {
+                      "type": "string",
+                      "description": "Specify a Tag value associated with the resources that you want to monitor. Filter values are case-sensitive.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "SQS integration",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1917,21 +3413,6 @@
                 "description": "The name of the linked account.",
                 "description_kind": "plain",
                 "required": true
-              }
-            },
-            "block_types": {
-              "timeouts": {
-                "nesting_mode": "single",
-                "block": {
-                  "attributes": {
-                    "create": {
-                      "type": "string",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description_kind": "plain"
-                }
               }
             },
             "description_kind": "plain"
@@ -2383,6 +3864,64 @@
                     }
                   },
                   "description": "The Azure Maria DB",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "monitor": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "enabled": {
+                      "type": "bool",
+                      "description": "A flag that specifies if the integration is active",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "exclude_tags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify resource tags in 'key:value' form to be excluded from monitoring",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "include_tags": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify resource tags in 'key:value' form to be monitored",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "metrics_polling_interval": {
+                      "type": "number",
+                      "description": "The data polling interval in seconds",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource_groups": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each Resource group associated with the resources that you want to monitor. Filter values are case-sensitive",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "resource_types": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specify each Azure resource type that needs to be monitored",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "The Azure Monitor",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -6631,7 +8170,7 @@
                           "text": {
                             "type": "string",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           },
                           "title": {
                             "type": "string",
@@ -8062,7 +9601,7 @@
               },
               "status": {
                 "type": "string",
-                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED).",
+                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED). Note: The 'MUTED' status is now deprecated, and support for this value will soon be removed from the Terraform Provider in an upcoming release. It is highly recommended for users to refrain from using this value and shift to alternatives.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -8167,7 +9706,7 @@
               },
               "status": {
                 "type": "string",
-                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED).",
+                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED). Note: The 'MUTED' status is now deprecated, and support for this value will soon be removed from the Terraform Provider in an upcoming release. It is highly recommended for users to refrain from using this value and shift to alternatives.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -8215,6 +9754,18 @@
               "bypass_head_request": {
                 "type": "bool",
                 "description": "Bypass HEAD request.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_orientation": {
+                "type": "string",
+                "description": "The device orientation the user would like to represent. Valid values are LANDSCAPE, PORTRAIT, or NONE.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_type": {
+                "type": "string",
+                "description": "The device type that a user can select. Valid values are MOBILE, TABLET, or NONE.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -8287,7 +9838,7 @@
               },
               "status": {
                 "type": "string",
-                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED).",
+                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED). Note: The 'MUTED' status is now deprecated, and support for this value will soon be removed from the Terraform Provider in an upcoming release. It is highly recommended for users to refrain from using this value and shift to alternatives.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -8423,9 +9974,9 @@
               },
               "violation_time_limit_seconds": {
                 "type": "number",
-                "description": "The maximum number of seconds an incident can remain open before being closed by the system.  Must be one of: 0, 3600, 7200, 14400, 28800, 43200, 86400",
+                "description": "Sets a time limit, in seconds, that will automatically force-close a long-lasting incident after the time limit you select.  Must be in the range of 300 to 2592000 (inclusive)",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               }
             },
             "block_types": {
@@ -8623,7 +10174,7 @@
               },
               "status": {
                 "type": "string",
-                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED).",
+                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED). Note: The 'MUTED' status is now deprecated, and support for this value will soon be removed from the Terraform Provider in an upcoming release. It is highly recommended for users to refrain from using this value and shift to alternatives.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -8804,7 +10355,7 @@
               },
               "status": {
                 "type": "string",
-                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED).",
+                "description": "The monitor status (i.e. ENABLED, MUTED, DISABLED). Note: The 'MUTED' status is now deprecated, and support for this value will soon be removed from the Terraform Provider in an upcoming release. It is highly recommended for users to refrain from using this value and shift to alternatives.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -9484,7 +11035,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The type of channel. One of: (webhook, email, opsgenie, pagerduty, slack, user, victorops).",
+                "description": "The type of channel. One of: (pagerduty, slack, user, victorops, webhook, email, opsgenie).",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -9615,8 +11166,9 @@
             "attributes": {
               "account_id": {
                 "type": "number",
-                "description": "The New Relic account ID associated with this entity.",
+                "description": "The New Relic account ID; if specified, constrains the data source to return an entity belonging to the account with this ID, of all matching entities retrieved.",
                 "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "application_id": {
@@ -9652,7 +11204,7 @@
               },
               "name": {
                 "type": "string",
-                "description": "The name of the entity in New Relic One.  The first entity matching this name for the given search parameters will be returned.",
+                "description": "The name of the entity in New Relic One. The first entity matching this name for the given search parameters will be returned.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -9717,7 +11269,7 @@
           }
         },
         "newrelic_notification_destination": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "account_id": {
@@ -9737,13 +11289,13 @@
                 "type": "string",
                 "description": "The ID of the destination.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "name": {
                 "type": "string",
                 "description": "The name of the destination.",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "property": {
                 "type": [
@@ -9834,6 +11386,11 @@
                 "optional": true,
                 "computed": true
               },
+              "is_bad_events": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "nrql": {
                 "type": "string",
                 "description_kind": "plain",
@@ -9880,6 +11437,16 @@
               },
               "id": {
                 "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The key of the queried private location.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true

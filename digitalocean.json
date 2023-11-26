@@ -126,6 +126,15 @@
                       "optional": true,
                       "computed": true
                     },
+                    "features": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of features which is applied to the app",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "name": {
                       "type": "string",
                       "description": "The name of the app. Must be unique across all apps in the same account.",
@@ -402,7 +411,8 @@
                                   "max_items": 1
                                 }
                               },
-                              "description_kind": "plain"
+                              "description_kind": "plain",
+                              "deprecated": true
                             },
                             "max_items": 1
                           },
@@ -603,12 +613,193 @@
                                   "optional": true
                                 }
                               },
-                              "description_kind": "plain"
+                              "description_kind": "plain",
+                              "deprecated": true
                             }
                           }
                         },
                         "description_kind": "plain"
                       }
+                    },
+                    "ingress": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "rule": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "component": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "computed": true
+                                      },
+                                      "preserve_path_prefix": {
+                                        "type": "bool",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "computed": true
+                                      },
+                                      "rewrite": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true,
+                                        "computed": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "cors": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "allow_credentials": {
+                                        "type": "bool",
+                                        "description": "Whether browsers should expose the response to the client-side JavaScript code when the request’s credentials mode is `include`. This configures the Access-Control-Allow-Credentials header.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "allow_headers": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description": "The set of allowed HTTP request headers. This configures the Access-Control-Allow-Headers header.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "allow_methods": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description": "The set of allowed HTTP methods. This configures the Access-Control-Allow-Methods header.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "expose_headers": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description": "The set of HTTP response headers that browsers are allowed to access. This configures the Access-Control-Expose-Headers header.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "max_age": {
+                                        "type": "string",
+                                        "description": "An optional duration specifying how long browsers can cache the results of a preflight request. This configures the Access-Control-Max-Age header. Example: `5h30m`.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "block_types": {
+                                      "allow_origins": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "exact": {
+                                              "type": "string",
+                                              "description": "Exact string match.",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "prefix": {
+                                              "type": "string",
+                                              "description": "Prefix-based match. ",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            },
+                                            "regex": {
+                                              "type": "string",
+                                              "description": "RE2 style regex-based match.",
+                                              "description_kind": "plain",
+                                              "optional": true
+                                            }
+                                          },
+                                          "description": "The set of allowed CORS origins. This configures the Access-Control-Allow-Origin header.",
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "match": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "path": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "prefix": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "optional": true,
+                                              "computed": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "redirect": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "authority": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "port": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "redirect_code": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "scheme": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "uri": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     },
                     "job": {
                       "nesting_mode": "list",
@@ -1116,7 +1307,8 @@
                                   "max_items": 1
                                 }
                               },
-                              "description_kind": "plain"
+                              "description_kind": "plain",
+                              "deprecated": true
                             },
                             "max_items": 1
                           },
@@ -1412,7 +1604,8 @@
                                   "optional": true
                                 }
                               },
-                              "description_kind": "plain"
+                              "description_kind": "plain",
+                              "deprecated": true
                             }
                           }
                         },
@@ -1553,7 +1746,8 @@
                                   "max_items": 1
                                 }
                               },
-                              "description_kind": "plain"
+                              "description_kind": "plain",
+                              "deprecated": true
                             },
                             "max_items": 1
                           },
@@ -1683,7 +1877,8 @@
                                   "optional": true
                                 }
                               },
-                              "description_kind": "plain"
+                              "description_kind": "plain",
+                              "deprecated": true
                             }
                           }
                         },
@@ -2446,6 +2641,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "storage_size_mib": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "tags": {
                 "type": [
                   "set",
@@ -2682,6 +2883,465 @@
             "description_kind": "plain"
           }
         },
+        "digitalocean_database_kafka_topic": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "partition_count": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "replication_factor": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cleanup_policy": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "compression_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "delete_retention_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "file_delete_delay_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "flush_messages": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "flush_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "index_interval_bytes": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "max_compaction_lag_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "max_message_bytes": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "message_down_conversion_enable": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "message_format_version": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "message_timestamp_difference_max_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "message_timestamp_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "min_cleanable_dirty_ratio": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "min_compaction_lag_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "min_insync_replicas": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "preallocate": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "retention_bytes": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "retention_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "segment_bytes": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "segment_index_bytes": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "segment_jitter_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "segment_ms": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "unclean_leader_election_enable": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "digitalocean_database_mysql_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backup_hour": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "backup_minute": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "binlog_retention_period": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "connect_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "default_time_zone": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "group_concat_max_len": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "information_schema_stats_expiry": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_ft_min_token_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_ft_server_stopword_table": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_lock_wait_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_log_buffer_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_online_alter_log_max_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_print_all_deadlocks": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "innodb_rollback_on_timeout": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "interactive_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "internal_tmp_mem_storage_engine": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "long_query_time": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_allowed_packet": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "max_heap_table_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "net_read_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "net_write_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "slow_query_log": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sort_buffer_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sql_mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "sql_require_primary_key": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "tmp_table_size": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "wait_timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "digitalocean_database_redis_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "acl_channels_default": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "io_threads": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lfu_decay_time": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lfu_log_factor": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "maxmemory_policy": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "notify_keyspace_events": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "number_of_databases": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "persistence": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "pubsub_client_output_buffer_limit": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ssl": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "digitalocean_database_replica": {
           "version": 0,
           "block": {
@@ -2814,6 +3474,39 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "block_types": {
+              "settings": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "acl": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "permission": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "topic": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -3351,6 +4044,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "destroy_all_associated_resources": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "endpoint": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3810,7 +4508,7 @@
               "region": {
                 "type": "string",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "size": {
                 "type": "string",
@@ -3827,6 +4525,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "the type of the load balancer (GLOBAL or REGIONAL)",
+                "description_kind": "plain",
+                "optional": true
               },
               "urn": {
                 "type": "string",
@@ -4444,7 +5148,8 @@
                     }
                   },
                   "description": "A container holding a list of elements describing allowed methods for a specific origin.",
-                  "description_kind": "plain"
+                  "description_kind": "plain",
+                  "deprecated": true
                 }
               },
               "lifecycle_rule": {
@@ -4529,6 +5234,85 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "digitalocean_spaces_bucket_cors_configuration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bucket": {
+                "type": "string",
+                "description": "Bucket ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "cors_rule": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "allowed_headers": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "allowed_methods": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "allowed_origins": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "expose_headers": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "max_age_seconds": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 100
               }
             },
             "description_kind": "plain"
@@ -5272,6 +6056,10 @@
                           }
                         ]
                       ],
+                      "features": [
+                        "set",
+                        "string"
+                      ],
                       "function": [
                         "list",
                         [
@@ -5416,6 +6204,96 @@
                               ]
                             ],
                             "source_dir": "string"
+                          }
+                        ]
+                      ],
+                      "ingress": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "rule": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "component": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "name": "string",
+                                        "preserve_path_prefix": "bool",
+                                        "rewrite": "string"
+                                      }
+                                    ]
+                                  ],
+                                  "cors": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "allow_credentials": "bool",
+                                        "allow_headers": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "allow_methods": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "allow_origins": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {
+                                              "exact": "string",
+                                              "prefix": "string",
+                                              "regex": "string"
+                                            }
+                                          ]
+                                        ],
+                                        "expose_headers": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "max_age": "string"
+                                      }
+                                    ]
+                                  ],
+                                  "match": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "path": [
+                                          "list",
+                                          [
+                                            "object",
+                                            {
+                                              "prefix": "string"
+                                            }
+                                          ]
+                                        ]
+                                      }
+                                    ]
+                                  ],
+                                  "redirect": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "authority": "string",
+                                        "port": "number",
+                                        "redirect_code": "number",
+                                        "scheme": "string",
+                                        "uri": "string"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ]
                           }
                         ]
                       ],
@@ -6005,7 +6883,7 @@
           }
         },
         "digitalocean_certificate": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "domains": {
@@ -6228,6 +7106,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "storage_size_mib": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "tags": {
                 "type": [
                   "set",
@@ -6344,6 +7227,69 @@
               },
               "uuid": {
                 "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "digitalocean_database_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mysql_auth_plugin": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "role": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "settings": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "acl": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "id": "string",
+                            "permission": "string",
+                            "topic": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
                 "description_kind": "plain",
                 "computed": true
               }
@@ -6472,7 +7418,7 @@
           }
         },
         "digitalocean_droplet": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "backups": {
@@ -7249,7 +8195,7 @@
           }
         },
         "digitalocean_kubernetes_cluster": {
-          "version": 3,
+          "version": 0,
           "block": {
             "attributes": {
               "auto_upgrade": {
@@ -7466,7 +8412,7 @@
           }
         },
         "digitalocean_loadbalancer": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "algorithm": {
@@ -7643,6 +8589,13 @@
                 ],
                 "description": "sticky sessions settings for the load balancer",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "the type of the load balancer (GLOBAL or REGIONAL)",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "urn": {

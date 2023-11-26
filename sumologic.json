@@ -2073,7 +2073,8 @@
                   "string"
                 ],
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "sensitive": true
               },
               "id": {
                 "type": "string",
@@ -2563,6 +2564,69 @@
             "description_kind": "plain"
           }
         },
+        "sumologic_cse_context_action": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "all_record_fields": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "entity_types": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ioc_types": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "record_fields": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "template": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "sumologic_cse_custom_entity_type": {
           "version": 0,
           "block": {
@@ -2959,6 +3023,11 @@
           "version": 0,
           "block": {
             "attributes": {
+              "global_signal_suppression_window": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3051,9 +3120,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "dynamic_tags": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "group": {
                 "type": "string",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "id": {
@@ -3061,6 +3136,11 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "inventory_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
               },
               "inventory_source": {
                 "type": "string",
@@ -3072,6 +3152,11 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "inventory_value": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
               "name": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3079,6 +3164,11 @@
               },
               "suppressed": {
                 "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tag_schema": {
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3357,7 +3447,7 @@
             },
             "block_types": {
               "items": {
-                "nesting_mode": "list",
+                "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "description": {
@@ -3550,6 +3640,150 @@
             "description_kind": "plain"
           }
         },
+        "sumologic_cse_outlier_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "baseline_window_size": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description_expression": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "deviation_threshold": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "required": true
+              },
+              "floor_value": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "group_by_fields": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_prototype": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "match_expression": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name_expression": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "retention_window_size": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "severity": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "summary_expression": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tags": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "window_size": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "aggregation_functions": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "arguments": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "function": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "entity_selectors": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "entity_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "expression": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "sumologic_cse_rule_tuning_expression": {
           "version": 0,
           "block": {
@@ -3597,6 +3831,68 @@
                 ],
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "sumologic_cse_tag_schema": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "content_types": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "free_form": {
+                "type": "bool",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "label": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "value_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "label": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "link": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -12821,7 +13117,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "sumologic_ingest_budget_v2": {
@@ -12835,6 +13132,11 @@
               },
               "audit_threshold": {
                 "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "budget_type": {
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -13082,7 +13384,7 @@
                     "type": {
                       "type": "string",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     }
                   },
                   "description_kind": "plain"
@@ -13157,7 +13459,7 @@
                     "type": {
                       "type": "string",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true
                     }
                   },
                   "description_kind": "plain"
@@ -13549,6 +13851,668 @@
             "description_kind": "plain"
           }
         },
+        "sumologic_log_search": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "parsing_mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "query_string": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "run_by_receipt_time": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "query_parameter": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "schedule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cron_expression": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mute_error_emails": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "schedule_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "notification": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "alert_search_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "source_id": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "cse_signal_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "record_type": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "email_search_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "include_csv_attachment": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "include_histogram": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "include_query": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "include_result_set": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "subject_template": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "to_list": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "save_to_lookup_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "is_lookup_merge_operation": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "lookup_file_path": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "save_to_view_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "view_name": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "service_now_search_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "external_id": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "fields": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "event_type": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "node": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "resource": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "severity": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "webhook_search_notification": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "itemize_alerts": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_itemized_alerts": {
+                                  "type": "number",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "payload": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "webhook_id": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    },
+                    "parameter": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "value": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "parseable_time_range": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "begin_bounded_time_range": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "from": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "epoch_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "epoch_millis": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "iso8601_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "iso8601_time": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "literal_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "range_name": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "relative_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "relative_time": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "min_items": 1,
+                                  "max_items": 1
+                                },
+                                "to": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "block_types": {
+                                      "epoch_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "epoch_millis": {
+                                              "type": "number",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "iso8601_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "iso8601_time": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "literal_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "range_name": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      },
+                                      "relative_time_range": {
+                                        "nesting_mode": "list",
+                                        "block": {
+                                          "attributes": {
+                                            "relative_time": {
+                                              "type": "string",
+                                              "description_kind": "plain",
+                                              "required": true
+                                            }
+                                          },
+                                          "description_kind": "plain"
+                                        },
+                                        "max_items": 1
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "complete_literal_time_range": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "range_name": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    },
+                    "threshold": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "count": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "threshold_type": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "time_range": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "begin_bounded_time_range": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "from": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "epoch_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "epoch_millis": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "iso8601_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "iso8601_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "literal_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "range_name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "relative_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "relative_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1,
+                            "max_items": 1
+                          },
+                          "to": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "epoch_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "epoch_millis": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "iso8601_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "iso8601_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "literal_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "range_name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "relative_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "relative_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "complete_literal_time_range": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "range_name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "sumologic_lookup_table": {
           "version": 0,
           "block": {
@@ -13842,6 +14806,230 @@
             "description_kind": "plain"
           }
         },
+        "sumologic_metrics_search": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "desired_quantization_in_secs": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "log_query": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "title": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "metrics_queries": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "query": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "row_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "time_range": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "begin_bounded_time_range": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "from": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "epoch_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "epoch_millis": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "iso8601_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "iso8601_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "literal_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "range_name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "relative_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "relative_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1,
+                            "max_items": 1
+                          },
+                          "to": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "epoch_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "epoch_millis": {
+                                        "type": "number",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "iso8601_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "iso8601_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "literal_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "range_name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "relative_time_range": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "relative_time": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "complete_literal_time_range": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "range_name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "sumologic_monitor": {
           "version": 0,
           "block": {
@@ -13975,6 +15163,14 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
               },
               "type": {
                 "type": "string",
@@ -14886,6 +16082,147 @@
             "description_kind": "plain"
           }
         },
+        "sumologic_muting_schedule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "content_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "created_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created_by": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_mutable": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_system": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "modified_at": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "modified_by": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "version": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "monitor": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "all": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ids": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "schedule": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "duration": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "rrule": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "start_date": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "start_time": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "timezone": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "sumologic_partition": {
           "version": 0,
           "block": {
@@ -15377,6 +16714,556 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "sumologic_rum_source": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automatic_date_parsing": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "category": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "collector_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "content_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cutoff_relative_time": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cutoff_timestamp": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fields": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_timezone": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "host_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manual_prefix_regexp": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "multiline_processing_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "timezone": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "use_autoline_matching": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "default_date_formats": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "format": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "locator": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "filters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "filter_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mask": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "regexp": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "path": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "application_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "custom_tags": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "deployment_environment": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ignore_urls": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "propagate_trace_header_cors_urls": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sampling_rate": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "selected_country": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "sumologic_s3_archive_source": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automatic_date_parsing": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "category": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "collector_id": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "content_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cutoff_relative_time": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "cutoff_timestamp": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fields": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_timezone": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "host_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "manual_prefix_regexp": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "multiline_processing_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "paused": {
+                "type": "bool",
+                "description_kind": "plain",
+                "required": true
+              },
+              "scan_interval": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              },
+              "timezone": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "url": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "use_autoline_matching": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "authentication": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "access_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "auth_provider_x509_cert_url": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "auth_uri": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "client_email": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "client_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "client_x509_cert_url": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "private_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "private_key_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "project_id": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "role_arn": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secret_key": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "token_uri": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              },
+              "default_date_formats": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "format": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "locator": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "filters": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "filter_type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "mask": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "regexp": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "path": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "bucket_name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "limit_to_namespaces": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "limit_to_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "limit_to_services": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "path_expression": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sns_topic_or_subscription_arn": {
+                      "type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "arn": "string",
+                            "is_success": "bool"
+                          }
+                        ]
+                      ],
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "use_versioned_api": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "custom_services": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "prefixes": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service_name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
+                    "tag_filters": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "namespace": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "tags": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -16364,6 +18251,14 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "tags": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
               },
               "version": {
                 "type": "number",

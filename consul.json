@@ -8,56 +8,67 @@
           "attributes": {
             "address": {
               "type": "string",
+              "description": "The HTTP(S) API address of the agent to use. Defaults to \"127.0.0.1:8500\".",
               "description_kind": "plain",
               "optional": true
             },
             "ca_file": {
               "type": "string",
+              "description": "A path to a PEM-encoded certificate authority used to verify the remote agent's certificate.",
               "description_kind": "plain",
               "optional": true
             },
             "ca_path": {
               "type": "string",
+              "description": "A path to a directory of PEM-encoded certificate authority files to use to check the authenticity of client and server connections. Can also be specified with the `CONSUL_CAPATH` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "ca_pem": {
               "type": "string",
+              "description": "PEM-encoded certificate authority used to verify the remote agent's certificate.",
               "description_kind": "plain",
               "optional": true
             },
             "cert_file": {
               "type": "string",
+              "description": "A path to a PEM-encoded certificate provided to the remote agent; requires use of `key_file` or `key_pem`.",
               "description_kind": "plain",
               "optional": true
             },
             "cert_pem": {
               "type": "string",
+              "description": "PEM-encoded certificate provided to the remote agent; requires use of `key_file` or `key_pem`.",
               "description_kind": "plain",
               "optional": true
             },
             "datacenter": {
               "type": "string",
+              "description": "The datacenter to use. Defaults to that of the agent.",
               "description_kind": "plain",
               "optional": true
             },
             "http_auth": {
               "type": "string",
+              "description": "HTTP Basic Authentication credentials to be used when communicating with Consul, in the format of either `user` or `user:pass`. This may also be specified using the `CONSUL_HTTP_AUTH` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "insecure_https": {
               "type": "bool",
+              "description": "Boolean value to disable SSL certificate verification; setting this value to true is not recommended for production use. Only use this with scheme set to \"https\".",
               "description_kind": "plain",
               "optional": true
             },
             "key_file": {
               "type": "string",
+              "description": "A path to a PEM-encoded private key, required if `cert_file` or `cert_pem` is specified.",
               "description_kind": "plain",
               "optional": true
             },
             "key_pem": {
               "type": "string",
+              "description": "PEM-encoded private key, required if `cert_file` or `cert_pem` is specified.",
               "description_kind": "plain",
               "optional": true
             },
@@ -68,35 +79,74 @@
             },
             "scheme": {
               "type": "string",
+              "description": "The URL scheme of the agent to use (\"http\" or \"https\"). Defaults to \"http\".",
               "description_kind": "plain",
               "optional": true
             },
             "token": {
               "type": "string",
+              "description": "The ACL token to use by default when making requests to the agent. Can also be specified with `CONSUL_HTTP_TOKEN` or `CONSUL_TOKEN` as an environment variable.",
               "description_kind": "plain",
               "optional": true,
               "sensitive": true
             }
           },
           "block_types": {
+            "auth_jwt": {
+              "nesting_mode": "list",
+              "block": {
+                "attributes": {
+                  "auth_method": {
+                    "type": "string",
+                    "description": "The name of the auth method to use for login.",
+                    "description_kind": "plain",
+                    "required": true
+                  },
+                  "bearer_token": {
+                    "type": "string",
+                    "description": "The bearer token to present to the auth method during login for authentication purposes. For the Kubernetes auth method this is a [Service Account Token (JWT)](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens).",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "meta": {
+                    "type": [
+                      "map",
+                      "string"
+                    ],
+                    "description": "Specifies arbitrary KV metadata linked to the token. Can be useful to track origins.",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "use_terraform_cloud_workload_identity": {
+                    "type": "bool",
+                    "description": "Whether to use a [Terraform Workload Identity token](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/dynamic-provider-credentials/workload-identity-tokens). The token will be read from the `TFC_WORKLOAD_IDENTITY_TOKEN` environment variable.",
+                    "description_kind": "plain",
+                    "optional": true
+                  }
+                },
+                "description": "Authenticates to Consul using a JWT authentication method.",
+                "description_kind": "plain"
+              },
+              "max_items": 1
+            },
             "header": {
               "nesting_mode": "list",
               "block": {
                 "attributes": {
                   "name": {
                     "type": "string",
-                    "description": "The header name",
+                    "description": "The name of the header.",
                     "description_kind": "plain",
                     "required": true
                   },
                   "value": {
                     "type": "string",
-                    "description": "The header value",
+                    "description": "The value of the header.",
                     "description_kind": "plain",
                     "required": true
                   }
                 },
-                "description": "Additional headers to send with each Consul request.",
+                "description": "A configuration block, described below, that provides additional headers to be sent along with all requests to the Consul server. This block can be specified multiple times.",
                 "description_kind": "plain"
               }
             }
@@ -145,7 +195,7 @@
               },
               "max_token_ttl": {
                 "type": "string",
-                "description": "The maximum life of any token created by this auth method.",
+                "description": "The maximum life of any token created by this auth method. **This attribute is required and must be set to a nonzero for the OIDC auth method.**",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -157,6 +207,7 @@
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace in which to create the auth method.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -186,19 +237,23 @@
                   "attributes": {
                     "bind_namespace": {
                       "type": "string",
+                      "description": "If the namespace rule's `selector` matches then this is used to control the namespace where the token is created.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "selector": {
                       "type": "string",
+                      "description": "Specifies the expression used to match this namespace rule against valid identities returned from an auth method validation.",
                       "description_kind": "plain",
                       "optional": true
                     }
                   },
+                  "description": "A set of rules that control which namespace tokens created via this auth method will be created within.",
                   "description_kind": "plain"
                 }
               }
             },
+            "description": "Starting with Consul 1.5.0, the `consul_acl_auth_method` resource can be used to managed [Consul ACL auth methods](https://www.consul.io/docs/acl/auth-methods).",
             "description_kind": "plain"
           }
         },
@@ -238,6 +293,7 @@
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to create the binding rule within.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -249,11 +305,30 @@
               },
               "selector": {
                 "type": "string",
-                "description": "The expression used to math this rule against valid identities returned from an auth method validation.",
+                "description": "The expression used to match this rule against valid identities returned from an auth method validation.",
                 "description_kind": "plain",
                 "optional": true
               }
             },
+            "block_types": {
+              "bind_vars": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of node, workload identity or service.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "The variables used when binding rule type is `templated-policy`. Can be lightly templated using HIL `${foo}` syntax from available field names.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description": "Starting with Consul 1.5.0, the consul_acl_binding_rule resource can be used to managed Consul ACL binding rules.",
             "description_kind": "plain"
           }
         },
@@ -333,6 +408,7 @@
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to create the role within.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -347,7 +423,7 @@
                   "set",
                   "string"
                 ],
-                "description": "The list of policies that should be applied to the role.",
+                "description": "The list of policies that should be applied to the role. Both the policy ID or its name can be used.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -397,8 +473,78 @@
                   "description": "The list of service identities that should be applied to the role.",
                   "description_kind": "plain"
                 }
+              },
+              "templated_policies": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "datacenters": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the datacenters the effective policy is valid within.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "template_name": {
+                      "type": "string",
+                      "description": "The name of the templated policies.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "template_variables": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "The name of node, workload identity or service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "The templated policy variables.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "The list of templated policies that should be applied to the token.",
+                  "description_kind": "plain"
+                }
               }
             },
+            "description": "The `consul_acl_role` can be used to manage [Consul ACL roles](https://developer.hashicorp.com/consul/docs/security/acl/acl-roles).",
+            "description_kind": "plain"
+          }
+        },
+        "consul_acl_role_policy_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "policy": {
+                "type": "string",
+                "description": "The policy name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role_id": {
+                "type": "string",
+                "description": "The id of the role.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The `consul_acl_role_policy_attachment` resource links a Consul ACL role and an ACL policy. The link is implemented through an update to the Consul ACL role.\n\n~> **NOTE:** This resource is only useful to attach policies to an ACL role that has been created outside the current Terraform configuration. If the ACL role you need to attach a policy to has been created in the current Terraform configuration and will only be used in it, you should use the `policies` attribute of [`consul_acl_role`](/docs/providers/consul/r/acl_role.html).",
             "description_kind": "plain"
           }
         },
@@ -408,14 +554,14 @@
             "attributes": {
               "accessor_id": {
                 "type": "string",
-                "description": "The token id.",
+                "description": "The uuid of the token. If omitted, Consul will generate a random uuid.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
               "description": {
                 "type": "string",
-                "description": "The token description.",
+                "description": "The description of the token.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -433,12 +579,13 @@
               },
               "local": {
                 "type": "bool",
-                "description": "Flag to set the token local to the current datacenter.",
+                "description": "The flag to set the token local to the current datacenter.",
                 "description_kind": "plain",
                 "optional": true
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to create the token within.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -453,7 +600,7 @@
                   "set",
                   "string"
                 ],
-                "description": "List of policies.",
+                "description": "The list of policies attached to the token.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -462,7 +609,7 @@
                   "set",
                   "string"
                 ],
-                "description": "List of roles",
+                "description": "The list of roles attached to the token.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -474,7 +621,7 @@
                   "attributes": {
                     "datacenter": {
                       "type": "string",
-                      "description": "Specifies the node's datacenter.",
+                      "description": "The datacenter of the node.",
                       "description_kind": "plain",
                       "required": true
                     },
@@ -512,8 +659,51 @@
                   "description": "The list of service identities that should be applied to the token.",
                   "description_kind": "plain"
                 }
+              },
+              "templated_policies": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "datacenters": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies the datacenters the effective policy is valid within.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "template_name": {
+                      "type": "string",
+                      "description": "The name of the templated policies.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "template_variables": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "The name of node, workload identity or service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "The templated policy variables.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "The list of templated policies that should be applied to the token.",
+                  "description_kind": "plain"
+                }
               }
             },
+            "description": "The `consul_acl_token` resource writes an ACL token into Consul.\n\n~> **NOTE:** The `consul_acl_token` resource does not save the secret ID of the generated token to the Terraform state to avoid leaking it when it is not needed. If you need to get the secret ID after creating the ACL token you can use the [`consul_acl_token_secret_id`](/docs/providers/consul/r/acl_token.html) datasource.",
             "description_kind": "plain"
           }
         },
@@ -774,11 +964,20 @@
                   "map",
                   "string"
                 ],
+                "description": "The raw configuration to use for the chosen provider. For more information on configuring the Connect CA providers, see [Provider Config](https://developer.hashicorp.com/consul/docs/connect/ca).",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true
+              },
+              "config_json": {
+                "type": "string",
+                "description": "The raw configuration to use for the chosen provider. For more information on configuring the Connect CA providers, see [Provider Config](https://developer.hashicorp.com/consul/docs/connect/ca).",
+                "description_kind": "plain",
+                "optional": true
               },
               "connect_provider": {
                 "type": "string",
+                "description": "Specifies the CA provider type to use.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -789,6 +988,7 @@
                 "computed": true
               }
             },
+            "description": "The `consul_certificate_authority` resource can be used to manage the configuration of the Certificate Authority used by [Consul Connect](https://www.consul.io/docs/connect/ca).\n\n-> **Note:** The keys in the `config` argument must be using Camel case.",
             "description_kind": "plain"
           }
         },
@@ -829,6 +1029,1608 @@
                 "optional": true
               }
             },
+            "description_kind": "plain"
+          }
+        },
+        "consul_config_entry_service_defaults": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "balance_inbound_connections": {
+                "type": "string",
+                "description": "Specifies the strategy for allocating inbound connections to the service across Envoy proxy threads.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "external_sni": {
+                "type": "string",
+                "description": "Specifies the TLS server name indication (SNI) when federating with an external system.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_connect_timeout_ms": {
+                "type": "number",
+                "description": "Specifies the number of milliseconds allowed for establishing connections to the local application instance before timing out.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local_request_timeout_ms": {
+                "type": "number",
+                "description": "Specifies the timeout for HTTP requests to the local application instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_inbound_connections": {
+                "type": "number",
+                "description": "Specifies the maximum number of concurrent inbound connections to each service instance.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies a set of custom key-value pairs to add to the Consul KV store.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "Specifies a mode for how the service directs inbound and outbound traffic.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mutual_tls_mode": {
+                "type": "string",
+                "description": "Controls whether mutual TLS is required for incoming connections to this service. This setting is only supported for services with transparent proxy enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the name of the service you are setting the defaults for.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Specifies the Consul namespace that the configuration entry applies to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "partition": {
+                "type": "string",
+                "description": "Specifies the name of the name of the Consul admin partition that the configuration entry applies to. Refer to Admin Partitions for additional information.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Specifies the default protocol for the service.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "destination": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "addresses": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Configures the destination for service traffic through terminating gateways.",
+                  "description_kind": "plain"
+                }
+              },
+              "envoy_extensions": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "arguments": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "consul_version": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "envoy_version": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "List of extensions to modify Envoy proxy configuration.",
+                  "description_kind": "plain"
+                }
+              },
+              "expose": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "checks": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "paths": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "listener_port": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "local_path_port": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "path": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Specifies default configurations for exposing HTTP paths through Envoy.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "mesh_gateway": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "mode": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Specifies the default mesh gateway mode field for the service.",
+                  "description_kind": "plain"
+                }
+              },
+              "transparent_proxy": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "dialed_directly": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "outbound_listener_port": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Controls configurations specific to proxies in transparent mode. Refer to Transparent Proxy Mode for additional information.",
+                  "description_kind": "plain"
+                }
+              },
+              "upstream_config": {
+                "nesting_mode": "set",
+                "block": {
+                  "block_types": {
+                    "defaults": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "balance_outbound_connections": {
+                            "type": "string",
+                            "description": "Sets the strategy for allocating outbound connections from upstreams across Envoy proxy threads.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "connect_timeout_ms": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "Specifies the default protocol for the service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "limits": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "max_concurrent_requests": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum number of concurrent requests.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_connections": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum number of connections a service instance can establish against the upstream.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_pending_requests": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum number of requests that are queued while waiting for a connection to establish.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Map that specifies a set of limits to apply to when connecting upstream services.",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "mesh_gateway": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specifies the default mesh gateway mode field for all upstreams.",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "passive_health_check": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "base_ejection_time": {
+                                  "type": "string",
+                                  "description": "Specifies the minimum amount of time that an ejected host must remain outside the cluster before rejoining.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "enforcing_consecutive_5xx": {
+                                  "type": "number",
+                                  "description": "Specifies a percentage that indicates how many times out of 100 that Consul ejects the host when it detects an outlier status.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "interval": {
+                                  "type": "string",
+                                  "description": "Specifies the time between checks.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_ejection_percent": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum percentage of an upstream cluster that Consul ejects when the proxy reports an outlier.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_failures": {
+                                  "type": "number",
+                                  "description": "Specifies the number of consecutive failures allowed per check interval. If exceeded, Consul removes the host from the load balancer.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Map that specifies a set of rules that enable Consul to remove hosts from the upstream cluster that are unreachable or that return errors.",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "Specifies configurations that set default upstream settings. For information about overriding the default configurations for in for individual upstreams, refer to UpstreamConfig.Overrides.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "overrides": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "balance_outbound_connections": {
+                            "type": "string",
+                            "description": "Sets the strategy for allocating outbound connections from upstreams across Envoy proxy threads.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "connect_timeout_ms": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "envoy_listener_json": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Specifies the name of the service you are setting the defaults for.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "namespace": {
+                            "type": "string",
+                            "description": "Specifies the namespace containing the upstream service that the configuration applies to.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "partition": {
+                            "type": "string",
+                            "description": "Specifies the name of the name of the Consul admin partition that the configuration entry applies to.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "peer": {
+                            "type": "string",
+                            "description": "Specifies the peer name of the upstream service that the configuration applies to.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "protocol": {
+                            "type": "string",
+                            "description": "Specifies the default protocol for the service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "limits": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "max_concurrent_requests": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum number of concurrent requests.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_connections": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum number of connections a service instance can establish against the upstream.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_pending_requests": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum number of requests that are queued while waiting for a connection to establish.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Map that specifies a set of limits to apply to when connecting upstream services.",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "mesh_gateway": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "mode": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specifies the default mesh gateway mode field for all upstreams.",
+                              "description_kind": "plain"
+                            }
+                          },
+                          "passive_health_check": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "base_ejection_time": {
+                                  "type": "string",
+                                  "description": "Specifies the minimum amount of time that an ejected host must remain outside the cluster before rejoining.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "enforcing_consecutive_5xx": {
+                                  "type": "number",
+                                  "description": "Specifies a percentage that indicates how many times out of 100 that Consul ejects the host when it detects an outlier status.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "interval": {
+                                  "type": "string",
+                                  "description": "Specifies the time between checks.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_ejection_percent": {
+                                  "type": "number",
+                                  "description": "Specifies the maximum percentage of an upstream cluster that Consul ejects when the proxy reports an outlier.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "max_failures": {
+                                  "type": "number",
+                                  "description": "Specifies the number of consecutive failures allowed per check interval. If exceeded, Consul removes the host from the load balancer.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Map that specifies a set of rules that enable Consul to remove hosts from the upstream cluster that are unreachable or that return errors.",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "Specifies options that override the default upstream configurations for individual upstreams.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Controls default upstream connection settings and custom overrides for individual upstream services.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The `consul_config_entry_service_defaults` resource configures a [service defaults](https://developer.hashicorp.com/consul/docs/connect/config-entries/service-defaults) config entry that contains common configuration settings for service mesh services, such as upstreams and gateways.",
+            "description_kind": "plain"
+          }
+        },
+        "consul_config_entry_service_intentions": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies key-value pairs to add to the KV store.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies a name of the destination service for all intentions defined in the configuration entry.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Specifies the namespace to apply the configuration entry.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "partition": {
+                "type": "string",
+                "description": "Specifies the admin partition to apply the configuration entry.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "jwt": {
+                "nesting_mode": "set",
+                "block": {
+                  "block_types": {
+                    "providers": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Specifies the name of a JWT provider defined in the Name field of the jwt-provider configuration entry.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "verify_claims": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "path": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Specifies the path to the claim in the JSON web token.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "Specifies the value to match on when verifying the the claim designated in path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specifies additional token information to verify beyond what is configured in the JWT provider configuration entry.",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "Specifies the names of one or more previously configured JWT provider configuration entries, which include the information necessary to validate a JSON web token.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Specifies a JSON Web Token provider configured in a JWT provider configuration entry, as well as additional configurations for verifying a service's JWT before authorizing communication between services",
+                  "description_kind": "plain"
+                }
+              },
+              "sources": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "action": {
+                      "type": "string",
+                      "description": "Specifies the action to take when the source sends traffic to the destination service.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Specifies a description of the intention.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Specifies the name of the source that the intention allows or denies traffic from.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Specifies the traffic source namespace that the intention allows or denies traffic from.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "partition": {
+                      "type": "string",
+                      "description": "Specifies the name of an admin partition that the intention allows or denies traffic from.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer": {
+                      "type": "string",
+                      "description": "Specifies the name of a peered Consul cluster that the intention allows or denies traffic from",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "precedence": {
+                      "type": "number",
+                      "description": "The Precedence field contains a read-only integer. Consul generates the value based on name configurations for the source and destination services.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sameness_group": {
+                      "type": "string",
+                      "description": "Specifies the name of a sameness group that the intention allows or denies traffic from.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Specifies the type of destination service that the configuration entry applies to.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "permissions": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "action": {
+                            "type": "string",
+                            "description": "Specifies the action to take when the source sends traffic to the destination service. The value is either allow or deny.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "http": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "methods": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Specifies a list of HTTP methods.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "path_exact": {
+                                  "type": "string",
+                                  "description": "Specifies an exact path to match on the HTTP request path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "path_prefix": {
+                                  "type": "string",
+                                  "description": "Specifies a path prefix to match on the HTTP request path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "path_regex": {
+                                  "type": "string",
+                                  "description": "Defines a regular expression to match on the HTTP request path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "headers": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "exact": {
+                                        "type": "string",
+                                        "description": "Specifies a value for the header key set in the Name field. If the request header value matches the Exact value, Consul applies the permission.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "invert": {
+                                        "type": "bool",
+                                        "description": "Inverts the matching logic configured in the Header.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Specifies the name of the header to match.",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "prefix": {
+                                        "type": "string",
+                                        "description": "Specifies a prefix value for the header key set in the Name field.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "present": {
+                                        "type": "bool",
+                                        "description": "Enables a match if the header configured in the Name field appears in the request. Consul matches on any value as long as the header key appears in the request.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "regex": {
+                                        "type": "string",
+                                        "description": "Specifies a regular expression pattern as the value for the header key set in the Name field.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "suffix": {
+                                        "type": "string",
+                                        "description": "Specifies a suffix value for the header key set in the Name field.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Specifies a header name and matching criteria for HTTP request headers.",
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description": "Specifies a set of HTTP-specific match criteria. ",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Specifies a list of permissions for L7 traffic sources. The list contains one or more actions and a set of match criteria for each action.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "List of configurations that define intention sources and the authorization granted to the sources.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The `consul_service_intentions_config_entry` resource configures [service intentions](https://developer.hashicorp.com/consul/docs/connect/config-entries/service-intentions) that are configurations for controlling access between services in the service mesh. A single service intentions configuration entry specifies one destination service and one or more L4 traffic sources, L7 traffic sources, or combination of traffic sources.",
+            "description_kind": "plain"
+          }
+        },
+        "consul_config_entry_service_resolver": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connect_timeout": {
+                "type": "string",
+                "description": "Specifies the timeout duration for establishing new network connections to this service.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_subset": {
+                "type": "string",
+                "description": "Specifies a defined subset of service instances to use when no explicit subset is requested. If this parameter is not specified, Consul uses the unnamed default subset.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies key-value pairs to add to the KV store.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies a name for the configuration entry.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Specifies the namespace that the service resolver applies to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "partition": {
+                "type": "string",
+                "description": "Specifies the admin partition that the service resolver applies to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "request_timeout": {
+                "type": "string",
+                "description": "Specifies the timeout duration for receiving an HTTP response from this service.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "failover": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "datacenters": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Specifies an ordered list of datacenters at the failover location to attempt connections to during a failover scenario. When Consul cannot establish a connection with the first datacenter in the list, it proceeds sequentially until establishing a connection with another datacenter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Specifies the namespace at the failover location where the failover services are deployed.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sameness_group": {
+                      "type": "string",
+                      "description": "Specifies the sameness group at the failover location where the failover services are deployed.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Specifies the name of the service to resolve at the failover location during a failover scenario.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_subset": {
+                      "type": "string",
+                      "description": "Specifies the name of a subset of service instances to resolve at the failover location during a failover scenario.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "subset_name": {
+                      "type": "string",
+                      "description": "Name of subset.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "targets": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "datacenter": {
+                            "type": "string",
+                            "description": "Specifies the WAN federated datacenter to use for the failover target. If empty, the current datacenter is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "namespace": {
+                            "type": "string",
+                            "description": "Specifies the namespace to use for the failover target. If empty, the default namespace is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "partition": {
+                            "type": "string",
+                            "description": "Specifies the admin partition within the same datacenter to use for the failover target. If empty, the default partition is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "peer": {
+                            "type": "string",
+                            "description": "Specifies the destination cluster peer to resolve the target service name from.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service": {
+                            "type": "string",
+                            "description": "Specifies the service name to use for the failover target. If empty, the current service name is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service_subset": {
+                            "type": "string",
+                            "description": "Specifies the named subset to use for the failover target. If empty, the default subset for the requested service name is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies a fixed list of failover targets to try during failover. This list can express complicated failover scenarios.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Specifies controls for rerouting traffic to an alternate pool of service instances if the target service fails.",
+                  "description_kind": "plain"
+                }
+              },
+              "load_balancer": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "policy": {
+                      "type": "string",
+                      "description": "Specifies the type of load balancing policy for selecting a host. ",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "hash_policies": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "field": {
+                            "type": "string",
+                            "description": "Specifies the attribute type to hash on. You cannot specify the Field parameter if SourceIP is also configured.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "field_value": {
+                            "type": "string",
+                            "description": "Specifies the value to hash, such as a header name, cookie name, or a URL query parameter name.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "source_ip": {
+                            "type": "bool",
+                            "description": "Determines if the hash type should be source IP address.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "terminal": {
+                            "type": "bool",
+                            "description": "Determines if Consul should stop computing the hash when multiple hash policies are present.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "cookie_config": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "path": {
+                                  "type": "string",
+                                  "description": "Specifies the path to set for the cookie.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "session": {
+                                  "type": "bool",
+                                  "description": "Directs Consul to generate a session cookie with no expiration.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "ttl": {
+                                  "type": "string",
+                                  "description": "Specifies the TTL for generated cookies. Cannot be specified for session cookies.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specifies additional configuration options for the cookie hash policy type.",
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description": "Specifies a list of hash policies to use for hashing load balancing algorithms. Consul evaluates hash policies individually and combines them so that identical lists result in the same hash.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "least_request_config": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "choice_count": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies configuration for the least_request policy type.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "ring_hash_config": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "maximum_ring_size": {
+                            "type": "number",
+                            "description": "Determines the maximum number of entries in the hash ring.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "minimum_ring_size": {
+                            "type": "number",
+                            "description": "Determines the minimum number of entries in the hash ring.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies configuration for the ring_hash policy type.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Specifies the load balancing policy and configuration for services issuing requests to this upstream.",
+                  "description_kind": "plain"
+                }
+              },
+              "redirect": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "datacenter": {
+                      "type": "string",
+                      "description": "Specifies the datacenter at the redirect’s destination that resolves local upstream requests.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Specifies the namespace at the redirect’s destination that resolves local upstream requests.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "partition": {
+                      "type": "string",
+                      "description": "Specifies the admin partition at the redirect’s destination that resolves local upstream requests.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer": {
+                      "type": "string",
+                      "description": "Specifies the cluster with an active cluster peering connection at the redirect’s destination that resolves local upstream requests.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "sameness_group": {
+                      "type": "string",
+                      "description": "Specifies the sameness group at the redirect’s destination that resolves local upstream requests.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Specifies the name of a service at the redirect’s destination that resolves local upstream requests.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_subset": {
+                      "type": "string",
+                      "description": "Specifies the name of a subset of services at the redirect’s destination that resolves local upstream requests. If empty, the default subset is used. If specified, you must also specify at least one of the following in the same Redirect map: Service, Namespace, andDatacenter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies redirect instructions for local service traffic so that services deployed to a different network location resolve the upstream request instead.",
+                  "description_kind": "plain"
+                }
+              },
+              "subsets": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "filter": {
+                      "type": "string",
+                      "description": "Specifies an expression that filters the DNS elements of service instances that belong to the subset. If empty, all healthy instances of a service are returned.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of subset.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "only_passing": {
+                      "type": "bool",
+                      "description": "Determines if instances that return a warning from a health check are allowed to resolve a request. When set to false, instances with passing and warning states are considered healthy. When set to true, only instances with a passing health check state are considered healthy.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Specifies names for custom service subsets and the conditions under which service instances belong to each subset.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The `consul_config_entry_service_resolver` resource configures a [service resolver](https://developer.hashicorp.com/consul/docs/connect/config-entries/service-resolver) that creates named subsets of service instances and define their behavior when satisfying upstream requests.",
+            "description_kind": "plain"
+          }
+        },
+        "consul_config_entry_service_router": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies key-value pairs to add to the KV store.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies a name for the configuration entry.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Specifies the namespace to apply the configuration entry.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "partition": {
+                "type": "string",
+                "description": "Specifies the admin partition to apply the configuration entry.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "routes": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "destination": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "idle_timeout": {
+                            "type": "string",
+                            "description": "Specifies the total amount of time permitted for the request stream to be idle.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "namespace": {
+                            "type": "string",
+                            "description": "Specifies the Consul namespace to resolve the service from instead of the current namespace.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "num_retries": {
+                            "type": "number",
+                            "description": "Specifies the number of times to retry the request when a retry condition occurs.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "partition": {
+                            "type": "string",
+                            "description": "Specifies the Consul admin partition to resolve the service from instead of the current partition.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "prefix_rewrite": {
+                            "type": "string",
+                            "description": "Specifies rewrites to the HTTP request path before proxying it to its final destination.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "request_timeout": {
+                            "type": "string",
+                            "description": "Specifies the total amount of time permitted for the entire downstream request to be processed, including retry attempts.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "retry_on": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Specifies a list of conditions for Consul to retry requests based on the response from an upstream service.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "retry_on_connect_failure": {
+                            "type": "bool",
+                            "description": "Specifies that connection failure errors that trigger a retry request.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "retry_on_status_codes": {
+                            "type": [
+                              "list",
+                              "number"
+                            ],
+                            "description": "Specifies a list of integers for HTTP response status codes that trigger a retry request.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service": {
+                            "type": "string",
+                            "description": "Specifies the name of the service to resolve.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service_subset": {
+                            "type": "string",
+                            "description": "Specifies a named subset of the given service to resolve instead of the one defined as that service's `default_subset` in the service resolver configuration entry.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "request_headers": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "add": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Defines a set of key-value pairs to add to the header. Use header names as the keys.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "remove": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Defines a list of headers to remove.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "set": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Defines a set of key-value pairs to add to the request header or to replace existing header values with.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specifies a set of HTTP-specific header modification rules applied to requests routed with the service router.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          },
+                          "response_headers": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "add": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Defines a set of key-value pairs to add to the header. Use header names as the keys",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "remove": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Defines a list of headers to remove.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "set": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description": "Defines a set of key-value pairs to add to the response header or to replace existing header values with",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Specifies a set of HTTP-specific header modification rules applied to responses routed with the service router.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Specifies the target service to route matching requests to, as well as behavior for the request to follow when routed.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "match": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "http": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "methods": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description": "Specifies HTTP methods that the match applies to.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "path_exact": {
+                                  "type": "string",
+                                  "description": "Specifies the exact path to match on the HTTP request path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "path_prefix": {
+                                  "type": "string",
+                                  "description": "Specifies the path prefix to match on the HTTP request path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "path_regex": {
+                                  "type": "string",
+                                  "description": "Specifies a regular expression to match on the HTTP request path.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "header": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "exact": {
+                                        "type": "string",
+                                        "description": "Specifies that a request matches when the header with the given name is this exact value.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "invert": {
+                                        "type": "bool",
+                                        "description": "Specifies that the logic for the HTTP header match should be inverted.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Specifies the name of the HTTP header to match.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "prefix": {
+                                        "type": "string",
+                                        "description": "Specifies that a request matches when the header with the given name has this prefix.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "present": {
+                                        "type": "bool",
+                                        "description": "Specifies that a request matches when the value in the `name` argument is present anywhere in the HTTP header.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "regex": {
+                                        "type": "string",
+                                        "description": "Specifies that a request matches when the header with the given name matches this regular expression.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "suffix": {
+                                        "type": "string",
+                                        "description": "Specifies that a request matches when the header with the given name has this suffix.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Specifies information in the HTTP request header to match with.",
+                                    "description_kind": "plain"
+                                  }
+                                },
+                                "query_param": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "exact": {
+                                        "type": "string",
+                                        "description": "Specifies that a request matches when the query parameter with the given name is this exact value.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description": "Specifies the name of the HTTP query parameter to match.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "present": {
+                                        "type": "bool",
+                                        "description": "Specifies that a request matches when the value in the `name` argument is present anywhere in the HTTP query parameter.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "regex": {
+                                        "type": "string",
+                                        "description": "Specifies that a request matches when the query parameter with the given name matches this regular expression.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "Specifies information to match to on HTTP query parameters.",
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description": "Specifies a set of HTTP criteria used to evaluate incoming L7 traffic for matches.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Describes a set of criteria that Consul compares incoming L7 traffic with.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Defines the possible routes for L7 requests.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The `consul_config_entry_service_router` resource configures a [service router](https://developer.hashicorp.com/consul/docs/connect/config-entries/service-router) to redirect a traffic request for a service to one or more specific service instances.",
+            "description_kind": "plain"
+          }
+        },
+        "consul_config_entry_service_splitter": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "meta": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies key-value pairs to add to the KV store.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies a name for the configuration entry.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Specifies the namespace to apply the configuration entry.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "partition": {
+                "type": "string",
+                "description": "Specifies the admin partition to apply the configuration entry.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "splits": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "namespace": {
+                      "type": "string",
+                      "description": "Specifies the namespace to use in the FQDN when resolving the service.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "partition": {
+                      "type": "string",
+                      "description": "Specifies the admin partition to use in the FQDN when resolving the service.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Specifies the name of the service to resolve.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_subset": {
+                      "type": "string",
+                      "description": "Specifies a subset of the service to resolve. A service subset assigns a name to a specific subset of discoverable service instances within a datacenter, such as `version2` or `canary`. All services have an unnamed default subset that returns all healthy instances.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "weight": {
+                      "type": "number",
+                      "description": "Specifies the percentage of traffic sent to the set of service instances specified in the `service` field. Each weight must be a floating integer between `0` and `100`. The smallest representable value is `.01`. The sum of weights across all splits must add up to `100`.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "block_types": {
+                    "request_headers": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "add": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Map of one or more key-value pairs. Defines a set of key-value pairs to add to the header. Use header names as the keys. Header names are not case-sensitive. If header values with the same name already exist, the value is appended and Consul applies both headers.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "remove": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Defines an list of headers to remove. Consul removes only headers containing exact matches. Header names are not case-sensitive.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "set": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Map of one or more key-value pairs. Defines a set of key-value pairs to add to the request header or to replace existing header values with. Use header names as the keys. Header names are not case-sensitive. If header values with the same names already exist, Consul replaces the header values.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies a set of HTTP-specific header modification rules applied to requests routed with the service split. You cannot configure request headers if the listener protocol is set to `tcp`.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "response_headers": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "add": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Map of one or more key-value pairs. Defines a set of key-value pairs to add to the header. Use header names as the keys. Header names are not case-sensitive. If header values with the same name already exist, the value is appended and Consul applies both headers.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "remove": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Defines an list of headers to remove. Consul removes only headers containing exact matches. Header names are not case-sensitive.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "set": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "Map of one or more key-value pairs. Defines a set of key-value pairs to add to the request header or to replace existing header values with. Use header names as the keys. Header names are not case-sensitive. If header values with the same names already exist, Consul replaces the header values.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies a set of HTTP-specific header modification rules applied to responses routed with the service split. You cannot configure request headers if the listener protocol is set to `tcp`.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Defines how much traffic to send to sets of service instances during a traffic split.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description": "The `consul_config_entry_service_splitter` resource configures a [service splitter](https://developer.hashicorp.com/consul/docs/connect/config-entries/service-splitter) that will redirect a percentage of incoming traffic requests for a service to one or more specific service instances.",
             "description_kind": "plain"
           }
         },
@@ -1463,11 +3265,13 @@
             "attributes": {
               "connect": {
                 "type": "bool",
+                "description": "When `true` the prepared query will return connect proxy services for a queried service.  Conditions such as `tags` in the prepared query will be matched against the proxy service. Defaults to false.",
                 "description_kind": "plain",
                 "optional": true
               },
               "datacenter": {
                 "type": "string",
+                "description": "The datacenter to use. This overrides the agent's default datacenter and the datacenter in the provider setup.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1482,16 +3286,19 @@
                   "list",
                   "string"
                 ],
+                "description": "Specifies a list of check IDs that should be ignored when filtering unhealthy instances. This is mostly useful in an emergency or as a temporary measure when a health check is found to be unreliable. Being able to ignore it in centrally-defined queries can be simpler than de-registering the check as an interim solution until the check can be fixed.",
                 "description_kind": "plain",
                 "optional": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the prepared query. Used to identify the prepared query during requests. Can be specified as an empty string to configure the query as a catch-all.",
                 "description_kind": "plain",
                 "required": true
               },
               "near": {
                 "type": "string",
+                "description": "Allows specifying the name of a node to sort results near using Consul's distance sorting and network coordinates. The magic `_agent` value can be used to always sort nearest the node servicing the request.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1500,16 +3307,19 @@
                   "map",
                   "string"
                 ],
+                "description": "Specifies a list of user-defined key/value pairs that will be used for filtering the query results to nodes with the given metadata values present.",
                 "description_kind": "plain",
                 "optional": true
               },
               "only_passing": {
                 "type": "bool",
+                "description": "When `true`, the prepared query will only return nodes with passing health checks in the result.",
                 "description_kind": "plain",
                 "optional": true
               },
               "service": {
                 "type": "string",
+                "description": "The name of the service to query",
                 "description_kind": "plain",
                 "required": true
               },
@@ -1518,16 +3328,19 @@
                   "map",
                   "string"
                 ],
+                "description": "Specifies a list of user-defined key/value pairs that will be used for filtering the query results to services with the given metadata values present.",
                 "description_kind": "plain",
                 "optional": true
               },
               "session": {
                 "type": "string",
+                "description": "The name of the Consul session to tie this query's lifetime to.  This is an advanced parameter that should not be used without a complete understanding of Consul sessions and the implications of their use (it is recommended to leave this blank in nearly all cases).  If this parameter is omitted the query will not expire.",
                 "description_kind": "plain",
                 "optional": true
               },
               "stored_token": {
                 "type": "string",
+                "description": "The ACL token to store with the prepared query. This token will be used by default whenever the query is executed.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1536,11 +3349,13 @@
                   "set",
                   "string"
                 ],
+                "description": "The list of required and/or disallowed tags.  If a tag is in this list it must be present.  If the tag is preceded with a \"!\" then it is disallowed.",
                 "description_kind": "plain",
                 "optional": true
               },
               "token": {
                 "type": "string",
+                "description": "The ACL token to use when saving the prepared query. This overrides the token that the agent provides by default.",
                 "description_kind": "plain",
                 "deprecated": true,
                 "optional": true,
@@ -1554,10 +3369,12 @@
                   "attributes": {
                     "ttl": {
                       "type": "string",
+                      "description": "The TTL to send when returning DNS results.",
                       "description_kind": "plain",
                       "optional": true
                     }
                   },
+                  "description": "Settings for controlling the DNS response details.",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1571,15 +3388,41 @@
                         "list",
                         "string"
                       ],
+                      "description": "Remote datacenters to return results from.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "nearest_n": {
                       "type": "number",
+                      "description": "Return results from this many datacenters, sorted in ascending order of estimated RTT.",
                       "description_kind": "plain",
                       "optional": true
                     }
                   },
+                  "block_types": {
+                    "targets": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "datacenter": {
+                            "type": "string",
+                            "description": "Specifies a WAN federated datacenter to forward the query to.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "peer": {
+                            "type": "string",
+                            "description": "Specifies a cluster peer to use for failover.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Specifies a sequential list of remote datacenters and cluster peers to failover to if there are no healthy service instances in the local datacenter. This option cannot be used with `nearest_n` or `datacenters`.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "Options for controlling behavior when no healthy nodes are available in the local DC.",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -1590,20 +3433,30 @@
                   "attributes": {
                     "regexp": {
                       "type": "string",
+                      "description": "The regular expression to match with. When using `name_prefix_match`, this regex is applied against the query name.",
                       "description_kind": "plain",
                       "required": true
                     },
+                    "remove_empty_tags": {
+                      "type": "bool",
+                      "description": "If set to true, will cause the tags list inside the service structure to be stripped of any empty strings.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "type": {
                       "type": "string",
+                      "description": "The type of template matching to perform. Currently only `name_prefix_match` is supported.",
                       "description_kind": "plain",
                       "required": true
                     }
                   },
+                  "description": "Query templating options. This is used to make a single prepared query respond to many different requests",
                   "description_kind": "plain"
                 },
                 "max_items": 1
               }
             },
+            "description": "Allows Terraform to manage a Consul prepared query.\n\nManaging prepared queries is done using Consul's REST API. This resource is useful to provide a consistent and declarative way of managing prepared queries in your Consul cluster using Terraform.",
             "description_kind": "plain"
           }
         },
@@ -1613,18 +3466,21 @@
             "attributes": {
               "address": {
                 "type": "string",
+                "description": "The address of the service. Defaults to the address of the node.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
               "datacenter": {
                 "type": "string",
+                "description": "The datacenter to use. This overrides the agent's default datacenter and the datacenter in the provider setup.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
               "enable_tag_override": {
                 "type": "bool",
+                "description": "Specifies to disable the anti-entropy feature for this service's tags. Defaults to `false`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1645,21 +3501,25 @@
                   "map",
                   "string"
                 ],
+                "description": "A map of arbitrary KV metadata linked to the service instance.",
                 "description_kind": "plain",
                 "optional": true
               },
               "name": {
                 "type": "string",
+                "description": "The name of the service.",
                 "description_kind": "plain",
                 "required": true
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to create the service within.",
                 "description_kind": "plain",
                 "optional": true
               },
               "node": {
                 "type": "string",
+                "description": "The name of the node the to register the service on.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -1671,11 +3531,13 @@
               },
               "port": {
                 "type": "number",
+                "description": "The port of the service.",
                 "description_kind": "plain",
                 "optional": true
               },
               "service_id": {
                 "type": "string",
+                "description": "If the service ID is not provided, it will be defaulted to the value of the `name` attribute.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -1685,6 +3547,7 @@
                   "list",
                   "string"
                 ],
+                "description": "A list of values that are opaque to Consul, but can be used to distinguish between services or nodes.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -1696,57 +3559,68 @@
                   "attributes": {
                     "check_id": {
                       "type": "string",
+                      "description": "An ID, *unique per agent*.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "deregister_critical_service_after": {
                       "type": "string",
+                      "description": "The time after which the service is automatically deregistered when in the `critical` state. Defaults to `30s`.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "http": {
                       "type": "string",
+                      "description": "The HTTP endpoint to call for an HTTP check.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "interval": {
                       "type": "string",
+                      "description": "The interval to wait between each health-check invocation.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "method": {
                       "type": "string",
+                      "description": "The method to use for HTTP health-checks. Defaults to `GET`.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "name": {
                       "type": "string",
+                      "description": "The name of the health-check.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "notes": {
                       "type": "string",
+                      "description": "An opaque field meant to hold human readable text.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "status": {
                       "type": "string",
+                      "description": "The initial health-check status.",
                       "description_kind": "plain",
                       "optional": true,
                       "computed": true
                     },
                     "tcp": {
                       "type": "string",
+                      "description": "The TCP address and port to connect to for a TCP check.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "timeout": {
                       "type": "string",
+                      "description": "Specifies a timeout for outgoing connections in the case of a HTTP or TCP check.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "tls_skip_verify": {
                       "type": "bool",
+                      "description": "Whether to deactivate certificate verification for HTTP health-checks. Defaults to `false`.",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -1758,6 +3632,7 @@
                         "attributes": {
                           "name": {
                             "type": "string",
+                            "description": "The name of the header.",
                             "description_kind": "plain",
                             "required": true
                           },
@@ -1766,10 +3641,12 @@
                               "list",
                               "string"
                             ],
+                            "description": "The header's list of values.",
                             "description_kind": "plain",
                             "required": true
                           }
                         },
+                        "description": "The headers to send for an HTTP check. The attributes of each header is given below.",
                         "description_kind": "plain"
                       }
                     }
@@ -1778,6 +3655,7 @@
                 }
               }
             },
+            "description": "\nA high-level resource for creating a Service in Consul in the Consul catalog. This\nis appropriate for registering [external services](https://www.consul.io/docs/guides/external.html) and\ncan be used to create services addressable by Consul that cannot be registered\nwith a [local agent](https://www.consul.io/docs/agent/basics.html).\n\n-> **NOTE:** If a Consul agent is running on the node where this service is\nregistered, it is not recommended to use this resource as the service will be\nremoved during the next [anti-entropy synchronization](https://www.consul.io/docs/architecture/anti-entropy).\n",
             "description_kind": "plain"
           }
         }
@@ -1919,6 +3797,7 @@
             "attributes": {
               "description": {
                 "type": "string",
+                "description": "The description of the ACL Role.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -1930,11 +3809,13 @@
               },
               "name": {
                 "type": "string",
+                "description": "The name of the ACL Role.",
                 "description_kind": "plain",
                 "required": true
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to lookup the role.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1949,11 +3830,13 @@
                     }
                   ]
                 ],
+                "description": "The list of node identities associated with the ACL Role.",
                 "description_kind": "plain",
                 "computed": true
               },
               "partition": {
                 "type": "string",
+                "description": "The partition to lookup the role.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1968,6 +3851,7 @@
                     }
                   ]
                 ],
+                "description": "The list of policies associated with the ACL Role.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -1985,10 +3869,39 @@
                     }
                   ]
                 ],
+                "description": "The list of service identities associated with the ACL Role.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "templated_policies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "datacenters": [
+                        "list",
+                        "string"
+                      ],
+                      "template_name": "string",
+                      "template_variables": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "The list of templated policies that should be applied to the token.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "The `consul_acl_role` data source returns the information related to a [Consul ACL Role](https://www.consul.io/api/acl/roles.html).",
             "description_kind": "plain"
           }
         },
@@ -1998,11 +3911,13 @@
             "attributes": {
               "accessor_id": {
                 "type": "string",
+                "description": "The accessor ID of the ACL token.",
                 "description_kind": "plain",
                 "required": true
               },
               "description": {
                 "type": "string",
+                "description": "The description of the ACL token.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -2020,11 +3935,13 @@
               },
               "local": {
                 "type": "bool",
+                "description": "Whether the ACL token is local to the datacenter it was created within.",
                 "description_kind": "plain",
                 "computed": true
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to lookup the ACL token.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2039,12 +3956,13 @@
                     }
                   ]
                 ],
-                "description": "The list of node identities that should be applied to the token.",
+                "description": "The list of node identities attached to the token.",
                 "description_kind": "plain",
                 "computed": true
               },
               "partition": {
                 "type": "string",
+                "description": "The partition to lookup the ACL token.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2059,6 +3977,7 @@
                     }
                   ]
                 ],
+                "description": "A list of policies associated with the ACL token.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -2073,7 +3992,7 @@
                     }
                   ]
                 ],
-                "description": "List of roles.",
+                "description": "List of roles linked to the token",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -2091,11 +4010,39 @@
                     }
                   ]
                 ],
-                "description": "The list of service identities that should be applied to the token.",
+                "description": "The list of service identities attached to the token.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "templated_policies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "datacenters": [
+                        "list",
+                        "string"
+                      ],
+                      "template_name": "string",
+                      "template_variables": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "name": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "The list of templated policies that should be applied to the token.",
                 "description_kind": "plain",
                 "computed": true
               }
             },
+            "description": "The `consul_acl_token` data source returns the information related to the `consul_acl_token` resource with the exception of its secret ID.\n\nIf you want to get the secret ID associated with a token, use the [`consul_acl_token_secret_id` data source](/docs/providers/consul/d/acl_token_secret_id.html).",
             "description_kind": "plain"
           }
         },
@@ -3175,7 +5122,7 @@
           }
         },
         "consul_keys": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "datacenter": {

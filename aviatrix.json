@@ -462,12 +462,27 @@
                 "type": "string",
                 "description": "Edge CSP password.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true,
                 "sensitive": true
               },
               "edge_csp_username": {
                 "type": "string",
                 "description": "Edge CSP username.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "edge_zededa_password": {
+                "type": "string",
+                "description": "Edge Zededa password.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "edge_zededa_username": {
+                "type": "string",
+                "description": "Edge Zededa username.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2042,15 +2057,6 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
-              },
-              "proxies": {
-                "type": [
-                  "set",
-                  "string"
-                ],
-                "description": "Set of proxies.",
-                "description_kind": "plain",
-                "optional": true
               }
             },
             "description_kind": "plain"
@@ -2122,6 +2128,117 @@
             "description_kind": "plain"
           }
         },
+        "aviatrix_copilot_fault_tolerant_deployment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Aviatrix access account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cloud_type": {
+                "type": "number",
+                "description": "Cloud type.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "controller_service_account_password": {
+                "type": "string",
+                "description": "Controller service account password.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "controller_service_account_username": {
+                "type": "string",
+                "description": "Controller service account username.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "main_copilot_instance_size": {
+                "type": "string",
+                "description": "Instance size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "main_copilot_private_ip": {
+                "type": "string",
+                "description": "Copilot private IP.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "main_copilot_public_ip": {
+                "type": "string",
+                "description": "Copilot public IP.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "main_copilot_subnet": {
+                "type": "string",
+                "description": "Subnet CIDR.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "main_copilot_vpc_id": {
+                "type": "string",
+                "description": "VPC ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "cluster_data_nodes": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "data_volume_size": {
+                      "type": "number",
+                      "description": "Data volume size.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "instance_size": {
+                      "type": "string",
+                      "description": "Instance size.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "subnet": {
+                      "type": "string",
+                      "description": "Subnet CIDR.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vpc_id": {
+                      "type": "string",
+                      "description": "VPC ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Cluster data nodes.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "aviatrix_copilot_security_group_management_config": {
           "version": 0,
           "block": {
@@ -2173,6 +2290,87 @@
                 "description": "Copilot zone. Valid for GCP.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_copilot_simple_deployment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Aviatrix access account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "cloud_type": {
+                "type": "number",
+                "description": "Cloud type.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "controller_service_account_password": {
+                "type": "string",
+                "description": "Controller service account password.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "controller_service_account_username": {
+                "type": "string",
+                "description": "Controller service account username.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "data_volume_size": {
+                "type": "number",
+                "description": "Data volume size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_size": {
+                "type": "string",
+                "description": "Instance size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "private_ip": {
+                "type": "string",
+                "description": "Copilot private IP.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "public_ip": {
+                "type": "string",
+                "description": "Copilot public IP.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "subnet": {
+                "type": "string",
+                "description": "Subnet CIDR.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "VPC ID.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -2322,6 +2520,26 @@
             "description_kind": "plain"
           }
         },
+        "aviatrix_distributed_firewalling_origin_cert_enforcement_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enforcement_level": {
+                "type": "string",
+                "description": "Which origin cert enforcement level to set to for distributed firewalling.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "aviatrix_distributed_firewalling_policy_list": {
           "version": 0,
           "block": {
@@ -2344,6 +2562,12 @@
                       "description_kind": "plain",
                       "required": true
                     },
+                    "decrypt_policy": {
+                      "type": "string",
+                      "description": "Decryption options for the policy.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "dst_smart_groups": {
                       "type": [
                         "set",
@@ -2352,6 +2576,18 @@
                       "description": "Set of destination Smart Group UUIDs for the policy.",
                       "description_kind": "plain",
                       "required": true
+                    },
+                    "exclude_sg_orchestration": {
+                      "type": "bool",
+                      "description": "If this flag is set to true, this policy will be ignored for SG orchestration.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "flow_app_requirement": {
+                      "type": "string",
+                      "description": "Flow application requirement for the policy.",
+                      "description_kind": "plain",
+                      "optional": true
                     },
                     "logging": {
                       "type": "bool",
@@ -2397,6 +2633,15 @@
                       "description": "Whether to enable watch mode for the policy.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "web_groups": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Set of Web Group UUIDs for the policy.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "block_types": {
@@ -2427,6 +2672,63 @@
                   "description_kind": "plain"
                 },
                 "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_distributed_firewalling_proxy_ca_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ca_cert": {
+                "type": "string",
+                "description": "Content of proxy ca certificate to create only one cert.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ca_key": {
+                "type": "string",
+                "description": "Content of proxy ca cert key to create only one cert.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "common_name": {
+                "type": "string",
+                "description": "Common name of created cert.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expiration_time": {
+                "type": "string",
+                "description": "Expiration time of created cert.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issuer_name": {
+                "type": "string",
+                "description": "Issuer name of created cert.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "unique_serial": {
+                "type": "string",
+                "description": "Unique serial of created cert.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "upload_info": {
+                "type": "string",
+                "description": "Upload info of created cert.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -2475,6 +2777,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enable_auto_advertise_lan_cidrs": {
+                "type": "bool",
+                "description": "Enable auto advertise LAN CIDRs.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enable_edge_active_standby": {
                 "type": "bool",
                 "description": "Enables Edge Active-Standby Mode.",
@@ -2517,6 +2825,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enable_single_ip_snat": {
+                "type": "bool",
+                "description": "Enable Single IP SNAT.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "gw_name": {
                 "type": "string",
                 "description": "Edge CSP name.",
@@ -2529,15 +2843,12 @@
                 "optional": true,
                 "computed": true
               },
-              "lan_interface_ip_prefix": {
-                "type": "string",
-                "description": "LAN interface IP/prefix.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "lan_interface_name": {
-                "type": "string",
-                "description": "LAN interface name.",
+              "lan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of LAN interface names.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2562,33 +2873,21 @@
                 "optional": true,
                 "computed": true
               },
-              "management_default_gateway_ip": {
-                "type": "string",
-                "description": "Management default gateway IP.",
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
                 "description_kind": "plain",
                 "optional": true
               },
-              "management_egress_ip_prefix": {
-                "type": "string",
-                "description": "Management egress gateway IP/prefix.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "management_interface_config": {
-                "type": "string",
-                "description": "Management interface configuration. Valid values: 'DHCP' and 'Static'.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "management_interface_ip_prefix": {
-                "type": "string",
-                "description": "Management interface IP/prefix.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "management_interface_name": {
-                "type": "string",
-                "description": "Management interface name.",
+              "management_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of management interface names.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2646,30 +2945,1874 @@
                 "description_kind": "plain",
                 "required": true
               },
-              "wan_default_gateway_ip": {
-                "type": "string",
-                "description": "WAN default gateway IP.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "wan_interface_ip_prefix": {
-                "type": "string",
-                "description": "WAN interface IP/prefix.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "wan_interface_name": {
-                "type": "string",
-                "description": "WAN interface name.",
+              "wan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of WAN interface names.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_vrrp": {
+                      "type": "bool",
+                      "description": "Enable VRRP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "VRRP virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
               },
-              "wan_public_ip": {
+              "vlan": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "parent_interface_name": {
+                      "type": "string",
+                      "description": "Parent interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "peer_gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer_ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vlan_id": {
+                      "type": "number",
+                      "description": "VLAN ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VLAN configuration.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "aviatrix_edge_csp_ha": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
                 "type": "string",
-                "description": "WAN interface public IP.",
+                "description": "Edge CSP account name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "compute_node_uuid": {
+                "type": "string",
+                "description": "Compute node UUID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_gw_name": {
+                "type": "string",
+                "description": "Primary gateway name.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "aviatrix_edge_equinix": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge Equinix account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "approved_learned_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Approved learned CIDRs for BGP Spoke Gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_hold_time": {
+                "type": "number",
+                "description": "BGP route polling time for BGP spoke gateway in seconds. Valid values are between 12 and 360.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_polling_time": {
+                "type": "number",
+                "description": "BGP route polling time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 10 and 50.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_server_ip": {
+                "type": "string",
+                "description": "DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_auto_advertise_lan_cidrs": {
+                "type": "bool",
+                "description": "Enable auto advertise LAN CIDRs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby": {
+                "type": "bool",
+                "description": "Enables Edge Active-Standby Mode.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby_preemptive": {
+                "type": "bool",
+                "description": "Enables Preemptive Mode for Edge Active-Standby, available only with Active-Standby enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_transitive_routing": {
+                "type": "bool",
+                "description": "Enable Edge transitive routing.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_jumbo_frame": {
+                "type": "bool",
+                "description": "Enable jumbo frame.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_learned_cidrs_approval": {
+                "type": "bool",
+                "description": "Switch to enable/disable learned CIDR approval for BGP Spoke Gateway. Valid values: true, false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_management_over_private_network": {
+                "type": "bool",
+                "description": "Enable management over private network.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_preserve_as_path": {
+                "type": "bool",
+                "description": "Enable preserve as path when advertising manual summary CIDRs on BGP spoke gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_single_ip_snat": {
+                "type": "bool",
+                "description": "Enable Single IP SNAT.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gw_name": {
+                "type": "string",
+                "description": "Edge Equinix name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "latitude": {
+                "type": "string",
+                "description": "The latitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_as_number": {
+                "type": "string",
+                "description": "Local AS number.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longitude": {
+                "type": "string",
+                "description": "The longitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "prepend_as_path": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of AS numbers to prepend gateway BGP AS_Path field.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rx_queue_size": {
+                "type": "string",
+                "description": "Ethernet interface RX queue size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secondary_dns_server_ip": {
+                "type": "string",
+                "description": "Secondary DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "site_id": {
+                "type": "string",
+                "description": "Site ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "spoke_bgp_manual_advertise_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Intended CIDR list to be advertised to external BGP router.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "State of Edge as a Spoke.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ztp_file_download_path": {
+                "type": "string",
+                "description": "The location where the ZTP file will be stored.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_vrrp": {
+                      "type": "bool",
+                      "description": "Enable VRRP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "VRRP virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "vlan": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "parent_interface_name": {
+                      "type": "string",
+                      "description": "Parent interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "peer_gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer_ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vlan_id": {
+                      "type": "number",
+                      "description": "VLAN ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VLAN configuration.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_equinix_ha": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge Equinix account name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_gw_name": {
+                "type": "string",
+                "description": "Primary gateway name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ztp_file_download_path": {
+                "type": "string",
+                "description": "The location where the ZTP file will be stored.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_neo": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge CSP account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "approved_learned_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Approved learned CIDRs for BGP Spoke Gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_hold_time": {
+                "type": "number",
+                "description": "BGP Hold Time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 12 and 360.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_polling_time": {
+                "type": "number",
+                "description": "BGP route polling time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 10 and 50.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Edge NEO device ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "dns_server_ip": {
+                "type": "string",
+                "description": "DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_auto_advertise_lan_cidrs": {
+                "type": "bool",
+                "description": "Enable auto advertise LAN CIDRs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby": {
+                "type": "bool",
+                "description": "Enables Edge Active-Standby Mode.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby_preemptive": {
+                "type": "bool",
+                "description": "Enables Preemptive Mode for Edge Active-Standby, available only with Active-Standby enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_transitive_routing": {
+                "type": "bool",
+                "description": "Enable Edge transitive routing.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_jumbo_frame": {
+                "type": "bool",
+                "description": "Enable jumbo frame.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_learned_cidrs_approval": {
+                "type": "bool",
+                "description": "Switch to enable/disable learned CIDR approval for BGP Spoke Gateway. Valid values: true, false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_management_over_private_network": {
+                "type": "bool",
+                "description": "Enable management over private network.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_preserve_as_path": {
+                "type": "bool",
+                "description": "Enable preserve as path when advertising manual summary CIDRs on BGP spoke gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_single_ip_snat": {
+                "type": "bool",
+                "description": "Enable Single IP SNAT.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gw_name": {
+                "type": "string",
+                "description": "Edge CSP name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "gw_size": {
+                "type": "string",
+                "description": "Gateway size (CPU and Memory).",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of LAN interface names.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "latitude": {
+                "type": "string",
+                "description": "The latitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_as_number": {
+                "type": "string",
+                "description": "Local AS number.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longitude": {
+                "type": "string",
+                "description": "The longitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "management_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of management interface names.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "prepend_as_path": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of AS numbers to prepend gateway BGP AS_Path field.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rx_queue_size": {
+                "type": "string",
+                "description": "Ethernet interface RX queue size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secondary_dns_server_ip": {
+                "type": "string",
+                "description": "Secondary DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "site_id": {
+                "type": "string",
+                "description": "Site ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "spoke_bgp_manual_advertise_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Intended CIDR list to be advertised to external BGP router.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "State of Edge as a Spoke.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "wan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of WAN interface names.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_vrrp": {
+                      "type": "bool",
+                      "description": "Enable VRRP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "VRRP virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "vlan": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "parent_interface_name": {
+                      "type": "string",
+                      "description": "Parent interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "peer_gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer_ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vlan_id": {
+                      "type": "number",
+                      "description": "VLAN ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VLAN configuration.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "aviatrix_edge_neo_device_onboarding": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge NEO account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "config_file_download_path": {
+                "type": "string",
+                "description": "The location where the config file will be stored.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Device ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_name": {
+                "type": "string",
+                "description": "Device name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "download_config_file": {
+                "type": "bool",
+                "description": "Set to true to download the Edge NEO static config file.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hardware_model": {
+                "type": "string",
+                "description": "Hardware Model.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "serial_number": {
+                "type": "string",
+                "description": "Serial number.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "network": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "dns_server_ips": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Set of DNS server IPs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "interface_name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ipv4_cidr": {
+                      "type": "string",
+                      "description": "IPV4 CIDR.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "proxy_server_ip": {
+                      "type": "string",
+                      "description": "Proxy server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Network configurations.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "aviatrix_edge_neo_ha": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge NEO account name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Edge NEO device ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_gw_name": {
+                "type": "string",
+                "description": "Primary gateway name.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "aviatrix_edge_platform": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge CSP account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "approved_learned_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Approved learned CIDRs for BGP Spoke Gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_hold_time": {
+                "type": "number",
+                "description": "BGP Hold Time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 12 and 360.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_polling_time": {
+                "type": "number",
+                "description": "BGP route polling time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 10 and 50.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Edge NEO device ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "dns_profile_name": {
+                "type": "string",
+                "description": "DNS profile to be associated with gateway, select an existing template.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_server_ip": {
+                "type": "string",
+                "description": "DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_auto_advertise_lan_cidrs": {
+                "type": "bool",
+                "description": "Enable auto advertise LAN CIDRs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby": {
+                "type": "bool",
+                "description": "Enables Edge Active-Standby Mode.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby_preemptive": {
+                "type": "bool",
+                "description": "Enables Preemptive Mode for Edge Active-Standby, available only with Active-Standby enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_transitive_routing": {
+                "type": "bool",
+                "description": "Enable Edge transitive routing.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_jumbo_frame": {
+                "type": "bool",
+                "description": "Enable jumbo frame.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_learned_cidrs_approval": {
+                "type": "bool",
+                "description": "Switch to enable/disable learned CIDR approval for BGP Spoke Gateway. Valid values: true, false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_management_over_private_network": {
+                "type": "bool",
+                "description": "Enable management over private network.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_preserve_as_path": {
+                "type": "bool",
+                "description": "Enable preserve as path when advertising manual summary CIDRs on BGP spoke gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_single_ip_snat": {
+                "type": "bool",
+                "description": "Enable Single IP SNAT.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gw_name": {
+                "type": "string",
+                "description": "Edge CSP name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "gw_size": {
+                "type": "string",
+                "description": "Gateway size (CPU and Memory).",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of LAN interface names.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "latitude": {
+                "type": "string",
+                "description": "The latitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_as_number": {
+                "type": "string",
+                "description": "Local AS number.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longitude": {
+                "type": "string",
+                "description": "The longitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "management_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of management interface names.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "prepend_as_path": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of AS numbers to prepend gateway BGP AS_Path field.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rx_queue_size": {
+                "type": "string",
+                "description": "Ethernet interface RX queue size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secondary_dns_server_ip": {
+                "type": "string",
+                "description": "Secondary DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "site_id": {
+                "type": "string",
+                "description": "Site ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "spoke_bgp_manual_advertise_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Intended CIDR list to be advertised to external BGP router.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "State of Edge as a Spoke.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "wan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of WAN interface names.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_vrrp": {
+                      "type": "bool",
+                      "description": "Enable VRRP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "VRRP virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "vlan": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "parent_interface_name": {
+                      "type": "string",
+                      "description": "Parent interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "peer_gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer_ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vlan_id": {
+                      "type": "number",
+                      "description": "VLAN ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VLAN configuration.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_platform_device_onboarding": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge NEO account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "config_file_download_path": {
+                "type": "string",
+                "description": "The location where the config file will be stored.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Device ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_name": {
+                "type": "string",
+                "description": "Device name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "download_config_file": {
+                "type": "bool",
+                "description": "Set to true to download the Edge Platform static config file.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "hardware_model": {
+                "type": "string",
+                "description": "Hardware Model.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "serial_number": {
+                "type": "string",
+                "description": "Serial number.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "network": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "dns_server_ips": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Set of DNS server IPs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "interface_name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ipv4_cidr": {
+                      "type": "string",
+                      "description": "IPV4 CIDR.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "proxy_server_ip": {
+                      "type": "string",
+                      "description": "Proxy server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Network configurations.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_platform_ha": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge NEO account name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "device_id": {
+                "type": "string",
+                "description": "Edge NEO device ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_gw_name": {
+                "type": "string",
+                "description": "Primary gateway name.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
               }
             },
             "description_kind": "plain"
@@ -2760,12 +4903,6 @@
                 "optional": true,
                 "computed": true
               },
-              "lan_interface_ip_prefix": {
-                "type": "string",
-                "description": "LAN interface IP/prefix.",
-                "description_kind": "plain",
-                "required": true
-              },
               "latitude": {
                 "type": "string",
                 "description": "The latitude of the Edge as a Spoke.",
@@ -2787,27 +4924,12 @@
                 "optional": true,
                 "computed": true
               },
-              "management_default_gateway_ip": {
-                "type": "string",
-                "description": "Management default gateway IP.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "management_egress_ip_prefix": {
-                "type": "string",
-                "description": "Management egress gateway IP/prefix.",
-                "description_kind": "plain",
-                "optional": true
-              },
-              "management_interface_config": {
-                "type": "string",
-                "description": "Management interface configuration. Valid values: 'DHCP' and 'Static'.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "management_interface_ip_prefix": {
-                "type": "string",
-                "description": "Management interface IP/prefix.",
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2853,28 +4975,9 @@
                 "description_kind": "plain",
                 "computed": true
               },
-              "wan_default_gateway_ip": {
-                "type": "string",
-                "description": "WAN default gateway IP.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "wan_interface_ip_prefix": {
-                "type": "string",
-                "description": "WAN interface IP/prefix.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "wan_public_ip": {
-                "type": "string",
-                "description": "WAN interface public IP.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
               "ztp_file_download_path": {
                 "type": "string",
-                "description": "The location where the Edge as a CaaG ZTP file will be stored.",
+                "description": "The location where the ZTP file will be stored.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -2885,18 +4988,100 @@
                 "required": true
               }
             },
-            "description_kind": "plain"
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aviatrix_edge_spoke_external_device_conn": {
           "version": 0,
           "block": {
             "attributes": {
+              "backup_bgp_md5_key": {
+                "type": "string",
+                "description": "Backup BGP MD5 authentication key.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "backup_bgp_remote_as_num": {
+                "type": "string",
+                "description": "Backup BGP remote ASN (Autonomous System Number). Integer between 1-4294967294.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "backup_local_lan_ip": {
+                "type": "string",
+                "description": "Backup Local LAN IP.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "backup_remote_lan_ip": {
+                "type": "string",
+                "description": "Backup Remote LAN IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "bgp_local_as_num": {
                 "type": "string",
                 "description": "BGP local AS number.",
                 "description_kind": "plain",
                 "required": true
+              },
+              "bgp_md5_key": {
+                "type": "string",
+                "description": "BGP MD5 authentication key.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
               },
               "bgp_remote_as_num": {
                 "type": "string",
@@ -2908,11 +5093,18 @@
                 "type": "string",
                 "description": "The name of the spoke external device connection which is going to be created.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "connection_type": {
                 "type": "string",
                 "description": "Connection type. Valid values: 'bgp'. Default value: 'bgp'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_underlay": {
+                "type": "bool",
+                "description": "Enable BGP over WAN underlay.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2921,6 +5113,12 @@
                 "description": "Name of the BGP Spoke Gateway.",
                 "description_kind": "plain",
                 "required": true
+              },
+              "ha_enabled": {
+                "type": "bool",
+                "description": "Set as true if there are two external devices.",
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -2934,9 +5132,33 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "manual_bgp_advertised_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Configure manual BGP advertised CIDRs for this connection.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "number_of_retries": {
                 "type": "number",
                 "description": "Number of retries.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "prepend_as_path": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Connection AS Path Prepend customized by specifying AS PATH for a BGP connection.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote_cloud_type": {
+                "type": "string",
+                "description": "Remote cloud type.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2972,6 +5194,15 @@
           "version": 0,
           "block": {
             "attributes": {
+              "edge_wan_interfaces": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Edge WAN interfaces.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enable_insane_mode": {
                 "type": "bool",
                 "description": "Enable jumbo frame.",
@@ -3043,6 +5274,711 @@
                 "description": "AS Path Prepend customized by specifying AS PATH for a BGP connection. Applies on transit gateway.",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_vm_selfmanaged": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "approved_learned_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Approved learned CIDRs for BGP Spoke Gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_hold_time": {
+                "type": "number",
+                "description": "BGP Hold Time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 12 and 360.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_polling_time": {
+                "type": "number",
+                "description": "BGP route polling time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 10 and 50.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_server_ip": {
+                "type": "string",
+                "description": "DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby": {
+                "type": "bool",
+                "description": "Enables Edge Active-Standby Mode.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby_preemptive": {
+                "type": "bool",
+                "description": "Enables Preemptive Mode for Edge Active-Standby, available only with Active-Standby enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_transitive_routing": {
+                "type": "bool",
+                "description": "Enable Edge transitive routing.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_jumbo_frame": {
+                "type": "bool",
+                "description": "Enable jumbo frame.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_learned_cidrs_approval": {
+                "type": "bool",
+                "description": "Switch to enable/disable learned CIDR approval for BGP Spoke Gateway. Valid values: true, false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_management_over_private_network": {
+                "type": "bool",
+                "description": "Enable management over private network.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_preserve_as_path": {
+                "type": "bool",
+                "description": "Enable preserve as path when advertising manual summary CIDRs on BGP spoke gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gw_name": {
+                "type": "string",
+                "description": "Edge VM Selfmanaged name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "latitude": {
+                "type": "string",
+                "description": "The latitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_as_number": {
+                "type": "string",
+                "description": "Local AS number.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longitude": {
+                "type": "string",
+                "description": "The longitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "prepend_as_path": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of AS numbers to prepend gateway BGP AS_Path field.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rx_queue_size": {
+                "type": "string",
+                "description": "Ethernet interface RX queue size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secondary_dns_server_ip": {
+                "type": "string",
+                "description": "Secondary DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "site_id": {
+                "type": "string",
+                "description": "Site ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "spoke_bgp_manual_advertise_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Intended CIDR list to be advertised to external BGP router.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "State of Edge VM Selfmanaged.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ztp_file_download_path": {
+                "type": "string",
+                "description": "The location where the ZTP file will be stored.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ztp_file_type": {
+                "type": "string",
+                "description": "ZTP file type.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_zededa": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge CSP account name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "approved_learned_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Approved learned CIDRs for BGP Spoke Gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_hold_time": {
+                "type": "number",
+                "description": "BGP Hold Time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 12 and 360.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bgp_polling_time": {
+                "type": "number",
+                "description": "BGP route polling time for BGP Spoke Gateway. Unit is in seconds. Valid values are between 10 and 50.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "compute_node_uuid": {
+                "type": "string",
+                "description": "Edge CSP compute node UUID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "dns_profile_name": {
+                "type": "string",
+                "description": "DNS profile to be associated with gateway, select an existing template.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "dns_server_ip": {
+                "type": "string",
+                "description": "DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_auto_advertise_lan_cidrs": {
+                "type": "bool",
+                "description": "Enable auto advertise LAN CIDRs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby": {
+                "type": "bool",
+                "description": "Enables Edge Active-Standby Mode.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_active_standby_preemptive": {
+                "type": "bool",
+                "description": "Enables Preemptive Mode for Edge Active-Standby, available only with Active-Standby enabled.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_edge_transitive_routing": {
+                "type": "bool",
+                "description": "Enable Edge transitive routing.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_jumbo_frame": {
+                "type": "bool",
+                "description": "Enable jumbo frame.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_learned_cidrs_approval": {
+                "type": "bool",
+                "description": "Switch to enable/disable learned CIDR approval for BGP Spoke Gateway. Valid values: true, false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_management_over_private_network": {
+                "type": "bool",
+                "description": "Enable management over private network.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_preserve_as_path": {
+                "type": "bool",
+                "description": "Enable preserve as path when advertising manual summary CIDRs on BGP spoke gateway.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_single_ip_snat": {
+                "type": "bool",
+                "description": "Enable Single IP SNAT.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gw_name": {
+                "type": "string",
+                "description": "Edge CSP name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "lan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of LAN interface names.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "latitude": {
+                "type": "string",
+                "description": "The latitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_as_number": {
+                "type": "string",
+                "description": "Local AS number.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "longitude": {
+                "type": "string",
+                "description": "The longitude of the Edge as a Spoke.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "management_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of management interface names.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "prepend_as_path": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of AS numbers to prepend gateway BGP AS_Path field.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project_uuid": {
+                "type": "string",
+                "description": "Edge CSP project UUID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "rx_queue_size": {
+                "type": "string",
+                "description": "Ethernet interface RX queue size.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secondary_dns_server_ip": {
+                "type": "string",
+                "description": "Secondary DNS server IP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "site_id": {
+                "type": "string",
+                "description": "Site ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "spoke_bgp_manual_advertise_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Intended CIDR list to be advertised to external BGP router.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "state": {
+                "type": "string",
+                "description": "State of Edge as a Spoke.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "template_uuid": {
+                "type": "string",
+                "description": "Edge CSP template UUID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "wan_interface_names": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of WAN interface names.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_vrrp": {
+                      "type": "bool",
+                      "description": "Enable VRRP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "VRRP virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              },
+              "vlan": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "parent_interface_name": {
+                      "type": "string",
+                      "description": "Parent interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "peer_gateway_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface gateway IP on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "peer_ip_address": {
+                      "type": "string",
+                      "description": "LAN sub-interface IP address on HA gateway.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vlan_id": {
+                      "type": "number",
+                      "description": "VLAN ID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vrrp_virtual_ip": {
+                      "type": "string",
+                      "description": "LAN sub-interface virtual IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "VLAN configuration.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_edge_zededa_ha": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Edge Zededa account name.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "compute_node_uuid": {
+                "type": "string",
+                "description": "Compute node UUID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "management_egress_ip_prefix_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of management egress gateway IP/prefix.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "primary_gw_name": {
+                "type": "string",
+                "description": "Primary gateway name.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "interfaces": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "bandwidth": {
+                      "type": "number",
+                      "description": "The rate of data can be moved through the interface, requires an integer value. Unit is in Mb/s.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_server_ip": {
+                      "type": "string",
+                      "description": "Primary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "enable_dhcp": {
+                      "type": "bool",
+                      "description": "Enable DHCP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gateway_ip": {
+                      "type": "string",
+                      "description": "Gateway IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Interface static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Interface name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_dns_server_ip": {
+                      "type": "string",
+                      "description": "Secondary DNS server IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tag": {
+                      "type": "string",
+                      "description": "Tag.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Interface type.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "wan_public_ip": {
+                      "type": "string",
+                      "description": "WAN interface public IP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "WAN/LAN/MANAGEMENT interfaces.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
               }
             },
             "description_kind": "plain"
@@ -4062,6 +6998,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enable_gro_gso": {
+                "type": "bool",
+                "description": "Specify whether to disable GRO/GSO or not.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enable_jumbo_frame": {
                 "type": "bool",
                 "description": "Enable jumbo frame support for Gateway. Valid values: true or false. Default value: true.",
@@ -4070,7 +7012,7 @@
               },
               "enable_ldap": {
                 "type": "bool",
-                "description": "Specify whether to enable LDAP or not. Supported values: 'yes' and 'no'.",
+                "description": "Specify whether to enable LDAP or not.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4893,6 +7835,70 @@
             "description_kind": "plain"
           }
         },
+        "aviatrix_global_vpc_excluded_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_name": {
+                "type": "string",
+                "description": "Aviatrix GCP access name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_name": {
+                "type": "string",
+                "description": "Name of the instance to be excluded for tagging.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region of the instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "UUID of the exclude list object.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_global_vpc_tagging_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enable_alert": {
+                "type": "bool",
+                "description": "Set to true to enable alert.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "service_state": {
+                "type": "string",
+                "description": "Service state.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "aviatrix_netflow_agent": {
           "version": 0,
           "block": {
@@ -5121,6 +8127,91 @@
             "description_kind": "plain"
           }
         },
+        "aviatrix_qos_class": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "QoS class name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "priority": {
+                "type": "number",
+                "description": "QoS class priority.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "QoS class UUID.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "aviatrix_qos_policy_list": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "policies": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "dscp_values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of DSCP values.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "QoS policy name.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "qos_class_uuid": {
+                      "type": "string",
+                      "description": "QoS class UUID.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "uuid": {
+                      "type": "string",
+                      "description": "QoS policy UUID.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "List of QoS policies.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "aviatrix_rbac_group": {
           "version": 0,
           "block": {
@@ -5260,7 +8351,7 @@
                 "type": "string",
                 "description": "Profile name.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "notls": {
                 "type": "bool",
@@ -5662,6 +8753,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "phase1_local_identifier": {
+                "type": "string",
+                "description": "By default, gateway’s public IP is configured as the Local Identifier.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "phase1_remote_identifier": {
                 "type": [
                   "list",
@@ -5959,6 +9056,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "fqdn": {
+                            "type": "string",
+                            "description": "FQDN address this expression matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "name": {
                             "type": "string",
                             "description": "Name this expression matches.",
@@ -5974,6 +9077,12 @@
                           "res_id": {
                             "type": "string",
                             "description": "Resource ID this expression matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "site": {
+                            "type": "string",
+                            "description": "Edge Site-ID this expression matches.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -6201,6 +9310,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "enable_jumbo_frame": {
+                "type": "bool",
+                "description": "Enable Jumbo Frame for the transit external device connection. Valid values: true, false.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enable_learned_cidrs_approval": {
                 "type": "bool",
                 "description": "Enable learned CIDR approval for the connection. Only valid with 'connection_type' = 'bgp'. Requires the spoke_gateway's 'learned_cidrs_approval_mode' attribute be set to 'connection'. Valid values: true, false. Default value: false.",
@@ -6245,6 +9360,12 @@
                   "string"
                 ],
                 "description": "Configure manual BGP advertised CIDRs for this connection. Only valid with 'connection_type' = 'bgp'.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "phase1_local_identifier": {
+                "type": "string",
+                "description": "By default, gateway’s public IP is configured as the Local Identifier.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6342,7 +9463,7 @@
               },
               "tunnel_protocol": {
                 "type": "string",
-                "description": "Tunnel Protocol. Valid values: 'IPsec', 'LAN'. Default value: 'IPsec'. Case insensitive.",
+                "description": "Tunnel Protocol. Valid values: 'IPsec', 'GRE' or 'LAN'. Default value: 'IPsec'. Case insensitive.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6499,6 +9620,18 @@
               "enable_encrypt_volume": {
                 "type": "bool",
                 "description": "Enable encrypt gateway EBS volume. Only supported for AWS provider. Valid values: true, false. Default value: false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_global_vpc": {
+                "type": "bool",
+                "description": "Set to true to enable global VPC. Only supported for GCP.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_gro_gso": {
+                "type": "bool",
+                "description": "Specify whether to disable GRO/GSO or not.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -7416,6 +10549,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "phase1_local_identifier": {
+                "type": "string",
+                "description": "By default, gateway’s public IP is configured as the Local Identifier.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "phase1_remote_identifier": {
                 "type": [
                   "list",
@@ -7726,6 +10865,12 @@
               "enable_gateway_load_balancer": {
                 "type": "bool",
                 "description": "Enable firenet interfaces with AWS Gateway Load Balancer. Only valid when `enable_firenet` or `enable_transit_firenet` are set to true and `cloud_type` = 1 (AWS). Currently AWS Gateway Load Balancer is only supported in AWS regions us-west-2 and us-east-1. Valid values: true or false. Default value: false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enable_gro_gso": {
+                "type": "bool",
+                "description": "Specify whether to disable GRO/GSO or not.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -8834,6 +11979,66 @@
             },
             "description_kind": "plain"
           }
+        },
+        "aviatrix_web_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Web Group.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "UUID of the Web Group.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "selector": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "match_expressions": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "snifilter": {
+                            "type": "string",
+                            "description": "Server name indicator this expression matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "urlfilter": {
+                            "type": "string",
+                            "description": "URL address this expression matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1
+                    }
+                  },
+                  "description": "List of match expressions for the Web Group.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
         }
       },
       "data_source_schemas": {
@@ -9081,6 +12286,44 @@
             "description_kind": "plain"
           }
         },
+        "aviatrix_controller_metadata": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cloud_type": {
+                "type": "string",
+                "description": "Cloud type.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "string",
+                "description": "Instance ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "Region.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "string",
+                "description": "VPC ID.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "aviatrix_device_interfaces": {
           "version": 0,
           "block": {
@@ -9116,8 +12359,40 @@
             "description_kind": "plain"
           }
         },
+        "aviatrix_edge_gateway_wan_interface_discovery": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "gw_name": {
+                "type": "string",
+                "description": "Edge gateway name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_address": {
+                "type": "string",
+                "description": "Public IP of the Edge gateway's WAN interface.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "wan_interface_name": {
+                "type": "string",
+                "description": "Name of the WAN interface to be discovered.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "aviatrix_firenet": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "egress_enabled": {
@@ -9370,7 +12645,7 @@
           }
         },
         "aviatrix_firewall": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "base_log_enabled": {
@@ -9464,7 +12739,7 @@
           }
         },
         "aviatrix_gateway": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "account_name": {
@@ -9571,7 +12846,7 @@
               },
               "enable_ldap": {
                 "type": "bool",
-                "description": "Specify whether to enable LDAP or not. Supported values: 'yes' and 'no'.",
+                "description": "Whether enable LDAP or not.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -10047,7 +13322,7 @@
           }
         },
         "aviatrix_spoke_gateway": {
-          "version": 2,
+          "version": 0,
           "block": {
             "attributes": {
               "account_name": {
@@ -10620,7 +13895,7 @@
           }
         },
         "aviatrix_transit_gateway": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "account_name": {
@@ -11303,7 +14578,7 @@
           }
         },
         "aviatrix_vpc": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "account_name": {

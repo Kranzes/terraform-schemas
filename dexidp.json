@@ -1,0 +1,122 @@
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/marcofranssen/dexidp": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "host": {
+              "type": "string",
+              "description": "The host and port of the Dex gRPC API.",
+              "description_kind": "plain",
+              "required": true
+            },
+            "tls": {
+              "nested_type": {
+                "attributes": {
+                  "ca_cert": {
+                    "type": "string",
+                    "description": "The server certificate authority for the Dex gRPC API",
+                    "description_kind": "plain",
+                    "required": true
+                  },
+                  "client_cert": {
+                    "type": "string",
+                    "description": "Client certificate for mutual TLS authentication",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "client_key": {
+                    "type": "string",
+                    "description": "Client key for mutual TLS authentication",
+                    "description_kind": "plain",
+                    "optional": true,
+                    "sensitive": true
+                  }
+                },
+                "nesting_mode": "single"
+              },
+              "description": "TLS configuration for the Dex gRPC API.",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "description": "Provision Dex resources via the Dex gRPC API.",
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "dexidp_client": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "client_id": {
+                "type": "string",
+                "description": "The ID of your Dex oauth2 client.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of your terraform resoure (Set to client_id automatically).",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "last_updated": {
+                "type": "string",
+                "description": "Timestamp of the last Terraform update of the Dex client.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "logo_url": {
+                "type": "string",
+                "description": "The url to the logo of your Dex oauth2 client.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of your Dex oauth2 client.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "public": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "redirect_uris": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The allowed redirect_uris for this Dex Oauth2 client.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "secret": {
+                "type": "string",
+                "description": "The Secret of your Dex oauth2 client.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "trusted_peers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The trusted peers for this Dex Oauth2 client.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Provision a Dex oauth2 client.",
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

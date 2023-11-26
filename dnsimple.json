@@ -478,6 +478,67 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "registrant_change": {
+                "nested_type": {
+                  "attributes": {
+                    "account_id": {
+                      "type": "number",
+                      "description": "DNSimple Account ID to which the registrant change belongs to",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "contact_id": {
+                      "type": "number",
+                      "description": "DNSimple contact ID for which the registrant change is being performed",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "domain_id": {
+                      "type": "string",
+                      "description": "DNSimple domain ID for which the registrant change is being performed",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "extended_attributes": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Extended attributes for the registrant change",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "irt_lock_lifted_by": {
+                      "type": "string",
+                      "description": "Date when the registrant change lock was lifted for the domain",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "registry_owner_change": {
+                      "type": "bool",
+                      "description": "True if the registrant change will result in a registry owner change",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "State of the registrant change",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The registrant change details.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "state": {
                 "type": "string",
                 "description_kind": "plain",
@@ -510,6 +571,12 @@
                 "description": "Timeouts for operations, given as a parsable string as in `10m` or `30s`.",
                 "description_kind": "markdown",
                 "optional": true
+              },
+              "transfer_lock_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "unicode_name": {
                 "type": "string",
@@ -552,6 +619,14 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "regions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
               "ttl": {
                 "type": "number",
                 "description_kind": "plain",
@@ -567,6 +642,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "value_normalized": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               },
               "zone_id": {
                 "type": "string",
@@ -635,6 +715,65 @@
               }
             },
             "description": "DNSimple certificate data source",
+            "description_kind": "markdown"
+          }
+        },
+        "dnsimple_registrant_change_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "contact_id": {
+                "type": "string",
+                "description": "DNSimple contact ID for which the registrant change check is being performed",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "domain_id": {
+                "type": "string",
+                "description": "DNSimple domain ID for which the registrant change check is being performed",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "extended_attributes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "description": "string",
+                      "name": "string",
+                      "options": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "description": "string",
+                            "title": "string",
+                            "value": "string"
+                          }
+                        ]
+                      ],
+                      "required": "bool"
+                    }
+                  ]
+                ],
+                "description": "Extended attributes for the registrant change",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "registry_owner_change": {
+                "type": "bool",
+                "description": "True if the registrant change will result in a registry owner change",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "DNSimple registrant change check data source",
             "description_kind": "markdown"
           }
         },

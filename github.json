@@ -31,6 +31,12 @@
               "description_kind": "plain",
               "optional": true
             },
+            "parallel_requests": {
+              "type": "bool",
+              "description": "Allow the provider to make parallel API calls to GitHub. You may want to set it to true when you have a private Github Enterprise without strict rate limits. Although, it is not possible to enable this setting on github.com because we enforce the respect of github.com's best practices to avoid hitting abuse rate limitsDefaults to false if not set",
+              "description_kind": "plain",
+              "optional": true
+            },
             "read_delay_ms": {
               "type": "number",
               "description": "Amount of time in milliseconds to sleep in between non-write requests to GitHub API. Defaults to 0ms if not set.",
@@ -571,7 +577,7 @@
                 "type": "bool",
                 "description": "Whether public repositories can be added to the runner group.",
                 "description_kind": "plain",
-                "computed": true
+                "optional": true
               },
               "default": {
                 "type": "bool",
@@ -922,6 +928,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "force_push_bypassers": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1117,6 +1132,15 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "dismissal_apps": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The list of apps slugs with dismissal access. Always use slug of the app, not its name. Each app already has to have access to the repository.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "dismissal_teams": {
                       "type": [
                         "set",
@@ -1270,6 +1294,203 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_organization_secret": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description": "Date of 'codespaces_secret' creation.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "encrypted_value": {
+                "type": "string",
+                "description": "Encrypted value of the secret using the GitHub public key in Base64 format.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plaintext_value": {
+                "type": "string",
+                "description": "Plaintext value of the secret to be encrypted.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "secret_name": {
+                "type": "string",
+                "description": "Name of the secret.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "selected_repository_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "An array of repository ids that can access the organization secret.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Date of 'codespaces_secret' update.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "visibility": {
+                "type": "string",
+                "description": "Configures the access that repositories have to the organization secret. Must be one of 'all', 'private' or 'selected'. 'selected_repository_ids' is required if set to 'selected'.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_organization_secret_repositories": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secret_name": {
+                "type": "string",
+                "description": "Name of the existing secret.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "selected_repository_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "An array of repository ids that can access the organization secret.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_secret": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description": "Date of 'codespaces_secret' creation.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "encrypted_value": {
+                "type": "string",
+                "description": "Encrypted value of the secret using the GitHub public key in Base64 format.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plaintext_value": {
+                "type": "string",
+                "description": "Plaintext value of the secret to be encrypted.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "Name of the repository.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "secret_name": {
+                "type": "string",
+                "description": "Name of the secret.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Date of 'codespaces_secret' update.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_user_secret": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "string",
+                "description": "Date of 'codespaces_secret' creation.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "encrypted_value": {
+                "type": "string",
+                "description": "Encrypted value of the secret using the GitHub public key in Base64 format.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "plaintext_value": {
+                "type": "string",
+                "description": "Plaintext value of the secret to be encrypted.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "secret_name": {
+                "type": "string",
+                "description": "Name of the secret.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "selected_repository_ids": {
+                "type": [
+                  "set",
+                  "number"
+                ],
+                "description": "An array of repository ids that can access the user secret.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Date of 'codespaces_secret' update.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -1473,6 +1694,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "display_name": {
+                "type": "string",
+                "description": "The display name of the organization.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "enterprise_id": {
                 "type": "string",
                 "description": "The ID of the enterprise.",
@@ -1621,6 +1848,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "downgrade_on_destroy": {
+                "type": "bool",
+                "description": "Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization",
+                "description_kind": "plain",
+                "optional": true
+              },
               "etag": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1673,6 +1906,47 @@
             "description_kind": "plain"
           }
         },
+        "github_organization_custom_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "base_role": {
+                "type": "string",
+                "description": "The base role for the custom repository role.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the custom repository role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The organization custom repository role to create.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The permissions for the custom repository role.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_organization_project": {
           "version": 0,
           "block": {
@@ -1705,6 +1979,465 @@
                 "description": "URL of the project.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_organization_ruleset": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "enforcement": {
+                "type": "string",
+                "description": "Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the ruleset.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "node_id": {
+                "type": "string",
+                "description": "GraphQL global node id for use with v4 API.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ruleset_id": {
+                "type": "number",
+                "description": "GitHub ID for the ruleset.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": "string",
+                "description": "Possible values are `branch` and `tag`.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "bypass_actors": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actor_id": {
+                      "type": "number",
+                      "description": "The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "actor_type": {
+                      "type": "string",
+                      "description": "The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "bypass_mode": {
+                      "type": "string",
+                      "description": "When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The actors that can bypass the rules in this ruleset.",
+                  "description_kind": "plain"
+                }
+              },
+              "conditions": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "repository_id": {
+                      "type": [
+                        "list",
+                        "number"
+                      ],
+                      "description": "The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "ref_name": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "exclude": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "include": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    },
+                    "repository_name": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "exclude": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "include": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "protected": {
+                            "type": "bool",
+                            "description": "Whether renaming of target repositories is prevented.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "creation": {
+                      "type": "bool",
+                      "description": "Only allow users with bypass permission to create matching refs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "deletion": {
+                      "type": "bool",
+                      "description": "Only allow users with bypass permissions to delete matching refs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "non_fast_forward": {
+                      "type": "bool",
+                      "description": "Prevent users with push access from force pushing to branches.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required_linear_history": {
+                      "type": "bool",
+                      "description": "Prevent merge commits from being pushed to matching branches.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required_signatures": {
+                      "type": "bool",
+                      "description": "Commits pushed to matching branches must have verified signatures.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "bool",
+                      "description": "Only allow users with bypass permission to update matching refs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "branch_name_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "commit_author_email_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the commit_author_email_pattern rule.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "commit_message_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the commit_message_pattern rule.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "committer_email_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the committer_email_pattern rule.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "pull_request": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "dismiss_stale_reviews_on_push": {
+                            "type": "bool",
+                            "description": "New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "require_code_owner_review": {
+                            "type": "bool",
+                            "description": "Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "require_last_push_approval": {
+                            "type": "bool",
+                            "description": "Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "required_approving_review_count": {
+                            "type": "number",
+                            "description": "The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "required_review_thread_resolution": {
+                            "type": "bool",
+                            "description": "All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "required_status_checks": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "strict_required_status_checks_policy": {
+                            "type": "bool",
+                            "description": "Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "required_check": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "context": {
+                                  "type": "string",
+                                  "description": "The status check context name that must be present on the commit.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "integration_id": {
+                                  "type": "number",
+                                  "description": "The optional integration ID that this status check must originate from.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Status checks that are required. Several can be defined.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "tag_name_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Rules within the ruleset.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -2333,6 +3066,11 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "primary_language": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "private": {
                 "type": "bool",
                 "description_kind": "plain",
@@ -2377,7 +3115,8 @@
                 ],
                 "description": "The list of topics of the repository.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "visibility": {
                 "type": "string",
@@ -2398,6 +3137,12 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "build_type": {
+                      "type": "string",
+                      "description": "The type the page should be sourced.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "cname": {
                       "type": "string",
                       "description": "The custom domain for the repository. This can only be set after the repository has been created.",
@@ -2449,7 +3194,6 @@
                         "description": "The source branch and directory for the rendered Pages site.",
                         "description_kind": "plain"
                       },
-                      "min_items": 1,
                       "max_items": 1
                     }
                   },
@@ -2705,6 +3449,32 @@
             "description_kind": "plain"
           }
         },
+        "github_repository_dependabot_security_updates": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "The state of the automated security fixes.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The GitHub repository.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_repository_deploy_key": {
           "version": 0,
           "block": {
@@ -2741,6 +3511,44 @@
               "title": {
                 "type": "string",
                 "description": "A title.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_repository_deployment_branch_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "environment_name": {
+                "type": "string",
+                "description": "The target environment name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description": "An etag representing the Branch object.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the branch",
+                "description_kind": "plain",
+                "required": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The GitHub repository name.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -2827,6 +3635,38 @@
                   "description_kind": "plain"
                 },
                 "max_items": 6
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_repository_environment_deployment_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "branch_pattern": {
+                "type": "string",
+                "description": "The name pattern that branches must match in order to deploy to the environment.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "The name of the environment.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The name of the repository. The name is not case sensitive.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -3125,6 +3965,452 @@
             "description_kind": "plain"
           }
         },
+        "github_repository_ruleset": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "enforcement": {
+                "type": "string",
+                "description": "Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "etag": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the ruleset.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "node_id": {
+                "type": "string",
+                "description": "GraphQL global node id for use with v4 API.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "Name of the repository to apply rulset to.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ruleset_id": {
+                "type": "number",
+                "description": "GitHub ID for the ruleset.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": "string",
+                "description": "Possible values are `branch` and `tag`.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "bypass_actors": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "actor_id": {
+                      "type": "number",
+                      "description": "The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "actor_type": {
+                      "type": "string",
+                      "description": "The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "bypass_mode": {
+                      "type": "string",
+                      "description": "When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The actors that can bypass the rules in this ruleset.",
+                  "description_kind": "plain"
+                }
+              },
+              "conditions": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "ref_name": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "exclude": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "include": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Parameters for a repository ruleset ref name condition.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "creation": {
+                      "type": "bool",
+                      "description": "Only allow users with bypass permission to create matching refs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "deletion": {
+                      "type": "bool",
+                      "description": "Only allow users with bypass permissions to delete matching refs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "non_fast_forward": {
+                      "type": "bool",
+                      "description": "Prevent users with push access from force pushing to branches.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required_linear_history": {
+                      "type": "bool",
+                      "description": "Prevent merge commits from being pushed to matching branches.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "required_signatures": {
+                      "type": "bool",
+                      "description": "Commits pushed to matching branches must have verified signatures.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "bool",
+                      "description": "Only allow users with bypass permission to update matching refs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update_allows_fetch_and_merge": {
+                      "type": "bool",
+                      "description": "Branch can pull changes from its upstream repository. This is only applicable to forked repositories. Requires `update` to be set to `true`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "branch_name_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "commit_author_email_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "commit_message_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "committer_email_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "pull_request": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "dismiss_stale_reviews_on_push": {
+                            "type": "bool",
+                            "description": "New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "require_code_owner_review": {
+                            "type": "bool",
+                            "description": "Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "require_last_push_approval": {
+                            "type": "bool",
+                            "description": "Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "required_approving_review_count": {
+                            "type": "number",
+                            "description": "The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "required_review_thread_resolution": {
+                            "type": "bool",
+                            "description": "All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "required_deployments": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "required_deployment_environments": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "The environments that must be successfully deployed to before branches can be merged.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "required_status_checks": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "strict_required_status_checks_policy": {
+                            "type": "bool",
+                            "description": "Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "required_check": {
+                            "nesting_mode": "set",
+                            "block": {
+                              "attributes": {
+                                "context": {
+                                  "type": "string",
+                                  "description": "The status check context name that must be present on the commit.",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "integration_id": {
+                                  "type": "number",
+                                  "description": "The optional integration ID that this status check must originate from.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Status checks that are required. Several can be defined.",
+                              "description_kind": "plain"
+                            },
+                            "min_items": 1
+                          }
+                        },
+                        "description": "Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "tag_name_pattern": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "How this rule will appear to users.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "negate": {
+                            "type": "bool",
+                            "description": "If true, the rule will fail if the pattern matches.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "operator": {
+                            "type": "string",
+                            "description": "The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "pattern": {
+                            "type": "string",
+                            "description": "The pattern to match with.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Rules within the ruleset.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_repository_tag_protection": {
           "version": 0,
           "block": {
@@ -3152,6 +4438,35 @@
                 "description": "The ID of the tag protection.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_repository_topics": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The name of the repository. The name is not case sensitive.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "topics": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "An array of topics to add to the repository. Pass one or more topics to replace the set of existing topics. Send an empty array ([]) to clear all topics from the repository. Note: Topic names cannot contain uppercase letters.",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -3302,6 +4617,20 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "parent_team_read_id": {
+                "type": "string",
+                "description": "The id of the parent team read in Github.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "parent_team_read_slug": {
+                "type": "string",
+                "description": "The id of the parent team read in Github.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "privacy": {
                 "type": "string",
                 "description": "The level of privacy for the team. Must be one of 'secret' or 'closed'.",
@@ -3322,11 +4651,6 @@
           "version": 0,
           "block": {
             "attributes": {
-              "etag": {
-                "type": "string",
-                "description_kind": "plain",
-                "computed": true
-              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -4084,6 +5408,45 @@
             "description_kind": "plain"
           }
         },
+        "github_app_token": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "app_id": {
+                "type": "string",
+                "description": "The GitHub App ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "installation_id": {
+                "type": "string",
+                "description": "The GitHub App installation instance ID.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "pem_file": {
+                "type": "string",
+                "description": "The GitHub App PEM file contents.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "token": {
+                "type": "string",
+                "description": "The generated token from the credentials.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_branch": {
           "version": 0,
           "block": {
@@ -4116,6 +5479,218 @@
               },
               "sha": {
                 "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_branch_protection_rules": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "rules": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "pattern": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_organization_public_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "key_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_organization_secrets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "created_at": "string",
+                      "name": "string",
+                      "updated_at": "string",
+                      "visibility": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_public_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "key_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_secrets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "full_name": {
+                "type": "string",
+                "description": "Full name of the repository (in `org/name` format).",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the repository.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "created_at": "string",
+                      "name": "string",
+                      "updated_at": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_user_public_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "key_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_codespaces_user_secrets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secrets": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "created_at": "string",
+                      "name": "string",
+                      "updated_at": "string",
+                      "visibility": "string"
+                    }
+                  ]
+                ],
                 "description_kind": "plain",
                 "computed": true
               }
@@ -4656,6 +6231,31 @@
           "version": 0,
           "block": {
             "attributes": {
+              "advanced_security_enabled_for_new_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default_repository_permission": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dependabot_alerts_enabled_for_new_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dependabot_security_updates_enabled_for_new_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dependency_graph_enabled_for_new_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description_kind": "plain",
@@ -4679,6 +6279,51 @@
                 ],
                 "description_kind": "plain",
                 "deprecated": true,
+                "computed": true
+              },
+              "members_allowed_repository_creation_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_internal_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_pages": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_private_pages": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_private_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_public_pages": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_public_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_create_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "members_can_fork_private_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
                 "computed": true
               },
               "name": {
@@ -4709,12 +6354,104 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "secret_scanning_enabled_for_new_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "secret_scanning_push_protection_enabled_for_new_repositories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "two_factor_requirement_enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
               "users": {
                 "type": [
                   "list",
                   [
                     "map",
                     "string"
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "web_commit_signoff_required": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_organization_custom_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "base_role": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "permissions": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_organization_external_identities": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "identities": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "login": "string",
+                      "saml_identity": [
+                        "map",
+                        "string"
+                      ],
+                      "scim_identity": [
+                        "map",
+                        "string"
+                      ]
+                    }
                   ]
                 ],
                 "description_kind": "plain",
@@ -5105,7 +6842,7 @@
           }
         },
         "github_repository": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "allow_auto_merge": {
@@ -5237,6 +6974,7 @@
                   [
                     "object",
                     {
+                      "build_type": "string",
                       "cname": "string",
                       "custom_404": "bool",
                       "html_url": "string",
@@ -5255,6 +6993,11 @@
                     }
                   ]
                 ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "primary_language": {
+                "type": "string",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -5314,6 +7057,40 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_repository_autolink_references": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "autolink_references": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "is_alphanumeric": "bool",
+                      "key_prefix": "string",
+                      "target_url_template": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -5386,6 +7163,79 @@
                   ]
                 ],
                 "description_kind": "plain",
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_repository_deployment_branch_policies": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "deployment_branch_policies": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "name": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "environment_name": {
+                "type": "string",
+                "description": "The target environment name.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The GitHub repository name.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_repository_environments": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "environments": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "name": "string",
+                      "node_id": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "repository": {
@@ -5786,6 +7636,51 @@
             "description_kind": "plain"
           }
         },
+        "github_rest_api": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "body": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "code": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "endpoint": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "headers": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "github_ssh_keys": {
           "version": 0,
           "block": {
@@ -5860,6 +7755,20 @@
                 "type": [
                   "list",
                   "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "repositories_detailed": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "repo_id": "number",
+                      "role_name": "string"
+                    }
+                  ]
                 ],
                 "description_kind": "plain",
                 "computed": true
@@ -6042,6 +7951,46 @@
               },
               "updated_at": {
                 "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_user_external_identity": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "login": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "saml_identity": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "scim_identity": {
+                "type": [
+                  "map",
+                  "string"
+                ],
                 "description_kind": "plain",
                 "computed": true
               },

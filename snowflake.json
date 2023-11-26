@@ -8,133 +8,335 @@
           "attributes": {
             "account": {
               "type": "string",
-              "description": "The name of the Snowflake account. Can also come from the `SNOWFLAKE_ACCOUNT` environment variable.",
+              "description": "Specifies your Snowflake account identifier assigned, by Snowflake. For information about account identifiers, see the [Snowflake documentation](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html). Can also be sourced from the `SNOWFLAKE_ACCOUNT` environment variable. Required unless using `profile`.",
               "description_kind": "plain",
-              "required": true
+              "optional": true
+            },
+            "authenticator": {
+              "type": "string",
+              "description": "Specifies the [authentication type](https://pkg.go.dev/github.com/snowflakedb/gosnowflake#AuthType) to use when connecting to Snowflake. Valid values include: Snowflake, OAuth, ExternalBrowser, Okta, JWT, TokenAccessor, UsernamePasswordMFA. Can also be sourced from the `SNOWFLAKE_AUTHENTICATOR` environment variable.",
+              "description_kind": "plain",
+              "optional": true
             },
             "browser_auth": {
               "type": "bool",
-              "description": "Required when `oauth_refresh_token` is used. Can be sourced from `SNOWFLAKE_USE_BROWSER_AUTH` environment variable.",
+              "description": "Required when `oauth_refresh_token` is used. Can also be sourced from `SNOWFLAKE_USE_BROWSER_AUTH` environment variable.",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "client_ip": {
+              "type": "string",
+              "description": "IP address for network checks. Can also be sourced from the `SNOWFLAKE_CLIENT_IP` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "client_request_mfa_token": {
+              "type": "bool",
+              "description": "When true the MFA token is cached in the credential manager. True by default in Windows/OSX. False for Linux. Can also be sourced from the `SNOWFLAKE_CLIENT_REQUEST_MFA_TOKEN` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "client_store_temporary_credential": {
+              "type": "bool",
+              "description": "When true the ID token is cached in the credential manager. True by default in Windows/OSX. False for Linux. Can also be sourced from the `SNOWFLAKE_CLIENT_STORE_TEMPORARY_CREDENTIAL` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "client_timeout": {
+              "type": "number",
+              "description": "The timeout in seconds for the client to complete the authentication. Default is 900 seconds. Can also be sourced from the `SNOWFLAKE_CLIENT_TIMEOUT` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "disable_query_context_cache": {
+              "type": "bool",
+              "description": "Should HTAP query context cache be disabled. Can also be sourced from the `SNOWFLAKE_DISABLE_QUERY_CONTEXT_CACHE` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "disable_telemetry": {
+              "type": "bool",
+              "description": "Indicates whether to disable telemetry. Can also be sourced from the `SNOWFLAKE_DISABLE_TELEMETRY` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "external_browser_timeout": {
+              "type": "number",
+              "description": "The timeout in seconds for the external browser to complete the authentication. Default is 120 seconds. Can also be sourced from the `SNOWFLAKE_EXTERNAL_BROWSER_TIMEOUT` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "host": {
               "type": "string",
-              "description": "Supports passing in a custom host value to the snowflake go driver for use with privatelink.",
+              "description": "Supports passing in a custom host value to the snowflake go driver for use with privatelink. Can also be sourced from the `SNOWFLAKE_HOST` environment variable. ",
               "description_kind": "plain",
               "optional": true
             },
             "insecure_mode": {
               "type": "bool",
-              "description": "If true, bypass the Online Certificate Status Protocol (OCSP) certificate revocation check. IMPORTANT: Change the default value for testing or emergency situations only.",
+              "description": "If true, bypass the Online Certificate Status Protocol (OCSP) certificate revocation check. IMPORTANT: Change the default value for testing or emergency situations only. Can also be sourced from the `SNOWFLAKE_INSECURE_MODE` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "jwt_client_timeout": {
+              "type": "number",
+              "description": "The timeout in seconds for the JWT client to complete the authentication. Default is 10 seconds. Can also be sourced from the `SNOWFLAKE_JWT_CLIENT_TIMEOUT` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "jwt_expire_timeout": {
+              "type": "number",
+              "description": "JWT expire after timeout in seconds. Can also be sourced from the `SNOWFLAKE_JWT_EXPIRE_TIMEOUT` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "keep_session_alive": {
+              "type": "bool",
+              "description": "Enables the session to persist even after the connection is closed. Can also be sourced from the `SNOWFLAKE_KEEP_SESSION_ALIVE` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "login_timeout": {
+              "type": "number",
+              "description": "Login retry timeout EXCLUDING network roundtrip and read out http response. Can also be sourced from the `SNOWFLAKE_LOGIN_TIMEOUT` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "oauth_access_token": {
               "type": "string",
-              "description": "Token for use with OAuth. Generating the token is left to other tools. Cannot be used with `browser_auth`, `private_key_path`, `oauth_refresh_token` or `password`. Can be sourced from `SNOWFLAKE_OAUTH_ACCESS_TOKEN` environment variable.",
+              "description": "Token for use with OAuth. Generating the token is left to other tools. Cannot be used with `browser_auth`, `private_key_path`, `oauth_refresh_token` or `password`. Can also be sourced from `SNOWFLAKE_OAUTH_ACCESS_TOKEN` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
             "oauth_client_id": {
               "type": "string",
-              "description": "Required when `oauth_refresh_token` is used. Can be sourced from `SNOWFLAKE_OAUTH_CLIENT_ID` environment variable.",
+              "description": "Required when `oauth_refresh_token` is used. Can also be sourced from `SNOWFLAKE_OAUTH_CLIENT_ID` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
             "oauth_client_secret": {
               "type": "string",
-              "description": "Required when `oauth_refresh_token` is used. Can be sourced from `SNOWFLAKE_OAUTH_CLIENT_SECRET` environment variable.",
+              "description": "Required when `oauth_refresh_token` is used. Can also be sourced from `SNOWFLAKE_OAUTH_CLIENT_SECRET` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
             "oauth_endpoint": {
               "type": "string",
-              "description": "Required when `oauth_refresh_token` is used. Can be sourced from `SNOWFLAKE_OAUTH_ENDPOINT` environment variable.",
+              "description": "Required when `oauth_refresh_token` is used. Can also be sourced from `SNOWFLAKE_OAUTH_ENDPOINT` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
             "oauth_redirect_url": {
               "type": "string",
-              "description": "Required when `oauth_refresh_token` is used. Can be sourced from `SNOWFLAKE_OAUTH_REDIRECT_URL` environment variable.",
+              "description": "Required when `oauth_refresh_token` is used. Can also be sourced from `SNOWFLAKE_OAUTH_REDIRECT_URL` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
             "oauth_refresh_token": {
               "type": "string",
-              "description": "Token for use with OAuth. Setup and generation of the token is left to other tools. Should be used in conjunction with `oauth_client_id`, `oauth_client_secret`, `oauth_endpoint`, `oauth_redirect_url`. Cannot be used with `browser_auth`, `private_key_path`, `oauth_access_token` or `password`. Can be sourced from `SNOWFLAKE_OAUTH_REFRESH_TOKEN` environment variable.",
+              "description": "Token for use with OAuth. Setup and generation of the token is left to other tools. Should be used in conjunction with `oauth_client_id`, `oauth_client_secret`, `oauth_endpoint`, `oauth_redirect_url`. Cannot be used with `browser_auth`, `private_key_path`, `oauth_access_token` or `password`. Can also be sourced from `SNOWFLAKE_OAUTH_REFRESH_TOKEN` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
+            "okta_url": {
+              "type": "string",
+              "description": "The URL of the Okta server. e.g. https://example.okta.com. Can also be sourced from the `SNOWFLAKE_OKTA_URL` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "oscp_fail_open": {
+              "type": "bool",
+              "description": "True represents OCSP fail open mode. False represents OCSP fail closed mode. Fail open true by default. Can also be sourced from the `SNOWFLAKE_OCSP_FAIL_OPEN` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "params": {
+              "type": [
+                "map",
+                "string"
+              ],
+              "description": "Sets other connection (i.e. session) parameters. [Parameters](https://docs.snowflake.com/en/sql-reference/parameters)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "passcode": {
+              "type": "string",
+              "description": "Specifies the passcode provided by Duo when using multi-factor authentication (MFA) for login. Can also be sourced from the `SNOWFLAKE_PASSCODE` environment variable. ",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "passcode_in_password": {
+              "type": "bool",
+              "description": "False by default. Set to true if the MFA passcode is embedded in the login password. Appends the MFA passcode to the end of the password. Can also be sourced from the `SNOWFLAKE_PASSCODE_IN_PASSWORD` environment variable. ",
+              "description_kind": "plain",
+              "optional": true
+            },
             "password": {
               "type": "string",
-              "description": "Password for username+password auth. Cannot be used with `browser_auth` or `private_key_path`. Can be sourced from `SNOWFLAKE_PASSWORD` environment variable.",
+              "description": "Password for username+password auth. Cannot be used with `browser_auth` or `private_key_path`. Can also be sourced from the `SNOWFLAKE_PASSWORD` environment variable.",
               "description_kind": "plain",
               "optional": true,
               "sensitive": true
             },
             "port": {
               "type": "number",
-              "description": "Support custom port values to snowflake go driver for use with privatelink. Can be sourced from `SNOWFLAKE_PORT` environment variable.",
+              "description": "Support custom port values to snowflake go driver for use with privatelink. Can also be sourced from the `SNOWFLAKE_PORT` environment variable. ",
               "description_kind": "plain",
               "optional": true
             },
             "private_key": {
               "type": "string",
-              "description": "Private Key for username+private-key auth. Cannot be used with `browser_auth` or `password`. Can be sourced from `SNOWFLAKE_PRIVATE_KEY` environment variable.",
+              "description": "Private Key for username+private-key auth. Cannot be used with `browser_auth` or `password`. Can also be sourced from `SNOWFLAKE_PRIVATE_KEY` environment variable.",
               "description_kind": "plain",
               "optional": true,
               "sensitive": true
             },
             "private_key_passphrase": {
               "type": "string",
-              "description": "Supports the encryption ciphers aes-128-cbc, aes-128-gcm, aes-192-cbc, aes-192-gcm, aes-256-cbc, aes-256-gcm, and des-ede3-cbc",
+              "description": "Supports the encryption ciphers aes-128-cbc, aes-128-gcm, aes-192-cbc, aes-192-gcm, aes-256-cbc, aes-256-gcm, and des-ede3-cbc. Can also be sourced from `SNOWFLAKE_PRIVATE_KEY_PASSPHRASE` environment variable.",
               "description_kind": "plain",
               "optional": true,
               "sensitive": true
             },
             "private_key_path": {
               "type": "string",
-              "description": "Path to a private key for using keypair authentication. Cannot be used with `browser_auth`, `oauth_access_token` or `password`. Can be sourced from `SNOWFLAKE_PRIVATE_KEY_PATH` environment variable.",
+              "description": "Path to a private key for using keypair authentication. Cannot be used with `browser_auth`, `oauth_access_token` or `password`. Can also be sourced from `SNOWFLAKE_PRIVATE_KEY_PATH` environment variable.",
               "description_kind": "plain",
+              "deprecated": true,
               "optional": true,
               "sensitive": true
             },
+            "profile": {
+              "type": "string",
+              "description": "Sets the profile to read from ~/.snowflake/config file. Can also be sourced from the `SNOWFLAKE_PROFILE` environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "protocol": {
               "type": "string",
-              "description": "Support custom protocols to snowflake go driver. Can be sourced from `SNOWFLAKE_PROTOCOL` environment variable.",
+              "description": "Either http or https, defaults to https. Can also be sourced from the `SNOWFLAKE_PROTOCOL` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "region": {
               "type": "string",
-              "description": "[Snowflake region](https://docs.snowflake.com/en/user-guide/intro-regions.html) to use.  Required if using the [legacy format for the `account` identifier](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#format-2-legacy-account-locator-in-a-region) in the form of `<cloud_region_id>.<cloud>`. Can be sourced from the `SNOWFLAKE_REGION` environment variable.",
+              "description": "Snowflake region, such as \"eu-central-1\", with this parameter. However, since this parameter is deprecated, it is best to specify the region as part of the account parameter. For details, see the description of the account parameter. [Snowflake region](https://docs.snowflake.com/en/user-guide/intro-regions.html) to use.  Required if using the [legacy format for the `account` identifier](https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#format-2-legacy-account-locator-in-a-region) in the form of `<cloud_region_id>.<cloud>`. Can also be sourced from the `SNOWFLAKE_REGION` environment variable. ",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "request_timeout": {
+              "type": "number",
+              "description": "request retry timeout EXCLUDING network roundtrip and read out http response. Can also be sourced from the `SNOWFLAKE_REQUEST_TIMEOUT` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
             "role": {
               "type": "string",
-              "description": "Snowflake role to use for operations. If left unset, default role for user will be used. Can be sourced from the `SNOWFLAKE_ROLE` environment variable.",
+              "description": "Specifies the role to use by default for accessing Snowflake objects in the client session. Can also be sourced from the `SNOWFLAKE_ROLE` environment variable. .",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "session_params": {
+              "type": [
+                "map",
+                "string"
+              ],
+              "description": "Sets session parameters. [Parameters](https://docs.snowflake.com/en/sql-reference/parameters)",
+              "description_kind": "plain",
+              "deprecated": true,
+              "optional": true
+            },
+            "token": {
+              "type": "string",
+              "description": "Token to use for OAuth and other forms of token based auth. Can also be sourced from the `SNOWFLAKE_TOKEN` environment variable.",
+              "description_kind": "plain",
+              "optional": true,
+              "sensitive": true
+            },
+            "user": {
+              "type": "string",
+              "description": "Username. Can also be sourced from the `SNOWFLAKE_USER` environment variable. Required unless using `profile`.",
               "description_kind": "plain",
               "optional": true
             },
             "username": {
               "type": "string",
-              "description": "Username for username+password authentication. Can come from the `SNOWFLAKE_USER` environment variable.",
+              "description": "Username for username+password authentication. Can also be sourced from the `SNOWFLAKE_USERNAME` environment variable. Required unless using `profile`.",
               "description_kind": "plain",
-              "required": true
+              "deprecated": true,
+              "optional": true
+            },
+            "validate_default_parameters": {
+              "type": "bool",
+              "description": "If true, disables the validation checks for Database, Schema, Warehouse and Role at the time a connection is established. Can also be sourced from the `SNOWFLAKE_VALIDATE_DEFAULT_PARAMETERS` environment variable.",
+              "description_kind": "plain",
+              "optional": true
             },
             "warehouse": {
               "type": "string",
-              "description": "Sets the default warehouse. Optional. Can be sourced from SNOWFLAKE_WAREHOUSE environment variable.",
+              "description": "Specifies the virtual warehouse to use by default for queries, loading, etc. in the client session. Can also be sourced from the `SNOWFLAKE_WAREHOUSE` environment variable.",
               "description_kind": "plain",
               "optional": true
+            }
+          },
+          "block_types": {
+            "token_accessor": {
+              "nesting_mode": "list",
+              "block": {
+                "attributes": {
+                  "client_id": {
+                    "type": "string",
+                    "description": "The client ID for the OAuth provider when using a refresh token to renew access token. Can also be sourced from the `SNOWFLAKE_TOKEN_ACCESSOR_CLIENT_ID` environment variable.",
+                    "description_kind": "plain",
+                    "required": true,
+                    "sensitive": true
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": "The client secret for the OAuth provider when using a refresh token to renew access token. Can also be sourced from the `SNOWFLAKE_TOKEN_ACCESSOR_CLIENT_SECRET` environment variable.",
+                    "description_kind": "plain",
+                    "required": true,
+                    "sensitive": true
+                  },
+                  "redirect_uri": {
+                    "type": "string",
+                    "description": "The redirect URI for the OAuth provider when using a refresh token to renew access token. Can also be sourced from the `SNOWFLAKE_TOKEN_ACCESSOR_REDIRECT_URI` environment variable.",
+                    "description_kind": "plain",
+                    "required": true,
+                    "sensitive": true
+                  },
+                  "refresh_token": {
+                    "type": "string",
+                    "description": "The refresh token for the OAuth provider when using a refresh token to renew access token. Can also be sourced from the `SNOWFLAKE_TOKEN_ACCESSOR_REFRESH_TOKEN` environment variable.",
+                    "description_kind": "plain",
+                    "required": true,
+                    "sensitive": true
+                  },
+                  "token_endpoint": {
+                    "type": "string",
+                    "description": "The token endpoint for the OAuth provider e.g. https://{yourDomain}/oauth/token when using a refresh token to renew access token. Can also be sourced from the `SNOWFLAKE_TOKEN_ACCESSOR_TOKEN_ENDPOINT` environment variable.",
+                    "description_kind": "plain",
+                    "required": true,
+                    "sensitive": true
+                  }
+                },
+                "description_kind": "plain"
+              },
+              "max_items": 1
             }
           },
           "description_kind": "plain"
@@ -190,6 +392,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
+              },
+              "grace_period_in_days": {
+                "type": "number",
+                "description": "Specifies the number of days to wait before dropping the account. The default is 3 days.",
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -257,7 +465,7 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The account privilege to grant. Valid privileges are those in [globalPrivileges](https://docs.snowflake.com/en/sql-reference/sql/grant-privilege.html)",
+                "description": "The account privilege to grant. Valid privileges are those in [globalPrivileges](https://docs.snowflake.com/en/sql-reference/sql/grant-privilege.html). To grant all privileges, use the value `ALL PRIVILEGES`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -277,7 +485,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_account_parameter": {
@@ -303,6 +512,27 @@
                 "required": true
               }
             },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_account_password_policy_attachment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "password_policy": {
+                "type": "string",
+                "description": "Qualified name (`\"db\".\"schema\".\"policy_name\"`) of the password policy to apply to the current account.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Specifies the password policy to use for the current account. To set the password policy of a different account, use a provider alias.",
             "description_kind": "plain"
           }
         },
@@ -449,6 +679,13 @@
                 "description": "Lists the endpoints and resources in the HTTPS proxy service that are not allowed to be called from Snowflake.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "api_gcp_service_account": {
+                "type": "string",
+                "description": "The service account used for communication with the Google API Gateway.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "api_key": {
                 "type": "string",
@@ -601,40 +838,6 @@
                   "description_kind": "plain"
                 },
                 "max_items": 1
-              },
-              "tag": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "database": {
-                      "type": "string",
-                      "description": "Name of the database that the tag was created in.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "Tag name, e.g. department.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "schema": {
-                      "type": "string",
-                      "description": "Name of the schema that the tag was created in.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "value": {
-                      "type": "string",
-                      "description": "Tag value, e.g. marketing_info.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "Definitions of a tag to associate with the resource.",
-                  "description_kind": "plain",
-                  "deprecated": true
-                }
               }
             },
             "description_kind": "plain"
@@ -664,7 +867,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the database.",
+                "description": "The privilege to grant on the database. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -721,6 +930,198 @@
               "name": {
                 "type": "string",
                 "description": "Specifies the identifier for the database role.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_dynamic_table": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "automatic_clustering": {
+                "type": "bool",
+                "description": "Whether auto-clustering is enabled on the dynamic table. Not currently supported for dynamic tables.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "bytes": {
+                "type": "number",
+                "description": "Number of bytes that will be scanned if the entire dynamic table is scanned in a query.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "cluster_by": {
+                "type": "string",
+                "description": "The clustering key for the dynamic table.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "Specifies a comment for the dynamic table.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "data_timestamp": {
+                "type": "string",
+                "description": "Timestamp of the data in the base object(s) that is included in the dynamic table.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "database": {
+                "type": "string",
+                "description": "The database in which to create the dynamic table.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_clone": {
+                "type": "bool",
+                "description": "TRUE if the dynamic table has been cloned, else FALSE.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_replica": {
+                "type": "bool",
+                "description": "TRUE if the dynamic table is a replica. else FALSE.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "last_suspended_on": {
+                "type": "string",
+                "description": "Timestamp of last suspension.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Specifies the identifier (i.e. name) for the dynamic table; must be unique for the schema in which the dynamic table is created.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "or_replace": {
+                "type": "bool",
+                "description": "Specifies whether to replace the dynamic table if it already exists.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "owner": {
+                "type": "string",
+                "description": "Role that owns the dynamic table.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "query": {
+                "type": "string",
+                "description": "Specifies the query to use to populate the dynamic table.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "refresh_mode": {
+                "type": "string",
+                "description": "INCREMENTAL if the dynamic table will use incremental refreshes, or FULL if it will recompute the whole table on every refresh.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "refresh_mode_reason": {
+                "type": "string",
+                "description": "Explanation for why FULL refresh mode was chosen. NULL if refresh mode is not FULL.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rows": {
+                "type": "number",
+                "description": "Number of rows in the table.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "scheduling_state": {
+                "type": "string",
+                "description": "Displays RUNNING for dynamic tables that are actively scheduling refreshes and SUSPENDED for suspended dynamic tables.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "schema": {
+                "type": "string",
+                "description": "The schema in which to create the dynamic table.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "warehouse": {
+                "type": "string",
+                "description": "The warehouse in which to create the dynamic table.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "target_lag": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "downstream": {
+                      "type": "bool",
+                      "description": "Specifies whether the target lag time is downstream.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "maximum_duration": {
+                      "type": "string",
+                      "description": "Specifies the maximum target lag time for the dynamic table.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies the target lag time for the dynamic table.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_email_notification_integration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "allowed_recipients": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of email addresses that should receive notifications.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "comment": {
+                "type": "string",
+                "description": "A comment for the email integration.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
                 "description_kind": "plain",
                 "required": true
               }
@@ -792,6 +1193,18 @@
               "null_input_behavior": {
                 "type": "string",
                 "description": "Specifies the behavior of the external function when called with null inputs.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "request_translator": {
+                "type": "string",
+                "description": "This specifies the name of the request translator function",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "response_translator": {
+                "type": "string",
+                "description": "This specifies the name of the response translator function.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1192,15 +1605,27 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all external tables in the given schema. When this is true and no schema_name is provided apply this grant on all external tables in the given database. The external_table_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future external tables in the given schema. When this is true and no schema_name is provided apply this grant on all future external tables in the given database. The external_table_name and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future external tables in the given schema. When this is true and no schema_name is provided apply this grant on all future external tables in the given database. The external_table_name and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future external table.",
+                "description": "The privilege to grant on the current or future external table. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1235,7 +1660,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_failover_group": {
@@ -1379,6 +1805,60 @@
             "description_kind": "plain"
           }
         },
+        "snowflake_failover_group_grant": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enable_multiple_grants": {
+                "type": "bool",
+                "description": "When this is set to true, multiple grants of the same type can be created. This will cause Terraform to not revoke grants applied to roles and objects outside Terraform.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "failover_group_name": {
+                "type": "string",
+                "description": "The name of the failover group on which to grant privileges.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "privilege": {
+                "type": "string",
+                "description": "The privilege to grant on the failover group. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "roles": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Grants privilege to these roles.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "with_grant_option": {
+                "type": "bool",
+                "description": "When this is set to true, allows the recipient role to grant the privileges to other roles.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
         "snowflake_file_format": {
           "version": 0,
           "block": {
@@ -1399,7 +1879,8 @@
                 "type": "string",
                 "description": "Defines the encoding format for binary input or output.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "comment": {
                 "type": "string",
@@ -1411,7 +1892,8 @@
                 "type": "string",
                 "description": "Specifies the current compression algorithm for the data file.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "database": {
                 "type": "string",
@@ -1423,7 +1905,8 @@
                 "type": "string",
                 "description": "Defines the format of date values in the data files (data loading) or table (data unloading).",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "disable_auto_convert": {
                 "type": "bool",
@@ -1453,7 +1936,8 @@
                 "type": "string",
                 "description": "String (constant) that specifies the character set of the source data when loading data into a table.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "error_on_column_count_mismatch": {
                 "type": "bool",
@@ -1465,25 +1949,29 @@
                 "type": "string",
                 "description": "Single character string used as the escape character for field values.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "escape_unenclosed_field": {
                 "type": "string",
                 "description": "Single character string used as the escape character for unenclosed field values only.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "field_delimiter": {
                 "type": "string",
                 "description": "Specifies one or more singlebyte or multibyte characters that separate fields in an input file (data loading) or unloaded file (data unloading).",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "field_optionally_enclosed_by": {
                 "type": "string",
                 "description": "Character used to enclose strings.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "file_extension": {
                 "type": "string",
@@ -1522,6 +2010,13 @@
                 ],
                 "description": "String used to convert to and from SQL NULL.",
                 "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "parse_header": {
+                "type": "bool",
+                "description": "Boolean that specifies whether to use the first row headers in the data files to determine column names.",
+                "description_kind": "plain",
                 "optional": true
               },
               "preserve_space": {
@@ -1534,7 +2029,8 @@
                 "type": "string",
                 "description": "Specifies one or more singlebyte or multibyte characters that separate records in an input file (data loading) or unloaded file (data unloading).",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "replace_invalid_characters": {
                 "type": "bool",
@@ -1588,13 +2084,15 @@
                 "type": "string",
                 "description": "Defines the format of time values in the data files (data loading) or table (data unloading).",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "timestamp_format": {
                 "type": "string",
                 "description": "Defines the format of timestamp values in the data files (data loading) or table (data unloading).",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "trim_space": {
                 "type": "bool",
@@ -1634,15 +2132,27 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all file formats in the given schema. When this is true and no schema_name is provided apply this grant on all file formats in the given database. The file_format_name field must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future file formats in the given schema. When this is true and no schema_name is provided apply this grant on all future file formats in the given database. The file_format_name field must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future file formats in the given schema. When this is true and no schema_name is provided apply this grant on all future file formats in the given database. The file_format_name field must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future file format.",
+                "description": "The privilege to grant on the current or future file format. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1668,7 +2178,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_function": {
@@ -1841,15 +2352,27 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all functions in the given schema. When this is true and no schema_name is provided apply this grant on all functions in the given database. The function_name, arguments, return_type, and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future functions in the given schema. When this is true and no schema_name is provided apply this grant on all future functions in the given database. The function_name, arguments, return_type, and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future functions in the given schema. When this is true and no schema_name is provided apply this grant on all future functions in the given database. The function_name, arguments, return_type, and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future function. Must be one of `USAGE` or `OWNERSHIP`.",
+                "description": "The privilege to grant on the current or future function. Must be one of `USAGE` or `OWNERSHIP`. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1884,6 +2407,186 @@
                 "optional": true
               }
             },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "snowflake_grant_privileges_to_role": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "all_privileges": {
+                "type": "bool",
+                "description": "Grant all privileges on the account role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "on_account": {
+                "type": "bool",
+                "description": "If true, the privileges will be granted on the account.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "privileges": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The privileges to grant on the account role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "role_name": {
+                "type": "string",
+                "description": "The fully qualified name of the role to which privileges will be granted.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "with_grant_option": {
+                "type": "bool",
+                "description": "Specifies whether the grantee can grant the privileges to other users.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "on_account_object": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "object_name": {
+                      "type": "string",
+                      "description": "The fully qualified name of the object on which privileges will be granted.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "object_type": {
+                      "type": "string",
+                      "description": "The object type of the account object on which privileges will be granted. Valid values are: USER | RESOURCE MONITOR | WAREHOUSE | DATABASE | INTEGRATION | FAILOVER GROUP | REPLICATION GROUP",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Specifies the account object on which privileges will be granted ",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "on_schema": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "all_schemas_in_database": {
+                      "type": "string",
+                      "description": "The fully qualified name of the database.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "future_schemas_in_database": {
+                      "type": "string",
+                      "description": "The fully qualified name of the database.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "schema_name": {
+                      "type": "string",
+                      "description": "The fully qualified name of the schema.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Specifies the schema on which privileges will be granted.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "on_schema_object": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "object_name": {
+                      "type": "string",
+                      "description": "The fully qualified name of the object on which privileges will be granted.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "object_type": {
+                      "type": "string",
+                      "description": "The object type of the schema object on which privileges will be granted. Valid values are: ALERT | DYNAMIC TABLE | EVENT TABLE | FILE FORMAT | FUNCTION | PROCEDURE | SECRET | SEQUENCE | PIPE | MASKING POLICY | PASSWORD POLICY | ROW ACCESS POLICY | SESSION POLICY | TAG | STAGE | STREAM | TABLE | EXTERNAL TABLE | TASK | VIEW | MATERIALIZED VIEW",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "all": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "in_database": {
+                            "type": "string",
+                            "description": "The fully qualified name of the database.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "in_schema": {
+                            "type": "string",
+                            "description": "The fully qualified name of the schema.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "object_type_plural": {
+                            "type": "string",
+                            "description": "The plural object type of the schema object on which privileges will be granted. Valid values are: ALERTS | DYNAMIC TABLES | EVENT TABLES | FILE FORMATS | FUNCTIONS | PROCEDURES | SECRETS | SEQUENCES | PIPES | MASKING POLICIES | PASSWORD POLICIES | ROW ACCESS POLICIES | SESSION POLICIES | TAGS | STAGES | STREAMS | TABLES | EXTERNAL TABLES | TASKS | VIEWS | MATERIALIZED VIEWS",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Configures the privilege to be granted on all objects in eihter a database or schema.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "future": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "in_database": {
+                            "type": "string",
+                            "description": "The fully qualified name of the database.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "in_schema": {
+                            "type": "string",
+                            "description": "The fully qualified name of the schema.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "object_type_plural": {
+                            "type": "string",
+                            "description": "The plural object type of the schema object on which privileges will be granted. Valid values are: ALERTS | DYNAMIC TABLES | EVENT TABLES | FILE FORMATS | FUNCTIONS | PROCEDURES | SECRETS | SEQUENCES | PIPES | MASKING POLICIES | PASSWORD POLICIES | ROW ACCESS POLICIES | SESSION POLICIES | TAGS | STAGES | STREAMS | TABLES | EXTERNAL TABLES | TASKS | VIEWS | MATERIALIZED VIEWS",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Configures the privilege to be granted on future objects in eihter a database or schema.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Specifies the schema object on which privileges will be granted.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -1911,7 +2614,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the integration.",
+                "description": "The privilege to grant on the integration. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1931,7 +2640,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_managed_account": {
@@ -2025,11 +2735,23 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "exempt_other_policies": {
+                "type": "bool",
+                "description": "Specifies whether the row access policy or conditional masking policy can reference a column that is already protected by a masking policy.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "if_not_exists": {
+                "type": "bool",
+                "description": "Prevent overwriting a previous masking policy with the same name.",
+                "description_kind": "plain",
+                "optional": true
               },
               "masking_expression": {
                 "type": "string",
@@ -2042,6 +2764,12 @@
                 "description": "Specifies the identifier for the masking policy; must be unique for the database and schema in which the masking policy is created.",
                 "description_kind": "plain",
                 "required": true
+              },
+              "or_replace": {
+                "type": "bool",
+                "description": "Whether to override a previous masking policy with the same name.",
+                "description_kind": "plain",
+                "optional": true
               },
               "qualified_name": {
                 "type": "string",
@@ -2060,12 +2788,40 @@
                 "description": "The schema in which to create the masking policy.",
                 "description_kind": "plain",
                 "required": true
-              },
-              "value_data_type": {
-                "type": "string",
-                "description": "Specifies the data type to mask.",
-                "description_kind": "plain",
-                "required": true
+              }
+            },
+            "block_types": {
+              "signature": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "column": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description": "Specifies the column name to mask.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Specifies the column type to mask.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1
+                    }
+                  },
+                  "description": "The signature for the masking policy; specifies the input columns and data types to evaluate at query runtime.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -2101,7 +2857,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the masking policy.",
+                "description": "The privilege to grant on the masking policy. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2127,7 +2889,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_materialized_view": {
@@ -2258,7 +3021,7 @@
               },
               "on_all": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all materialized views in the given schema. When this is true and no schema_name is provided apply this grant on all materialized views in the given database. The materialized_view_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all materialized views in the given schema. When this is true and no schema_name is provided apply this grant on all materialized views in the given database. The materialized_view_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2270,7 +3033,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future materialized view.",
+                "description": "The privilege to grant on the current or future materialized view. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2305,7 +3074,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_network_policy": {
@@ -2763,6 +3533,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "qualified_name": {
+                "type": "string",
+                "description": "The qualified name for the password policy.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "schema": {
                 "type": "string",
                 "description": "The schema this password policy belongs to.",
@@ -2890,7 +3666,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future pipe.",
+                "description": "The privilege to grant on the current or future pipe. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2916,7 +3698,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_procedure": {
@@ -3077,21 +3860,33 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all procedures in the given schema. When this is true and no schema_name is provided apply this grant on all procedures in the given database. The procedure_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future procedures in the given schema. When this is true and no schema_name is provided apply this grant on all future procedures in the given database. The procedure_name and shares fields must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future procedures in the given schema. When this is true and no schema_name is provided apply this grant on all future procedures in the given database. The procedure_name and shares fields must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future procedure.",
+                "description": "The privilege to grant on the current or future procedure. To grant all privileges, use the value `ALL PRIVILEGES`",
                 "description_kind": "plain",
                 "optional": true
               },
               "procedure_name": {
                 "type": "string",
                 "description": "The name of the procedure on which to grant privileges immediately (only valid if on_future is false).",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3126,7 +3921,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_resource_monitor": {
@@ -3265,7 +4061,7 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the resource monitor.",
+                "description": "The privilege to grant on the resource monitor. To grant all privileges, use the value `ALL PRIVILEGES`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3285,7 +4081,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_role": {
@@ -3507,7 +4304,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the row access policy.",
+                "description": "The privilege to grant on the row access policy. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3539,7 +4342,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_saml_integration": {
@@ -3781,7 +4585,7 @@
               },
               "on_all": {
                 "type": "bool",
-                "description": "When this is set to true, apply this grant on all schemas in the given database. The schema_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description": "When this is set to true, apply this grant on all schemas in the given database. The schema_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3793,7 +4597,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future schema. Note that if \"OWNERSHIP\" is specified, ensure that the role that terraform is using is granted access.",
+                "description": "The privilege to grant on the current or future schema. Note that if \"OWNERSHIP\" is specified, ensure that the role that terraform is using is granted access. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3828,7 +4638,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_scim_integration": {
@@ -3953,15 +4764,27 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all sequences in the given schema. When this is true and no schema_name is provided apply this grant on all sequences in the given database. The sequence_name field must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future sequences in the given schema. When this is true and no schema_name is provided apply this grant on all future sequences in the given database. The sequence_name field must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future sequences in the given schema. When this is true and no schema_name is provided apply this grant on all future sequences in the given database. The sequence_name field must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future sequence.",
+                "description": "The privilege to grant on the current or future sequence. To grant all privileges, use the value `ALL PRIVILEGES`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3993,7 +4816,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_session_parameter": {
@@ -4222,7 +5046,7 @@
               },
               "on_all": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all stages in the given schema. When this is true and no schema_name is provided apply this grant on all stages in the given database. The stage_name field must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all stages in the given schema. When this is true and no schema_name is provided apply this grant on all stages in the given database. The stage_name field must be unset in order to use on_all. Cannot be used together with on_future.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4234,7 +5058,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the stage.",
+                "description": "The privilege to grant on the stage. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4266,7 +5096,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_storage_integration": {
@@ -4420,19 +5251,19 @@
               },
               "on_stage": {
                 "type": "string",
-                "description": "Name of the stage the stream will monitor.",
+                "description": "Specifies an identifier for the stage the stream will monitor.",
                 "description_kind": "plain",
                 "optional": true
               },
               "on_table": {
                 "type": "string",
-                "description": "Name of the table the stream will monitor.",
+                "description": "Specifies an identifier for the table the stream will monitor.",
                 "description_kind": "plain",
                 "optional": true
               },
               "on_view": {
                 "type": "string",
-                "description": "Name of the view the stream will monitor.",
+                "description": "Specifies an identifier for the view the stream will monitor.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4480,15 +5311,27 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all streams in the given schema. When this is true and no schema_name is provided apply this grant on all streams in the given database. The stream_name field must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future streams in the given schema. When this is true and no schema_name is provided apply this grant on all future streams in the given database. The stream_name field must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future streams in the given schema. When this is true and no schema_name is provided apply this grant on all future streams in the given database. The stream_name field must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future stream.",
+                "description": "The privilege to grant on the current or future stream. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4520,7 +5363,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_table": {
@@ -4549,6 +5393,13 @@
                 "optional": true
               },
               "data_retention_days": {
+                "type": "number",
+                "description": "Specifies the retention period for the table so that Time Travel actions (SELECT, CLONE, UNDROP) can be performed on historical data in the table. Default value is 1, if you wish to inherit the parent schema setting then pass in the schema attribute to this argument.",
+                "description_kind": "plain",
+                "deprecated": true,
+                "optional": true
+              },
+              "data_retention_time_in_days": {
                 "type": "number",
                 "description": "Specifies the retention period for the table so that Time Travel actions (SELECT, CLONE, UNDROP) can be performed on historical data in the table. Default value is 1, if you wish to inherit the parent schema setting then pass in the schema attribute to this argument.",
                 "description_kind": "plain",
@@ -4946,7 +5797,7 @@
               },
               "on_all": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all tables in the given schema. When this is true and no schema_name is provided apply this grant on all tables in the given database. The table_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all tables in the given schema. When this is true and no schema_name is provided apply this grant on all tables in the given database. The table_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4958,7 +5809,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future table.",
+                "description": "The privilege to grant on the current or future table. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -4999,7 +5856,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_tag": {
@@ -5161,7 +6019,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the tag.",
+                "description": "The privilege to grant on the tag. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5193,7 +6057,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_tag_masking_policy_association": {
@@ -5219,6 +6084,7 @@
                 "required": true
               }
             },
+            "description": "Attach a masking policy to a tag. Requires a current warehouse to be set. Either with SNOWFLAKE_WAREHOUSE env variable or in current session. If no warehouse is provided, a temporary warehouse will be created.",
             "description_kind": "plain"
           }
         },
@@ -5354,15 +6220,27 @@
                 "optional": true,
                 "computed": true
               },
+              "on_all": {
+                "type": "bool",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all tasks in the given schema. When this is true and no schema_name is provided apply this grant on all tasks in the given database. The task_name field must be unset in order to use on_all. Cannot be used together with on_future.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "on_future": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all future tasks in the given schema. When this is true and no schema_name is provided apply this grant on all future tasks in the given database. The task_name field must be unset in order to use on_future.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all future tasks in the given schema. When this is true and no schema_name is provided apply this grant on all future tasks in the given database. The task_name field must be unset in order to use on_future. Cannot be used together with on_all.",
                 "description_kind": "plain",
                 "optional": true
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future task.",
+                "description": "The privilege to grant on the current or future task. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5394,7 +6272,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_user": {
@@ -5486,8 +6365,7 @@
                 "description": "The name users use to log in. If not supplied, snowflake will use name instead.",
                 "description_kind": "plain",
                 "optional": true,
-                "computed": true,
-                "sensitive": true
+                "computed": true
               },
               "must_change_password": {
                 "type": "bool",
@@ -5522,42 +6400,6 @@
                 "optional": true
               }
             },
-            "block_types": {
-              "tag": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "database": {
-                      "type": "string",
-                      "description": "Name of the database that the tag was created in.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "Tag name, e.g. department.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "schema": {
-                      "type": "string",
-                      "description": "Name of the schema that the tag was created in.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "value": {
-                      "type": "string",
-                      "description": "Tag value, e.g. marketing_info.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "Definitions of a tag to associate with the resource.",
-                  "description_kind": "plain",
-                  "deprecated": true
-                }
-              }
-            },
             "description_kind": "plain"
           }
         },
@@ -5579,7 +6421,7 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the user.",
+                "description": "The privilege to grant on the user. To grant all privileges, use the value `ALL PRIVILEGES`.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -5605,7 +6447,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_user_ownership_grant": {
@@ -5693,6 +6536,12 @@
                 "description": "Retains the access permissions from the original view when a new view is created using the OR REPLACE clause.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "created_on": {
+                "type": "string",
+                "description": "The timestamp at which the view was created.",
+                "description_kind": "plain",
+                "computed": true
               },
               "database": {
                 "type": "string",
@@ -5800,7 +6649,7 @@
               },
               "on_all": {
                 "type": "bool",
-                "description": "When this is set to true and a schema_name is provided, apply this grant on all views in the given schema. When this is true and no schema_name is provided apply this grant on all views in the given database. The view_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future. Importing the resource with the on_all=true option is not supported.",
+                "description": "When this is set to true and a schema_name is provided, apply this grant on all views in the given schema. When this is true and no schema_name is provided apply this grant on all views in the given database. The view_name and shares fields must be unset in order to use on_all. Cannot be used together with on_future.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5812,7 +6661,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the current or future view.",
+                "description": "The privilege to grant on the current or future view. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -5853,7 +6708,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "snowflake_warehouse": {
@@ -5959,6 +6815,7 @@
                 "type": "bool",
                 "description": "Specifies whether the warehouse, after being resized, waits for all the servers to provision before executing any queued or new queries.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "warehouse_size": {
@@ -5973,42 +6830,6 @@
                 "description": "Specifies a STANDARD or SNOWPARK-OPTIMIZED warehouse",
                 "description_kind": "plain",
                 "optional": true
-              }
-            },
-            "block_types": {
-              "tag": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "database": {
-                      "type": "string",
-                      "description": "Name of the database that the tag was created in.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "Tag name, e.g. department.",
-                      "description_kind": "plain",
-                      "required": true
-                    },
-                    "schema": {
-                      "type": "string",
-                      "description": "Name of the schema that the tag was created in.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "value": {
-                      "type": "string",
-                      "description": "Tag value, e.g. marketing_info.",
-                      "description_kind": "plain",
-                      "required": true
-                    }
-                  },
-                  "description": "Definitions of a tag to associate with the resource.",
-                  "description_kind": "plain",
-                  "deprecated": true
-                }
               }
             },
             "description_kind": "plain"
@@ -6032,7 +6853,13 @@
               },
               "privilege": {
                 "type": "string",
-                "description": "The privilege to grant on the warehouse.",
+                "description": "The privilege to grant on the warehouse. To grant all privileges, use the value `ALL PRIVILEGES`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "revert_ownership_to_role_name": {
+                "type": "string",
+                "description": "The name of the role to revert ownership to on destroy. Has no effect unless `privilege` is set to `OWNERSHIP`",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6058,11 +6885,113 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         }
       },
       "data_source_schemas": {
+        "snowflake_accounts": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "accounts": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "account_locator": "string",
+                      "account_locator_url": "string",
+                      "account_name": "string",
+                      "account_url": "string",
+                      "comment": "string",
+                      "consumption_billing_entity_name": "string",
+                      "created_on": "string",
+                      "edition": "string",
+                      "is_org_admin": "bool",
+                      "managed_accounts": "number",
+                      "marketplace_consumer_billing_entity_name": "string",
+                      "marketplace_provider_billing_entity_name": "string",
+                      "old_account_url": "string",
+                      "organization_name": "string",
+                      "region_group": "string",
+                      "snowflake_region": "string"
+                    }
+                  ]
+                ],
+                "description": "List of all the accounts available in the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "pattern": {
+                "type": "string",
+                "description": "Specifies an account name pattern. If a pattern is specified, only accounts matching the pattern are returned.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_alerts": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "alerts": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "action": "string",
+                      "comment": "string",
+                      "condition": "string",
+                      "database_name": "string",
+                      "name": "string",
+                      "owner": "string",
+                      "schema_name": "string"
+                    }
+                  ]
+                ],
+                "description": "Lists alerts for the current/specified database or schema, or across the entire account.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "database": {
+                "type": "string",
+                "description": "The database from which to return the alerts from.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "pattern": {
+                "type": "string",
+                "description": "Filters the command output by object name.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "schema": {
+                "type": "string",
+                "description": "The schema from which to return the alerts from.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "snowflake_current_account": {
           "version": 0,
           "block": {
@@ -6175,6 +7104,42 @@
             "description_kind": "plain"
           }
         },
+        "snowflake_database_roles": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "database": {
+                "type": "string",
+                "description": "The database from which to return the database roles from.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "database_roles": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "comment": "string",
+                      "name": "string",
+                      "owner": "string"
+                    }
+                  ]
+                ],
+                "description": "Lists all the database roles in a specified database.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "snowflake_databases": {
           "version": 0,
           "block": {
@@ -6214,11 +7179,156 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "history": {
+                "type": "bool",
+                "description": "Optionally includes dropped databases that have not yet been purged The output also includes an additional `dropped_on` column",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "pattern": {
+                "type": "string",
+                "description": "Optionally filters the databases by a pattern",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "starts_with": {
+                "type": "string",
+                "description": "Optionally filters the databases by a pattern",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "terse": {
+                "type": "bool",
+                "description": "Optionally returns only the columns `created_on` and `name` in the results",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_dynamic_tables": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "records": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "automatic_clustering": "bool",
+                      "bytes": "number",
+                      "cluster_by": "string",
+                      "comment": "string",
+                      "created_on": "string",
+                      "data_timestamp": "string",
+                      "database_name": "string",
+                      "is_clone": "bool",
+                      "is_replica": "bool",
+                      "last_suspended_on": "string",
+                      "name": "string",
+                      "owner": "string",
+                      "refresh_mode": "string",
+                      "refresh_mode_reason": "string",
+                      "rows": "number",
+                      "scheduling_state": "string",
+                      "schema_name": "string",
+                      "target_lag": "string",
+                      "text": "string",
+                      "warehouse": "string"
+                    }
+                  ]
+                ],
+                "description": "The list of dynamic tables.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "starts_with": {
+                "type": "string",
+                "description": "Optionally filters the command output based on the characters that appear at the beginning of the object name. The string is case-sensitive.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "in": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "account": {
+                      "type": "bool",
+                      "description": "Returns records for the entire account.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "database": {
+                      "type": "string",
+                      "description": "Returns records for the current database in use or for a specified database (db_name).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "schema": {
+                      "type": "string",
+                      "description": "Returns records for the current schema in use or a specified schema (schema_name).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "IN clause to filter the list of dynamic tables.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "like": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "pattern": {
+                      "type": "string",
+                      "description": "Filters the command output by object name. The filter uses case-insensitive pattern matching with support for SQL wildcard characters (% and _).",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "LIKE clause to filter the list of dynamic tables.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "limit": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "from": {
+                      "type": "string",
+                      "description": "The optional FROM 'name_string' subclause effectively serves as a “cursor” for the results. This enables fetching the specified number of rows following the first row whose object name matches the specified string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "rows": {
+                      "type": "number",
+                      "description": "Specifies the maximum number of rows to return.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Optionally limits the maximum number of rows returned, while also enabling “pagination” of the results. Note that the actual number of rows returned might be less than the specified limit (e.g. the number of existing objects is less than the specified limit).",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -6306,6 +7416,65 @@
                 "description": "The schema from which to return the external tables from.",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "snowflake_failover_groups": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "failover_groups": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "account_locator": "string",
+                      "account_name": "string",
+                      "allowed_accounts": [
+                        "list",
+                        "string"
+                      ],
+                      "allowed_integration_types": [
+                        "list",
+                        "string"
+                      ],
+                      "comment": "string",
+                      "created_on": "string",
+                      "is_primary": "bool",
+                      "next_scheduled_refresh": "string",
+                      "object_types": [
+                        "list",
+                        "string"
+                      ],
+                      "organization_name": "string",
+                      "owner": "string",
+                      "primary": "string",
+                      "region_group": "string",
+                      "replication_schedule": "string",
+                      "secondary_state": "string",
+                      "snowflake_region": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "List of all the failover groups available in the system.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "in_account": {
+                "type": "string",
+                "description": "Specifies the identifier for the account",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -6699,7 +7868,6 @@
                       "description": "string",
                       "key": "string",
                       "level": "string",
-                      "type": "string",
                       "value": "string"
                     }
                   ]
@@ -7057,7 +8225,10 @@
                       "kind": "string",
                       "name": "string",
                       "owner": "string",
-                      "to": "string"
+                      "to": [
+                        "list",
+                        "string"
+                      ]
                     }
                   ]
                 ],

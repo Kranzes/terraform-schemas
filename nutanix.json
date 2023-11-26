@@ -2256,6 +2256,7 @@
               "wait_timeout_minutes": {
                 "type": "number",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               }
             },
@@ -2598,6 +2599,29 @@
                 "min_items": 1,
                 "max_items": 1
               },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "worker_node_pool": {
                 "nesting_mode": "list",
                 "block": {
@@ -2711,7 +2735,7 @@
               "port": {
                 "type": "number",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "url": {
                 "type": "string",
@@ -2722,6 +2746,130 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "nutanix_karbon_worker_nodepool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "labels": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "node_os_version": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "nodes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "hostname": "string",
+                      "ipv4_address": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "num_instances": {
+                "type": "number",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "ahv_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cpu": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "disk_mib": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "iscsi_network_uuid": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "memory_mib": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "network_uuid": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "prism_element_cluster_uuid": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -16752,7 +16900,7 @@
           }
         },
         "nutanix_cluster": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "analysis_vm_efficiency_map": {
@@ -17162,7 +17310,7 @@
           }
         },
         "nutanix_clusters": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "api_version": {
@@ -19604,7 +19752,7 @@
           }
         },
         "nutanix_karbon_cluster_ssh": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "certificate": {
@@ -19648,7 +19796,7 @@
           }
         },
         "nutanix_karbon_clusters": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "clusters": {
@@ -19782,7 +19930,7 @@
           }
         },
         "nutanix_karbon_private_registries": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "id": {

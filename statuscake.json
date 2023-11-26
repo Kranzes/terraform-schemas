@@ -100,6 +100,80 @@
             "description_kind": "plain"
           }
         },
+        "statuscake_heartbeat_check": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "check_url": {
+                "type": "string",
+                "description": "URL of the heartbeat check",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "contact_groups": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of contact group IDs",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the check",
+                "description_kind": "plain",
+                "required": true
+              },
+              "paused": {
+                "type": "bool",
+                "description": "Whether the check should be run",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "period": {
+                "type": "number",
+                "description": "Number of seconds since the last ping before the check is considered down.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tags": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of tags",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "monitored_resource": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description": "Name of the hosting provider",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Monitored resource configuration block. This describes the server under test",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "statuscake_maintenance_window": {
           "version": 0,
           "block": {
@@ -236,7 +310,7 @@
                       "optional": true
                     }
                   },
-                  "description": "Alert configuration block. Omitting this block disabled all alerts",
+                  "description": "Alert configuration block. An empty block disables all alerts",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -253,7 +327,7 @@
                       "required": true
                     }
                   },
-                  "description": "Monitored resource configuration block. The describes server under test",
+                  "description": "Monitored resource configuration block. This describes the server under test",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -369,7 +443,7 @@
                       "optional": true
                     }
                   },
-                  "description": "Monitored resource configuration block. The describes server under test",
+                  "description": "Monitored resource configuration block. This describes the server under test",
                   "description_kind": "plain"
                 },
                 "min_items": 1,
@@ -549,9 +623,10 @@
                         "set",
                         "string"
                       ],
-                      "description": "List of status codes that trigger an alert",
+                      "description": "List of status codes that trigger an alert. If not specified then the default status codes are used. Once set, the default status codes cannot be restored and ommitting this field does not clear the attribute",
                       "description_kind": "plain",
-                      "required": true
+                      "optional": true,
+                      "computed": true
                     },
                     "timeout": {
                       "type": "number",
@@ -661,7 +736,7 @@
                       "optional": true
                     }
                   },
-                  "description": "Monitored resource configuration block. The describes server under test",
+                  "description": "Monitored resource configuration block. This describes the server under test",
                   "description_kind": "plain"
                 },
                 "min_items": 1,

@@ -56,7 +56,7 @@
                 "attributes": {
                   "manifest": {
                     "type": "bool",
-                    "description": "Enable full diff by storing the rendered manifest in the state.",
+                    "description": "Enable full diff by storing the rendered manifest in the state. This has similar limitations as when using helm install --dry-run. See https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource",
                     "description_kind": "plain",
                     "optional": true
                   }
@@ -142,6 +142,12 @@
                     "description_kind": "plain",
                     "optional": true
                   },
+                  "tls_server_name": {
+                    "type": "string",
+                    "description": "Server name passed to the server for SNI and is used in the client to check server certificates against.",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
                   "token": {
                     "type": "string",
                     "description": "Token to authenticate an service account",
@@ -203,7 +209,7 @@
                 "attributes": {
                   "password": {
                     "type": "string",
-                    "description": "The password to use for HTTP basic authentication when accessing the Kubernetes master endpoint.",
+                    "description": "The password to use for the OCI HTTP basic authentication when accessing the Kubernetes master endpoint.",
                     "description_kind": "plain",
                     "required": true
                   },
@@ -215,7 +221,7 @@
                   },
                   "username": {
                     "type": "string",
-                    "description": "The username to use for HTTP basic authentication when accessing the Kubernetes master endpoint.",
+                    "description": "The username to use for the OCI HTTP basic authentication when accessing the Kubernetes master endpoint.",
                     "description_kind": "plain",
                     "required": true
                   }
@@ -351,7 +357,7 @@
               },
               "name": {
                 "type": "string",
-                "description": "Release name.",
+                "description": "Release name. The length must not be longer than 53 characters.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -534,6 +540,28 @@
                     }
                   },
                   "description": "Custom values to be merged with the values.",
+                  "description_kind": "plain"
+                }
+              },
+              "set_list": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Custom sensitive values to be merged with the values.",
                   "description_kind": "plain"
                 }
               },
@@ -872,6 +900,28 @@
                     }
                   },
                   "description": "Custom values to be merged with the values.",
+                  "description_kind": "plain"
+                }
+              },
+              "set_list": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Custom sensitive values to be merged with the values.",
                   "description_kind": "plain"
                 }
               },

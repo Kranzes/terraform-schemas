@@ -8,9 +8,9 @@
           "attributes": {
             "api_token": {
               "type": "string",
-              "description": "Aiven Authentication Token",
+              "description": "Aiven authentication token. Can also be set with the AIVEN_TOKEN environment variable.",
               "description_kind": "plain",
-              "required": true,
+              "optional": true,
               "sensitive": true
             }
           },
@@ -26,6 +26,7 @@
                 "type": "string",
                 "description": "Account id",
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "create_time": {
@@ -44,6 +45,7 @@
                 "type": "bool",
                 "description": "If true, user is part of the owners team for this account",
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "name": {
@@ -56,12 +58,14 @@
                 "type": "string",
                 "description": "Owner team id",
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "primary_billing_group_id": {
                 "type": "string",
                 "description": "Billing group id",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "tenant_id": {
@@ -113,7 +117,8 @@
               }
             },
             "description": "The Account resource allows the creation and management of an Aiven Account.",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_account_authentication": {
@@ -1016,6 +1021,7 @@
                 "type": "string",
                 "description": "Account id",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "address_lines": {
@@ -1089,6 +1095,12 @@
                 "description": "Billing Group name",
                 "description_kind": "plain",
                 "required": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "An optional property to link a billing group to an already existing organization or account by using its ID. To set up proper dependencies please refer to this variable as a reference.",
+                "description_kind": "plain",
+                "optional": true
               },
               "state": {
                 "type": "string",
@@ -1200,6 +1212,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -1248,7 +1261,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -1339,6 +1352,18 @@
                         "string"
                       ],
                       "description": "Additional Cloud Regions for Backup Replication.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "backup_hour": {
+                      "type": "number",
+                      "description": "The hour of day (in UTC) when backup for the service is started. New backup is only started if previous backup has already completed.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "backup_minute": {
+                      "type": "number",
+                      "description": "The minute of an hour when backup for the service is started. New backup is only started if previous backup has already completed.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1715,6 +1740,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -1763,7 +1789,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -1887,6 +1913,12 @@
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "static_ips": {
+                      "type": "bool",
+                      "description": "Use static public IP addresses.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "block_types": {
@@ -1911,6 +1943,90 @@
                         "description_kind": "plain"
                       },
                       "max_items": 1024
+                    },
+                    "private_access": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "clickhouse": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to clickhouse with a DNS name that always resolves to the service's private IP addresses. Only available in certain network locations.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "clickhouse_https": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to clickhouse_https with a DNS name that always resolves to the service's private IP addresses. Only available in certain network locations.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "prometheus": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to prometheus with a DNS name that always resolves to the service's private IP addresses. Only available in certain network locations.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Allow access to selected service ports from private networks.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "privatelink_access": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "clickhouse": {
+                            "type": "bool",
+                            "description": "Enable clickhouse.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "clickhouse_https": {
+                            "type": "bool",
+                            "description": "Enable clickhouse_https.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "prometheus": {
+                            "type": "bool",
+                            "description": "Enable prometheus.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Allow access to selected service components through Privatelink.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "public_access": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "clickhouse": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to clickhouse from the public internet for service nodes that are in a project VPC or another type of private network.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "clickhouse_https": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to clickhouse_https from the public internet for service nodes that are in a project VPC or another type of private network.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "prometheus": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to prometheus from the public internet for service nodes that are in a project VPC or another type of private network.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Allow access to selected service ports from the public Internet.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "Clickhouse user configurable settings",
@@ -2196,9 +2312,8 @@
                 }
               }
             },
-            "description": "The Clickhouse Grant resource allows the creation and management of Grants in Aiven Clickhouse services.\n\nNotes:\n* Due to a ambiguity in the GRANT syntax in clickhouse you should not have users and roles with the same name. It is not clear if a grant refers to the user or the role.\n* Currently changes will first revoke all grants and then reissue the remaining grants for convergence.\n",
-            "description_kind": "plain",
-            "deprecated": true
+            "description": "The Clickhouse Grant resource allows the creation and management of Grants in Aiven Clickhouse services.\n\nNotes:\n* Due to a ambiguity in the GRANT syntax in clickhouse you should not have users and roles with the same name. It is not clear if a grant refers to the user or the role.\n* To grant a privilege on all tables of a database, do not write table = \"*\". Instead, omit the table and only keep the database.\n* Currently changes will first revoke all grants and then reissue the remaining grants for convergence.\n",
+            "description_kind": "plain"
           }
         },
         "aiven_clickhouse_role": {
@@ -2266,8 +2381,7 @@
               }
             },
             "description": "The Clickhouse Role resource allows the creation and management of Roles in Aiven Clickhouse services",
-            "description_kind": "plain",
-            "deprecated": true
+            "description_kind": "plain"
           }
         },
         "aiven_clickhouse_user": {
@@ -2354,8 +2468,7 @@
               }
             },
             "description": "The Clickhouse User resource allows the creation and management of Aiven Clikhouse Users.",
-            "description_kind": "plain",
-            "deprecated": true
+            "description_kind": "plain"
           }
         },
         "aiven_connection_pool": {
@@ -2497,6 +2610,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -2545,7 +2659,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -2911,6 +3025,110 @@
             "description_kind": "plain"
           }
         },
+        "aiven_flink_application_deployment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "application_id": {
+                "type": "string",
+                "description": "Application ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Application deployment creation time",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "created_by": {
+                "type": "string",
+                "description": "Application deployment creator",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "parallelism": {
+                "type": "number",
+                "description": "Flink Job parallelism",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "project": {
+                "type": "string",
+                "description": "Identifies the project this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "restart_enabled": {
+                "type": "bool",
+                "description": "Specifies whether a Flink Job is restarted in case it fails",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "starting_savepoint": {
+                "type": "string",
+                "description": "Job savepoint",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "version_id": {
+                "type": "string",
+                "description": "ApplicationVersion ID",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The Flink Application Deployment resource allows the creation and management of Aiven Flink Application Deployments.",
+            "description_kind": "plain"
+          }
+        },
         "aiven_flink_application_version": {
           "version": 0,
           "block": {
@@ -3095,6 +3313,172 @@
             "description_kind": "plain"
           }
         },
+        "aiven_gcp_privatelink": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "google_service_attachment": {
+                "type": "string",
+                "description": "Privatelink resource Google Service Attachment",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "message": {
+                "type": "string",
+                "description": "Printable result of the GCP Privatelink request",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "Identifies the project this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Privatelink resource state",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The GCP Privatelink resource allows the creation and management of Aiven GCP Privatelink for a services.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_gcp_privatelink_connection_approval": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "privatelink_connection_id": {
+                "type": "string",
+                "description": "Privatelink connection id",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "Identifies the project this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "psc_connection_id": {
+                "type": "string",
+                "description": "Privatelink connection PSC connection id",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Privatelink connection state",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "user_ip_address": {
+                "type": "string",
+                "description": "Privatelink connection user IP address",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The GCP privatelink approve resource waits for an aiven privatelink connection on a service and approves it with associated endpoint IP",
+            "description_kind": "plain"
+          }
+        },
         "aiven_gcp_vpc_peering_connection": {
           "version": 0,
           "block": {
@@ -3224,6 +3608,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -3284,7 +3669,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -3499,6 +3884,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "oauth_allow_insecure_email_lookup": {
+                      "type": "bool",
+                      "description": "Enforce user lookup based on email instead of the unique ID provided by the IdP.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "project_to_fork_from": {
                       "type": "string",
                       "description": "Name of another project to fork a service from. This has effect only when a new service is being created.",
@@ -3640,6 +4031,12 @@
                             "description": "Authorization URL.",
                             "description_kind": "plain",
                             "required": true
+                          },
+                          "auto_login": {
+                            "type": "bool",
+                            "description": "Allow users to bypass the login screen and automatically log in.",
+                            "description_kind": "plain",
+                            "optional": true
                           },
                           "client_id": {
                             "type": "string",
@@ -4165,6 +4562,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -4227,7 +4625,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -4403,6 +4801,12 @@
                           "max_select_point": {
                             "type": "number",
                             "description": "The maximum number of points that can be processed in a SELECT statement. Setting this to 0 (the default) allows an unlimited number to be processed.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "query_log_enabled": {
+                            "type": "bool",
+                            "description": "Whether queries should be logged before execution. May log sensitive data contained within a query.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -4790,6 +5194,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -4822,10 +5227,29 @@
                 "optional": true,
                 "computed": true
               },
+              "kafka": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "access_cert": "string",
+                      "access_key": "string",
+                      "connect_uri": "string",
+                      "rest_uri": "string",
+                      "schema_registry_uri": "string"
+                    }
+                  ]
+                ],
+                "description": "Kafka server provided values",
+                "description_kind": "plain",
+                "computed": true
+              },
               "karapace": {
                 "type": "bool",
                 "description": "Switch the service to use Karapace for schema registry and REST proxy",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "maintenance_window_dow": {
@@ -4844,7 +5268,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -4925,56 +5349,6 @@
               }
             },
             "block_types": {
-              "kafka": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "access_cert": {
-                      "type": "string",
-                      "description": "The Kafka client certificate",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true,
-                      "sensitive": true
-                    },
-                    "access_key": {
-                      "type": "string",
-                      "description": "The Kafka client certificate key",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true,
-                      "sensitive": true
-                    },
-                    "connect_uri": {
-                      "type": "string",
-                      "description": "The Kafka Connect URI, if any",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true,
-                      "sensitive": true
-                    },
-                    "rest_uri": {
-                      "type": "string",
-                      "description": "The Kafka REST URI, if any",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true,
-                      "sensitive": true
-                    },
-                    "schema_registry_uri": {
-                      "type": "string",
-                      "description": "The Schema Registry URI, if any",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true,
-                      "sensitive": true
-                    }
-                  },
-                  "description": "Kafka server provided values",
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
               "kafka_user_config": {
                 "nesting_mode": "list",
                 "block": {
@@ -5427,6 +5801,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "scheduled_rebalance_max_delay_ms": {
+                            "type": "number",
+                            "description": "The maximum delay that is scheduled in order to wait for the return of one or more departed workers before rebalancing and reassigning their connectors and tasks to the group. During this period the connectors and tasks of the departed workers remain unassigned.  Defaults to 5 minutes.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "session_timeout_ms": {
                             "type": "number",
                             "description": "The timeout in milliseconds used to detect failures when using Kafka’s group management facilities (defaults to 10000).",
@@ -5476,6 +5856,12 @@
                           "producer_linger_ms": {
                             "type": "number",
                             "description": "Wait for up to the given delay to allow batching records together. The default value is `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "producer_max_request_size": {
+                            "type": "number",
+                            "description": "The maximum size of a request in bytes. Note that Kafka broker can also cap the record batch size. The default value is `1048576`.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -5733,7 +6119,6 @@
                 "type": "string",
                 "description": "Kafka ACL ID",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "id": {
@@ -5852,6 +6237,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -5912,7 +6298,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -6140,6 +6526,12 @@
                           "producer_max_request_size": {
                             "type": "number",
                             "description": "This setting will limit the number of record batches the producer will send in a single request to avoid sending huge requests.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "scheduled_rebalance_max_delay_ms": {
+                            "type": "number",
+                            "description": "The maximum delay that is scheduled in order to wait for the return of one or more departed workers before rebalancing and reassigning their connectors and tasks to the group. During this period the connectors and tasks of the departed workers remain unassigned.  Defaults to 5 minutes.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -6481,6 +6873,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -6541,7 +6934,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -6864,13 +7257,13 @@
               },
               "schema": {
                 "type": "string",
-                "description": "Kafka Schema configuration should be a valid Avro Schema JSON format.",
+                "description": "Kafka Schema configuration. Should be a valid Avro, JSON, or Protobuf schema, depending on the schema type.",
                 "description_kind": "plain",
                 "required": true
               },
               "schema_type": {
                 "type": "string",
-                "description": "Kafka Schema type JSON or AVRO",
+                "description": "Kafka Schema configuration type. Defaults to AVRO. Possible values are AVRO, JSON, and PROTOBUF.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -7008,7 +7401,6 @@
                 "type": "string",
                 "description": "Kafka Schema Registry ACL ID",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "id": {
@@ -7279,8 +7671,9 @@
                     },
                     "unclean_leader_election_enable": {
                       "type": "bool",
-                      "description": "unclean.leader.election.enable value",
+                      "description": "unclean.leader.election.enable value; This field is deprecated and no longer functional.",
                       "description_kind": "plain",
+                      "deprecated": true,
                       "optional": true
                     }
                   },
@@ -7484,6 +7877,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -7544,7 +7938,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -7823,6 +8217,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -7883,7 +8278,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -8715,6 +9110,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -8775,7 +9171,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -9086,7 +9482,7 @@
                           },
                           "innodb_lock_wait_timeout": {
                             "type": "number",
-                            "description": "The length of time in seconds an InnoDB transaction waits for a row lock before giving up.",
+                            "description": "The length of time in seconds an InnoDB transaction waits for a row lock before giving up. Default is 120.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -9608,6 +10004,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -9662,7 +10059,7 @@
                     }
                   ]
                 ],
-                "description": "Opensearch server provided values",
+                "description": "OpenSearch server provided values",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -9670,7 +10067,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -9918,6 +10315,88 @@
                         "description_kind": "plain"
                       },
                       "max_items": 1024
+                    },
+                    "openid": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "client_id": {
+                            "type": "string",
+                            "description": "The ID of the OpenID Connect client configured in your IdP. Required.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "client_secret": {
+                            "type": "string",
+                            "description": "The client secret of the OpenID Connect client configured in your IdP. Required.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "connect_url": {
+                            "type": "string",
+                            "description": "The URL of your IdP where the Security plugin can find the OpenID Connect metadata/configuration settings.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enables or disables OpenID Connect authentication for OpenSearch. When enabled, users can authenticate using OpenID Connect with an Identity Provider. The default value is `true`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "header": {
+                            "type": "string",
+                            "description": "HTTP header name of the JWT token. Optional. Default is Authorization. The default value is `Authorization`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "jwt_header": {
+                            "type": "string",
+                            "description": "The HTTP header that stores the token. Typically the Authorization header with the Bearer schema: Authorization: Bearer <token>. Optional. Default is Authorization.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "jwt_url_parameter": {
+                            "type": "string",
+                            "description": "If the token is not transmitted in the HTTP header, but as an URL parameter, define the name of the parameter here. Optional.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "refresh_rate_limit_count": {
+                            "type": "number",
+                            "description": "The maximum number of unknown key IDs in the time frame. Default is 10. Optional. The default value is `10`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "refresh_rate_limit_time_window_ms": {
+                            "type": "number",
+                            "description": "The time frame to use when checking the maximum number of unknown key IDs, in milliseconds. Optional.Default is 10000 (10 seconds). The default value is `10000`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "roles_key": {
+                            "type": "string",
+                            "description": "The key in the JSON payload that stores the user’s roles. The value of this key must be a comma-separated list of roles. Required only if you want to use roles in the JWT.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "scope": {
+                            "type": "string",
+                            "description": "The scope of the identity token issued by the IdP. Optional. Default is openid profile email address phone.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "subject_key": {
+                            "type": "string",
+                            "description": "The key in the JSON payload that stores the user’s name. If not defined, the subject registered claim is used. Most IdP providers use the preferred_username claim. Optional.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "OpenSearch OpenID Connect Configuration.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     },
                     "opensearch": {
                       "nesting_mode": "list",
@@ -10230,6 +10709,58 @@
                         "description_kind": "plain"
                       },
                       "max_items": 1
+                    },
+                    "saml": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enables or disables SAML-based authentication for OpenSearch. When enabled, users can authenticate using SAML with an Identity Provider. The default value is `true`.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "idp_entity_id": {
+                            "type": "string",
+                            "description": "The unique identifier for the Identity Provider (IdP) entity that is used for SAML authentication. This value is typically provided by the IdP.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "idp_metadata_url": {
+                            "type": "string",
+                            "description": "The URL of the SAML metadata for the Identity Provider (IdP). This is used to configure SAML-based authentication with the IdP.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "idp_pemtrustedcas_content": {
+                            "type": "string",
+                            "description": "This parameter specifies the PEM-encoded root certificate authority (CA) content for the SAML identity provider (IdP) server verification. The root CA content is used to verify the SSL/TLS certificate presented by the server.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "roles_key": {
+                            "type": "string",
+                            "description": "Optional. Specifies the attribute in the SAML response where role information is stored, if available. Role attributes are not required for SAML authentication, but can be included in SAML assertions by most Identity Providers (IdPs) to determine user access levels or permissions.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "sp_entity_id": {
+                            "type": "string",
+                            "description": "The unique identifier for the Service Provider (SP) entity that is used for SAML authentication. This value is typically provided by the SP.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "subject_key": {
+                            "type": "string",
+                            "description": "Optional. Specifies the attribute in the SAML response where the subject identifier is stored. If not configured, the NameID attribute is used by default.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "OpenSearch SAML configuration.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "Opensearch user configurable settings",
@@ -10313,7 +10844,7 @@
                 }
               }
             },
-            "description": "The Opensearch resource allows the creation and management of Aiven Opensearch services.",
+            "description": "The OpenSearch resource allows the creation and management of Aiven OpenSearch services.",
             "description_kind": "plain"
           }
         },
@@ -10323,7 +10854,7 @@
             "attributes": {
               "enabled": {
                 "type": "bool",
-                "description": "Enable Opensearch ACLs. When disabled authenticated service users have unrestricted access. The default value is `true`.",
+                "description": "Enable OpenSearch ACLs. When disabled authenticated service users have unrestricted access. The default value is `true`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -10387,7 +10918,7 @@
                 }
               }
             },
-            "description": "The Opensearch resource allows the creation and management of Aiven Opensearch services.",
+            "description": "The OpenSearch ACL Config resource allows the creation and management of Aiven OpenSearch ACLs.",
             "description_kind": "plain"
           }
         },
@@ -10467,27 +10998,44 @@
                 }
               }
             },
-            "description": "The Opensearch ACL Rule resource models a single ACL Rule for an Aiven Opensearch service.",
+            "description": "The OpenSearch ACL Rule resource models a single ACL Rule for an Aiven OpenSearch service.",
             "description_kind": "plain"
           }
         },
-        "aiven_opensearch_user": {
+        "aiven_opensearch_security_plugin_config": {
           "version": 0,
           "block": {
             "attributes": {
+              "admin_enabled": {
+                "type": "bool",
+                "description": "Whether the os-sec-admin user is enabled. This indicates whether the user management with the security plugin is enabled. This is always true when the os-sec-admin password was set at least once.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "admin_password": {
+                "type": "string",
+                "description": "The password for the os-sec-admin user.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "available": {
+                "type": "bool",
+                "description": "Whether the security plugin is available. This is always true for recently created services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the security plugin is enabled. This is always true for recently created services.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
-              },
-              "password": {
-                "type": "string",
-                "description": "The password of the Opensearch User.",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true,
-                "sensitive": true
               },
               "project": {
                 "type": "string",
@@ -10498,18 +11046,6 @@
               "service_name": {
                 "type": "string",
                 "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
-                "description_kind": "plain",
-                "required": true
-              },
-              "type": {
-                "type": "string",
-                "description": "Type of the user account. Tells whether the user is the primary account or a regular account.",
-                "description_kind": "plain",
-                "computed": true
-              },
-              "username": {
-                "type": "string",
-                "description": "The actual name of the Opensearch User. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -10549,7 +11085,402 @@
                 }
               }
             },
-            "description": "The Opensearch User resource allows the creation and management of Aiven Opensearch Users.",
+            "description": "The OpenSearch Security Plugin Config resource allows the creation and management of AivenOpenSearch Security Plugin config.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_opensearch_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password of the OpenSearch User.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "project": {
+                "type": "string",
+                "description": "Identifies the project this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the user account. Tells whether the user is the primary account or a regular account.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The actual name of the OpenSearch User. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The OpenSearch User resource allows the creation and management of Aiven OpenSearch Users.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Timestamp of the creation of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Identifier of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the organization.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description": "Tenant identifier of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Timestamp of the last update of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours).",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "Creates and manages an organization in Aiven.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organization_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "accepted": {
+                "type": "bool",
+                "description": "This is a boolean flag that determines whether an invitation was accepted or not by the user. `false` value means that the invitation was sent to the user but not yet accepted. `true` means that the user accepted the invitation and now a member of an organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "create_time": {
+                "type": "string",
+                "description": "Time of creation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invited_by": {
+                "type": "string",
+                "description": "The email address of the user who sent an invitation to the user.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The unique organization ID. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_email": {
+                "type": "string",
+                "description": "This is a user email address that first will be invited, and after accepting an invitation, they become a member of the organization. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "\nThe Organization User resource allows the creation and management of an Aiven Organization User.\n\nDuring the creation of `aiven_organization_user`resource, an email invitation will be sent\nto a user using `user_email` address. If the user accepts an invitation, they will become\na member of the organization. The deletion of `aiven_organization_user` will not only\ndelete the invitation if one was sent but not yet accepted by the user, it will also \neliminate the member from the organization if one has accepted an invitation previously.\n",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organization_user_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Time of creation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The organization user group description. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The organization user group name. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The unique organization ID. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Time of last update",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The Organization User Group resource allows the creation and management of an Aiven Organization Groups.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organizational_unit": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Time of creation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Organizational Unit name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "Parent ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description": "Tenant ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Time of last update",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "timeouts": {
+                "nesting_mode": "single",
+                "block": {
+                  "attributes": {
+                    "create": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "default": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "delete": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "read": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "update": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description": "The Organizational Unit resource allows the creation and management of Aiven Organizational Units.",
             "description_kind": "plain"
           }
         },
@@ -10593,6 +11524,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -10641,7 +11573,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -11695,7 +12627,7 @@
               },
               "password": {
                 "type": "string",
-                "description": "The password of the PG User ( not applicable for all services ).",
+                "description": "The password of the PG User (not applicable for all services).",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true,
@@ -11703,7 +12635,7 @@
               },
               "pg_allow_replication": {
                 "type": "bool",
-                "description": "Defines whether replication is allowed. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "Defines whether replication is allowed.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -11777,21 +12709,22 @@
             "attributes": {
               "account_id": {
                 "type": "string",
-                "description": "An optional property to link a project to already an existing account by using account ID. To set up proper dependencies please refer to this variable as a reference.",
+                "description": "An optional property to link a project to an already existing account by using account ID. To set up proper dependencies please refer to this variable as a reference.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "add_account_owners_admin_access": {
                 "type": "bool",
-                "description": "If account_id is set, grant account owner team admin access to the new project. The default value is `true`.",
+                "description": "If parent_id is set, grant account owner team admin access to the new project. The default value is `true`.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "available_credits": {
                 "type": "string",
                 "description": "The amount of platform credits available to the project. This could be your free trial or other promotional credits.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "billing_group": {
@@ -11831,6 +12764,12 @@
                 "optional": true,
                 "computed": true
               },
+              "parent_id": {
+                "type": "string",
+                "description": "An optional property to link a project to an already existing organization or account by using its ID. To set up proper dependencies please refer to this variable as a reference.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "payment_method": {
                 "type": "string",
                 "description": "The method of invoicing used for payments for this project, e.g. `card`.",
@@ -11856,6 +12795,7 @@
                 "type": "bool",
                 "description": "Use the same billing group that is used in source project.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               }
             },
@@ -12107,6 +13047,7 @@
                 "type": "string",
                 "description": "Service disk space. Possible values depend on the service type, the cloud provider and the project. Therefore, reducing will result in the service rebalancing.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               },
               "disk_space_cap": {
@@ -12155,7 +13096,7 @@
                 "type": "string",
                 "description": "Defines what kind of computing resources are allocated for the service. It can be changed after creation, though there are some restrictions when going to a smaller plan such as the new plan must have sufficient amount of disk space to store all current data and switching to a plan with fewer nodes might not be supported. The basic plan names are `hobbyist`, `startup-x`, `business-x` and `premium-x` where `x` is (roughly) the amount of memory on each node (also other attributes like number of CPUs and amount of disk space varies but naming is based on memory). The available options can be seem from the [Aiven pricing page](https://aiven.io/pricing).",
                 "description_kind": "plain",
-                "optional": true
+                "required": true
               },
               "project": {
                 "type": "string",
@@ -12300,7 +13241,7 @@
                     },
                     "redis_io_threads": {
                       "type": "number",
-                      "description": "Redis IO thread count.",
+                      "description": "Set Redis IO thread count. Changing this will cause a restart of the Redis service.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -12330,7 +13271,7 @@
                     },
                     "redis_number_of_databases": {
                       "type": "number",
-                      "description": "Set number of redis databases. Changing this will cause a restart of redis service.",
+                      "description": "Set number of Redis databases. Changing this will cause a restart of the Redis service.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -12785,11 +13726,23 @@
                       "nesting_mode": "list",
                       "block": {
                         "attributes": {
+                          "auto_offset_reset": {
+                            "type": "string",
+                            "description": "Action to take when there is no initial offset in offset store or the desired offset is out of range. The default value is `earliest`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "data_format": {
                             "type": "string",
                             "description": "Message data format. The default value is `JSONEachRow`.",
                             "description_kind": "plain",
                             "required": true
+                          },
+                          "date_time_input_format": {
+                            "type": "string",
+                            "description": "Method to read DateTime from text input formats. The default value is `basic`.",
+                            "description_kind": "plain",
+                            "optional": true
                           },
                           "group_name": {
                             "type": "string",
@@ -12797,11 +13750,47 @@
                             "description_kind": "plain",
                             "required": true
                           },
+                          "handle_error_mode": {
+                            "type": "string",
+                            "description": "How to handle errors for Kafka engine. The default value is `default`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "max_block_size": {
+                            "type": "number",
+                            "description": "Number of row collected by poll(s) for flushing data from Kafka. The default value is `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "max_rows_per_message": {
+                            "type": "number",
+                            "description": "The maximum number of rows produced in one kafka message for row-based formats. The default value is `1`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "name": {
                             "type": "string",
                             "description": "Name of the table.",
                             "description_kind": "plain",
                             "required": true
+                          },
+                          "num_consumers": {
+                            "type": "number",
+                            "description": "The number of consumers per table per replica. The default value is `1`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "poll_max_batch_size": {
+                            "type": "number",
+                            "description": "Maximum amount of messages to be polled in a single Kafka poll. The default value is `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "skip_broken_messages": {
+                            "type": "number",
+                            "description": "Skip at least this number of broken messages from Kafka topic per block. The default value is `0`.",
+                            "description_kind": "plain",
+                            "optional": true
                           }
                         },
                         "block_types": {
@@ -12999,6 +13988,22 @@
                         "description_kind": "plain"
                       },
                       "max_items": 1
+                    },
+                    "redis": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "command_stats_enabled": {
+                            "type": "bool",
+                            "description": "Enable command_stats option in the agent's configuration. The default value is `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Datadog Redis Options.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "Datadog user configurable settings",
@@ -13112,6 +14117,15 @@
                       "type": "string",
                       "description": "Topic name.",
                       "description_kind": "plain",
+                      "required": true
+                    },
+                    "selected_log_fields": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The list of logging fields that will be sent to the integration logging service. The MESSAGE and timestamp fields are always sent.",
+                      "description_kind": "plain",
                       "optional": true
                     }
                   },
@@ -13154,6 +14168,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "producer_compression_type": {
+                            "type": "string",
+                            "description": "Specify the default compression type for producers. This configuration accepts the standard compression codecs ('gzip', 'snappy', 'lz4', 'zstd'). It additionally accepts 'none' which is the default and equivalent to no compression.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "producer_linger_ms": {
                             "type": "number",
                             "description": "The linger time (ms) for waiting new data to arrive for publishing.",
@@ -13191,6 +14211,15 @@
                     "elasticsearch_index_prefix": {
                       "type": "string",
                       "description": "Elasticsearch index prefix. The default value is `logs`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "selected_log_fields": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The list of logging fields that will be sent to the integration logging service. The MESSAGE and timestamp fields are always sent.",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -13399,7 +14428,7 @@
               },
               "endpoint_type": {
                 "type": "string",
-                "description": "Type of the service integration endpoint",
+                "description": "Type of the service integration endpoint. Possible values: `datadog`, `prometheus`, `rsyslog`, `external_elasticsearch_logs`, `external_opensearch_logs`, `external_aws_cloudwatch_logs`, `external_google_cloud_logging`, `external_kafka`, `jolokia`, `external_schema_registry`, `external_aws_cloudwatch_metrics`",
                 "description_kind": "plain",
                 "required": true
               },
@@ -13425,7 +14454,7 @@
                       "type": "string",
                       "description": "Datadog API key.",
                       "description_kind": "plain",
-                      "optional": true,
+                      "required": true,
                       "sensitive": true
                     },
                     "disable_consumer_stats": {
@@ -13496,7 +14525,7 @@
                       "type": "string",
                       "description": "AWS access key. Required permissions are logs:CreateLogGroup, logs:CreateLogStream, logs:PutLogEvents and logs:DescribeLogStreams.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "log_group_name": {
                       "type": "string",
@@ -13508,13 +14537,13 @@
                       "type": "string",
                       "description": "AWS region.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "secret_key": {
                       "type": "string",
                       "description": "AWS secret key.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "ExternalAwsCloudwatchLogs user configurable settings",
@@ -13530,25 +14559,25 @@
                       "type": "string",
                       "description": "AWS access key. Required permissions are cloudwatch:PutMetricData.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "namespace": {
                       "type": "string",
                       "description": "AWS CloudWatch Metrics Namespace.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "region": {
                       "type": "string",
                       "description": "AWS region.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "secret_key": {
                       "type": "string",
                       "description": "AWS secret key.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "ExternalAwsCloudwatchMetrics user configurable settings",
@@ -13576,7 +14605,7 @@
                       "type": "string",
                       "description": "Elasticsearch index prefix. The default value is `logs`.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "timeout": {
                       "type": "number",
@@ -13588,7 +14617,7 @@
                       "type": "string",
                       "description": "Elasticsearch connection URL.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "ExternalElasticsearchLogs user configurable settings",
@@ -13604,19 +14633,19 @@
                       "type": "string",
                       "description": "Google Cloud Logging log id.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "project_id": {
                       "type": "string",
                       "description": "GCP project id.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "service_account_credentials": {
                       "type": "string",
                       "description": "This is a JSON object with the fields documented in https://cloud.google.com/iam/docs/creating-managing-service-account-keys .",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "ExternalGoogleCloudLogging user configurable settings",
@@ -13632,11 +14661,11 @@
                       "type": "string",
                       "description": "Bootstrap servers.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "sasl_mechanism": {
                       "type": "string",
-                      "description": "The list of SASL mechanisms enabled in the Kafka server.",
+                      "description": "SASL mechanism used for connections to the Kafka server.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -13657,7 +14686,7 @@
                       "type": "string",
                       "description": "Security protocol.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "ssl_ca_cert": {
                       "type": "string",
@@ -13709,7 +14738,7 @@
                       "type": "string",
                       "description": "OpenSearch index prefix. The default value is `logs`.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "timeout": {
                       "type": "number",
@@ -13721,7 +14750,7 @@
                       "type": "string",
                       "description": "OpenSearch connection URL.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "ExternalOpensearchLogs user configurable settings",
@@ -13737,7 +14766,7 @@
                       "type": "string",
                       "description": "Authentication method.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "basic_auth_password": {
                       "type": "string",
@@ -13756,7 +14785,7 @@
                       "type": "string",
                       "description": "Schema Registry URL.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "ExternalSchemaRegistry user configurable settings",
@@ -13830,7 +14859,7 @@
                       "type": "string",
                       "description": "message format. The default value is `rfc5424`.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "key": {
                       "type": "string",
@@ -13848,7 +14877,7 @@
                       "type": "number",
                       "description": "rsyslog server port. The default value is `514`.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "sd": {
                       "type": "string",
@@ -13860,48 +14889,16 @@
                       "type": "string",
                       "description": "rsyslog server IP address or hostname.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     },
                     "tls": {
                       "type": "bool",
                       "description": "Require TLS. The default value is `true`.",
                       "description_kind": "plain",
-                      "optional": true
+                      "required": true
                     }
                   },
                   "description": "Rsyslog user configurable settings",
-                  "description_kind": "plain"
-                },
-                "max_items": 1
-              },
-              "signalfx_user_config": {
-                "nesting_mode": "list",
-                "block": {
-                  "attributes": {
-                    "enabled_metrics": {
-                      "type": [
-                        "list",
-                        "string"
-                      ],
-                      "description": "list of metrics to send.",
-                      "description_kind": "plain",
-                      "optional": true
-                    },
-                    "signalfx_api_key": {
-                      "type": "string",
-                      "description": "SignalFX API key.",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "sensitive": true
-                    },
-                    "signalfx_realm": {
-                      "type": "string",
-                      "description": "SignalFX realm. The default value is `us0`.",
-                      "description_kind": "plain",
-                      "optional": true
-                    }
-                  },
-                  "description": "Signalfx user configurable settings",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -14050,7 +15047,8 @@
                 "type": "string",
                 "description": "AWS region of the peered VPC (if not in the same region as Aiven VPC)",
                 "description_kind": "plain",
-                "required": true
+                "deprecated": true,
+                "optional": true
               },
               "peer_vpc": {
                 "type": "string",
@@ -14081,7 +15079,7 @@
               },
               "user_peer_network_cidrs": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "List of private IPv4 ranges to route through the peering connection",
@@ -14797,6 +15795,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "parent_id": {
+                "type": "string",
+                "description": "An optional property to link a billing group to an already existing organization or account by using its ID. To set up proper dependencies please refer to this variable as a reference.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "state": {
                 "type": "string",
                 "description": "State",
@@ -14821,7 +15825,7 @@
           }
         },
         "aiven_cassandra": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -14852,6 +15856,8 @@
                         "list",
                         "string"
                       ],
+                      "backup_hour": "number",
+                      "backup_minute": "number",
                       "cassandra": [
                         "list",
                         [
@@ -15214,8 +16220,42 @@
                         "list",
                         "string"
                       ],
+                      "private_access": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "clickhouse": "bool",
+                            "clickhouse_https": "bool",
+                            "prometheus": "bool"
+                          }
+                        ]
+                      ],
+                      "privatelink_access": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "clickhouse": "bool",
+                            "clickhouse_https": "bool",
+                            "prometheus": "bool"
+                          }
+                        ]
+                      ],
                       "project_to_fork_from": "string",
-                      "service_to_fork_from": "string"
+                      "public_access": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "clickhouse": "bool",
+                            "clickhouse_https": "bool",
+                            "prometheus": "bool"
+                          }
+                        ]
+                      ],
+                      "service_to_fork_from": "string",
+                      "static_ips": "bool"
                     }
                   ]
                 ],
@@ -15571,7 +16611,7 @@
           }
         },
         "aiven_flink": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -16018,6 +17058,51 @@
             "description_kind": "plain"
           }
         },
+        "aiven_gcp_privatelink": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "google_service_attachment": {
+                "type": "string",
+                "description": "Privatelink resource Google Service Attachment",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "message": {
+                "type": "string",
+                "description": "Printable result of the GCP Privatelink request",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "Identifies the project this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "state": {
+                "type": "string",
+                "description": "Privatelink resource state",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "The GCP Privatelink resource allows the creation and management of Aiven GCP Privatelink for a services.",
+            "description_kind": "plain"
+          }
+        },
         "aiven_gcp_vpc_peering_connection": {
           "version": 0,
           "block": {
@@ -16073,7 +17158,7 @@
           }
         },
         "aiven_grafana": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -16203,6 +17288,7 @@
                             ],
                             "api_url": "string",
                             "auth_url": "string",
+                            "auto_login": "bool",
                             "client_id": "string",
                             "client_secret": "string",
                             "name": "string",
@@ -16323,6 +17409,7 @@
                         "string"
                       ],
                       "metrics_enabled": "bool",
+                      "oauth_allow_insecure_email_lookup": "bool",
                       "private_access": [
                         "list",
                         [
@@ -16517,7 +17604,7 @@
           }
         },
         "aiven_influxdb": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -16623,6 +17710,7 @@
                             "max_row_limit": "number",
                             "max_select_buckets": "number",
                             "max_select_point": "number",
+                            "query_log_enabled": "bool",
                             "query_timeout": "number"
                           }
                         ]
@@ -16913,7 +18001,7 @@
           }
         },
         "aiven_kafka": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -17114,6 +18202,7 @@
                             "producer_compression_type": "string",
                             "producer_linger_ms": "number",
                             "producer_max_request_size": "number",
+                            "scheduled_rebalance_max_delay_ms": "number",
                             "session_timeout_ms": "number"
                           }
                         ]
@@ -17131,6 +18220,7 @@
                             "producer_acks": "string",
                             "producer_compression_type": "string",
                             "producer_linger_ms": "number",
+                            "producer_max_request_size": "number",
                             "simpleconsumer_pool_size_max": "number"
                           }
                         ]
@@ -17383,7 +18473,7 @@
           }
         },
         "aiven_kafka_connect": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -17513,6 +18603,7 @@
                             "producer_compression_type": "string",
                             "producer_linger_ms": "number",
                             "producer_max_request_size": "number",
+                            "scheduled_rebalance_max_delay_ms": "number",
                             "session_timeout_ms": "number"
                           }
                         ]
@@ -17780,7 +18871,7 @@
           }
         },
         "aiven_kafka_mirrormaker": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -18071,13 +19162,13 @@
               },
               "schema": {
                 "type": "string",
-                "description": "Kafka Schema configuration should be a valid Avro Schema JSON format.",
+                "description": "Kafka Schema configuration. Should be a valid Avro, JSON, or Protobuf schema, depending on the schema type.",
                 "description_kind": "plain",
                 "computed": true
               },
               "schema_type": {
                 "type": "string",
-                "description": "Kafka Schema type JSON or AVRO",
+                "description": "Kafka Schema configuration type. Defaults to AVRO. Possible values are AVRO, JSON, and PROTOBUF.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -18128,13 +19219,13 @@
               },
               "schema": {
                 "type": "string",
-                "description": "Kafka Schema configuration should be a valid Avro Schema JSON format.",
+                "description": "Kafka Schema configuration. Should be a valid Avro, JSON, or Protobuf schema, depending on the schema type.",
                 "description_kind": "plain",
                 "computed": true
               },
               "schema_type": {
                 "type": "string",
-                "description": "Kafka Schema type JSON or AVRO",
+                "description": "Kafka Schema configuration type. Defaults to AVRO. Possible values are AVRO, JSON, and PROTOBUF.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -18213,7 +19304,7 @@
           }
         },
         "aiven_kafka_topic": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "config": {
@@ -18376,7 +19467,7 @@
           }
         },
         "aiven_m3aggregator": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -18625,7 +19716,7 @@
           }
         },
         "aiven_m3db": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -19155,7 +20246,7 @@
           }
         },
         "aiven_mysql": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -19606,7 +20697,7 @@
           }
         },
         "aiven_opensearch": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -19699,7 +20790,7 @@
                     }
                   ]
                 ],
-                "description": "Opensearch server provided values",
+                "description": "OpenSearch server provided values",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -19757,6 +20848,26 @@
                       ],
                       "keep_index_refresh_interval": "bool",
                       "max_index_count": "number",
+                      "openid": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "client_id": "string",
+                            "client_secret": "string",
+                            "connect_url": "string",
+                            "enabled": "bool",
+                            "header": "string",
+                            "jwt_header": "string",
+                            "jwt_url_parameter": "string",
+                            "refresh_rate_limit_count": "number",
+                            "refresh_rate_limit_time_window_ms": "number",
+                            "roles_key": "string",
+                            "scope": "string",
+                            "subject_key": "string"
+                          }
+                        ]
+                      ],
                       "opensearch": [
                         "list",
                         [
@@ -19846,6 +20957,21 @@
                         ]
                       ],
                       "recovery_basebackup_name": "string",
+                      "saml": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "enabled": "bool",
+                            "idp_entity_id": "string",
+                            "idp_metadata_url": "string",
+                            "idp_pemtrustedcas_content": "string",
+                            "roles_key": "string",
+                            "sp_entity_id": "string",
+                            "subject_key": "string"
+                          }
+                        ]
+                      ],
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -19969,7 +21095,7 @@
                 "computed": true
               }
             },
-            "description": "The Opensearch data source provides information about the existing Aiven Opensearch service.",
+            "description": "The OpenSearch data source provides information about the existing Aiven OpenSearch service.",
             "description_kind": "plain"
           }
         },
@@ -19979,7 +21105,7 @@
             "attributes": {
               "enabled": {
                 "type": "bool",
-                "description": "Enable Opensearch ACLs. When disabled authenticated service users have unrestricted access. The default value is `true`.",
+                "description": "Enable OpenSearch ACLs. When disabled authenticated service users have unrestricted access. The default value is `true`.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20008,7 +21134,7 @@
                 "required": true
               }
             },
-            "description": "The Opensearch ACL Config data source provides information about an existing Aiven Opensearch ACL Config.",
+            "description": "The OpenSearch ACL Config data source provides information about an existing Aiven OpenSearch ACL Config.",
             "description_kind": "plain"
           }
         },
@@ -20053,7 +21179,59 @@
                 "required": true
               }
             },
-            "description": "The Opensearch ACL Rule data source provides information about an existing Aiven Opensearch ACL Rule.",
+            "description": "The OpenSearch ACL Rule data source provides information about an existing Aiven OpenSearch ACL Rule.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_opensearch_security_plugin_config": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "admin_enabled": {
+                "type": "bool",
+                "description": "Whether the os-sec-admin user is enabled. This indicates whether the user management with the security plugin is enabled. This is always true when the os-sec-admin password was set at least once.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "admin_password": {
+                "type": "string",
+                "description": "The password for the os-sec-admin user.",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "available": {
+                "type": "bool",
+                "description": "Whether the security plugin is available. This is always true for recently created services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Whether the security plugin is enabled. This is always true for recently created services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "Identifies the project this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Specifies the name of the service that this resource belongs to. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The OpenSearch Security Plugin Config data source provides information about an existing Aiven OpenSearch Security Plugin Config.",
             "description_kind": "plain"
           }
         },
@@ -20069,7 +21247,7 @@
               },
               "password": {
                 "type": "string",
-                "description": "The password of the Opensearch User.",
+                "description": "The password of the OpenSearch User.",
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
@@ -20094,17 +21272,191 @@
               },
               "username": {
                 "type": "string",
-                "description": "The actual name of the Opensearch User. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "The actual name of the OpenSearch User. To set up proper dependencies please refer to this variable as a reference. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
               }
             },
-            "description": "The Opensearch User data source provides information about the existing Aiven Cassandra User.",
+            "description": "The OpenSearch User data source provides information about the existing Aiven OpenSearch User.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Timestamp of the creation of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Identifier of the organization.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the organization.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description": "Tenant identifier of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Timestamp of the last update of the organization.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Retrieves information about an organization from Aiven.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organization_user": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "accepted": {
+                "type": "bool",
+                "description": "This is a boolean flag that determines whether an invitation was accepted or not by the user. `false` value means that the invitation was sent to the user but not yet accepted. `true` means that the user accepted the invitation and now a member of an organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "create_time": {
+                "type": "string",
+                "description": "Time of creation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invited_by": {
+                "type": "string",
+                "description": "The email address of the user who sent an invitation to the user.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The unique organization ID. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "user_email": {
+                "type": "string",
+                "description": "This is a user email address that first will be invited, and after accepting an invitation, they become a member of the organization. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "The Organization User data source provides information about the existing Aiven Organization User.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organization_user_group": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Time of creation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The organization user group description. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The organization user group name. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization_id": {
+                "type": "string",
+                "description": "The unique organization ID. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Time of last update",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "The Organization User Groupe data source provides information about the existing Aiven Organization User Group.",
+            "description_kind": "plain"
+          }
+        },
+        "aiven_organizational_unit": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "create_time": {
+                "type": "string",
+                "description": "Time of creation",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Organizational Unit name",
+                "description_kind": "plain",
+                "required": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "Parent ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tenant_id": {
+                "type": "string",
+                "description": "Tenant ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "update_time": {
+                "type": "string",
+                "description": "Time of last update",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "The Organizational Unit data source provides information about the existing Aiven Organizational Unit.",
             "description_kind": "plain"
           }
         },
         "aiven_pg": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -20600,14 +21952,14 @@
               },
               "password": {
                 "type": "string",
-                "description": "The password of the PG User ( not applicable for all services ).",
+                "description": "The password of the PG User (not applicable for all services).",
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
               },
               "pg_allow_replication": {
                 "type": "bool",
-                "description": "Defines whether replication is allowed. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "Defines whether replication is allowed.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20646,13 +21998,13 @@
             "attributes": {
               "account_id": {
                 "type": "string",
-                "description": "An optional property to link a project to already an existing account by using account ID. To set up proper dependencies please refer to this variable as a reference.",
+                "description": "An optional property to link a project to an already existing account by using account ID. To set up proper dependencies please refer to this variable as a reference.",
                 "description_kind": "plain",
                 "computed": true
               },
               "add_account_owners_admin_access": {
                 "type": "bool",
-                "description": "If account_id is set, grant account owner team admin access to the new project. The default value is `true`.",
+                "description": "If parent_id is set, grant account owner team admin access to the new project. The default value is `true`.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20697,6 +22049,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "An optional property to link a project to an already existing organization or account by using its ID. To set up proper dependencies please refer to this variable as a reference.",
+                "description_kind": "plain",
                 "computed": true
               },
               "payment_method": {
@@ -20831,7 +22189,7 @@
           }
         },
         "aiven_redis": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "additional_disk_space": {
@@ -21292,7 +22650,7 @@
           }
         },
         "aiven_service_integration": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "clickhouse_kafka_user_config": {
@@ -21306,6 +22664,7 @@
                         [
                           "object",
                           {
+                            "auto_offset_reset": "string",
                             "columns": [
                               "list",
                               [
@@ -21317,8 +22676,15 @@
                               ]
                             ],
                             "data_format": "string",
+                            "date_time_input_format": "string",
                             "group_name": "string",
+                            "handle_error_mode": "string",
+                            "max_block_size": "number",
+                            "max_rows_per_message": "number",
                             "name": "string",
+                            "num_consumers": "number",
+                            "poll_max_batch_size": "number",
+                            "skip_broken_messages": "number",
                             "topics": [
                               "list",
                               [
@@ -21407,6 +22773,15 @@
                             "index_stats_enabled": "bool",
                             "pending_task_stats_enabled": "bool",
                             "pshard_stats_enabled": "bool"
+                          }
+                        ]
+                      ],
+                      "redis": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "command_stats_enabled": "bool"
                           }
                         ]
                       ]
@@ -21511,7 +22886,11 @@
                   [
                     "object",
                     {
-                      "kafka_topic": "string"
+                      "kafka_topic": "string",
+                      "selected_log_fields": [
+                        "list",
+                        "string"
+                      ]
                     }
                   ]
                 ],
@@ -21534,6 +22913,7 @@
                             "consumer_fetch_min_bytes": "number",
                             "producer_batch_size": "number",
                             "producer_buffer_memory": "number",
+                            "producer_compression_type": "string",
                             "producer_linger_ms": "number",
                             "producer_max_request_size": "number"
                           }
@@ -21553,7 +22933,11 @@
                     "object",
                     {
                       "elasticsearch_index_days_max": "number",
-                      "elasticsearch_index_prefix": "string"
+                      "elasticsearch_index_prefix": "string",
+                      "selected_log_fields": [
+                        "list",
+                        "string"
+                      ]
                     }
                   ]
                 ],
@@ -21632,7 +23016,7 @@
           }
         },
         "aiven_service_integration_endpoint": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
               "datadog_user_config": {
@@ -21681,7 +23065,7 @@
               },
               "endpoint_type": {
                 "type": "string",
-                "description": "Type of the service integration endpoint",
+                "description": "Type of the service integration endpoint. Possible values: `datadog`, `prometheus`, `rsyslog`, `external_elasticsearch_logs`, `external_opensearch_logs`, `external_aws_cloudwatch_logs`, `external_google_cloud_logging`, `external_kafka`, `jolokia`, `external_schema_registry`, `external_aws_cloudwatch_metrics`",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -21873,25 +23257,6 @@
                 "description": "Rsyslog user configurable settings",
                 "description_kind": "plain",
                 "computed": true
-              },
-              "signalfx_user_config": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "enabled_metrics": [
-                        "list",
-                        "string"
-                      ],
-                      "signalfx_api_key": "string",
-                      "signalfx_realm": "string"
-                    }
-                  ]
-                ],
-                "description": "Signalfx user configurable settings",
-                "description_kind": "plain",
-                "computed": true
               }
             },
             "description": "The Service Integration Endpoint data source provides information about the existing Aiven Service Integration Endpoint.",
@@ -21949,7 +23314,7 @@
               },
               "user_peer_network_cidrs": {
                 "type": [
-                  "list",
+                  "set",
                   "string"
                 ],
                 "description": "List of private IPv4 ranges to route through the peering connection",

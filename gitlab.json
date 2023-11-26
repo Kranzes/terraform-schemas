@@ -963,7 +963,7 @@
                   "list",
                   "string"
                 ],
-                "description": "Sources to allow project import from, possible values: github, bitbucket, bitbucket_server, gitlab, fogbugz, git, gitlab_project, gitea, manifest, and phabricator.",
+                "description": "Sources to allow project import from. Valid values are: `github`, `bitbucket`, `bitbucket_server`, `fogbugz`, `git`, `gitlab_project`, `gitea`, `manifest`",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2029,7 +2029,7 @@
               },
               "unprotect_access_level": {
                 "type": "string",
-                "description": "Access levels allowed to unprotect. Valid values are: `no one`, `developer`, `maintainer`.",
+                "description": "Access levels allowed to unprotect. Valid values are: `developer`, `maintainer`, `admin`.",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -2259,8 +2259,66 @@
             "description_kind": "markdown"
           }
         },
-        "gitlab_deploy_key": {
+        "gitlab_compliance_framework": {
           "version": 0,
+          "block": {
+            "attributes": {
+              "color": {
+                "type": "string",
+                "description": "New color representation of the compliance framework in hex format. e.g. #FCA121.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "default": {
+                "type": "bool",
+                "description": "Set this compliance framework as the default framework for the group. Default: `false`",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description for the compliance framework.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "framework_id": {
+                "type": "string",
+                "description": "Globally unique ID of the compliance framework.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<namespace_path>:<framework_id>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name for the compliance framework.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "namespace_path": {
+                "type": "string",
+                "description": "Full path of the namespace to add the compliance framework to.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "pipeline_configuration_full_path": {
+                "type": "string",
+                "description": "Full path of the compliance pipeline configuration stored in a project repository, such as `.gitlab/.compliance-gitlab-ci.yml@compliance/hipaa`. Required format: `path/file.y[a]ml@group-name/project-name` **Note**: Ultimate license required.",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "The `gitlab_compliance_framework` resource allows to manage the lifecycle of a compliance framework on top-level groups.\n\nThere can be only one `default` compliance framework. Of all the configured compliance frameworks marked as default, the last one applied will be the default compliance framework.\n\n-> This resource requires a GitLab Enterprise instance with a Premium license to create the compliance framework.\n\n-> This resource requires a GitLab Enterprise instance with an Ultimate license to specify a compliance pipeline configuration in the compliance framework.\n\n**Upstream API**: [GitLab GraphQL API docs](https://docs.gitlab.com/ee/api/graphql/reference/#mutationcreatecomplianceframework)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_deploy_key": {
+          "version": 1,
           "block": {
             "attributes": {
               "can_push": {
@@ -2268,6 +2326,12 @@
                 "description": "Allow this deploy key to be used to push changes to the project. Defaults to `false`.",
                 "description_kind": "markdown",
                 "optional": true
+              },
+              "deploy_key_id": {
+                "type": "number",
+                "description": "The id of the project deploy key.",
+                "description_kind": "markdown",
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -2346,9 +2410,15 @@
           }
         },
         "gitlab_deploy_token": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
+              "deploy_token_id": {
+                "type": "number",
+                "description": "The id of the deploy token.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "expires_at": {
                 "type": "string",
                 "description": "Time the token will expire it, RFC3339 format. Will not expire per default.",
@@ -2413,7 +2483,7 @@
             "attributes": {
               "auto_devops_enabled": {
                 "type": "bool",
-                "description": "Defaults to false. Default to Auto DevOps pipeline for all projects within this group.",
+                "description": "Default to Auto DevOps pipeline for all projects within this group.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2439,20 +2509,20 @@
               },
               "default_branch_protection": {
                 "type": "number",
-                "description": "Defaults to 2. See https://docs.gitlab.com/ee/api/groups.html#options-for-default_branch_protection",
+                "description": "See https://docs.gitlab.com/ee/api/groups.html#options-for-default_branch_protection. Valid values are: `0`, `1`, `2`, `3`, `4`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "description": {
                 "type": "string",
-                "description": "The description of the group.",
+                "description": "The group's description.",
                 "description_kind": "markdown",
                 "optional": true
               },
               "emails_disabled": {
                 "type": "bool",
-                "description": "Defaults to false. Disable email notifications.",
+                "description": "Disable email notifications.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2493,7 +2563,7 @@
               },
               "lfs_enabled": {
                 "type": "bool",
-                "description": "Defaults to true. Enable/disable Large File Storage (LFS) for the projects in this group.",
+                "description": "Enable/disable Large File Storage (LFS) for the projects in this group.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2506,14 +2576,14 @@
               },
               "mentions_disabled": {
                 "type": "bool",
-                "description": "Defaults to false. Disable the capability of a group from getting mentioned.",
+                "description": "Disable the capability of a group from getting mentioned.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "name": {
                 "type": "string",
-                "description": "The name of this group.",
+                "description": "The name of the group.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -2539,21 +2609,21 @@
               },
               "project_creation_level": {
                 "type": "string",
-                "description": "Defaults to maintainer. Determine if developers can create projects in the group.",
+                "description": "Determine if developers can create projects in the group. Valid values are: `noone`, `maintainer`, `developer`",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "request_access_enabled": {
                 "type": "bool",
-                "description": "Defaults to false. Allow users to request member access.",
+                "description": "Allow users to request member access.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
               },
               "require_two_factor_authentication": {
                 "type": "bool",
-                "description": "Defaults to false. Require all users in this group to setup Two-factor authentication.",
+                "description": "Require all users in this group to setup Two-factor authentication.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2567,7 +2637,7 @@
               },
               "share_with_group_lock": {
                 "type": "bool",
-                "description": "Defaults to false. Prevent sharing a project with another group within this group.",
+                "description": "Prevent sharing a project with another group within this group.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2579,9 +2649,16 @@
                 "optional": true,
                 "computed": true
               },
+              "shared_runners_setting": {
+                "type": "string",
+                "description": "Enable or disable shared runners for a group’s subgroups and projects. Valid values are: `enabled`, `disabled_and_overridable`, `disabled_and_unoverridable`, `disabled_with_override`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "subgroup_creation_level": {
                 "type": "string",
-                "description": "Defaults to owner. Allowed to create subgroups.",
+                "description": "Allowed to create subgroups. Valid values are: `owner`, `maintainer`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2595,7 +2672,7 @@
               },
               "visibility_level": {
                 "type": "string",
-                "description": "The group's visibility. Can be `private`, `internal`, or `public`.",
+                "description": "The group's visibility. Can be `private`, `internal`, or `public`. Valid values are: `private`, `internal`, `public`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -2604,6 +2681,13 @@
                 "type": "string",
                 "description": "Web URL of the group.",
                 "description_kind": "markdown",
+                "computed": true
+              },
+              "wiki_access_level": {
+                "type": "string",
+                "description": "The group's wiki access level. Only available on Premium and Ultimate plans. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "optional": true,
                 "computed": true
               }
             },
@@ -2635,9 +2719,9 @@
               },
               "expires_at": {
                 "type": "string",
-                "description": "The token expires at midnight UTC on that date. The date must be in the format YYYY-MM-DD. Default is never.",
+                "description": "The token expires at midnight UTC on that date. The date must be in the format YYYY-MM-DD.",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               },
               "group": {
                 "type": "string",
@@ -2668,7 +2752,7 @@
                   "set",
                   "string"
                 ],
-                "description": "The scope for the group access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_api`, `read_registry`, `write_registry`, `read_repository`, `write_repository`.",
+                "description": "The scope for the group access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_api`, `read_registry`, `write_registry`, `read_repository`, `write_repository`, `create_runner`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -2718,6 +2802,12 @@
                 "description_kind": "markdown",
                 "required": true
               },
+              "name": {
+                "type": "string",
+                "description": "The name of the badge.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "rendered_image_url": {
                 "type": "string",
                 "description": "The image_url argument rendered (in case of use of placeholders).",
@@ -2731,7 +2821,7 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_group_badge` resource allows to mange the lifecycle of group badges.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/user/project/badges.html#group-badges)",
+            "description": "The `gitlab_group_badge` resource allows to manage the lifecycle of group badges.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/user/project/badges.html#group-badges)",
             "description_kind": "markdown"
           }
         },
@@ -2874,6 +2964,62 @@
             "description_kind": "markdown"
           }
         },
+        "gitlab_group_epic_board": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "group": {
+                "type": "string",
+                "description": "The ID or URL-encoded path of the group owned by the authenticated user.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<group-id>:<epic-board-id>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the board.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "lists": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the list.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "label_id": {
+                      "type": "number",
+                      "description": "The ID of the label the list should be scoped to.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "position": {
+                      "type": "number",
+                      "description": "The position of the list within the board. The position for the list is sed on the its position in the `lists` array.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "description": "The list of epic board lists.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "The `gitlab_group_epic_board` resource allows to manage the lifecycle of a epic board in a group.\n\n~> Multiple epic boards on one group requires a GitLab Premium or above License.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/group_boards.html)",
+            "description_kind": "markdown"
+          }
+        },
         "gitlab_group_hook": {
           "version": 0,
           "block": {
@@ -3010,8 +3156,70 @@
             "description_kind": "markdown"
           }
         },
-        "gitlab_group_label": {
+        "gitlab_group_issue_board": {
           "version": 0,
+          "block": {
+            "attributes": {
+              "group": {
+                "type": "string",
+                "description": "The ID or URL-encoded path of the group owned by the authenticated user.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<group-id>:<issue-board-id>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "milestone_id": {
+                "type": "number",
+                "description": "The milestone the board should be scoped to.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the board.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "block_types": {
+              "lists": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the list.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "label_id": {
+                      "type": "number",
+                      "description": "The ID of the label the list should be scoped to.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "position": {
+                      "type": "number",
+                      "description": "The position of the list within the board. The position for the list is based on the its position in the `lists` array.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "description": "The list of issue board lists.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "The `gitlab_group_issue_board` resource allows to manage the lifecycle of a issue board in a group.\n\n~> Multiple issue boards on one group requires a GitLab Premium or above License.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/group_boards.html)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_group_label": {
+          "version": 1,
           "block": {
             "attributes": {
               "color": {
@@ -3038,6 +3246,12 @@
                 "optional": true,
                 "computed": true
               },
+              "label_id": {
+                "type": "number",
+                "description": "The id of the group label.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the label.",
@@ -3050,7 +3264,7 @@
           }
         },
         "gitlab_group_ldap_link": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "access_level": {
@@ -3062,9 +3276,17 @@
               },
               "cn": {
                 "type": "string",
-                "description": "The CN of the LDAP group to link with.",
+                "description": "The CN of the LDAP group to link with. Required if `filter` is not provided.",
                 "description_kind": "markdown",
-                "required": true
+                "optional": true,
+                "computed": true
+              },
+              "filter": {
+                "type": "string",
+                "description": "The LDAP filter for the group. Required if `cn` is not provided. Requires GitLab Premium or above.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               },
               "force": {
                 "type": "bool",
@@ -3072,17 +3294,17 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "group": {
+                "type": "string",
+                "description": "The ID or URL-encoded path of the group",
+                "description_kind": "markdown",
+                "required": true
+              },
               "group_access": {
                 "type": "string",
                 "description": "Minimum access level for members of the LDAP group. Valid values are: `no one`, `minimal`, `guest`, `reporter`, `developer`, `maintainer`, `owner`, `master`",
                 "description_kind": "markdown",
                 "optional": true
-              },
-              "group_id": {
-                "type": "string",
-                "description": "The id of the GitLab group.",
-                "description_kind": "markdown",
-                "required": true
               },
               "id": {
                 "type": "string",
@@ -3176,6 +3398,128 @@
               }
             },
             "description": "The `gitlab_group_project_file_template` resource allows setting a project from which\ncustom file templates will be loaded. In order to use this resource, the project selected must be a direct child of\nthe group selected. After the resource has run, `gitlab_project_template.template_project_id` is available for use.\nFor more information about which file types are available as templates, view \n[GitLab's documentation](https://docs.gitlab.com/ee/user/group/custom_project_templates.html)\n\n-> This resource requires a GitLab Enterprise instance with a Premium license.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/groups.html#update-group)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_group_protected_environment": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "approval_rules": {
+                "nested_type": {
+                  "attributes": {
+                    "access_level": {
+                      "type": "string",
+                      "description": "Levels of access allowed to approve a deployment to this protected environment. Valid values are `developer`, `maintainer`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "access_level_description": {
+                      "type": "string",
+                      "description": "Readable description of level of access.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "group_id": {
+                      "type": "number",
+                      "description": "The ID of the group allowed to approve a deployment to this protected environment. TThe group must be a sub-group under the given group. This is mutually exclusive with user_id.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of the Approval Rules object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "required_approvals": {
+                      "type": "number",
+                      "description": "The number of approval required to allow deployment to this protected environment. This is mutually exclusive with user_id.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "description": "The ID of the user allowed to approve a deployment to this protected environment. The user must be a member of the group with Maintainer role or higher. This is mutually exclusive with group_id and required_approvals.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description": "Array of approval rules to deploy, with each described by a hash.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "deploy_access_levels": {
+                "nested_type": {
+                  "attributes": {
+                    "access_level": {
+                      "type": "string",
+                      "description": "Levels of access required to deploy to this protected environment. Valid values are `developer`, `maintainer`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "access_level_description": {
+                      "type": "string",
+                      "description": "Readable description of level of access.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "group_id": {
+                      "type": "number",
+                      "description": "The ID of the group allowed to deploy to this protected environment. The group must be a sub-group under the given group.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of the Deploy Access Level object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "description": "The ID of the user allowed to deploy to this protected environment. The user must be a member of the group with Maintainer role or higher.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description": "Array of access levels allowed to deploy, with each described by a hash.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "environment": {
+                "type": "string",
+                "description": "The deployment tier of the environment.  Valid values are `production`, `staging`, `testing`, `development`, `other`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "group": {
+                "type": "string",
+                "description": "The ID or full path of the group which the protected environment is created against.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<group>:<environment-name>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "required_approval_count": {
+                "type": "number",
+                "description": "The number of approvals required to deploy to this environment.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_group_protected_environment` resource allows to manage the lifecycle of a protected environment in a group.\n\n~> In order to use a user_id in the `deploy_access_levels` configuration,\n   you need to make sure that users have access to the group with Maintainer role or higher.\n   In order to use a group_id in the `deploy_access_levels` configuration,\n   the group_id must be a sub-group under the given group.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/group_protected_environments.html)",
             "description_kind": "markdown"
           }
         },
@@ -3291,12 +3635,17 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "raw": {
+                "type": "bool",
+                "description": "Whether the variable is treated as a raw string. Default: false. When true, variables in the value are not expanded.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "value": {
                 "type": "string",
                 "description": "The value of the variable.",
                 "description_kind": "markdown",
-                "required": true,
-                "sensitive": true
+                "required": true
               },
               "variable_type": {
                 "type": "string",
@@ -3443,12 +3792,17 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "raw": {
+                "type": "bool",
+                "description": "Whether the variable is treated as a raw string. Default: false. When true, variables in the value are not expanded.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "value": {
                 "type": "string",
                 "description": "The value of the variable.",
                 "description_kind": "markdown",
-                "required": true,
-                "sensitive": true
+                "required": true
               },
               "variable_type": {
                 "type": "string",
@@ -3461,8 +3815,908 @@
             "description_kind": "markdown"
           }
         },
-        "gitlab_label": {
+        "gitlab_integration_custom_issue_tracker": {
           "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was activated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<project>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "issues_url": {
+                "type": "string",
+                "description": "The URL to view an issue in the external issue tracker. Must contain :id.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The ID or full path of the project for the custom issue tracker.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project_url": {
+                "type": "string",
+                "description": "The URL to the project in the external issue tracker.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The name of the integration in lowercase, shortened to 63 bytes, and with everything except 0-9 and a-z replaced with -. No leading / trailing -. Use in URLs, host names and domain names.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was last updated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_integration_custom_issue_tracker` resource allows to manage the lifecycle of a project integration with Custom Issue Tracker.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#custom-issue-tracker)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_emails_on_push": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "branches_to_be_notified": {
+                "type": "string",
+                "description": "Branches to send notifications for. Valid options are `all`, `default`, `protected`, `default_and_protected`. Notifications are always fired for tag pushes.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was activated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "disable_diffs": {
+                "type": "bool",
+                "description": "Disable code diffs.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID or full-path of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "push_events": {
+                "type": "bool",
+                "description": "Enable notifications for push events.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "recipients": {
+                "type": "string",
+                "description": "Emails separated by whitespace.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "send_from_committer_email": {
+                "type": "bool",
+                "description": "Send from committer.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The name of the integration in lowercase, shortened to 63 bytes, and with everything except 0-9 and a-z replaced with -. No leading / trailing -. Use in URLs, host names and domain names.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "tag_push_events": {
+                "type": "bool",
+                "description": "Enable notifications for tag push events.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the integration.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was last updated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_integration_emails_on_push` resource allows to manage the lifecycle of a project integration with Emails on Push Service.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#emails-on-push)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_external_wiki": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was activated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "external_wiki_url": {
+                "type": "string",
+                "description": "The URL of the external wiki.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "slug": {
+                "type": "string",
+                "description": "The name of the integration in lowercase, shortened to 63 bytes, and with everything except 0-9 and a-z replaced with -. No leading / trailing -. Use in URLs, host names and domain names.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the integration.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The ISO8601 date/time that this integration was last updated at in UTC.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_integration_external_wiki` resource allows to manage the lifecycle of a project integration with External Wiki Service.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#external-wiki)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_github": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Create time.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "repository_url": {
+                "type": "string",
+                "description": "The URL of the GitHub repo to integrate with, e,g, https://github.com/gitlabhq/terraform-provider-gitlab.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "static_context": {
+                "type": "bool",
+                "description": "Append instance name instead of branch to the status. Must enable to set a GitLab status check as _required_ in GitHub. See [Static / dynamic status check names] to learn more.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Title.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "token": {
+                "type": "string",
+                "description": "A GitHub personal access token with at least `repo:status` scope.",
+                "description_kind": "markdown",
+                "required": true,
+                "sensitive": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Update time.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_integration_github` resource allows to manage the lifecycle of a project integration with GitHub.\n\n-> This resource requires a GitLab Enterprise instance.\n\t\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#github)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_jira": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "api_url": {
+                "type": "string",
+                "description": "The base URL to the Jira instance API. Web URL value is used if not set. For example, https://jira-api.example.com.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "comment_on_event_enabled": {
+                "type": "bool",
+                "description": "Enable comments inside Jira issues on each GitLab event (commit / merge request)",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "commit_events": {
+                "type": "bool",
+                "description": "Enable notifications for commit events",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Create time.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for issues events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "jira_issue_transition_id": {
+                "type": "string",
+                "description": "The ID of a transition that moves issues to a closed state. You can find this number under the JIRA workflow administration (Administration > Issues > Workflows) by selecting View under Operations of the desired workflow of your project. By default, this ID is set to 2. *Note**: importing this field is only supported since GitLab 15.2.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "job_events": {
+                "type": "bool",
+                "description": "Enable notifications for job events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "merge_requests_events": {
+                "type": "bool",
+                "description": "Enable notifications for merge request events",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "note_events": {
+                "type": "bool",
+                "description": "Enable notifications for note events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password of the user created to be used with GitLab/JIRA.",
+                "description_kind": "markdown",
+                "required": true,
+                "sensitive": true
+              },
+              "pipeline_events": {
+                "type": "bool",
+                "description": "Enable notifications for pipeline events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project_key": {
+                "type": "string",
+                "description": "The short identifier for your JIRA project, all uppercase, e.g., PROJ.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "push_events": {
+                "type": "bool",
+                "description": "Enable notifications for push events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "tag_push_events": {
+                "type": "bool",
+                "description": "Enable notifications for tag_push events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "title": {
+                "type": "string",
+                "description": "Title.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Update time.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The URL to the JIRA project which is being linked to this GitLab project. For example, https://jira.example.com.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The username of the user created to be used with GitLab/JIRA.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The `gitlab_integration_jira` resource allows to manage the lifecycle of a project integration with Jira.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/services.html#jira)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_mattermost": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "branches_to_be_notified": {
+                "type": "string",
+                "description": "Branches to send notifications for. Valid options are \"all\", \"default\", \"protected\", and \"default_and_protected\".",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "confidential_issue_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive confidential issue events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "confidential_issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for confidential issues events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "confidential_note_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive confidential note events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "confidential_note_events": {
+                "type": "bool",
+                "description": "Enable notifications for confidential note events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issue_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive issue events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for issues events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "merge_request_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive merge request events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "merge_requests_events": {
+                "type": "bool",
+                "description": "Enable notifications for merge requests events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "note_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive note events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "note_events": {
+                "type": "bool",
+                "description": "Enable notifications for note events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "notify_only_broken_pipelines": {
+                "type": "bool",
+                "description": "Send notifications for broken pipelines.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "pipeline_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive pipeline events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "pipeline_events": {
+                "type": "bool",
+                "description": "Enable notifications for pipeline events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "push_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive push events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "push_events": {
+                "type": "bool",
+                "description": "Enable notifications for push events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "tag_push_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive tag push events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "tag_push_events": {
+                "type": "bool",
+                "description": "Enable notifications for tag push events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description": "Username to use.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "webhook": {
+                "type": "string",
+                "description": "Webhook URL (Example, https://mattermost.yourdomain.com/hooks/...). This value cannot be imported.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "wiki_page_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive wiki page events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "wiki_page_events": {
+                "type": "bool",
+                "description": "Enable notifications for wiki page events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_integration_mattermost` resource allows to manage the lifecycle of a project integration with Mattermost.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#mattermost-notifications)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_microsoft_teams": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active": {
+                "type": "bool",
+                "description": "Whether the integration is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "branches_to_be_notified": {
+                "type": "string",
+                "description": "Branches to send notifications for. Valid options are “all”, “default”, “protected”, and “default_and_protected”. The default value is “default”",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "confidential_issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for confidential issue events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "confidential_note_events": {
+                "type": "bool",
+                "description": "Enable notifications for confidential note events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Create time.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for issue events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "merge_requests_events": {
+                "type": "bool",
+                "description": "Enable notifications for merge request events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "note_events": {
+                "type": "bool",
+                "description": "Enable notifications for note events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "notify_only_broken_pipelines": {
+                "type": "bool",
+                "description": "Send notifications for broken pipelines",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "pipeline_events": {
+                "type": "bool",
+                "description": "Enable notifications for pipeline events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "push_events": {
+                "type": "bool",
+                "description": "Enable notifications for push events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "tag_push_events": {
+                "type": "bool",
+                "description": "Enable notifications for tag push events",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Update time.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "webhook": {
+                "type": "string",
+                "description": "The Microsoft Teams webhook (Example, https://outlook.office.com/webhook/...). This value cannot be imported.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "wiki_page_events": {
+                "type": "bool",
+                "description": "Enable notifications for wiki page events",
+                "description_kind": "markdown",
+                "optional": true
+              }
+            },
+            "description": "The `gitlab_integration_microsoft_teams` resource allows to manage the lifecycle of a project integration with Microsoft Teams.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#microsoft-teams)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_pipelines_email": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "branches_to_be_notified": {
+                "type": "string",
+                "description": "Branches to send notifications for. Valid options are `all`, `default`, `protected`, and `default_and_protected`. Default is `default`",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "notify_only_broken_pipelines": {
+                "type": "bool",
+                "description": "Notify only broken pipelines. Default is true.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "recipients": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": ") email addresses where notifications are sent.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The `gitlab_integration_pipelines_email` resource allows to manage the lifecycle of a project integration with Pipeline Emails Service.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#pipeline-emails)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_integration_slack": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "branches_to_be_notified": {
+                "type": "string",
+                "description": "Branches to send notifications for. Valid options are \"all\", \"default\", \"protected\", and \"default_and_protected\".",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "confidential_issue_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive confidential issue events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "confidential_issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for confidential issues events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "confidential_note_events": {
+                "type": "bool",
+                "description": "Enable notifications for confidential note events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "issue_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive issue events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "issues_events": {
+                "type": "bool",
+                "description": "Enable notifications for issues events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "job_events": {
+                "type": "bool",
+                "description": "Enable notifications for job events. **ATTENTION**: This attribute is currently not being submitted to the GitLab API, due to https://github.com/xanzy/go-gitlab/issues/1354.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "merge_request_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive merge request events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "merge_requests_events": {
+                "type": "bool",
+                "description": "Enable notifications for merge requests events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "note_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive note events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "note_events": {
+                "type": "bool",
+                "description": "Enable notifications for note events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "notify_only_broken_pipelines": {
+                "type": "bool",
+                "description": "Send notifications for broken pipelines.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "notify_only_default_branch": {
+                "type": "bool",
+                "description": "This parameter has been replaced with `branches_to_be_notified`.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "pipeline_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive pipeline events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "pipeline_events": {
+                "type": "bool",
+                "description": "Enable notifications for pipeline events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "ID of the project you want to activate integration on.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "push_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive push events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "push_events": {
+                "type": "bool",
+                "description": "Enable notifications for push events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "tag_push_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive tag push events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "tag_push_events": {
+                "type": "bool",
+                "description": "Enable notifications for tag push events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "username": {
+                "type": "string",
+                "description": "Username to use.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "webhook": {
+                "type": "string",
+                "description": "Webhook URL (Example, https://hooks.slack.com/services/...). This value cannot be imported.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "wiki_page_channel": {
+                "type": "string",
+                "description": "The name of the channel to receive wiki page events notifications.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "wiki_page_events": {
+                "type": "bool",
+                "description": "Enable notifications for wiki page events.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_integration_slack` resource allows to manage the lifecycle of a project integration with Slack.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#slack-notifications)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_label": {
+          "version": 1,
           "block": {
             "attributes": {
               "color": {
@@ -3483,6 +4737,12 @@
                 "optional": true,
                 "computed": true
               },
+              "label_id": {
+                "type": "number",
+                "description": "The id of the project label.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the label.",
@@ -3496,41 +4756,9 @@
                 "required": true
               }
             },
-            "description": "The `gitlab_label` resource allows to manage the lifecycle of a project label.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/labels.html#project-labels)",
-            "description_kind": "markdown"
-          }
-        },
-        "gitlab_managed_license": {
-          "version": 0,
-          "block": {
-            "attributes": {
-              "approval_status": {
-                "type": "string",
-                "description": "The approval status of the license. Valid values are: `approved`, `blacklisted`, `allowed`, `denied`. \"approved\" and \"blacklisted\"\n\t\t\t\thave been deprecated in favor of \"allowed\" and \"denied\"; use \"allowed\" and \"denied\" for GitLab versions 15.0 and higher.\n\t\t\t\tPrior to version 15.0 and after 14.6, the values are equivalent.",
-                "description_kind": "markdown",
-                "required": true
-              },
-              "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description": "The name of the managed license (I.e., 'Apache License 2.0' or 'MIT license')",
-                "description_kind": "markdown",
-                "required": true
-              },
-              "project": {
-                "type": "string",
-                "description": "The ID of the project under which the managed license will be created.",
-                "description_kind": "markdown",
-                "required": true
-              }
-            },
-            "description": "The `gitlab_managed_license` resource allows to manage the lifecycle of a managed license.\n\n-> This resource requires a GitLab Enterprise instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/managed_licenses.html)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_label` resource allows to manage the lifecycle of a project label.\n\n~> This resource is deprecated. use `gitlab_project_label`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/labels.html#project-labels)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_pages_domain": {
@@ -3624,9 +4852,9 @@
               },
               "expires_at": {
                 "type": "string",
-                "description": "The token expires at midnight UTC on that date. The date must be in the format YYYY-MM-DD. Default is never.",
+                "description": "The token expires at midnight UTC on that date. The date must be in the format YYYY-MM-DD.",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               },
               "id": {
                 "type": "string",
@@ -3651,7 +4879,7 @@
                   "set",
                   "string"
                 ],
-                "description": "The scope for the personal access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_user`, `read_api`, `read_repository`, `write_repository`, `read_registry`, `write_registry`, `sudo`, `admin_mode`.",
+                "description": "The scope for the personal access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_user`, `read_api`, `read_repository`, `write_repository`, `read_registry`, `write_registry`, `sudo`, `admin_mode`, `create_runner`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -3674,7 +4902,7 @@
           }
         },
         "gitlab_pipeline_schedule": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "active": {
@@ -3707,6 +4935,12 @@
                 "optional": true,
                 "computed": true
               },
+              "pipeline_schedule_id": {
+                "type": "number",
+                "description": "The pipeline schedule id.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "project": {
                 "type": "string",
                 "description": "The name or id of the project to add the schedule to.",
@@ -3725,7 +4959,7 @@
           }
         },
         "gitlab_pipeline_schedule_variable": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "id": {
@@ -3764,7 +4998,7 @@
           }
         },
         "gitlab_pipeline_trigger": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "description": {
@@ -3777,6 +5011,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "pipeline_trigger_id": {
+                "type": "number",
+                "description": "The pipeline trigger id.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "project": {
@@ -3889,7 +5129,7 @@
               },
               "build_git_strategy": {
                 "type": "string",
-                "description": "The Git strategy. Defaults to fetch.",
+                "description": "The Git strategy. Defaults to fetch. Valid values are `clone`, `fetch`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -3967,7 +5207,14 @@
                 "type": "bool",
                 "description": "Disable email notifications.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
+              },
+              "empty_repo": {
+                "type": "bool",
+                "description": "Whether the project is empty.",
+                "description_kind": "markdown",
+                "computed": true
               },
               "environments_access_level": {
                 "type": "string",
@@ -4200,13 +5447,6 @@
                 "optional": true,
                 "computed": true
               },
-              "operations_access_level": {
-                "type": "string",
-                "description": "Set the operations access level. Valid values are `disabled`, `private`, `enabled`.",
-                "description_kind": "markdown",
-                "optional": true,
-                "computed": true
-              },
               "packages_enabled": {
                 "type": "bool",
                 "description": "Enable packages repository for the project.",
@@ -4216,7 +5456,7 @@
               },
               "pages_access_level": {
                 "type": "string",
-                "description": "Enable pages access control",
+                "description": "Enable pages access control. Valid values are `public`, `private`, `enabled`, `disabled`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -4249,6 +5489,14 @@
                 "computed": true
               },
               "public_builds": {
+                "type": "bool",
+                "description": "If true, jobs can be viewed by non-project members.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "optional": true,
+                "computed": true
+              },
+              "public_jobs": {
                 "type": "bool",
                 "description": "If true, jobs can be viewed by non-project members.",
                 "description_kind": "markdown",
@@ -4415,7 +5663,7 @@
               },
               "visibility_level": {
                 "type": "string",
-                "description": "Set to `public` to create a public project.",
+                "description": "Set to `public` to create a public project. Valid values are `private`, `internal`, `public`.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -4471,6 +5719,7 @@
                       "type": "string",
                       "description": "The regular expression to match image names to delete.",
                       "description_kind": "markdown",
+                      "deprecated": true,
                       "optional": true,
                       "computed": true
                     },
@@ -4478,7 +5727,6 @@
                       "type": "string",
                       "description": "The regular expression to match image names to delete.",
                       "description_kind": "markdown",
-                      "deprecated": true,
                       "optional": true,
                       "computed": true
                     },
@@ -4613,9 +5861,9 @@
               },
               "expires_at": {
                 "type": "string",
-                "description": "Time the token will expire it, YYYY-MM-DD format. Will not expire per default.",
+                "description": "Time the token will expire it, YYYY-MM-DD format.",
                 "description_kind": "markdown",
-                "optional": true
+                "required": true
               },
               "id": {
                 "type": "string",
@@ -4646,7 +5894,7 @@
                   "set",
                   "string"
                 ],
-                "description": "Valid values: `api`, `read_api`, `read_repository`, `write_repository`, `read_registry`, `write_registry`.",
+                "description": "The scope for the project access token. It determines the actions which can be performed when authenticating with this token. Valid values are: `api`, `read_api`, `read_registry`, `write_registry`, `read_repository`, `write_repository`, `create_runner`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -4788,7 +6036,7 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_project_badge` resource allows to mange the lifecycle of project badges.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/user/project/badges.html#project-badges)",
+            "description": "The `gitlab_project_badge` resource allows to manage the lifecycle of project badges.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/user/project/badges.html#project-badges)",
             "description_kind": "markdown"
           }
         },
@@ -4904,6 +6152,33 @@
             "description_kind": "markdown"
           }
         },
+        "gitlab_project_compliance_framework": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "compliance_framework_id": {
+                "type": "string",
+                "description": "Globally unique ID of the compliance framework to assign to the project.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The ID or full path of the project to change the compliance framework of.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The `gitlab_project_compliance_framework` resource allows to manage the lifecycle of a compliance framework on a project.\n\n-> This resource requires a GitLab Enterprise instance with a Premium license to set the compliance framework on a project.\n\n**Upstream API**: [GitLab GraphQL API docs](https://docs.gitlab.com/ee/api/graphql/reference/#mutationprojectsetcomplianceframework)",
+            "description_kind": "markdown"
+          }
+        },
         "gitlab_project_custom_attribute": {
           "version": 0,
           "block": {
@@ -5001,7 +6276,7 @@
           }
         },
         "gitlab_project_freeze_period": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "cron_timezone": {
@@ -5028,9 +6303,9 @@
                 "optional": true,
                 "computed": true
               },
-              "project_id": {
+              "project": {
                 "type": "string",
-                "description": "The id of the project to add the schedule to.",
+                "description": "The ID or URL-encoded path of the project to add the schedule to.",
                 "description_kind": "markdown",
                 "required": true
               }
@@ -5040,7 +6315,7 @@
           }
         },
         "gitlab_project_hook": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "confidential_issues_events": {
@@ -5551,13 +6826,46 @@
             "description_kind": "markdown"
           }
         },
-        "gitlab_project_level_mr_approvals": {
+        "gitlab_project_job_token_scope": {
           "version": 0,
           "block": {
             "attributes": {
-              "disable_overriding_approvers_per_merge_request": {
-                "type": "bool",
-                "description": "By default, users are able to edit the approval rules in merge requests. If set to true,",
+              "id": {
+                "type": "string",
+                "description": "The ID of this Terraform resource. In the format of `<project>:<target-project-id>`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The ID or full path of the project.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "target_project_id": {
+                "type": "number",
+                "description": "The ID of the project that is in the CI/CD job token inbound allowlist.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The `gitlab_project_job_token_scope` resource allows to manage the CI/CD Job Token scope in a project.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/project_job_token_scopes.html)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_project_label": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "color": {
+                "type": "string",
+                "description": "The color of the label given in 6-digit hex notation with leading '#' sign (e.g. #FFAABB) or one of the [CSS color names](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#Color_keywords).",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the label.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -5567,43 +6875,94 @@
                 "optional": true,
                 "computed": true
               },
+              "label_id": {
+                "type": "number",
+                "description": "The id of the project label.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the label.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The name or id of the project to add the label to.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The `gitlab_project_label` resource allows to manage the lifecycle of a project label.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/labels.html#project-labels)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_project_level_mr_approvals": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "disable_overriding_approvers_per_merge_request": {
+                "type": "bool",
+                "description": "Set to `true` to disable overriding approvers per merge request.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the resource. Matches the `project` value.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "merge_requests_author_approval": {
                 "type": "bool",
-                "description": "Set to `true` if you want to allow merge request authors to self-approve merge requests. Authors",
+                "description": "Set to `true` to allow merge requests authors to approve their own merge requests.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "merge_requests_disable_committers_approval": {
                 "type": "bool",
-                "description": "Set to `true` if you want to prevent approval of merge requests by merge request committers.",
+                "description": "Set to `true` to allow merge requests committers to approve their own merge requests.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
-              "project_id": {
-                "type": "number",
-                "description": "The ID of the project to change MR approval configuration.",
+              "project": {
+                "type": "string",
+                "description": "The ID or URL-encoded path of a project to change MR approval configuration.",
                 "description_kind": "markdown",
                 "required": true
               },
               "require_password_to_approve": {
                 "type": "bool",
-                "description": "Set to `true` if you want to require authentication when approving a merge request.",
+                "description": "Set to `true` to require authentication to approve merge requests.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "reset_approvals_on_push": {
                 "type": "bool",
-                "description": "Set to `true` if you want to remove all approvals in a merge request when new commits are pushed to its source branch. Default is `true`.",
+                "description": "Set to `true` to remove all approvals in a merge request when new commits are pushed to its source branch. Default is `true`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
+              },
+              "selective_code_owner_removals": {
+                "type": "bool",
+                "description": "Reset approvals from Code Owners if their files changed. Can be enabled only if reset_approvals_on_push is disabled.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
               }
             },
-            "description": "The `gitlab_project_level_mr_approval_rule` resource allows to manage the lifecycle of a Merge Request-level approval rule.\n\n-> This resource requires a GitLab Enterprise instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/merge_request_approvals.html#merge-request-level-mr-approvals)",
+            "description": "The `gitlab_project_level_mr_approval_rule` resource allows to manage the lifecycle of a Merge Request-level approval rule.\n\n-> This resource requires a GitLab Enterprise instance.\n\t\t\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/merge_request_approvals.html#merge-request-level-mr-approvals)",
             "description_kind": "markdown"
           }
         },
         "gitlab_project_membership": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "access_level": {
@@ -5624,9 +6983,9 @@
                 "optional": true,
                 "computed": true
               },
-              "project_id": {
+              "project": {
                 "type": "string",
-                "description": "The id of the project.",
+                "description": "The ID or URL-encoded path of the project.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -5782,7 +7141,7 @@
                 "sensitive": true
               }
             },
-            "description": "The `gitlab_project_mirror` resource allows to manage the lifecycle of a project mirror.\n\nThis is for *pushing* changes to a remote repository. *Pull Mirroring* can be configured using a combination of the\nimport_url, mirror, and mirror_trigger_builds properties on the gitlab_project resource.\n\n-> **Destroy Behavior** GitLab 14.10 introduced an API endpoint to delete a project mirror.\n   Therefore, for GitLab 14.10 and newer the project mirror will be destroyed when the resource is destroyed.\n   For older versions, the mirror will be disabled and the resource will be destroyed.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/remote_mirrors.html)",
+            "description": "The `gitlab_project_mirror` resource allows to manage the lifecycle of a project mirror.\n\nThis is for *pushing* changes to a remote repository. *Pull Mirroring* can be configured using a combination of the\nimport_url, mirror, and mirror_trigger_builds properties on the gitlab_project resource.\n\n-> **Warning** By default, the provider sets the `keep_divergent_refs` argument to `True`.\n   If you manually set `keep_divergent_refs` to `False`, GitLab mirroring removes branches in the target that aren't in the source.\n   This action can result in unexpected branch deletions.\n\n-> **Destroy Behavior** GitLab 14.10 introduced an API endpoint to delete a project mirror.\n   Therefore, for GitLab 14.10 and newer the project mirror will be destroyed when the resource is destroyed.\n   For older versions, the mirror will be disabled and the resource will be destroyed.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/remote_mirrors.html)",
             "description_kind": "markdown"
           }
         },
@@ -5790,6 +7149,54 @@
           "version": 0,
           "block": {
             "attributes": {
+              "approval_rules": {
+                "nested_type": {
+                  "attributes": {
+                    "access_level": {
+                      "type": "string",
+                      "description": "Levels of access allowed to approve a deployment to this protected environment. Valid values are `developer`, `maintainer`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "access_level_description": {
+                      "type": "string",
+                      "description": "Readable description of level of access.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "group_id": {
+                      "type": "number",
+                      "description": "The ID of the group allowed to approve a deployment to this protected environment. The project must be shared with the group. This is mutually exclusive with user_id.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of the Approval Rules object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "required_approvals": {
+                      "type": "number",
+                      "description": "The number of approval required to allow deployment to this protected environment. This is mutually exclusive with user_id.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "description": "The ID of the user allowed to approve a deployment to this protected environment. The user must be a member of the project. This is mutually exclusive with group_id and required_approvals.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "Array of approval rules to deploy, with each described by a hash.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
               "environment": {
                 "type": "string",
                 "description": "The name of the environment.",
@@ -5839,6 +7246,12 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "id": {
+                      "type": "number",
+                      "description": "The unique ID of the Deploy Access Level object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
                     "user_id": {
                       "type": "number",
                       "description": "The ID of the user allowed to deploy to this protected environment. The user must be a member of the project.",
@@ -5883,7 +7296,7 @@
           }
         },
         "gitlab_project_share_group": {
-          "version": 1,
+          "version": 2,
           "block": {
             "attributes": {
               "access_level": {
@@ -5911,9 +7324,9 @@
                 "optional": true,
                 "computed": true
               },
-              "project_id": {
+              "project": {
                 "type": "string",
-                "description": "The id of the project.",
+                "description": "The ID or URL-encoded path of the project.",
                 "description_kind": "markdown",
                 "required": true
               }
@@ -6016,7 +7429,7 @@
           }
         },
         "gitlab_project_variable": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "environment_scope": {
@@ -6055,12 +7468,17 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "raw": {
+                "type": "bool",
+                "description": "Whether the variable is treated as a raw string. Default: false. When true, variables in the value are not expanded.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "value": {
                 "type": "string",
                 "description": "The value of the variable.",
                 "description_kind": "markdown",
-                "required": true,
-                "sensitive": true
+                "required": true
               },
               "variable_type": {
                 "type": "string",
@@ -6180,11 +7598,11 @@
                 "type": "string",
                 "description": "Commit message.",
                 "description_kind": "markdown",
-                "required": true
+                "optional": true
               },
               "content": {
                 "type": "string",
-                "description": "File content. If the content is not yet base64 encoded, it will be encoded automatically. No other encoding is currently supported, because of a [GitLab API bug](https://gitlab.com/gitlab-org/gitlab/-/issues/342430).",
+                "description": "File content.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -6194,11 +7612,23 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "create_commit_message": {
+                "type": "string",
+                "description": "Create commit message.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "delete_commit_message": {
+                "type": "string",
+                "description": "Delete Commit message.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "encoding": {
                 "type": "string",
-                "description": "The file content encoding.",
+                "description": "The file content encoding. Default value is `base64`. Valid values are: `base64`, `text`.",
                 "description_kind": "markdown",
-                "computed": true
+                "optional": true
               },
               "execute_filemode": {
                 "type": "bool",
@@ -6257,6 +7687,12 @@
               "start_branch": {
                 "type": "string",
                 "description": "Name of the branch to start the new commit from.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "update_commit_message": {
+                "type": "string",
+                "description": "Update commit message.",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -6370,8 +7806,9 @@
                 "optional": true
               }
             },
-            "description": "The `gitlab_runner` resource allows to manage the lifecycle of a runner.\n\nA runner can either be registered at an instance level or group level.\nThe runner will be registered at a group level if the token used is from a group, or at an instance level if the token used is for the instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/runners.html#register-a-new-runner)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_runner` resource allows to manage the lifecycle of a runner.\n\nA runner can either be registered at an instance level or group level.\nThe runner will be registered at a group level if the token used is from a group, or at an instance level if the token used is for the instance.\n\n~ > Using this resource will register a runner using the deprecated `registration_token` flow. To use the new `authentication_token` flow instead,\nuse the `gitlab_user_runner` resource!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/runners.html#register-a-new-runner)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_custom_issue_tracker": {
@@ -6427,7 +7864,7 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_service_custom_issue_tracker` resource allows to manage the lifecycle of a project integration with Custom Issue Tracker.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#custom-issue-tracker)",
+            "description": "The `gitlab_service_custom_issue_tracker` resource allows to manage the lifecycle of a project integration with Custom Issue Tracker.\n\n~> This resource is deprecated. use `gitlab_integration_custom_issue_tracker`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#custom-issue-tracker)",
             "description_kind": "markdown"
           }
         },
@@ -6514,8 +7951,9 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_service_emails_on_push` resource allows to manage the lifecycle of a project integration with Emails on Push Service.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#emails-on-push)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_emails_on_push` resource allows to manage the lifecycle of a project integration with Emails on Push Service.\n\n~> This resource is deprecated. Please use `gitlab_integration_emails_on_push` instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#emails-on-push)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_external_wiki": {
@@ -6571,8 +8009,9 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_service_external_wiki` resource allows to manage the lifecycle of a project integration with External Wiki Service.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#external-wiki)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_external_wiki` resource allows to manage the lifecycle of a project integration with External Wiki Service.\n\n~> This resource is deprecated. use `gitlab_integration_external_wiki`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#external-wiki)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_github": {
@@ -6635,8 +8074,9 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_service_github` resource allows to manage the lifecycle of a project integration with GitHub.\n\n-> This resource requires a GitLab Enterprise instance.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#github)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_github` resource allows to manage the lifecycle of a project integration with GitHub.\n\n-> This resource requires a GitLab Enterprise instance.\n\n~> This resource is deprecated. use `gitlab_integration_github`instead!\n\t\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#github)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_jira": {
@@ -6781,8 +8221,9 @@
                 "required": true
               }
             },
-            "description": "The `gitlab_service_jira` resource allows to manage the lifecycle of a project integration with Jira.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/services.html#jira)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_jira` resource allows to manage the lifecycle of a project integration with Jira.\n\n~> This resource is deprecated. use `gitlab_integration_jira`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/services.html#jira)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_microsoft_teams": {
@@ -6892,8 +8333,9 @@
                 "optional": true
               }
             },
-            "description": "The `gitlab_service_microsoft_teams` resource allows to manage the lifecycle of a project integration with Microsoft Teams.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#microsoft-teams)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_microsoft_teams` resource allows to manage the lifecycle of a project integration with Microsoft Teams.\n\n~> This resource is deprecated. use `gitlab_integration_microsoft_teams`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#microsoft-teams)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_pipelines_email": {
@@ -6934,8 +8376,9 @@
                 "required": true
               }
             },
-            "description": "The `gitlab_service_pipelines_email` resource allows to manage the lifecycle of a project integration with Pipeline Emails Service.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#pipeline-emails)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_pipelines_email` resource allows to manage the lifecycle of a project integration with Pipeline Emails Service.\n\n~> This resource is deprecated. use `gitlab_integration_pipelines_email`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#pipeline-emails)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_service_slack": {
@@ -7106,8 +8549,9 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_service_slack` resource allows to manage the lifecycle of a project integration with Slack.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#slack-notifications)",
-            "description_kind": "markdown"
+            "description": "The `gitlab_service_slack` resource allows to manage the lifecycle of a project integration with Slack.\n\n~> This resource is deprecated. use `gitlab_integration_slack`instead!\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/integrations.html#slack-notifications)",
+            "description_kind": "markdown",
+            "deprecated": true
           }
         },
         "gitlab_system_hook": {
@@ -7203,7 +8647,42 @@
                 "required": true
               }
             },
-            "description": "The `gitlab_tag_protection` resource allows to manage the lifecycle of a tag protection.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/protected_tags.html)",
+            "block_types": {
+              "allowed_to_create": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_level": {
+                      "type": "string",
+                      "description": "Level of access.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "access_level_description": {
+                      "type": "string",
+                      "description": "Readable description of level of access.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "group_id": {
+                      "type": "number",
+                      "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "User or group which are allowed to create.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "The `gitlab_tag_protection` resource allows to manage the lifecycle of a tag protection.\n\n~> As tag protections cannot be updated, they are deleted and recreated when a change is requested. This means that if the deletion succeeds but the creation fails, tags will be left unprotected.\nIf this is a potential issue for you, please use the `create_before_destroy` meta-argument: https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/protected_tags.html)",
             "description_kind": "markdown"
           }
         },
@@ -7433,6 +8912,98 @@
             "description_kind": "markdown"
           }
         },
+        "gitlab_user_runner": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_level": {
+                "type": "string",
+                "description": "The access level of the runner. Valid values are: `not_protected`, `ref_protected`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the runner.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "group_id": {
+                "type": "number",
+                "description": "The ID of the group that the runner is created in. Required if runner_type is group_type.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the gitlab runner.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "locked": {
+                "type": "bool",
+                "description": "Specifies if the runner should be locked for the current project.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "maximum_timeout": {
+                "type": "number",
+                "description": "Maximum timeout that limits the amount of time (in seconds) that runners can run jobs. Must be at least 600 (10 minutes).",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "paused": {
+                "type": "bool",
+                "description": "Specifies if the runner should ignore new jobs.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project_id": {
+                "type": "number",
+                "description": "The ID of the project that the runner is created in. Required if runner_type is project_type.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "runner_type": {
+                "type": "string",
+                "description": "The scope of the runner. Valid values are: `instance_type`, `group_type`, `project_type`.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "tag_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of runner tags.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "token": {
+                "type": "string",
+                "description": "The authentication token to use when setting up a new runner with this configuration. This value cannot be imported.",
+                "description_kind": "markdown",
+                "computed": true,
+                "sensitive": true
+              },
+              "untagged": {
+                "type": "bool",
+                "description": "Specifies if the runner should handle untagged jobs.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_user_runner` resource allows creating a GitLab runner using the new [GitLab Runner Registration Flow](https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html).\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/users.html#create-a-runner)",
+            "description_kind": "markdown"
+          }
+        },
         "gitlab_user_sshkey": {
           "version": 0,
           "block": {
@@ -7475,9 +9046,10 @@
               },
               "user_id": {
                 "type": "number",
-                "description": "The ID or username of the user.",
+                "description": "The ID or username of the user. If this field is omitted, this resource manages a SSH key for the current user. Otherwise, this resource manages a SSH key for the specified user, and an admin token is required.",
                 "description_kind": "markdown",
-                "required": true
+                "optional": true,
+                "computed": true
               }
             },
             "description": "The `gitlab_user_sshkey` resource allows to manage the lifecycle of an SSH key assigned to a user.\n\n**Upstream API**: [GitLab API docs](https://docs.gitlab.com/ee/api/users.html#single-ssh-key)",
@@ -7871,6 +9443,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "shared_runners_setting": {
+                "type": "string",
+                "description": "Enable or disable shared runners for a group’s subgroups and projects. Valid values are: `enabled`, `disabled_and_overridable`, `disabled_and_unoverridable`, `disabled_with_override`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "visibility_level": {
                 "type": "string",
                 "description": "Visibility level of the group. Possible values are `private`, `internal`, `public`.",
@@ -7880,6 +9458,12 @@
               "web_url": {
                 "type": "string",
                 "description": "Web URL of the group.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "wiki_access_level": {
+                "type": "string",
+                "description": "The group's wiki access level. Only available on Premium and Ultimate plans. Valid values are `disabled`, `private`, `enabled`.",
                 "description_kind": "markdown",
                 "computed": true
               }
@@ -8241,6 +9825,7 @@
                       "request_access_enabled": "bool",
                       "require_two_factor_authentication": "bool",
                       "share_with_group_lock": "bool",
+                      "shared_runners_setting": "string",
                       "statistics": [
                         "map",
                         "string"
@@ -8248,7 +9833,8 @@
                       "subgroup_creation_level": "string",
                       "two_factor_grace_period": "number",
                       "visibility": "string",
-                      "web_url": "string"
+                      "web_url": "string",
+                      "wiki_access_level": "string"
                     }
                   ]
                 ],
@@ -8309,6 +9895,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "raw": {
+                "type": "bool",
+                "description": "Whether the variable is treated as a raw string. Default: false. When true, variables in the value are not expanded.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "value": {
                 "type": "string",
                 "description": "The value of the variable.",
@@ -8359,6 +9951,7 @@
                       "key": "string",
                       "masked": "bool",
                       "protected": "bool",
+                      "raw": "bool",
                       "value": "string",
                       "variable_type": "string"
                     }
@@ -8395,8 +9988,10 @@
                       "prevent_forking_outside_group": "bool",
                       "request_access_enabled": "bool",
                       "runners_token": "string",
+                      "shared_runners_setting": "string",
                       "visibility_level": "string",
-                      "web_url": "string"
+                      "web_url": "string",
+                      "wiki_access_level": "string"
                     }
                   ]
                 ],
@@ -8425,6 +10020,12 @@
               "sort": {
                 "type": "string",
                 "description": "Sort groups' list in asc or desc order. (Requires administrator privileges)",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "top_level_only": {
+                "type": "bool",
+                "description": "Limit to top level groups, excluding all subgroups.",
                 "description_kind": "markdown",
                 "optional": true
               }
@@ -8515,6 +10116,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "raw": {
+                "type": "bool",
+                "description": "Whether the variable is treated as a raw string. Default: false. When true, variables in the value are not expanded.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "value": {
                 "type": "string",
                 "description": "The value of the variable.",
@@ -8551,6 +10158,7 @@
                       "key": "string",
                       "masked": "bool",
                       "protected": "bool",
+                      "raw": "bool",
                       "value": "string",
                       "variable_type": "string"
                     }
@@ -8748,6 +10356,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "empty_repo": {
+                "type": "bool",
+                "description": "Whether the project is empty.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "environments_access_level": {
                 "type": "string",
                 "description": "Set the environments access level. Valid values are `disabled`, `private`, `enabled`.",
@@ -8866,12 +10480,6 @@
               "namespace_id": {
                 "type": "number",
                 "description": "The namespace (group or user) of the project. Defaults to your user.",
-                "description_kind": "markdown",
-                "computed": true
-              },
-              "operations_access_level": {
-                "type": "string",
-                "description": "Set the operations access level. Valid values are `disabled`, `private`, `enabled`.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -10423,6 +12031,12 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "raw": {
+                "type": "bool",
+                "description": "Whether the variable is treated as a raw string. Default: false. When true, variables in the value are not expanded.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "value": {
                 "type": "string",
                 "description": "The value of the variable.",
@@ -10473,6 +12087,7 @@
                       "masked": "bool",
                       "project": "string",
                       "protected": "bool",
+                      "raw": "bool",
                       "value": "string",
                       "variable_type": "string"
                     }
@@ -10613,6 +12228,7 @@
                       "default_branch": "string",
                       "description": "string",
                       "emails_disabled": "bool",
+                      "empty_repo": "bool",
                       "environments_access_level": "string",
                       "external_authorization_classification_label": "string",
                       "feature_flags_access_level": "string",
@@ -10675,7 +12291,6 @@
                       "only_allow_merge_if_pipeline_succeeds": "bool",
                       "only_mirror_protected_branches": "bool",
                       "open_issues_count": "number",
-                      "operations_access_level": "string",
                       "owner": [
                         "list",
                         [
@@ -10789,6 +12404,15 @@
               "statistics": {
                 "type": "bool",
                 "description": "Include project statistics. Cannot be used with `group_id`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "topic": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Limit by projects that have all of the given topics.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -10969,7 +12593,7 @@
               },
               "content": {
                 "type": "string",
-                "description": "File content. If the content is not yet base64 encoded, it will be encoded automatically. No other encoding is currently supported, because of a [GitLab API bug](https://gitlab.com/gitlab-org/gitlab/-/issues/342430).",
+                "description": "File content.",
                 "description_kind": "markdown",
                 "computed": true
               },
