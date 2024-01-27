@@ -157,6 +157,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "token_name_format": {
+                "type": "string",
+                "description": "Defines the token format for the authenticated users. This can be lightly templated using HIL '${foo}' syntax.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "type": {
                 "type": "string",
                 "description": "ACL Auth Method SSO workflow type. Currently, the only supported type is \"OIDC.\"",
@@ -517,17 +523,32 @@
           "version": 0,
           "block": {
             "attributes": {
+              "capacity": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
               "capacity_max": {
                 "type": "string",
                 "description": "Defines how large the volume can be. The storage provider may return a volume that is smaller than this value.",
                 "description_kind": "plain",
                 "optional": true
               },
+              "capacity_max_bytes": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
               "capacity_min": {
                 "type": "string",
                 "description": "Defines how small the volume can be. The storage provider may return a volume that is larger than this value.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "capacity_min_bytes": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
               },
               "clone_id": {
                 "type": "string",
@@ -547,6 +568,12 @@
               },
               "controllers_healthy": {
                 "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_id": {
+                "type": "string",
+                "description": "The ID of the physical volume from the storage provider.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -789,6 +816,33 @@
           "version": 0,
           "block": {
             "attributes": {
+              "capacity": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "capacity_max": {
+                "type": "string",
+                "description": "Defines how large the volume can be. The storage provider may return a volume that is smaller than this value.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "capacity_max_bytes": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "capacity_min": {
+                "type": "string",
+                "description": "Defines how small the volume can be. The storage provider may return a volume that is larger than this value.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "capacity_min_bytes": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
               "context": {
                 "type": [
                   "map",
@@ -1408,6 +1462,18 @@
               "region": {
                 "type": "string",
                 "description": "The target region for the job, as derived from the jobspec.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rerun_if_dead": {
+                "type": "bool",
+                "description": "If true, forces the job to run again on apply if it is currently dead",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "The status of the job.",
                 "description_kind": "plain",
                 "computed": true
               },

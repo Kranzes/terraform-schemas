@@ -206,7 +206,7 @@
           }
         },
         "sentry_issue_alert": {
-          "version": 1,
+          "version": 2,
           "block": {
             "attributes": {
               "action_match": {
@@ -216,26 +216,14 @@
                 "required": true
               },
               "actions": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of actions.",
+                "type": "string",
+                "description": "List of actions. In JSON string format.",
                 "description_kind": "markdown",
                 "required": true
               },
               "conditions": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of conditions.",
+                "type": "string",
+                "description": "List of conditions. In JSON string format.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -243,42 +231,29 @@
                 "type": "string",
                 "description": "Perform issue alert in a specific environment.",
                 "description_kind": "markdown",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "filter_match": {
                 "type": "string",
-                "description": "Trigger actions if `all`, `any`, or `none` of the specified filters match.",
+                "description": "A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.",
                 "description_kind": "markdown",
-                "required": true
+                "optional": true
               },
               "filters": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of filters.",
+                "type": "string",
+                "description": "A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.",
                 "description_kind": "markdown",
                 "optional": true
               },
               "frequency": {
                 "type": "number",
-                "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.",
+                "description": "Perform actions at most once every `X` minutes for this issue.",
                 "description_kind": "markdown",
                 "required": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "internal_id": {
-                "type": "string",
-                "description": "The internal ID for this issue alert.",
+                "description": "The ID of this resource.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -290,28 +265,24 @@
               },
               "organization": {
                 "type": "string",
-                "description": "The slug of the organization the issue alert belongs to.",
+                "description": "The slug of the organization the resource belongs to.",
                 "description_kind": "markdown",
                 "required": true
+              },
+              "owner": {
+                "type": "string",
+                "description": "The ID of the team or user that owns the rule.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "project": {
                 "type": "string",
-                "description": "The slug of the project to create the issue alert for.",
+                "description": "The slug of the project the resource belongs to.",
                 "description_kind": "markdown",
                 "required": true
-              },
-              "projects": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description": "Use `project` (singular) instead.",
-                "description_kind": "markdown",
-                "deprecated": true,
-                "computed": true
               }
             },
-            "description": "Sentry Issue Alert resource. Note that there's no public documentation for the values of conditions, filters, and actions. You can either inspect the request payload sent when creating or editing an issue alert on Sentry or inspect [Sentry's rules registry in the source code](https://github.com/getsentry/sentry/tree/master/src/sentry/rules). Since v0.11.2, you should also omit the name property of each condition, filter, and action.",
+            "description": "Create an Issue Alert Rule for a Project. See the [Sentry Documentation](https://docs.sentry.io/api/alerts/create-an-issue-alert-rule-for-a-project/) for more information.\n\nPlease note the following changes since v0.12.0:\n- The attributes `conditions`, `filters`, and `actions` are in JSON string format. The types must match the Sentry API, otherwise Terraform will incorrectly detect a drift. Use `parseint(\"string\", 10)` to convert a string to an integer. Avoid using `jsonencode()` as it is unable to distinguish between an integer and a float.\n- The attribute `internal_id` has been removed. Use `id` instead.\n- The attribute `id` is now the ID of the issue alert. Previously, it was a combination of the organization, project, and issue alert ID.\n\t\t",
             "description_kind": "markdown"
           }
         },
@@ -540,6 +511,12 @@
                             "description_kind": "plain",
                             "computed": true
                           },
+                          "input_channel_id": {
+                            "type": "string",
+                            "description": "Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
                           "integration_id": {
                             "type": "number",
                             "description_kind": "plain",
@@ -571,6 +548,66 @@
               }
             },
             "description": "Sentry Metric Alert resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_notification_action": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "integration_id": {
+                "type": "string",
+                "description": "The ID of the integration that is used for sending the notification. Use the `sentry_organization_integration` data source to retrieve an integration. Required if `service_type` is `slack`, `pagerduty` or `opsgenie`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the project belongs to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "projects": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "The list of project slugs that the Notification Action is created for.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_type": {
+                "type": "string",
+                "description": "The service that is used for sending the notification.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "target_display": {
+                "type": "string",
+                "description": "The display name of the target that is used for sending the notification (e.g. Slack channel name). Required if `service_type` is `slack` or `opsgenie`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target_identifier": {
+                "type": "string",
+                "description": "The identifier of the target that is used for sending the notification (e.g. Slack channel ID). Required if `service_type` is `slack` or `opsgenie`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "trigger_type": {
+                "type": "string",
+                "description": "The type of trigger that will activate this action. Valid values are `spike_protection`.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Create a Spike Protection Notification Action. See the [Sentry Documentation](https://docs.sentry.io/api/alerts/create-a-spike-protection-notification-action/) for more information.",
             "description_kind": "markdown"
           }
         },
@@ -722,18 +759,10 @@
                 "description": "This is the role of the organization member.",
                 "description_kind": "markdown",
                 "required": true
-              },
-              "teams": {
-                "type": [
-                  "list",
-                  "string"
-                ],
-                "description": "The teams the organization member should be added to.",
-                "description_kind": "markdown",
-                "optional": true
               }
             },
-            "description_kind": "plain"
+            "description": "Resource for managing Sentry organization members. To add a member to a team, use the `sentry_team_member` resource.",
+            "description_kind": "markdown"
           }
         },
         "sentry_organization_repository_github": {
@@ -825,6 +854,18 @@
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "default_key": {
+                "type": "bool",
+                "description": "Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry_key` resource.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "default_rules": {
+                "type": "bool",
+                "description": "Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "digests_max_delay": {
                 "type": "number",
@@ -937,115 +978,228 @@
             "description_kind": "markdown"
           }
         },
-        "sentry_rule": {
-          "version": 1,
+        "sentry_project_inbound_data_filter": {
+          "version": 0,
           "block": {
             "attributes": {
-              "action_match": {
-                "type": "string",
-                "description": "Trigger actions when an event is captured by Sentry and `any` or `all` of the specified conditions happen.",
-                "description_kind": "markdown",
-                "required": true
-              },
-              "actions": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of actions.",
-                "description_kind": "markdown",
-                "required": true
-              },
-              "conditions": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of conditions.",
-                "description_kind": "markdown",
-                "required": true
-              },
-              "environment": {
-                "type": "string",
-                "description": "Perform issue alert in a specific environment.",
-                "description_kind": "markdown",
-                "optional": true,
-                "computed": true
-              },
-              "filter_match": {
-                "type": "string",
-                "description": "Trigger actions if `all`, `any`, or `none` of the specified filters match.",
-                "description_kind": "markdown",
-                "required": true
-              },
-              "filters": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of filters.",
-                "description_kind": "markdown",
+              "active": {
+                "type": "bool",
+                "description": "Toggle the browser-extensions, localhost, filtered-transaction, or web-crawlers filter on or off.",
+                "description_kind": "plain",
                 "optional": true
               },
-              "frequency": {
-                "type": "number",
-                "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.",
-                "description_kind": "markdown",
+              "filter_id": {
+                "type": "string",
+                "description": "The type of filter toggle to update. See the [Sentry documentation](https://docs.sentry.io/api/projects/update-an-inbound-data-filter/) for a list of available filters.",
+                "description_kind": "plain",
                 "required": true
               },
               "id": {
                 "type": "string",
+                "description": "The ID of this resource.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
-              },
-              "internal_id": {
-                "type": "string",
-                "description": "The internal ID for this issue alert.",
-                "description_kind": "markdown",
-                "computed": true
-              },
-              "name": {
-                "type": "string",
-                "description": "The issue alert name.",
-                "description_kind": "markdown",
-                "required": true
               },
               "organization": {
                 "type": "string",
-                "description": "The slug of the organization the issue alert belongs to.",
-                "description_kind": "markdown",
+                "description": "The slug of the organization the project belongs to.",
+                "description_kind": "plain",
                 "required": true
               },
               "project": {
                 "type": "string",
-                "description": "The slug of the project to create the issue alert for.",
-                "description_kind": "markdown",
+                "description": "The slug of the project to create the filter for.",
+                "description_kind": "plain",
                 "required": true
               },
-              "projects": {
+              "subfilters": {
                 "type": [
                   "list",
                   "string"
                 ],
-                "description": "Use `project` (singular) instead.",
-                "description_kind": "markdown",
-                "deprecated": true,
-                "computed": true
+                "description": "Specifies which legacy browser filters should be active. Anything excluded from the list will be disabled. See the [Sentry documentation](https://docs.sentry.io/api/projects/update-an-inbound-data-filter/) for a list of available subfilters.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
-            "description": "> **WARNING:** This resource is deprecated and will be removed in the next major version. Use the `sentry_issue_alert` resource instead.",
-            "description_kind": "markdown",
-            "deprecated": true
+            "description": "Sentry Project Inbound Data Filter resource. This resource is used to create and manage inbound data filters for a project. For more information on what filters are available, see the [Sentry documentation](https://docs.sentry.io/api/projects/update-an-inbound-data-filter/).",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_project_spike_protection": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "enabled": {
+                "type": "bool",
+                "description": "Toggle the browser-extensions, localhost, filtered-transaction, or web-crawlers filter on or off.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the project belongs to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project to create the filter for.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Sentry Project Spike Protection resource. This resource is used to create and manage spike protection for a project.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_project_symbol_source": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_key": {
+                "type": "string",
+                "description": "The AWS Access Key.Required for S3 sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "app_connect_issuer": {
+                "type": "string",
+                "description": "The App Store Connect Issuer ID. Required for AppStoreConnect sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "app_connect_private_key": {
+                "type": "string",
+                "description": "The App Store Connect API Private Key. Required for AppStoreConnect sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "app_id": {
+                "type": "string",
+                "description": "The App Store Connect App ID. Required for AppStoreConnect sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "bucket": {
+                "type": "string",
+                "description": "The GCS or S3 bucket where the source resides. Required for GCS and S3 sourcse, invalid for HTTP and AppStoreConnect sources.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "client_email": {
+                "type": "string",
+                "description": "The GCS email address for authentication. Required for GCS sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "layout": {
+                "nested_type": {
+                  "attributes": {
+                    "casing": {
+                      "type": "string",
+                      "description": "The casing of the symbol source layout. The layout of the folder structure. The options are: `default` - Default (mixed case), `uppercase` - Uppercase, `lowercase` - Lowercase.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The layout of the folder structure. The options are: `native` - Platform-Specific (SymStore / GDB / LLVM), `symstore` - Microsoft SymStore, `symstore_index2` - Microsoft SymStore (with index2.txt), `ssqp` - Microsoft SSQP, `unified` - Unified Symbol Server Layout, `debuginfod` - debuginfod.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "Layout settings for the source. This is required for HTTP, GCS, and S3 sources and invalid for AppStoreConnect sources.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The human-readable name of the source.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the project belongs to.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password for accessing the source. Optional for HTTP sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "prefix": {
+                "type": "string",
+                "description": "The GCS or S3 prefix. Optional for GCS and S3 sourcse, invalid for HTTP and AppStoreConnect sources.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "private_key": {
+                "type": "string",
+                "description": "The GCS private key. Required for GCS sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The slug of the project to create the filter for.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The source's S3 region. Required for S3 sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "secret_key": {
+                "type": "string",
+                "description": "The AWS Secret Access Key.Required for S3 sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true,
+                "sensitive": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of symbol source. One of `appStoreConnect` (App Store Connect), `http` (SymbolServer (HTTP)), `gcs` (Google Cloud Storage), `s3` (Amazon S3).",
+                "description_kind": "plain",
+                "required": true
+              },
+              "url": {
+                "type": "string",
+                "description": "The source's URL. Optional for HTTP sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "username": {
+                "type": "string",
+                "description": "The user name for accessing the source. Optional for HTTP sources, invalid for all others.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Sentry Project Symbol Source. See the [Sentry documentation](https://docs.sentry.io/api/projects/add-a-symbol-source-to-a-project/) for more information.",
+            "description_kind": "markdown"
           }
         },
         "sentry_team": {
@@ -1107,6 +1261,45 @@
               }
             },
             "description": "Sentry Team resource.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_team_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "member_id": {
+                "type": "string",
+                "description": "The ID of the member to add to the team.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization the team should be created for.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description": "The role of the member in the team. When not set, resolve to the minimum team role given by this member's organization role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "team": {
+                "type": "string",
+                "description": "The slug of the team to add the member to.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Sentry Team Member resource.",
             "description_kind": "markdown"
           }
         }
@@ -1215,26 +1408,14 @@
                 "computed": true
               },
               "actions": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of actions.",
+                "type": "string",
+                "description": "List of actions. In JSON string format.",
                 "description_kind": "markdown",
                 "computed": true
               },
               "conditions": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of conditions.",
+                "type": "string",
+                "description": "List of conditions. In JSON string format.",
                 "description_kind": "markdown",
                 "computed": true
               },
@@ -1246,38 +1427,26 @@
               },
               "filter_match": {
                 "type": "string",
-                "description": "Trigger actions if `all`, `any`, or `none` of the specified filters match.",
+                "description": "A string determining which filters need to be true before any actions take place. Required when a value is provided for `filters`.",
                 "description_kind": "markdown",
                 "computed": true
               },
               "filters": {
-                "type": [
-                  "list",
-                  [
-                    "map",
-                    "string"
-                  ]
-                ],
-                "description": "List of filters.",
+                "type": "string",
+                "description": "A list of filters that determine if a rule fires after the necessary conditions have been met. In JSON string format.",
                 "description_kind": "markdown",
                 "computed": true
               },
               "frequency": {
                 "type": "number",
-                "description": "Perform actions at most once every `X` minutes for this issue. Defaults to `30`.",
+                "description": "Perform actions at most once every `X` minutes for this issue.",
                 "description_kind": "markdown",
                 "computed": true
               },
               "id": {
                 "type": "string",
+                "description": "The ID of this resource.",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "internal_id": {
-                "type": "string",
-                "description": "The internal ID for this issue alert.",
-                "description_kind": "markdown",
                 "required": true
               },
               "name": {
@@ -1288,18 +1457,24 @@
               },
               "organization": {
                 "type": "string",
-                "description": "The slug of the organization the issue alert belongs to.",
+                "description": "The slug of the organization the resource belongs to.",
                 "description_kind": "markdown",
                 "required": true
               },
+              "owner": {
+                "type": "string",
+                "description": "The ID of the team or user that owns the rule.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "project": {
                 "type": "string",
-                "description": "The slug of the project the issue alert belongs to.",
+                "description": "The slug of the project the resource belongs to.",
                 "description_kind": "markdown",
                 "required": true
               }
             },
-            "description": "Sentry Issue Alert data source. As the object structure of `conditions`, `filters`, and `actions` are undocumented, a tip is to set up an Issue Alert via the Web UI, and use this data source to copy its object structure to your resources.",
+            "description": "Sentry Issue Alert data source. See the [Sentry documentation](https://docs.sentry.io/api/alerts/retrieve-an-issue-alert-rule-for-a-project/) for more information.",
             "description_kind": "markdown"
           }
         },
@@ -1362,7 +1537,7 @@
                 "required": true
               },
               "project_id": {
-                "type": "number",
+                "type": "string",
                 "description": "The ID of the project that the key belongs to.",
                 "description_kind": "markdown",
                 "computed": true
@@ -1491,6 +1666,7 @@
                           "object",
                           {
                             "id": "string",
+                            "input_channel_id": "string",
                             "integration_id": "number",
                             "target_identifier": "string",
                             "target_type": "string",
@@ -1552,36 +1728,108 @@
             "attributes": {
               "id": {
                 "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "internal_id": {
+                "type": "string",
+                "description": "The internal ID for this organization integration. **Deprecated** Use `id` instead.",
+                "description_kind": "markdown",
+                "deprecated": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the integration.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "provider_key": {
+                "type": "string",
+                "description": "Specific integration provider to filter by such as `slack`. See [the list of supported providers](https://docs.sentry.io/product/integrations/).",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Sentry Organization Integration data source. See the [Sentry documentation](https://docs.sentry.io/api/integrations/list-an-organizations-available-integrations/) for more information.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_organization_member": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "email": {
+                "type": "string",
+                "description": "The email of the organization member.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "The slug of the organization.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "role": {
+                "type": "string",
+                "description": "This is the role of the organization member.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Retrieve an organization member by email.",
+            "description_kind": "markdown"
+          }
+        },
+        "sentry_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
               },
               "internal_id": {
                 "type": "string",
-                "description": "The internal ID for this organization integration.",
+                "description": "The internal ID for this project.",
                 "description_kind": "markdown",
                 "computed": true
               },
-              "name": {
-                "type": "string",
-                "description": "The name of the organization integration.",
-                "description_kind": "markdown",
-                "required": true
+              "is_public": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
               },
               "organization": {
                 "type": "string",
-                "description": "The slug of the organization the integration belongs to.",
+                "description": "The slug of the organization the project belongs to.",
                 "description_kind": "markdown",
                 "required": true
               },
-              "provider_key": {
+              "slug": {
                 "type": "string",
-                "description": "The key of the organization integration provider.",
+                "description": "The unique URL slug for this project.",
                 "description_kind": "markdown",
                 "required": true
               }
             },
-            "description": "Sentry Organization Integration data source.",
+            "description": "Sentry Project data source.",
             "description_kind": "markdown"
           }
         },

@@ -1976,14 +1976,15 @@
           }
         },
         "gitlab_branch_protection": {
-          "version": 0,
+          "version": 1,
           "block": {
             "attributes": {
               "allow_force_push": {
                 "type": "bool",
                 "description": "Can be set to true to allow users with push access to force push.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "branch": {
                 "type": "string",
@@ -1999,21 +2000,23 @@
               },
               "code_owner_approval_required": {
                 "type": "bool",
-                "description": "Can be set to true to require code owner approval before merging. Only available own Premium and Ultimate instances.",
+                "description": "Can be set to true to require code owner approval before merging. Only available for Premium and Ultimate instances.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The ID of this Terraform resource. In the format of `<project-id:branch>`.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "merge_access_level": {
                 "type": "string",
                 "description": "Access levels allowed to merge. Valid values are: `no one`, `developer`, `maintainer`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "project": {
                 "type": "string",
@@ -2025,13 +2028,15 @@
                 "type": "string",
                 "description": "Access levels allowed to push. Valid values are: `no one`, `developer`, `maintainer`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "unprotect_access_level": {
                 "type": "string",
                 "description": "Access levels allowed to unprotect. Valid values are: `developer`, `maintainer`, `admin`.",
                 "description_kind": "markdown",
-                "optional": true
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -2041,30 +2046,30 @@
                   "attributes": {
                     "access_level": {
                       "type": "string",
-                      "description": "Level of access.",
+                      "description": "Access levels allowed to merge to protected branch. Valid values are: `no one`, `developer`, `maintainer`.",
                       "description_kind": "markdown",
                       "computed": true
                     },
                     "access_level_description": {
                       "type": "string",
-                      "description": "Readable description of level of access.",
-                      "description_kind": "markdown",
+                      "description": "Readable description of access level.",
+                      "description_kind": "plain",
                       "computed": true
                     },
                     "group_id": {
                       "type": "number",
                       "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
-                      "description_kind": "markdown",
+                      "description_kind": "plain",
                       "optional": true
                     },
                     "user_id": {
                       "type": "number",
                       "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
-                      "description_kind": "markdown",
+                      "description_kind": "plain",
                       "optional": true
                     }
                   },
-                  "description": "Defines permissions for action.",
+                  "description": "Array of access levels and user(s)/group(s) allowed to merge to protected branch.",
                   "description_kind": "markdown"
                 }
               },
@@ -2074,30 +2079,30 @@
                   "attributes": {
                     "access_level": {
                       "type": "string",
-                      "description": "Level of access.",
+                      "description": "Access levels allowed to push to protected branch. Valid values are: `no one`, `developer`, `maintainer`.",
                       "description_kind": "markdown",
                       "computed": true
                     },
                     "access_level_description": {
                       "type": "string",
-                      "description": "Readable description of level of access.",
-                      "description_kind": "markdown",
+                      "description": "Readable description of access level.",
+                      "description_kind": "plain",
                       "computed": true
                     },
                     "group_id": {
                       "type": "number",
                       "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
-                      "description_kind": "markdown",
+                      "description_kind": "plain",
                       "optional": true
                     },
                     "user_id": {
                       "type": "number",
                       "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
-                      "description_kind": "markdown",
+                      "description_kind": "plain",
                       "optional": true
                     }
                   },
-                  "description": "Defines permissions for action.",
+                  "description": "Array of access levels and user(s)/group(s) allowed to push to protected branch.",
                   "description_kind": "markdown"
                 }
               },
@@ -2107,30 +2112,30 @@
                   "attributes": {
                     "access_level": {
                       "type": "string",
-                      "description": "Level of access.",
+                      "description": "Access levels allowed to unprotect push to protected branch. Valid values are: `developer`, `maintainer`, `admin`.",
                       "description_kind": "markdown",
                       "computed": true
                     },
                     "access_level_description": {
                       "type": "string",
-                      "description": "Readable description of level of access.",
-                      "description_kind": "markdown",
+                      "description": "Readable description of access level.",
+                      "description_kind": "plain",
                       "computed": true
                     },
                     "group_id": {
                       "type": "number",
                       "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
-                      "description_kind": "markdown",
+                      "description_kind": "plain",
                       "optional": true
                     },
                     "user_id": {
                       "type": "number",
                       "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
-                      "description_kind": "markdown",
+                      "description_kind": "plain",
                       "optional": true
                     }
                   },
-                  "description": "Defines permissions for action.",
+                  "description": "Array of access levels and user(s)/group(s) allowed to unprotect push to protected branch.",
                   "description_kind": "markdown"
                 }
               }
@@ -2691,6 +2696,95 @@
                 "computed": true
               }
             },
+            "block_types": {
+              "push_rules": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "author_email_regex": {
+                      "type": "string",
+                      "description": "All commit author emails must match this regex, e.g. `@my-company.com$`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "branch_name_regex": {
+                      "type": "string",
+                      "description": "All branch names must match this regex, e.g. `(feature|hotfix)\\/*`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "commit_committer_check": {
+                      "type": "bool",
+                      "description": "Only commits pushed using verified emails are allowed.  **Note** This attribute is only supported in GitLab versions >= 16.4.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "commit_message_negative_regex": {
+                      "type": "string",
+                      "description": "No commit message is allowed to match this regex, for example `ssh\\:\\/\\/`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "commit_message_regex": {
+                      "type": "string",
+                      "description": "All commit messages must match this regex, e.g. `Fixed \\d+\\..*`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "deny_delete_tag": {
+                      "type": "bool",
+                      "description": "Deny deleting a tag.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "file_name_regex": {
+                      "type": "string",
+                      "description": "Filenames matching the regular expression provided in this attribute are not allowed, for example, `(jar|exe)$`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "max_file_size": {
+                      "type": "number",
+                      "description": "Maximum file size (MB) allowed.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "member_check": {
+                      "type": "bool",
+                      "description": "Allows only GitLab users to author commits.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "prevent_secrets": {
+                      "type": "bool",
+                      "description": "GitLab will reject any files that are likely to contain secrets.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "reject_unsigned_commits": {
+                      "type": "bool",
+                      "description": "Only commits signed through GPG are allowed.  **Note** This attribute is only supported in GitLab versions >= 16.4.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Push rules for the group.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
+              }
+            },
             "description": "The `gitlab_group` resource allows to manage the lifecycle of a group.\n\n-> On GitLab SaaS, you must use the GitLab UI to create groups without a parent group. You cannot use this provider nor the API to do this.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/groups.html)",
             "description_kind": "markdown"
           }
@@ -3172,6 +3266,15 @@
                 "description_kind": "markdown",
                 "computed": true
               },
+              "labels": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The list of label names which the board should be scoped to.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "milestone_id": {
                 "type": "number",
                 "description": "The milestone the board should be scoped to.",
@@ -3204,8 +3307,9 @@
                     },
                     "position": {
                       "type": "number",
-                      "description": "The position of the list within the board. The position for the list is based on the its position in the `lists` array.",
+                      "description": "The explicit position of the list within the board, zero based.",
                       "description_kind": "markdown",
+                      "optional": true,
                       "computed": true
                     }
                   },
@@ -4935,6 +5039,12 @@
                 "optional": true,
                 "computed": true
               },
+              "owner": {
+                "type": "number",
+                "description": "The ID of the user that owns the pipeline schedule.",
+                "description_kind": "markdown",
+                "computed": true
+              },
               "pipeline_schedule_id": {
                 "type": "number",
                 "description": "The pipeline schedule id.",
@@ -4952,6 +5062,12 @@
                 "description": "The branch/tag name to be triggered.",
                 "description_kind": "markdown",
                 "required": true
+              },
+              "take_ownership": {
+                "type": "bool",
+                "description": "When set to `true`, the user represented by the token running Terraform will take ownership of the scheduled pipeline prior to editing it. This can help when managing scheduled pipeline drift when other users are making changes outside Terraform.",
+                "description_kind": "markdown",
+                "optional": true
               }
             },
             "description": "The `gitlab_pipeline_schedule` resource allows to manage the lifecycle of a scheduled pipeline.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/pipeline_schedules.html)",
@@ -5245,6 +5361,13 @@
               "forking_access_level": {
                 "type": "string",
                 "description": "Set the forking access level. Valid values are `disabled`, `private`, `enabled`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "group_runners_enabled": {
+                "type": "bool",
+                "description": "Enable group runners for this project.",
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
@@ -5912,7 +6035,7 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_project_access_token` resource allows to manage the lifecycle of a project access token.\n\n**Upstream API**: [GitLab API docs](https://docs.gitlab.com/ee/api/project_access_tokens.html)",
+            "description": "The `gitlab_project_access_token` resource allows to manage the lifecycle of a project access token.\n\n~>  Use of the `timestamp()` function with expires_at will cause the resource to be re-created with every apply, it's recommended to use `plantimestamp()` or a static value instead.\n\n**Upstream API**: [GitLab API docs](https://docs.gitlab.com/ee/api/project_access_tokens.html)",
             "description_kind": "markdown"
           }
         },
@@ -5920,6 +6043,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "applies_to_all_protected_branches": {
+                "type": "bool",
+                "description": "Whether the rule is applied to all protected branches. If set to 'true', the value of `protected_branch_ids` is ignored. Default is 'false'.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "approvals_required": {
                 "type": "number",
                 "description": "The number of approvals required for this rule.",
@@ -6958,6 +7087,153 @@
               }
             },
             "description": "The `gitlab_project_level_mr_approval_rule` resource allows to manage the lifecycle of a Merge Request-level approval rule.\n\n-> This resource requires a GitLab Enterprise instance.\n\t\t\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/merge_request_approvals.html#merge-request-level-mr-approvals)",
+            "description_kind": "markdown"
+          }
+        },
+        "gitlab_project_level_notifications": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "close_issue": {
+                "type": "bool",
+                "description": "Enable notifications for closed issues. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "close_merge_request": {
+                "type": "bool",
+                "description": "Enable notifications for closed merge requests. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "failed_pipeline": {
+                "type": "bool",
+                "description": "Enable notifications for failed pipelines. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "fixed_pipeline": {
+                "type": "bool",
+                "description": "Enable notifications for fixed pipelines. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the resource. Matches the `project` value.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "issue_due": {
+                "type": "bool",
+                "description": "Enable notifications for due issues. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "level": {
+                "type": "string",
+                "description": "The level of the notification. Valid values are: `disabled`, `participating`, `watch`, `global`, `mention`, `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "merge_merge_request": {
+                "type": "bool",
+                "description": "Enable notifications for merged merge requests. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "merge_when_pipeline_succeeds": {
+                "type": "bool",
+                "description": "Enable notifications for merged merge requests when the pipeline succeeds. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "moved_project": {
+                "type": "bool",
+                "description": "Enable notifications for moved projects. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "new_issue": {
+                "type": "bool",
+                "description": "Enable notifications for new issues. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "new_merge_request": {
+                "type": "bool",
+                "description": "Enable notifications for new merge requests. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "new_note": {
+                "type": "bool",
+                "description": "Enable notifications for new notes on merge requests. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description": "The ID or URL-encoded path of a project where notifications will be configured.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "push_to_merge_request": {
+                "type": "bool",
+                "description": "Enable notifications for push to merge request branches. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "reassign_issue": {
+                "type": "bool",
+                "description": "Enable notifications for issue reassignments. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "reassign_merge_request": {
+                "type": "bool",
+                "description": "Enable notifications for merge request reassignments. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "reopen_issue": {
+                "type": "bool",
+                "description": "Enable notifications for reopened issues. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "reopen_merge_request": {
+                "type": "bool",
+                "description": "Enable notifications for reopened merge requests. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "success_pipeline": {
+                "type": "bool",
+                "description": "Enable notifications for successful pipelines. Can only be used when `level` is `custom`.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The `gitlab_project_level_notifications` resource allows to manage notifications for a project.\n\n~> While the API supports both groups and projects, this resource only supports projects currently.\n\t\t\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/notification_settings.html#group--project-level-notification-settings)",
             "description_kind": "markdown"
           }
         },
@@ -11702,23 +11978,6 @@
                 "description_kind": "markdown",
                 "computed": true
               },
-              "merge_access_levels": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "access_level": "string",
-                      "access_level_description": "string",
-                      "group_id": "number",
-                      "user_id": "number"
-                    }
-                  ]
-                ],
-                "description": "Describes which access levels, users, or groups are allowed to perform the action.",
-                "description_kind": "markdown",
-                "computed": true
-              },
               "name": {
                 "type": "string",
                 "description": "The name of the protected branch.",
@@ -11730,26 +11989,77 @@
                 "description": "The integer or path with namespace that uniquely identifies the project.",
                 "description_kind": "markdown",
                 "required": true
-              },
-              "push_access_levels": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "access_level": "string",
-                      "access_level_description": "string",
-                      "group_id": "number",
-                      "user_id": "number"
-                    }
-                  ]
-                ],
-                "description": "Describes which access levels, users, or groups are allowed to perform the action.",
-                "description_kind": "markdown",
-                "computed": true
               }
             },
-            "description": "The `gitlab_protected_branch` data source allows details of a protected branch to be retrieved by its name and the project it belongs to.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/protected_branches.html#get-a-single-protected-branch-or-wildcard-protected-branch)",
+            "block_types": {
+              "merge_access_levels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_level": {
+                      "type": "string",
+                      "description": "Access levels allowed to merge to protected branch. Valid values are: `no one`, `developer`, `maintainer`.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "access_level_description": {
+                      "type": "string",
+                      "description": "Readable description of access level.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "group_id": {
+                      "type": "number",
+                      "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Array of access levels and user(s)/group(s) allowed to merge to protected branch.",
+                  "description_kind": "markdown"
+                }
+              },
+              "push_access_levels": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "access_level": {
+                      "type": "string",
+                      "description": "Access levels allowed to push to protected branch. Valid values are: `no one`, `developer`, `maintainer`.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "access_level_description": {
+                      "type": "string",
+                      "description": "Readable description of access level.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "group_id": {
+                      "type": "number",
+                      "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Array of access levels and user(s)/group(s) allowed to push to protected branch.",
+                  "description_kind": "markdown"
+                }
+              }
+            },
+            "description": "The `gitlab_project_protected_branch` data source allows details of a protected branch to be retrieved by its name and the project it belongs to.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/protected_branches.html#get-a-single-protected-branch-or-wildcard-protected-branch)",
             "description_kind": "markdown"
           }
         },
@@ -11758,9 +12068,9 @@
           "block": {
             "attributes": {
               "id": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "type": "number",
+                "description": "The ID of this resource.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "project_id": {
@@ -11768,47 +12078,109 @@
                 "description": "The integer or path with namespace that uniquely identifies the project.",
                 "description_kind": "markdown",
                 "required": true
-              },
+              }
+            },
+            "block_types": {
               "protected_branches": {
-                "type": [
-                  "list",
-                  [
-                    "object",
-                    {
-                      "allow_force_push": "bool",
-                      "code_owner_approval_required": "bool",
-                      "id": "number",
-                      "merge_access_levels": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "access_level": "string",
-                            "access_level_description": "string",
-                            "group_id": "number",
-                            "user_id": "number"
-                          }
-                        ]
-                      ],
-                      "name": "string",
-                      "push_access_levels": [
-                        "list",
-                        [
-                          "object",
-                          {
-                            "access_level": "string",
-                            "access_level_description": "string",
-                            "group_id": "number",
-                            "user_id": "number"
-                          }
-                        ]
-                      ]
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "allow_force_push": {
+                      "type": "bool",
+                      "description": "Whether force push is allowed.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "code_owner_approval_required": {
+                      "type": "bool",
+                      "description": "Reject code pushes that change files listed in the CODEOWNERS file.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of this resource.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the protected branch.",
+                      "description_kind": "markdown",
+                      "computed": true
                     }
-                  ]
-                ],
-                "description": "A list of protected branches, as defined below.",
-                "description_kind": "markdown",
-                "computed": true
+                  },
+                  "block_types": {
+                    "merge_access_levels": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "access_level": {
+                            "type": "string",
+                            "description": "Access levels allowed to merge to protected branch. Valid values are: `no one`, `developer`, `maintainer`.",
+                            "description_kind": "markdown",
+                            "computed": true
+                          },
+                          "access_level_description": {
+                            "type": "string",
+                            "description": "Readable description of access level.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "group_id": {
+                            "type": "number",
+                            "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "user_id": {
+                            "type": "number",
+                            "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Array of access levels and user(s)/group(s) allowed to merge to protected branch.",
+                        "description_kind": "markdown"
+                      }
+                    },
+                    "push_access_levels": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "access_level": {
+                            "type": "string",
+                            "description": "Access levels allowed to push to protected branch. Valid values are: `no one`, `developer`, `maintainer`.",
+                            "description_kind": "markdown",
+                            "computed": true
+                          },
+                          "access_level_description": {
+                            "type": "string",
+                            "description": "Readable description of access level.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "group_id": {
+                            "type": "number",
+                            "description": "The ID of a GitLab group allowed to perform the relevant action. Mutually exclusive with `user_id`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "user_id": {
+                            "type": "number",
+                            "description": "The ID of a GitLab user allowed to perform the relevant action. Mutually exclusive with `group_id`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "Array of access levels and user(s)/group(s) allowed to push to protected branch.",
+                        "description_kind": "markdown"
+                      }
+                    }
+                  },
+                  "description": "A list of protected branches, as defined below.",
+                  "description_kind": "markdown"
+                }
               }
             },
             "description": "The `gitlab_project_protected_branches` data source allows details of the protected branches of a given project.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/protected_branches.html#list-protected-branches)",
@@ -12249,6 +12621,7 @@
                       ],
                       "forking_access_level": "string",
                       "forks_count": "number",
+                      "group_runners_enabled": "bool",
                       "http_url_to_repo": "string",
                       "id": "number",
                       "import_error": "string",
@@ -12902,7 +13275,7 @@
                 "computed": true
               }
             },
-            "description": "The `gitlab_user` data source allows details of a user to be retrieved by either the user ID, username or email address.\n\n-> Some attributes might not be returned depending on if you're an admin or not.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/users.html#single-user)",
+            "description": "The `gitlab_user` data source allows details of a user to be retrieved by either the user ID, username or email address.\n\n-> Some attributes might not be returned depending on if you're an admin or not.\n\n~> When using the `email` attribute, an exact match is not guaranteed. The most related match will be returned. Starting with GitLab 16.6,\nthe most related match will prioritize an exact match if one is available.\n\n**Upstream API**: [GitLab REST API docs](https://docs.gitlab.com/ee/api/users.html#single-user)",
             "description_kind": "markdown"
           }
         },

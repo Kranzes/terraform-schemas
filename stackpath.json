@@ -841,6 +841,11 @@
                 "type": "string",
                 "description_kind": "plain",
                 "required": true
+              },
+              "version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "block_types": {
@@ -1102,6 +1107,67 @@
                       "min_items": 1,
                       "max_items": 1
                     },
+                    "security_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "allow_privilege_escalation": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "read_only_root_filesystem": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "run_as_group": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "run_as_non_root": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "run_as_user": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "capabilities": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "add": {
+                                  "type": [
+                                    "set",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "drop": {
+                                  "type": [
+                                    "set",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
                     "volume_mount": {
                       "nesting_mode": "list",
                       "block": {
@@ -1123,6 +1189,130 @@
                   },
                   "description_kind": "plain"
                 }
+              },
+              "container_runtime_environment": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "share_process_namespace": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "termination_grace_period_seconds": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "dns": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "host_aliases": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "address": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "hostnames": {
+                                  "type": [
+                                    "set",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "resolver_config": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "nameservers": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "options": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "search": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    },
+                    "security_context": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "run_as_group": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "run_as_non_root": {
+                            "type": "bool",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "run_as_user": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "supplemental_groups": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "sysctl": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               },
               "image_pull_credentials": {
                 "nesting_mode": "list",
@@ -1466,6 +1656,67 @@
                               "description_kind": "plain"
                             },
                             "min_items": 1,
+                            "max_items": 1
+                          },
+                          "security_context": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "allow_privilege_escalation": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "read_only_root_filesystem": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "run_as_group": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "run_as_non_root": {
+                                  "type": "bool",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "run_as_user": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "block_types": {
+                                "capabilities": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "add": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "drop": {
+                                        "type": [
+                                          "set",
+                                          "string"
+                                        ],
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description_kind": "plain"
+                            },
                             "max_items": 1
                           },
                           "volume_mount": {
@@ -2279,6 +2530,78 @@
                 },
                 "max_items": 1
               },
+              "virtual_machine_runtime_environment": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "dns": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "block_types": {
+                          "host_aliases": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "address": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "hostnames": {
+                                  "type": [
+                                    "set",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          },
+                          "resolver_config": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "nameservers": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "options": {
+                                  "type": [
+                                    "map",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
+                                "search": {
+                                  "type": [
+                                    "list",
+                                    "string"
+                                  ],
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "min_items": 1,
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "volume_claim": {
                 "nesting_mode": "list",
                 "block": {
@@ -2289,6 +2612,11 @@
                       "required": true
                     },
                     "slug": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "storage_class": {
                       "type": "string",
                       "description_kind": "plain",
                       "optional": true

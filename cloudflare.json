@@ -103,6 +103,12 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "app_launcher_logo_url": {
+                "type": "string",
+                "description": "The logo URL of the app launcher.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "app_launcher_visible": {
                 "type": "bool",
                 "description": "Option to show/hide applications in App Launcher. Defaults to `true`.",
@@ -118,6 +124,12 @@
               "auto_redirect_to_identity": {
                 "type": "bool",
                 "description": "Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "bg_color": {
+                "type": "string",
+                "description": "The background color of the app launcher.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -161,6 +173,12 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "header_bg_color": {
+                "type": "string",
+                "description": "The background color of the header bar in the app launcher.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "http_only_cookie_attribute": {
                 "type": "bool",
                 "description": "Option to add the `HttpOnly` cookie flag to access tokens.",
@@ -183,7 +201,8 @@
                 "type": "string",
                 "description": "Friendly name of the Access Application.",
                 "description_kind": "markdown",
-                "required": true
+                "optional": true,
+                "computed": true
               },
               "same_site_cookie_attribute": {
                 "type": "string",
@@ -307,6 +326,67 @@
                   "description": "CORS configuration for the Access Application. See below for reference structure.",
                   "description_kind": "markdown"
                 }
+              },
+              "footer_links": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the footer link.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The URL of the footer link.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "The footer links of the app launcher.",
+                  "description_kind": "markdown"
+                }
+              },
+              "landing_page_design": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "button_color": {
+                      "type": "string",
+                      "description": "The button color of the landing page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "button_text_color": {
+                      "type": "string",
+                      "description": "The button text color of the landing page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "image_url": {
+                      "type": "string",
+                      "description": "The URL of the image to be displayed in the landing page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "The message of the landing page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "The title of the landing page.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    }
+                  },
+                  "description": "The landing page design of the app launcher.",
+                  "description_kind": "markdown"
+                },
+                "max_items": 1
               },
               "saas_app": {
                 "nesting_mode": "list",
@@ -1709,7 +1789,7 @@
               },
               "session_duration": {
                 "type": "string",
-                "description": "How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.",
+                "description": "How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -1864,7 +1944,7 @@
               },
               "session_duration": {
                 "type": "string",
-                "description": "How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.",
+                "description": "How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`.",
                 "description_kind": "markdown",
                 "optional": true
               },
@@ -4472,6 +4552,20 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "access_client_id": {
+                      "type": "string",
+                      "description": "The Access client ID to be used as the `Cf-Access-Client-ID` header when making a request to the `api_url`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "sensitive": true
+                    },
+                    "access_client_secret": {
+                      "type": "string",
+                      "description": "The Access client secret to be used as the `Cf-Access-Client-Secret` header when making a request to the `api_url`.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "sensitive": true
+                    },
                     "api_url": {
                       "type": "string",
                       "description": "The third-party API's URL.",
@@ -4644,7 +4738,7 @@
                     },
                     "id": {
                       "type": "string",
-                      "description": "The Teams List id.",
+                      "description": "The Teams List id. Required for `serial_number` and `unique_client_id` rule types.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -4767,7 +4861,8 @@
                       "optional": true
                     }
                   },
-                  "description_kind": "plain"
+                  "description": "Required for all rule types except `warp`, `gateway`, and `tanium`.",
+                  "description_kind": "markdown"
                 }
               },
               "match": {
@@ -5194,7 +5289,7 @@
                   "attributes": {
                     "type": {
                       "type": "string",
-                      "description": "Type of supported action.",
+                      "description": "Type of supported action. Available values: `forward`, `worker`, `drop`.",
                       "description_kind": "markdown",
                       "required": true
                     },
@@ -5203,9 +5298,9 @@
                         "list",
                         "string"
                       ],
-                      "description": "An array with items in the following form.",
+                      "description": "An array with items in the following form. Only required when `type` is `forward` or `worker`.",
                       "description_kind": "markdown",
-                      "required": true
+                      "optional": true
                     }
                   },
                   "description": "List actions patterns.",
@@ -5225,7 +5320,7 @@
                     },
                     "type": {
                       "type": "string",
-                      "description": "Type of matcher.",
+                      "description": "Type of matcher. Available values: `literal`, `all`.",
                       "description_kind": "markdown",
                       "required": true
                     },
@@ -6227,7 +6322,7 @@
                       "required": true
                     }
                   },
-                  "description": "Redirect configuration to store in the list. Must provide only one of `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
+                  "description": "Hostname to store in the list. Must provide only one of `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**",
                   "description_kind": "markdown"
                 },
                 "max_items": 1
@@ -7261,7 +7356,7 @@
               },
               "dataset": {
                 "type": "string",
-                "description": "The kind of the dataset to use with the logpush job. Available values: `access_requests`, `casb_findings`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`, `device_posture_results`, `zero_trust_network_sessions`.",
+                "description": "The kind of the dataset to use with the logpush job. Available values: `access_requests`, `casb_findings`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`, `device_posture_results`, `zero_trust_network_sessions`, `magic_ids_detections`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -7581,7 +7676,7 @@
               },
               "alert_type": {
                 "type": "string",
-                "description": "The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `advanced_http_alert_error`, `access_custom_certificate_expiration_type`, `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`, `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`, `block_notification_new_block`, `block_notification_review_rejected`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`, `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`, `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`, `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`, `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`, `http_alert_origin_error`, `incident_alert`, `load_balancing_health_alert`, `load_balancing_pool_enablement_alert`, `pages_event_alert`, `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`, `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`, `sentinel_alert`, `stream_live_notifications`, `tunnel_health_event`, `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`, `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.",
+                "description": "The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `advanced_http_alert_error`, `access_custom_certificate_expiration_type`, `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`, `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`, `block_notification_new_block`, `block_notification_review_rejected`, `brand_protection_alert`, `brand_protection_digest`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`, `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`, `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`, `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`, `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`, `http_alert_origin_error`, `incident_alert`, `load_balancing_health_alert`, `load_balancing_pool_enablement_alert`, `logo_match_alert`, `magic_tunnel_health_check_event`, `maintenance_event_notification`, `mtls_certificate_store_certificate_expiration_type`, `pages_event_alert`, `radar_notification`, `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`, `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`, `sentinel_alert`, `stream_live_notifications`, `traffic_anomalies_alert`, `tunnel_health_event`, `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`, `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.",
                 "description_kind": "markdown",
                 "required": true
               },
@@ -7638,7 +7733,7 @@
                       "optional": true
                     }
                   },
-                  "description": "The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.",
+                  "description": "The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. Must provide only one of `email_integration`, `webhooks_integration`, `pagerduty_integration`.",
                   "description_kind": "markdown"
                 }
               },
@@ -7772,6 +7867,15 @@
                       "description_kind": "markdown",
                       "optional": true
                     },
+                    "new_status": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Tunnel health status to alert on.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
                     "packets_per_second": {
                       "type": [
                         "set",
@@ -7823,6 +7927,15 @@
                         "string"
                       ],
                       "description": "Requests per second threshold for dos alert.",
+                      "description_kind": "markdown",
+                      "optional": true
+                    },
+                    "selectors": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Selectors for alert. Valid options depend on the alert type.",
                       "description_kind": "markdown",
                       "optional": true
                     },
@@ -7909,7 +8022,7 @@
                       "optional": true
                     }
                   },
-                  "description": "The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.",
+                  "description": "The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. Must provide only one of `email_integration`, `webhooks_integration`, `pagerduty_integration`.",
                   "description_kind": "markdown"
                 }
               },
@@ -7928,7 +8041,7 @@
                       "optional": true
                     }
                   },
-                  "description": "The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.",
+                  "description": "The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. Must provide only one of `email_integration`, `webhooks_integration`, `pagerduty_integration`.",
                   "description_kind": "markdown"
                 }
               }
@@ -8770,7 +8883,7 @@
                           },
                           "usage_model": {
                             "type": "string",
-                            "description": "Usage model used for Pages Functions. Defaults to `bundled`.",
+                            "description": "Usage model used for Pages Functions. Available values: `unbound`, `bundled`, `standard`. Defaults to `bundled`.",
                             "description_kind": "markdown",
                             "optional": true
                           }
@@ -8916,7 +9029,7 @@
                           },
                           "usage_model": {
                             "type": "string",
-                            "description": "Usage model used for Pages Functions. Defaults to `bundled`.",
+                            "description": "Usage model used for Pages Functions. Available values: `unbound`, `bundled`, `standard`. Defaults to `bundled`.",
                             "description_kind": "markdown",
                             "optional": true
                           }
@@ -9034,7 +9147,7 @@
                           },
                           "preview_deployment_setting": {
                             "type": "string",
-                            "description": "Preview Deployment Setting. Defaults to `all`.",
+                            "description": "Preview Deployment Setting. Available values: `custom`, `all`, `none`. Defaults to `all`.",
                             "description_kind": "markdown",
                             "optional": true
                           },
@@ -10838,7 +10951,8 @@
                             "type": "bool",
                             "description": "Whether to include requests to origin within the Rate Limiting count.",
                             "description_kind": "markdown",
-                            "required": true
+                            "optional": true,
+                            "computed": true
                           },
                           "score_per_period": {
                             "type": "number",
@@ -11942,6 +12056,34 @@
                           }
                         },
                         "description": "Settings to forward layer 4 traffic.",
+                        "description_kind": "markdown"
+                      },
+                      "max_items": 1
+                    },
+                    "notification_settings": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enable notification settings.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Notification content.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          },
+                          "support_url": {
+                            "type": "bool",
+                            "description": "Support URL to show in the notification.",
+                            "description_kind": "markdown",
+                            "optional": true
+                          }
+                        },
+                        "description": "Notification settings on a block rule.",
                         "description_kind": "markdown"
                       },
                       "max_items": 1
@@ -15432,6 +15574,54 @@
               }
             },
             "description": "A datasource to find Load Balancer Pools.",
+            "description_kind": "markdown"
+          }
+        },
+        "cloudflare_origin_ca_certificate": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "certificate": {
+                "type": "string",
+                "description": "The Origin CA certificate.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "expires_on": {
+                "type": "string",
+                "description": "The timestamp when the certificate will expire.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hostnames": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of hostnames or wildcard names bound to the certificate.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The Origin CA Certificate unique identifier.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "request_type": {
+                "type": "string",
+                "description": "The signature type desired on the certificate. Available values: `origin-rsa`, `origin-ecc`, `keyless-certificate`",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "revoked_at": {
+                "type": "string",
+                "description": "The timestamp when the certificate was revoked.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Use this data source to retrieve an existing origin ca certificate.",
             "description_kind": "markdown"
           }
         },

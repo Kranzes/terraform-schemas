@@ -624,6 +624,21 @@
                       "description": "An array of tags used to specify which flags with those tags require approval. You may only set `required_approval_tags` if `required` is not set to `true` and vice versa.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "service_config": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "The configuration for the service associated with this approval. This is specific to each approval service. For a `service_kind` of `servicenow`, the following fields apply:\n\n\t - `template` (String) The sys_id of the Standard Change Request Template in ServiceNow that LaunchDarkly will use when creating the change request.\n\t - `detail_column` (String) The name of the ServiceNow Change Request column LaunchDarkly uses to populate detailed approval request information. ",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_kind": {
+                      "type": "string",
+                      "description": "The kind of service associated with this approval. This determines which platform is used for requesting approval. Valid values are `servicenow`, `launchdarkly`.",
+                      "description_kind": "plain",
+                      "optional": true
                     }
                   },
                   "description_kind": "plain"
@@ -1461,6 +1476,21 @@
                             "description": "An array of tags used to specify which flags with those tags require approval. You may only set `required_approval_tags` if `required` is not set to `true` and vice versa.",
                             "description_kind": "plain",
                             "optional": true
+                          },
+                          "service_config": {
+                            "type": [
+                              "map",
+                              "string"
+                            ],
+                            "description": "The configuration for the service associated with this approval. This is specific to each approval service. For a `service_kind` of `servicenow`, the following fields apply:\n\n\t - `template` (String) The sys_id of the Standard Change Request Template in ServiceNow that LaunchDarkly will use when creating the change request.\n\t - `detail_column` (String) The name of the ServiceNow Change Request column LaunchDarkly uses to populate detailed approval request information. ",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "service_kind": {
+                            "type": "string",
+                            "description": "The kind of service associated with this approval. This determines which platform is used for requesting approval. Valid values are `servicenow`, `launchdarkly`.",
+                            "description_kind": "plain",
+                            "optional": true
                           }
                         },
                         "description_kind": "plain"
@@ -2124,7 +2154,12 @@
                       "required_approval_tags": [
                         "list",
                         "string"
-                      ]
+                      ],
+                      "service_config": [
+                        "map",
+                        "string"
+                      ],
+                      "service_kind": "string"
                     }
                   ]
                 ],

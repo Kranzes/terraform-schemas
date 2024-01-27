@@ -1449,6 +1449,12 @@
                                   "description_kind": "plain",
                                   "optional": true
                                 },
+                                "port": {
+                                  "type": "number",
+                                  "description": "The port on which the health check will be performed. If not set, the health check will be performed on the component's http_port.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                },
                                 "success_threshold": {
                                   "type": "number",
                                   "description": "The number of successful health checks before considered healthy.",
@@ -3017,8 +3023,7 @@
                     "min_insync_replicas": {
                       "type": "number",
                       "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
+                      "optional": true
                     },
                     "preallocate": {
                       "type": "bool",
@@ -3058,12 +3063,6 @@
                     },
                     "segment_ms": {
                       "type": "string",
-                      "description_kind": "plain",
-                      "optional": true,
-                      "computed": true
-                    },
-                    "unclean_leader_election_enable": {
-                      "type": "bool",
                       "description_kind": "plain",
                       "optional": true,
                       "computed": true
@@ -6538,6 +6537,7 @@
                                   "http_path": "string",
                                   "initial_delay_seconds": "number",
                                   "period_seconds": "number",
+                                  "port": "number",
                                   "success_threshold": "number",
                                   "timeout_seconds": "number"
                                 }
@@ -7136,6 +7136,83 @@
                 "computed": true
               },
               "version": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "digitalocean_database_connection_pool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cluster_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "db_name": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "host": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "port": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "private_host": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "private_uri": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "size": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "uri": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "user": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true

@@ -136,7 +136,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "(Required) The type of channel. One of: (email, opsgenie, pagerduty, slack, user, victorops, webhook).",
+                "description": "(Required) The type of channel. One of: (opsgenie, pagerduty, slack, user, victorops, webhook, email).",
                 "description_kind": "plain",
                 "required": true
               }
@@ -370,7 +370,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The type of condition. One of: (browser_metric, mobile_metric, servers_metric, apm_app_metric, apm_jvm_metric, apm_kt_metric).",
+                "description": "The type of condition. One of: (servers_metric, apm_app_metric, apm_jvm_metric, apm_kt_metric, browser_metric, mobile_metric).",
                 "description_kind": "plain",
                 "required": true
               },
@@ -434,7 +434,8 @@
                 "min_items": 1
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "newrelic_alert_muting_rule": {
@@ -5177,7 +5178,8 @@
                 "max_items": 1
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "newrelic_insights_event": {
@@ -5313,6 +5315,141 @@
                 "description": "The NRQL to match events to the parsing rule.",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "newrelic_monitor_downtime": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "account_id": {
+                "type": "string",
+                "description": "The ID of the New Relic account in which the Monitor Downtime shall be created. Defaults to NEW_RELIC_ACCOUNT_ID if not specified.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "end_time": {
+                "type": "string",
+                "description": "A datetime stamp signifying the end of the Monitor Downtime.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "maintenance_days": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of maintenance days to be included with the created weekly Monitor Downtime.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mode": {
+                "type": "string",
+                "description": "An identifier of the type of Monitor Downtime to be created.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "monitor_guids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A list of GUIDs of monitors, to which the created Monitor Downtime shall be applied.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "A name to identify the Monitor Downtime to be created.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "start_time": {
+                "type": "string",
+                "description": "A datetime stamp signifying the start of the Monitor Downtime.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "time_zone": {
+                "type": "string",
+                "description": "The timezone that applies to the Monitor Downtime schedule.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "end_repeat": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "on_date": {
+                      "type": "string",
+                      "description": "A date, on which the Monitor Downtime's repeat cycle is expected to end.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "on_repeat": {
+                      "type": "number",
+                      "description": "Number of repetitions after which the Monitor Downtime's repeat cycle is expected to end.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "A specification of when the Monitor Downtime should end its repeat cycle, by number of occurrences or date.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "frequency": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "days_of_month": {
+                      "type": [
+                        "set",
+                        "number"
+                      ],
+                      "description": "A numerical list of days of a month on which the Monitor Downtime is scheduled to run.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "block_types": {
+                    "days_of_week": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "ordinal_day_of_month": {
+                            "type": "string",
+                            "description": "An occurrence of the day selected within the month.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "week_day": {
+                            "type": "string",
+                            "description": "The day of the week on which the Monitor Downtime would run.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "A list of days of the week on which the Monitor Downtime is scheduled to run.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "Configuration options for which days of the month a monitor downtime will occur",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -5662,7 +5799,7 @@
               },
               "slide_by": {
                 "type": "number",
-                "description": "The duration of overlapping timewindows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. It should be greater or equal to 30 seconds if `aggregation_window` is less than or equal to 3600 seconds, or greater or equal to `aggregation_window / 120` if `aggregation_window` is greater than 3600 seconds.",
+                "description": "The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -9537,7 +9674,8 @@
                 "optional": true
               }
             },
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "newrelic_synthetics_broken_links_monitor": {
@@ -11035,7 +11173,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "The type of channel. One of: (pagerduty, slack, user, victorops, webhook, email, opsgenie).",
+                "description": "The type of channel. One of: (email, opsgenie, pagerduty, slack, user, victorops, webhook).",
                 "description_kind": "plain",
                 "computed": true
               }

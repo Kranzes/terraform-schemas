@@ -159,6 +159,15 @@
           "version": 0,
           "block": {
             "attributes": {
+              "allowed_ip_addresses": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of CIDR-notation IPv4 addresses from which agents can use this Cluster Agent Token.If not set, all IP addresses are allowed (the same as setting 0.0.0.0/0).",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "cluster_id": {
                 "type": "string",
                 "description": "The GraphQL ID of the Cluster that this Cluster Agent Token belongs to.",
@@ -316,6 +325,33 @@
             "description_kind": "markdown"
           }
         },
+        "buildkite_organization_banner": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the organization banner. ",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "message": {
+                "type": "string",
+                "description": "The organization banner's message. ",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the organization banner. ",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "This resource allows you to create and manage banners for specific organizations, displayed to all members at the top of each page in Buildkite's UI.\n\nMore information on organization/system banners can be found in the [documentation](https://buildkite.com/docs/team-management/system-banners).\n",
+            "description_kind": "markdown"
+          }
+        },
         "buildkite_pipeline": {
           "version": 1,
           "block": {
@@ -359,6 +395,12 @@
                 "description_kind": "markdown",
                 "optional": true
               },
+              "color": {
+                "type": "string",
+                "description": "A color hex code to represent this pipeline.",
+                "description_kind": "markdown",
+                "optional": true
+              },
               "default_branch": {
                 "type": "string",
                 "description": "Default branch of the pipeline.",
@@ -379,6 +421,12 @@
                 "description_kind": "markdown",
                 "optional": true,
                 "computed": true
+              },
+              "emoji": {
+                "type": "string",
+                "description": "An emoji that represents this pipeline.",
+                "description_kind": "markdown",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -516,7 +564,7 @@
                     },
                     "skip_builds_for_existing_commits": {
                       "type": "bool",
-                      "description": "Whether to skip creating a new build if an existing build for the commit and branch already exists.",
+                      "description": "Whether to skip creating a new build if an existing build for the commit and branch already exists. This option is only valid if the pipeline uses a GitHub repository.",
                       "description_kind": "markdown",
                       "optional": true,
                       "computed": true
@@ -706,6 +754,52 @@
               }
             },
             "description": "Manage team access to a pipeline.",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_pipeline_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "available": {
+                "type": "bool",
+                "description": "If the pipeline template is available for assignment by non admin users. ",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "configuration": {
+                "type": "string",
+                "description": "The YAML step configuration for the pipeline template. ",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "description": {
+                "type": "string",
+                "description": "A description for the pipeline template. ",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The GraphQL ID of the pipeline template. ",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the pipeline template. ",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "uuid": {
+                "type": "string",
+                "description": "The UUID of the pipeline template. ",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "This resource allows for standardized step configurations that can be used within various pipelines of an organization.\n\nMore information on pipeline templates can be found in the [documentation](https://buildkite.com/docs/pipelines/templates).\n",
             "description_kind": "markdown"
           }
         },
@@ -1052,6 +1146,52 @@
               }
             },
             "description": "Use this data source to look up properties on a specific pipeline. This is particularly useful for looking up the webhook URL for each pipeline.\n\nMore info in the Buildkite [documentation](https://buildkite.com/docs/pipelines).\n",
+            "description_kind": "markdown"
+          }
+        },
+        "buildkite_signed_pipeline_steps": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "jwks": {
+                "type": "string",
+                "description": "The JSON Web Key Set (JWKS) to use for signing.\nIf `jwks_key_id` is not specified, and the set contains exactly one key, that key will\nbe used.\n\n~> **Security Notice** The secret key in the `jwks` attribute will be stored\n*unencrypted* in your Terraform state file. This attribute is designed for\nusers that have systems to to securely manage their state files. If you wish\nto avoid this, use the `jwks_file` attribute instead.\n",
+                "description_kind": "markdown",
+                "optional": true,
+                "sensitive": true
+              },
+              "jwks_file": {
+                "type": "string",
+                "description": "The path to a file containing the JSON Web Key Set (JWKS) to use for\nsigning. Users will have to ensure that the JWKS file is present on systems\nrunning Terraform. If `jwks` is specified, this will be ignored and the\nJWKS will be parsed from that value instead. If `jwks_key_id` is not specified, and the\nset contains exactly one key, that key will be used.\n\n~> **Security Notice** The secret key referenced in the `jwks_file` attribute is\nexpected to be stored *unencrypted* as a file on the system running\nTerraform. You are responsible for securing it on this system while\nTerraform is running, and cleaning it up after it has finished running.\n",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "jwks_key_id": {
+                "type": "string",
+                "description": "The ID of the key in the JSON Web Key Set (JWKS) to use for signing.\nIf this is not specified, and the key set contains exactly one key, that key\nwill be used.\n",
+                "description_kind": "markdown",
+                "optional": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The repository that will be checked out in a build of the pipeline.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "steps": {
+                "type": "string",
+                "description": "The signed steps in YAML format.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "unsigned_steps": {
+                "type": "string",
+                "description": "The steps to sign in YAML format.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Use this data source to sign pipeline steps with a JWKS key. You will need to have\nthe corresponding verification key present on the agents that run this the steps in\nthis pipeline. You can then use these steps in a `buildkite_pipeline` resource.\n\nSee [RFC 7517](https://datatracker.ietf.org/doc/html/rfc7517) for more information\nabout the JWKS format.\n\nSee the Buildkite [documentation](https://buildkite.com/docs/agent/v3/signed_pipelines)\nfor more info about signed pipelines.\n",
             "description_kind": "markdown"
           }
         },

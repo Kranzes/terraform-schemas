@@ -1,0 +1,1209 @@
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/lxc/incus": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "accept_remote_certificate": {
+              "type": "bool",
+              "description": "Accept the server certificate.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "config_dir": {
+              "type": "string",
+              "description": "The directory to look for existing Incus configuration. (default = $HOME/.config/incus)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "generate_client_certificates": {
+              "type": "bool",
+              "description": "Automatically generate the Incus client certificates if they don't exist.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "project": {
+              "type": "string",
+              "description": "The project where project-scoped resources will be created. Can be overridden in individual resources. (default = default)",
+              "description_kind": "plain",
+              "optional": true
+            }
+          },
+          "block_types": {
+            "remote": {
+              "nesting_mode": "list",
+              "block": {
+                "attributes": {
+                  "address": {
+                    "type": "string",
+                    "description": "The FQDN or IP where the Incus daemon can be contacted. (default = \"\" (read from lxc config))",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "default": {
+                    "type": "bool",
+                    "description": "Set this remote as default.",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the Incus remote. Required when incus_scheme set to https, to enable locating server certificate.",
+                    "description_kind": "plain",
+                    "required": true
+                  },
+                  "port": {
+                    "type": "string",
+                    "description": "Port Incus Daemon API is listening on. (default = 8443)",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "scheme": {
+                    "type": "string",
+                    "description": "Unix (unix) or HTTPs (https). (default = unix)",
+                    "description_kind": "plain",
+                    "optional": true
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "The trust token for the remote.",
+                    "description_kind": "plain",
+                    "optional": true,
+                    "sensitive": true
+                  }
+                },
+                "description": "Incus Remote",
+                "description_kind": "plain"
+              }
+            }
+          },
+          "description_kind": "plain"
+        }
+      },
+      "resource_schemas": {
+        "incus_cached_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aliases": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "architecture": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "copied_aliases": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "copy_aliases": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "created_at": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "resource_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "source_image": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "source_remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_instance": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ephemeral": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "image": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ipv4_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ipv6_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "limits": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mac_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "profiles": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "running": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "wait_for_network": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "device": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "Device name",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "properties": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Device properties",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Device type",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Profile device",
+                  "description_kind": "plain"
+                }
+              },
+              "file": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "append": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "content": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "create_directories": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "gid": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "mode": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "source_path": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "target_path": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "uid": {
+                      "type": "number",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Upload file to instance",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_instance_file": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "append": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "content": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "create_directories": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "gid": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "resource_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "source_path": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target_path": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "uid": {
+                "type": "number",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_network": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "managed": {
+                "type": "bool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_network_lb": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "listen_address": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "network": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "backend": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "LB backend description",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "LB backend name",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "target_address": {
+                      "type": "string",
+                      "description": "LB backend target address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "target_port": {
+                      "type": "string",
+                      "description": "LB backend target port",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Network load balancer backend",
+                  "description_kind": "plain"
+                }
+              },
+              "port": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "description": {
+                      "type": "string",
+                      "description": "Port description",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "listen_port": {
+                      "type": "string",
+                      "description": "Port to listen to",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "Port protocol",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "target_backend": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of target LB backends",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Network load balancer port",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_network_zone": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_network_zone_record": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "zone": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "entry": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "ttl": {
+                      "type": "number",
+                      "description": "Record entry TTL",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Record entry type",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Record entry value",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Network zone record entry",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "device": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description": "Device name",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "properties": {
+                      "type": [
+                        "map",
+                        "string"
+                      ],
+                      "description": "Device properties",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Device type",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Profile device",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_project": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_publish_image": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aliases": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "architecture": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "compression_algorithm": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "created_at": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "filename": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "fingerprint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "instance": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "properties": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
+              "public": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "resource_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "triggers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_snapshot": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created_at": {
+                "type": "number",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "instance": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "stateful": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_storage_bucket": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "pool": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_storage_bucket_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "access_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "pool": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "role": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "secret_key": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true,
+                "sensitive": true
+              },
+              "storage_bucket": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_storage_pool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "driver": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_volume": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "config": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "content_type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "location": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "pool": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "incus_volume_copy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "name": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "pool": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "project": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "source_name": {
+                "type": "string",
+                "description": "The name of the source volume.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "source_pool": {
+                "type": "string",
+                "description": "The source pool.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "source_remote": {
+                "type": "string",
+                "description": "The remote from which the source volume is copied.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "target": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,18 @@
               "description_kind": "plain",
               "optional": true
             },
+            "api_retries": {
+              "type": "number",
+              "description": "Amount of times to retry AS3 API requests. Default: 10.",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "api_timeout": {
+              "type": "number",
+              "description": "A timeout for AS3 requests, represented as a number of seconds. Default: 60",
+              "description_kind": "plain",
+              "optional": true
+            },
             "login_ref": {
               "type": "string",
               "description": "Login reference for token authentication (see BIG-IP REST docs for details)",
@@ -39,6 +51,12 @@
             "token_auth": {
               "type": "bool",
               "description": "Enable to use an external authentication source (LDAP, TACACS, etc)",
+              "description_kind": "plain",
+              "optional": true
+            },
+            "token_timeout": {
+              "type": "number",
+              "description": "A lifespan to request for the AS3 auth token, represented as a number of seconds. Default: 1200",
               "description_kind": "plain",
               "optional": true
             },
@@ -679,6 +697,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "fallback_persistence": {
+                "type": "string",
+                "description": "Type of fallback persistence record to be created for each new client connection.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "fast_http_json": {
                 "type": "string",
                 "description": "Json payload for FAST HTTP application.",
@@ -697,6 +721,18 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "persistence_profile": {
+                "type": "string",
+                "description": "Name of an existing BIG-IP persistence profile to be used.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "persistence_type": {
+                "type": "string",
+                "description": "Type of persistence profile to be created.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "security_log_profiles": {
                 "type": [
                   "list",
@@ -712,8 +748,7 @@
                   "string"
                 ],
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "slow_ramp_time": {
                 "type": "number",
@@ -912,6 +947,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "fallback_persistence": {
+                "type": "string",
+                "description": "Type of fallback persistence record to be created for each new client connection.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "fast_https_json": {
                 "type": "string",
                 "description": "Json payload for FAST HTTPS application.",
@@ -930,6 +971,18 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "persistence_profile": {
+                "type": "string",
+                "description": "Name of an existing BIG-IP persistence profile to be used.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "persistence_type": {
+                "type": "string",
+                "description": "Type of persistence profile to be created.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "security_log_profiles": {
                 "type": [
                   "list",
@@ -944,8 +997,7 @@
                   "string"
                 ],
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "slow_ramp_time": {
                 "type": "number",
@@ -1161,6 +1213,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "fallback_persistence": {
+                "type": "string",
+                "description": "Type of fallback persistence record to be created for each new client connection.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "fast_tcp_json": {
                 "type": "string",
                 "description": "Json payload for FAST TCP application.",
@@ -1176,6 +1234,18 @@
               "load_balancing_mode": {
                 "type": "string",
                 "description": "none",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "persistence_profile": {
+                "type": "string",
+                "description": "Select an existing BIG-IP persistence profile.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "persistence_type": {
+                "type": "string",
+                "description": "Type of persistence profile to be created.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -1705,8 +1775,7 @@
                 "type": "string",
                 "description": "Controls the order of the Cipher String list in the Cipher Audit section. Options are Default, Speed, Strength, FIPS, and Hardware. The rules are processed in the order listed",
                 "description_kind": "plain",
-                "optional": true,
-                "computed": true
+                "optional": true
               },
               "require": {
                 "type": [
@@ -4034,7 +4103,7 @@
               },
               "ca_file": {
                 "type": "string",
-                "description": "Client certificate file path.  Default None.",
+                "description": "(Trusted Certificate Authorities)Specifies a client CA that the system trusts. The default is `None`",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -4095,7 +4164,8 @@
                 "type": "string",
                 "description": "Cipher group for the ssl client profile",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "ciphers": {
                 "type": "string",
@@ -4106,7 +4176,7 @@
               },
               "client_cert_ca": {
                 "type": "string",
-                "description": "client certificate name",
+                "description": "(Advertised Certificate Authorities)Specifies that the CAs that the system advertises to clients is being trusted by the profile. The default is `None`",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -4978,19 +5048,22 @@
                       "type": "number",
                       "description": "Specifies the maximum number of headers allowed in HTTP request/response.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "max_header_size": {
                       "type": "number",
                       "description": "Specifies the maximum header size.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "unknown_method": {
                       "type": "string",
                       "description": "Specifies whether to allow, reject or switch to pass-through mode when an unknown HTTP method is parsed.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     }
                   },
                   "description_kind": "plain"
@@ -5004,25 +5077,29 @@
                       "type": "string",
                       "description": "Specifies whether to include the includeSubdomains directive in the HSTS header.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "maximum_age": {
                       "type": "number",
                       "description": "Specifies the maximum age to assume the connection should remain secure.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "mode": {
                       "type": "string",
                       "description": "Specifies whether to include the HSTS response header.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     },
                     "preload": {
                       "type": "string",
                       "description": "Specifies whether to include the preload directive in the HSTS header.",
                       "description_kind": "plain",
-                      "optional": true
+                      "optional": true,
+                      "computed": true
                     }
                   },
                   "description_kind": "plain"
@@ -5856,6 +5933,129 @@
                 "description": "Specifies the timeout in milliseconds for terminating a connection with an effective zero length TCP transmit window",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "bigip_ltm_profile_web_acceleration": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cache_aging_rate": {
+                "type": "number",
+                "description": "Specifies how quickly the system ages a cache entry. The aging rate ranges from 0 (slowest aging) to 10 (fastest aging). The default value is 9.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_client_cache_control_mode": {
+                "type": "string",
+                "description": "Specifies which cache disabling headers sent by clients the system ignores. The default value is all.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_insert_age_header": {
+                "type": "string",
+                "description": "Inserts Age and Date headers in the response. The default value is enabled.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_max_age": {
+                "type": "number",
+                "description": "Specifies how long the system considers the cached content to be valid. The default value is 3600 seconds.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_max_entries": {
+                "type": "number",
+                "description": "Specifies the maximum number of entries that can be in the cache. The default value is 0 (zero), which means that the system does not limit the maximum entries.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_object_max_size": {
+                "type": "number",
+                "description": "Specifies the largest object that the system considers eligible for caching. The default value is 50000 bytes.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_object_min_size": {
+                "type": "number",
+                "description": "Specifies the smallest object that the system considers eligible for caching. The default value is 500 bytes.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_size": {
+                "type": "number",
+                "description": "Specifies the maximum size for the cache. When the cache reaches the maximum size, the system starts removing the oldest entries. The default value is 100 megabytes.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_uri_exclude": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Configures a list of URIs to exclude from the cache. The default value of none specifies no URIs are excluded.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_uri_include": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Configures a list of URIs to include in the cache. The default value of .* specifies that all URIs are cacheable.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_uri_include_override": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Configures a list of URIs to include in the cache even if they would normally be excluded due to factors like object size or HTTP request type. The default value of none specifies no URIs are to be forced into the cache.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "cache_uri_pinned": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Configures a list of URIs to keep in the cache. The pinning process keeps URIs in cache when they would normally be evicted to make room for more active URIs.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "defaults_from": {
+                "type": "string",
+                "description": "Specifies the profile that you want to use as the parent profile. Your new profile inherits all settings and values from the parent profile specified.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the Web Acceleration profile",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"
@@ -6740,6 +6940,12 @@
                 "optional": true,
                 "computed": true
               },
+              "mtu": {
+                "type": "number",
+                "description": "Maximum Transmission Unit (MTU) for the VLAN",
+                "description_kind": "plain",
+                "optional": true
+              },
               "name": {
                 "type": "string",
                 "description": "Name of the VLAN",
@@ -6774,6 +6980,38 @@
                   "description": "Interface(s) attached to the VLAN",
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "bigip_partition": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "The description of the partition",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the partition",
+                "description_kind": "plain",
+                "required": true
+              },
+              "route_domain_id": {
+                "type": "number",
+                "description": "The route domain of the partition",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"

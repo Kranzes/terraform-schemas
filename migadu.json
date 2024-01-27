@@ -1,0 +1,1385 @@
+{
+  "format_version": "1.0",
+  "provider_schemas": {
+    "registry.terraform.io/metio/migadu": {
+      "provider": {
+        "version": 0,
+        "block": {
+          "attributes": {
+            "endpoint": {
+              "type": "string",
+              "description": "The API endpoint to use. Can be specified with the `MIGADU_ENDPOINT` environment variable. Defaults to `https://api.migadu.com/v1/`. Take a look at https://www.migadu.com/api/#api-requests for more information.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "timeout": {
+              "type": "number",
+              "description": "The timeout to apply for HTTP requests in seconds. Can be specified with the `MIGADU_TIMEOUT` environment variable. Defaults to `10`.",
+              "description_kind": "markdown",
+              "optional": true
+            },
+            "token": {
+              "type": "string",
+              "description": "The API key to use. Can be specified with the `MIGADU_TOKEN` environment variable. Take a look at https://www.migadu.com/api/#api-keys for more information.",
+              "description_kind": "markdown",
+              "optional": true,
+              "sensitive": true
+            },
+            "username": {
+              "type": "string",
+              "description": "The username to use. Can be specified with the `MIGADU_USERNAME` environment variable. Take a look at https://www.migadu.com/api/#api-requests for more information.",
+              "description_kind": "markdown",
+              "optional": true,
+              "sensitive": true
+            }
+          },
+          "description": "Provider for the [Migadu](https://www.migadu.com/api/) API. Requires Terraform 1.0 or later.",
+          "description_kind": "markdown"
+        }
+      },
+      "resource_schemas": {
+        "migadu_alias": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description": "The email address `local_part@domain_name` as returned by the Migadu API. This might be different from the `id` attribute in case you are using international domain names. The Migadu API always returns the punycode version of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "destinations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of email addresses that act as destinations of the alias.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the alias.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "expirable": {
+                "type": "bool",
+                "description": "Whether this alias expires at some time.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "expires_on": {
+                "type": "string",
+                "description": "The expiration date of this alias.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_internal": {
+                "type": "bool",
+                "description": "Internal aliases can only receive emails from Migadu email servers.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the alias.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "remove_upon_expiry": {
+                "type": "bool",
+                "description": "Whether to remove this alias upon expiry.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "Provides an email alias.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_identity": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description": "Contains the email address of the identity `identity@domain_name` as returned by the Migadu API. The Migadu API always returns the punycode version of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the mailbox/identity.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "footer_active": {
+                "type": "bool",
+                "description": "Whether the footer of the identity is active.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "footer_html_body": {
+                "type": "string",
+                "description": "The footer of the identity in `text/html` format.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "footer_plain_body": {
+                "type": "string",
+                "description": "The footer of the identity in `text/plain` format.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name/identity`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "identity": {
+                "type": "string",
+                "description": "The local part of the identity.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the mailbox that owns the identity.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "may_access_imap": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to use IMAP.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_access_manage_sieve": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to manage the mail sieve.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_access_pop3": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to use POP3.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_receive": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to receive emails.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_send": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to send emails.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the identity.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password of the identity.",
+                "description_kind": "markdown",
+                "required": true,
+                "sensitive": true
+              }
+            },
+            "description": "Provides an identity to an existing mailbox.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_mailbox": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description": "The email address of the mailbox `local_part@domain_name` as returned by the Migadu API. This might be different from the `id` attribute in case you are using international domain names. The Migadu API always returns the punycode version of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "auto_respond_active": {
+                "type": "bool",
+                "description": "Whether an automatic response is active in this mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "auto_respond_body": {
+                "type": "string",
+                "description": "The body of the automatic response.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "auto_respond_expires_on": {
+                "type": "string",
+                "description": "The expiration date of the automatic response.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "auto_respond_subject": {
+                "type": "string",
+                "description": "The subject of the automatic response.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "delegations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The delegations of the mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the mailbox.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "expirable": {
+                "type": "bool",
+                "description": "Whether this mailbox expires in the future.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "expires_on": {
+                "type": "string",
+                "description": "The expiration date of this mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "footer_active": {
+                "type": "bool",
+                "description": "Whether the footer of this mailbox is active.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "footer_html_body": {
+                "type": "string",
+                "description": "The footer of this mailbox in text/html format.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "footer_plain_body": {
+                "type": "string",
+                "description": "The footer of this mailbox in text/plain format.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "identities": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The identities of the mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "is_internal": {
+                "type": "bool",
+                "description": "Whether this mailbox is internal only. An internal mailbox can only receive emails from Migadu servers.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the mailbox.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "may_access_imap": {
+                "type": "bool",
+                "description": "Whether this mailbox is allowed to use IMAP.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_access_manage_sieve": {
+                "type": "bool",
+                "description": "Whether this mailbox is allowed to manage the mail sieve.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_access_pop3": {
+                "type": "bool",
+                "description": "Whether this mailbox is allowed to use POP3.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_receive": {
+                "type": "bool",
+                "description": "Whether this mailbox is allowed to receive emails.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "may_send": {
+                "type": "bool",
+                "description": "Whether this mailbox is allowed to send emails.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the mailbox.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password of this mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true,
+                "sensitive": true
+              },
+              "password_method": {
+                "type": "string",
+                "description": "The password method of this mailbox. If this is set to 'invitation' an email will be send to the 'password_recovery_email' and users can set their own password.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "password_recovery_email": {
+                "type": "string",
+                "description": "The recovery email address of this mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "recipient_denylist": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The email addresses of recipients that will always be denied delivery.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "remove_upon_expiry": {
+                "type": "bool",
+                "description": "Whether this mailbox will be removed upon expiry.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "sender_allowlist": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The email addresses of senders that will always be allowed delivery.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "sender_denylist": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The email addresses of senders that will always be denied delivery.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "spam_action": {
+                "type": "string",
+                "description": "The action to take once spam arrives in this mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "spam_aggressiveness": {
+                "type": "string",
+                "description": "How aggressive will spam be detected in this mailbox.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "Provides a mailbox.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_rewrite_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "destinations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The destinations of the rewrite rule.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the rewrite rule.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `domain_name/name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "local_part_rule": {
+                "type": "string",
+                "description": "The regular expression matching the local part of incoming emails.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name (slug) of the rewrite rule.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "order_num": {
+                "type": "number",
+                "description": "The order of the rewrite rule. Lowest will be executed first.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "Provides a rewrite rule.",
+            "description_kind": "markdown"
+          }
+        }
+      },
+      "data_source_schemas": {
+        "migadu_alias": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description": "The email address of the alias `local_part@domain_name` as returned by the Migadu API. This might be different from the `id` attribute in case you are using international domain names. The Migadu API always returns the punycode version of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "destinations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of email addresses that act as destinations of the alias.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the alias.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "expirable": {
+                "type": "bool",
+                "description": "Whether the alias expires at some time.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "expires_on": {
+                "type": "string",
+                "description": "The expiration date of the alias.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_internal": {
+                "type": "bool",
+                "description": "Whether the alias is internal only. An internal alias can only receive emails from Migadu servers.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the alias.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "remove_upon_expiry": {
+                "type": "bool",
+                "description": "Whether to remove the alias upon expiry.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about an email alias.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_aliases": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "aliases": {
+                "nested_type": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "The email address `local_part@domain_name` as returned by the Migadu API. The Migadu API always returns the punycode version of a domain.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "destinations": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "List of email addresses that act as destinations of the alias.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "domain_name": {
+                      "type": "string",
+                      "description": "The domain name of the alias.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "expirable": {
+                      "type": "bool",
+                      "description": "Whether the alias expires some time in the future.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "expires_on": {
+                      "type": "string",
+                      "description": "The expiration date of the alias.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "is_internal": {
+                      "type": "bool",
+                      "description": "Whether the alias is internal and can only receive emails from Migadu servers.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "local_part": {
+                      "type": "string",
+                      "description": "The local part of the alias.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "remove_upon_expiry": {
+                      "type": "bool",
+                      "description": "Whether the alias is removed once it is expired.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "The configured aliases for the given `domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of all aliases.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Same value as the `domain_name` attribute.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about all email aliases of a domain.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_identities": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the mailbox/identities.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "identities": {
+                "nested_type": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "The email address of the identity `identity@domain_name` as returned by the Migadu API. The Migadu API always returns the punycode version of a domain.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "domain_name": {
+                      "type": "string",
+                      "description": "The domain of the identity.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "footer_active": {
+                      "type": "bool",
+                      "description": "Whether the footer of the identity is active.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "footer_html_body": {
+                      "type": "string",
+                      "description": "The footer of the identity in `text/html` format.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "footer_plain_body": {
+                      "type": "string",
+                      "description": "The footer of the identity in `text/plain` format.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "local_part": {
+                      "type": "string",
+                      "description": "The local part of the identity.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_access_imap": {
+                      "type": "bool",
+                      "description": "Whether the identity is allowed to use IMAP.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_access_manage_sieve": {
+                      "type": "bool",
+                      "description": "Whether the identity is allowed to manage the mail sieve.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_access_pop3": {
+                      "type": "bool",
+                      "description": "Whether the identity is allowed to use POP3.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_receive": {
+                      "type": "bool",
+                      "description": "Whether the identity is allowed to receive emails.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_send": {
+                      "type": "bool",
+                      "description": "Whether the identity is allowed to send emails.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the identity.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "The configured identities for the given `domain_name` and `local_part`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the mailbox that owns the identities.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "Get information about all identities owned by mailbox.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_identity": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description": "The email address of the identity `identity@domain_name` as returned by the Migadu API. The Migadu API always returns the punycode version of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the mailbox/identity.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "footer_active": {
+                "type": "bool",
+                "description": "Whether the footer of the identity is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "footer_html_body": {
+                "type": "string",
+                "description": "The footer of the identity in `text/html` format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "footer_plain_body": {
+                "type": "string",
+                "description": "The footer of the identity in `text/plain` format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name/identity`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "identity": {
+                "type": "string",
+                "description": "The local part of the identity.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the mailbox that owns the identity.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "may_access_imap": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to use IMAP.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_access_manage_sieve": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to manage the mail sieve.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_access_pop3": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to use POP3.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_receive": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to receive emails.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_send": {
+                "type": "bool",
+                "description": "Whether the identity is allowed to send emails.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the identity.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about a single identity owned by mailbox.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_mailbox": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "address": {
+                "type": "string",
+                "description": "The email address of the mailbox `local_part@domain_name` as returned by the Migadu API. This might be different from the `id` attribute in case you are using international domain names. The Migadu API always returns the punycode version of a domain.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "auto_respond_active": {
+                "type": "bool",
+                "description": "Whether an automatic response is active in the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "auto_respond_body": {
+                "type": "string",
+                "description": "The body of the automatic response.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "auto_respond_expires_on": {
+                "type": "string",
+                "description": "The expiration date of the automatic response.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "auto_respond_subject": {
+                "type": "string",
+                "description": "The subject of the automatic response.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "delegations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The delegations of the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the mailbox.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "expirable": {
+                "type": "bool",
+                "description": "Whether the mailbox expires in the future.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "expires_on": {
+                "type": "string",
+                "description": "The expiration date of the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "footer_active": {
+                "type": "bool",
+                "description": "Whether the footer of the mailbox is active.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "footer_html_body": {
+                "type": "string",
+                "description": "The footer of the mailbox in `text/html` format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "footer_plain_body": {
+                "type": "string",
+                "description": "The footer of the mailbox in `text/plain` format.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `local_part@domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "identities": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The identities of the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "is_internal": {
+                "type": "bool",
+                "description": "Whether the mailbox is internal only. An internal mailbox can only receive emails from Migadu servers.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "local_part": {
+                "type": "string",
+                "description": "The local part of the mailbox.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "may_access_imap": {
+                "type": "bool",
+                "description": "Whether the mailbox is allowed to use IMAP.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_access_manage_sieve": {
+                "type": "bool",
+                "description": "Whether the mailbox is allowed to manage the mail sieve.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_access_pop3": {
+                "type": "bool",
+                "description": "Whether the mailbox is allowed to use POP3.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_receive": {
+                "type": "bool",
+                "description": "Whether the mailbox is allowed to receive emails.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "may_send": {
+                "type": "bool",
+                "description": "Whether the mailbox is allowed to send emails.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "password_recovery_email": {
+                "type": "string",
+                "description": "The recovery email address of the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "recipient_denylist": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The email addresses of recipients that will always be denied delivery.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "remove_upon_expiry": {
+                "type": "bool",
+                "description": "Whether the mailbox will be removed upon expiry.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "sender_allowlist": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The email addresses of senders that will always be allowed delivery.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "sender_denylist": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The email addresses of senders that will always be denied delivery.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "spam_action": {
+                "type": "string",
+                "description": "The action to take once spam arrives in the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "spam_aggressiveness": {
+                "type": "string",
+                "description": "How aggressive will spam be detected in the mailbox.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about a mailbox.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_mailboxes": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain_name": {
+                "type": "string",
+                "description": "The domain name of the mailboxes.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Same value as the `domain_name` attribute.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "mailboxes": {
+                "nested_type": {
+                  "attributes": {
+                    "address": {
+                      "type": "string",
+                      "description": "The email address of the mailbox `local_part@domain_name` as returned by the Migadu API. The Migadu API always returns the punycode version of a domain.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "auto_respond_active": {
+                      "type": "bool",
+                      "description": "Whether an automatic response is active in this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "auto_respond_body": {
+                      "type": "string",
+                      "description": "The body of the automatic response.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "auto_respond_expires_on": {
+                      "type": "string",
+                      "description": "The expiration date of the automatic response.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "auto_respond_subject": {
+                      "type": "string",
+                      "description": "The subject of the automatic response.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "delegations": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The delegations of this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "domain_name": {
+                      "type": "string",
+                      "description": "The domain name of the mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "expirable": {
+                      "type": "bool",
+                      "description": "Whether this mailbox expires in the future.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "expires_on": {
+                      "type": "string",
+                      "description": "The expiration date of this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "footer_active": {
+                      "type": "bool",
+                      "description": "Whether the footer of this mailbox is active.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "footer_html_body": {
+                      "type": "string",
+                      "description": "The footer of this mailbox in text/html format.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "footer_plain_body": {
+                      "type": "string",
+                      "description": "The footer of this mailbox in text/plain format.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "identities": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The identities of this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "is_internal": {
+                      "type": "bool",
+                      "description": "Whether this mailbox is internal only. An internal mailbox can only receive emails from Migadu servers.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "local_part": {
+                      "type": "string",
+                      "description": "The local part of the mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_access_imap": {
+                      "type": "bool",
+                      "description": "Whether this mailbox is allowed to use IMAP.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_access_manage_sieve": {
+                      "type": "bool",
+                      "description": "Whether this mailbox is allowed to manage the mail sieve.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_access_pop3": {
+                      "type": "bool",
+                      "description": "Whether this mailbox is allowed to use POP3.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_receive": {
+                      "type": "bool",
+                      "description": "Whether this mailbox is allowed to receive emails.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "may_send": {
+                      "type": "bool",
+                      "description": "Whether this mailbox is allowed to send emails.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "password_recovery_email": {
+                      "type": "string",
+                      "description": "The recovery email address of this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "recipient_denylist": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The email addresses of recipients that will always be denied delivery.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "remove_upon_expiry": {
+                      "type": "bool",
+                      "description": "Whether this mailbox will be removed upon expiry.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "sender_allowlist": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The email addresses of senders that will always be allowed delivery.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "sender_denylist": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The email addresses of senders that will always be denied delivery.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "spam_action": {
+                      "type": "string",
+                      "description": "The action to take once spam arrives in this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "spam_aggressiveness": {
+                      "type": "string",
+                      "description": "How aggressive will spam be detected in this mailbox.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "The configured mailboxes for the given `domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about all mailbox of a domain.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_rewrite_rule": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "destinations": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "The destinations of the rewrite rule.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "domain_name": {
+                "type": "string",
+                "description": "The domain of the rewrite rule.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Contains the value `domain_name/name`.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "local_part_rule": {
+                "type": "string",
+                "description": "The local part expression of the rewrite rule",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name (slug) of the rewrite rule.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "order_num": {
+                "type": "number",
+                "description": "The order number of the rewrite rule.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about a single rewrite rule.",
+            "description_kind": "markdown"
+          }
+        },
+        "migadu_rewrite_rules": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "domain_name": {
+                "type": "string",
+                "description": "The domain to fetch rewrite rules of.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Same value as the `domain_name` attribute.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "rewrites": {
+                "nested_type": {
+                  "attributes": {
+                    "destinations": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The destinations of the rewrite rule.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "domain_name": {
+                      "type": "string",
+                      "description": "The domain of the rewrite rule.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "local_part_rule": {
+                      "type": "string",
+                      "description": "The local part expression of the rewrite rule",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name (slug) of the rewrite rule.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "order_num": {
+                      "type": "number",
+                      "description": "The order number of the rewrite rule.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "list"
+                },
+                "description": "The configured rewrite rules for the given `domain_name`.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "Get information about a all rewrite rules of a domain.",
+            "description_kind": "markdown"
+          }
+        }
+      }
+    }
+  }
+}

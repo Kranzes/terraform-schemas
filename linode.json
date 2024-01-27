@@ -1003,7 +1003,8 @@
                 "type": "string",
                 "description": "The type of the entity to create a Firewall device for.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "firewall_id": {
                 "type": "number",
@@ -1012,9 +1013,9 @@
                 "required": true
               },
               "id": {
-                "type": "string",
+                "type": "number",
+                "description": "The unique ID that represents the firewall device in the Terraform state.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "updated": {
@@ -1241,6 +1242,12 @@
                 "optional": true,
                 "computed": true
               },
+              "firewall_id": {
+                "type": "number",
+                "description": "The ID of the firewall applied to the Linode instance during creation.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "group": {
                 "type": "string",
                 "description": "The display group of the Linode instance.",
@@ -1298,6 +1305,12 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "migration_type": {
+                "type": "string",
+                "description": "The type of migration to use for resize and migration operations.",
+                "description_kind": "plain",
+                "optional": true
               },
               "private_ip": {
                 "type": "bool",
@@ -1795,23 +1808,88 @@
                       "nesting_mode": "list",
                       "block": {
                         "attributes": {
+                          "active": {
+                            "type": "bool",
+                            "description": "Whether this interface is currently booted and active.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "id": {
+                            "type": "number",
+                            "description": "The ID of the interface.",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "ip_ranges": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "List of VPC IPs or IP ranges inside the VPC subnet.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "ipam_address": {
                             "type": "string",
-                            "description": "The IPAM Address of this interface.",
+                            "description": "This Network Interface's private IP address in Classless Inter-Domain Routing (CIDR) notation.This attribute is only allowed for VLAN interfaces.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "label": {
                             "type": "string",
-                            "description": "The unique label of this interface.",
+                            "description": "The name of the VALN. This attribute is required for VLAN interfaces. This attribute is only allowed for VLAN interfaces.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "primary": {
+                            "type": "bool",
+                            "description": "Whether the interface is the primary interface that should have the default route for this Linode.",
                             "description_kind": "plain",
                             "optional": true
                           },
                           "purpose": {
                             "type": "string",
-                            "description": "The purpose of this interface.",
+                            "description": "The type of interface.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "subnet_id": {
+                            "type": "number",
+                            "description": "The ID of the subnet which the VPC interface is connected to.This attribute is required for VPC interfaces.This attribute is only allowed for VPC interfaces.",
                             "description_kind": "plain",
                             "optional": true
+                          },
+                          "vpc_id": {
+                            "type": "number",
+                            "description": "The ID of VPC of the subnet which the VPC interface is connected to.",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "block_types": {
+                          "ipv4": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "nat_1_1": {
+                                  "type": "string",
+                                  "description": "The public IP that will be used for the one-to-one NAT purpose.",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                },
+                                "vpc": {
+                                  "type": "string",
+                                  "description": "The IP from the VPC subnet to use for this interface.",
+                                  "description_kind": "plain",
+                                  "optional": true,
+                                  "computed": true
+                                }
+                              },
+                              "description": "The IPv4 configuration of the VPC interface.This attribute is only allowed for VPC interfaces.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
                           }
                         },
                         "description": "An array of Network Interfaces for this Linode’s Configuration Profile.",
@@ -1919,23 +1997,88 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "active": {
+                      "type": "bool",
+                      "description": "Whether this interface is currently booted and active.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the interface.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ip_ranges": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of VPC IPs or IP ranges inside the VPC subnet.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "ipam_address": {
                       "type": "string",
-                      "description": "The IPAM Address of this interface.",
+                      "description": "This Network Interface's private IP address in Classless Inter-Domain Routing (CIDR) notation.This attribute is only allowed for VLAN interfaces.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "label": {
                       "type": "string",
-                      "description": "The unique label of this interface.",
+                      "description": "The name of the VALN. This attribute is required for VLAN interfaces. This attribute is only allowed for VLAN interfaces.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "Whether the interface is the primary interface that should have the default route for this Linode.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "purpose": {
                       "type": "string",
-                      "description": "The purpose of this interface.",
+                      "description": "The type of interface.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "subnet_id": {
+                      "type": "number",
+                      "description": "The ID of the subnet which the VPC interface is connected to.This attribute is required for VPC interfaces.This attribute is only allowed for VPC interfaces.",
                       "description_kind": "plain",
                       "optional": true
+                    },
+                    "vpc_id": {
+                      "type": "number",
+                      "description": "The ID of VPC of the subnet which the VPC interface is connected to.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "ipv4": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "nat_1_1": {
+                            "type": "string",
+                            "description": "The public IP that will be used for the one-to-one NAT purpose.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "vpc": {
+                            "type": "string",
+                            "description": "The IP from the VPC subnet to use for this interface.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description": "The IPv4 configuration of the VPC interface.This attribute is only allowed for VPC interfaces.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "An array of Network Interfaces for this Linode to be created with. If an explicit config or disk is defined, interfaces must be declared in the config block.",
@@ -2309,15 +2452,42 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "active": {
+                      "type": "bool",
+                      "description": "Whether this interface is currently booted and active.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the interface.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ip_ranges": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "List of VPC IPs or IP ranges inside the VPC subnet.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "ipam_address": {
                       "type": "string",
-                      "description": "This Network Interface’s private IP address in Classless Inter-Domain Routing (CIDR) notation.",
+                      "description": "This Network Interface's private IP address in Classless Inter-Domain Routing (CIDR) notation.This attribute is only allowed for VLAN interfaces.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "label": {
                       "type": "string",
-                      "description": "The name of this interface.",
+                      "description": "The name of the VALN. This attribute is required for VLAN interfaces. This attribute is only allowed for VLAN interfaces.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "primary": {
+                      "type": "bool",
+                      "description": "Whether the interface is the primary interface that should have the default route for this Linode.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -2326,6 +2496,44 @@
                       "description": "The type of interface.",
                       "description_kind": "plain",
                       "required": true
+                    },
+                    "subnet_id": {
+                      "type": "number",
+                      "description": "The ID of the subnet which the VPC interface is connected to.This attribute is required for VPC interfaces.This attribute is only allowed for VPC interfaces.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "vpc_id": {
+                      "type": "number",
+                      "description": "The ID of VPC of the subnet which the VPC interface is connected to.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "block_types": {
+                    "ipv4": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "nat_1_1": {
+                            "type": "string",
+                            "description": "The public IP that will be used for the one-to-one NAT purpose.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "vpc": {
+                            "type": "string",
+                            "description": "The IP from the VPC subnet to use for this interface.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description": "The IPv4 configuration of the VPC interface.This attribute is only allowed for VPC interfaces.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "An array of Network Interfaces to add to this Linode's Configuration Profile.",
@@ -2454,7 +2662,8 @@
                 "type": "bool",
                 "description": "If true, the instance will be rebooted to update network interfaces. This functionality is not affected by the `skip_implicit_reboots` provider argument.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "gateway": {
                 "type": "string",
@@ -2464,8 +2673,8 @@
               },
               "id": {
                 "type": "string",
+                "description": "The ID of the IPv4 address, which will be IPv4 address itself.",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "linode_id": {
@@ -2484,7 +2693,8 @@
                 "type": "bool",
                 "description": "Whether the IPv4 address is public or private.",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "rdns": {
                 "type": "string",
@@ -2508,6 +2718,22 @@
               "type": {
                 "type": "string",
                 "description": "The type of IP address.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_nat_1_1": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "address": "string",
+                      "subnet_id": "number",
+                      "vpc_id": "number"
+                    }
+                  ]
+                ],
+                "description": "Contains information about the NAT 1:1 mapping of a public IP address to a VPC subnet.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -4080,6 +4306,118 @@
             },
             "description_kind": "plain"
           }
+        },
+        "linode_vpc": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description": "The date and time when the VPC was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The user-defined description of this VPC.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "number",
+                "description": "The id of the VPC.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "label": {
+                "type": "string",
+                "description": "The label of the VPC. Only contains ascii letters, digits and dashes",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region of the VPC.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The date and time when the VPC was updated.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_vpc_subnet": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description": "The date and time when the VPC Subnet was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "number",
+                "description": "The id of the VPC Subnet.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ipv4": {
+                "type": "string",
+                "description": "The IPv4 range of this subnet in CIDR format.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "label": {
+                "type": "string",
+                "description": "The label of the VPC subnet.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "linodes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "interfaces": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "active": "bool",
+                            "id": "number"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The date and time when the VPC Subnet was updated.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "number",
+                "description": "The id of the parent VPC for this VPC Subnet",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
         }
       },
       "data_source_schemas": {
@@ -4162,6 +4500,98 @@
               "zip": {
                 "type": "string",
                 "description": "The zip code of this Account's billing address.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_account_availabilities": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "availabilities": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "region": {
+                      "type": "string",
+                      "description": "The region of this availability entry.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "unavailable": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "A set of unavailable services for the current account in this region.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of account availabilities.",
+                  "description_kind": "plain"
+                }
+              },
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_account_availability": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "region": {
+                "type": "string",
+                "description": "The region of this availability entry.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "unavailable": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "A set of unavailable services for the current account in this region.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -6176,7 +6606,15 @@
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
-                            "type": "string"
+                            "type": "string",
+                            "vpc_nat_1_1": [
+                              "object",
+                              {
+                                "address": "string",
+                                "subnet_id": "number",
+                                "vpc_id": "number"
+                              }
+                            ]
                           }
                         ]
                       ],
@@ -6193,7 +6631,15 @@
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
-                            "type": "string"
+                            "type": "string",
+                            "vpc_nat_1_1": [
+                              "object",
+                              {
+                                "address": "string",
+                                "subnet_id": "number",
+                                "vpc_id": "number"
+                              }
+                            ]
                           }
                         ]
                       ],
@@ -6210,7 +6656,15 @@
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
-                            "type": "string"
+                            "type": "string",
+                            "vpc_nat_1_1": [
+                              "object",
+                              {
+                                "address": "string",
+                                "subnet_id": "number",
+                                "vpc_id": "number"
+                              }
+                            ]
                           }
                         ]
                       ],
@@ -6227,7 +6681,15 @@
                             "rdns": "string",
                             "region": "string",
                             "subnet_mask": "string",
-                            "type": "string"
+                            "type": "string",
+                            "vpc_nat_1_1": [
+                              "object",
+                              {
+                                "address": "string",
+                                "subnet_id": "number",
+                                "vpc_id": "number"
+                              }
+                            ]
                           }
                         ]
                       ]
@@ -6267,7 +6729,15 @@
                           "rdns": "string",
                           "region": "string",
                           "subnet_mask": "string",
-                          "type": "string"
+                          "type": "string",
+                          "vpc_nat_1_1": [
+                            "object",
+                            {
+                              "address": "string",
+                              "subnet_id": "number",
+                              "vpc_id": "number"
+                            }
+                          ]
                         }
                       ],
                       "slaac": [
@@ -6281,7 +6751,15 @@
                           "rdns": "string",
                           "region": "string",
                           "subnet_mask": "string",
-                          "type": "string"
+                          "type": "string",
+                          "vpc_nat_1_1": [
+                            "object",
+                            {
+                              "address": "string",
+                              "subnet_id": "number",
+                              "vpc_id": "number"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -6790,9 +7268,28 @@
                               [
                                 "object",
                                 {
+                                  "active": "bool",
+                                  "id": "number",
+                                  "ip_ranges": [
+                                    "list",
+                                    "string"
+                                  ],
                                   "ipam_address": "string",
+                                  "ipv4": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "nat_1_1": "string",
+                                        "vpc": "string"
+                                      }
+                                    ]
+                                  ],
                                   "label": "string",
-                                  "purpose": "string"
+                                  "primary": "bool",
+                                  "purpose": "string",
+                                  "subnet_id": "number",
+                                  "vpc_id": "number"
                                 }
                               ]
                             ],
@@ -7557,6 +8054,195 @@
                 "description": "Controls how session stickiness is handled on this port: 'none', 'table', 'http_cookie'",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_nodebalancer_configs": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nodebalancer_id": {
+                "type": "number",
+                "description": "The ID of the NodeBalancer to access.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "order": {
+                "type": "string",
+                "description": "The order in which results should be returned.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "order_by": {
+                "type": "string",
+                "description": "The attribute to order the results by.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "nodebalancer_configs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "algorithm": {
+                      "type": "string",
+                      "description": "What algorithm this NodeBalancer should use for routing traffic to backends: roundrobin, leastconn, source",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check": {
+                      "type": "string",
+                      "description": "The type of check to perform against backends to ensure they are serving requests. This is used to determine if backends are up or down. If none no check is performed. connection requires only a connection to the backend to succeed. http and http_body rely on the backend serving HTTP, and that the response returned matches what is expected.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check_attempts": {
+                      "type": "number",
+                      "description": "How many times to attempt a check before considering a backend to be down. (1-30)",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check_body": {
+                      "type": "string",
+                      "description": "This value must be present in the response body of the check in order for it to pass. If this value is not present in the response body of a check request, the backend is considered to be down",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check_interval": {
+                      "type": "number",
+                      "description": "How often, in seconds, to check that backends are up and serving requests.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check_passive": {
+                      "type": "bool",
+                      "description": "If true, any response from this backend with a 5xx status code will be enough for it to be considered unhealthy and taken out of rotation.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check_path": {
+                      "type": "string",
+                      "description": "The URL path to check on each backend. If the backend does not respond to this request it is considered to be down.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "check_timeout": {
+                      "type": "number",
+                      "description": "How long, in seconds, to wait for a check attempt before considering it failed. (1-30)",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "cipher_suite": {
+                      "type": "string",
+                      "description": "What ciphers to use for SSL connections served by this NodeBalancer. `legacy` is considered insecure and should only be used if necessary.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the NodeBalancer config.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "node_status": {
+                      "type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "down": "number",
+                            "up": "number"
+                          }
+                        ]
+                      ],
+                      "description": "A structure containing information about the health of the backends for this port. This information is updated periodically as checks are performed against backends.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "nodebalancer_id": {
+                      "type": "number",
+                      "description": "The ID of the NodeBalancer to access.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "The TCP port this Config is for. These values must be unique across configs on a single NodeBalancer (you can't have two configs for port 80, for example). While some ports imply some protocols, no enforcement is done and you may configure your NodeBalancer however is useful to you. For example, while port 443 is generally used for HTTPS, you do not need SSL configured to have a NodeBalancer listening on port 443.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "The protocol this port is configured to serve. If this is set to https you must include an ssl_cert and an ssl_key.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "proxy_protocol": {
+                      "type": "string",
+                      "description": "The version of ProxyProtocol to use for the underlying NodeBalancer. This requires protocol to be `tcp`. Valid values are `none`, `v1`, and `v2`.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ssl_commonname": {
+                      "type": "string",
+                      "description": "The read-only common name automatically derived from the SSL certificate assigned to this NodeBalancerConfig. Please refer to this field to verify that the appropriate certificate is assigned to your NodeBalancerConfig.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ssl_fingerprint": {
+                      "type": "string",
+                      "description": "The read-only fingerprint automatically derived from the SSL certificate assigned to this NodeBalancerConfig. Please refer to this field to verify that the appropriate certificate is assigned to your NodeBalancerConfig.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "stickiness": {
+                      "type": "string",
+                      "description": "Controls how session stickiness is handled on this port: 'none', 'table', 'http_cookie'",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of NodeBalancer Configs.",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -9332,6 +10018,320 @@
                     }
                   },
                   "description": "The return list of Volumes.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_vpc": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description": "The date and time when the VPC was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The user-defined description of this VPC.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "number",
+                "description": "The id of the VPC.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "label": {
+                "type": "string",
+                "description": "The label of the VPC.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region of the VPC.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The date and time when the VPC was updated.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_vpc_subnet": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "created": {
+                "type": "string",
+                "description": "The date and time when the VPC Subnet was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "number",
+                "description": "The id of the VPC Subnet.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "ipv4": {
+                "type": "string",
+                "description": "The IPv4 range of this subnet in CIDR format.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "label": {
+                "type": "string",
+                "description": "The label of the VPC Subnet.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "linodes": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "number",
+                      "interfaces": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "active": "bool",
+                            "id": "number"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "updated": {
+                "type": "string",
+                "description": "The date and time when the VPC Subnet was updated.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "number",
+                "description": "The id of the parent VPC for this VPC Subnet",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_vpc_subnets": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vpc_id": {
+                "type": "number",
+                "description": "The id of the parent VPC for the list of VPC subnets",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "vpc_subnets": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "The date and time when the VPC Subnet was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The id of the VPC Subnet.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "ipv4": {
+                      "type": "string",
+                      "description": "The IPv4 range of this subnet in CIDR format.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The label of the VPC Subnet.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "linodes": {
+                      "type": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "id": "number",
+                            "interfaces": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "active": "bool",
+                                  "id": "number"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ],
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "The date and time when the VPC Subnet was updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of subnets under a VPC.",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "linode_vpcs": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "The data source's unique ID.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "match_by": {
+                      "type": "string",
+                      "description": "The type of comparison to use for this filter.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the attribute to filter on.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The value(s) to be used in the filter.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
+              "vpcs": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "created": {
+                      "type": "string",
+                      "description": "The date and time when the VPC was created.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The user-defined description of this VPC.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "The id of the VPC.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "description": "The label of the VPC.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "description": "The region of the VPC.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "The date and time when the VPC was updated.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "The returned list of VPCs.",
                   "description_kind": "plain"
                 }
               }

@@ -703,7 +703,7 @@
                 }
               }
             },
-            "description": "The `consul_acl_token` resource writes an ACL token into Consul.\n\n~> **NOTE:** The `consul_acl_token` resource does not save the secret ID of the generated token to the Terraform state to avoid leaking it when it is not needed. If you need to get the secret ID after creating the ACL token you can use the [`consul_acl_token_secret_id`](/docs/providers/consul/r/acl_token.html) datasource.",
+            "description": "The `consul_acl_token` resource writes an ACL token into Consul.\n\n~> **NOTE:** The `consul_acl_token` resource does not save the secret ID of the generated token to the Terraform state to avoid leaking it when it is not needed. If you need to get the secret ID after creating the ACL token you can use the [`consul_acl_token_secret_id`](/docs/providers/consul/d/consul_acl_token_secret_id.html) datasource.",
             "description_kind": "plain"
           }
         },
@@ -5127,9 +5127,16 @@
             "attributes": {
               "datacenter": {
                 "type": "string",
+                "description": "The datacenter to use. This overrides the agent's default datacenter and the datacenter in the provider setup.",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "error_on_missing_keys": {
+                "type": "bool",
+                "description": "Whether to return an error when a key is absent from the KV store and no default is configured. This defaults to `false`.",
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -5139,16 +5146,19 @@
               },
               "namespace": {
                 "type": "string",
+                "description": "The namespace to lookup the keys.",
                 "description_kind": "plain",
                 "optional": true
               },
               "partition": {
                 "type": "string",
+                "description": "The partition to lookup the keys.",
                 "description_kind": "plain",
                 "optional": true
               },
               "token": {
                 "type": "string",
+                "description": "The ACL token to use. This overrides the token that the agent provides by default.",
                 "description_kind": "plain",
                 "deprecated": true,
                 "optional": true,
@@ -5159,6 +5169,7 @@
                   "map",
                   "string"
                 ],
+                "description": "For each name given, the corresponding attribute has the value of the key.",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -5170,24 +5181,29 @@
                   "attributes": {
                     "default": {
                       "type": "string",
+                      "description": "This is the default value to set for `var.<name>` if the key does not exist in Consul. Defaults to an empty string.",
                       "description_kind": "plain",
                       "optional": true
                     },
                     "name": {
                       "type": "string",
+                      "description": "This is the name of the key. This value of the key is exposed as `var.<name>`. This is not the path of the key in Consul.",
                       "description_kind": "plain",
                       "required": true
                     },
                     "path": {
                       "type": "string",
+                      "description": "This is the path in Consul that should be read or written to.",
                       "description_kind": "plain",
                       "required": true
                     }
                   },
+                  "description": "Specifies a key in Consul to be read. Supported values documented below. Multiple blocks supported.",
                   "description_kind": "plain"
                 }
               }
             },
+            "description": "The `consul_keys` datasource reads values from the Consul key/value store. This is a powerful way to dynamically set values in templates.",
             "description_kind": "plain"
           }
         },

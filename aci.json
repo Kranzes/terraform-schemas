@@ -6,6 +6,12 @@
         "version": 0,
         "block": {
           "attributes": {
+            "annotation": {
+              "type": "string",
+              "description": "Global annotation for the provider. This can also be set as the ACI_ANNOTATION environment variable.",
+              "description_kind": "plain",
+              "optional": true
+            },
             "cert_name": {
               "type": "string",
               "description": "Certificate name for the User in Cisco ACI. This can also be set as the ACI_CERT_NAME environment variable.",
@@ -13,7 +19,7 @@
               "optional": true
             },
             "insecure": {
-              "type": "bool",
+              "type": "string",
               "description": "Allow insecure HTTPS client. This can also be set as the ACI_INSECURE environment variable. Defaults to `true`.",
               "description_kind": "plain",
               "optional": true
@@ -43,7 +49,7 @@
               "optional": true
             },
             "retries": {
-              "type": "number",
+              "type": "string",
               "description": "Number of retries for REST API calls. This can also be set as the ACI_RETRIES environment variable. Defaults to `2`.",
               "description_kind": "plain",
               "optional": true
@@ -52,16 +58,16 @@
               "type": "string",
               "description": "URL of the Cisco ACI web interface. This can also be set as the ACI_URL environment variable.",
               "description_kind": "plain",
-              "required": true
+              "optional": true
             },
             "username": {
               "type": "string",
               "description": "Username for the APIC Account. This can also be set as the ACI_USERNAME environment variable.",
               "description_kind": "plain",
-              "required": true
+              "optional": true
             },
             "validate_relation_dn": {
-              "type": "bool",
+              "type": "string",
               "description": "Flag to validate if a object with entered relation Dn exists in the APIC. Defaults to `true`.",
               "description_kind": "plain",
               "optional": true
@@ -797,44 +803,36 @@
           }
         },
         "aci_annotation": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
-              "annotation": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "description": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The distinguished name (DN) of the Annotation object.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "key": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The key used to uniquely identify this configuration object.",
+                "description_kind": "markdown",
                 "required": true
               },
               "parent_dn": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
                 "required": true
               },
               "value": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The value of the property.",
+                "description_kind": "markdown",
                 "required": true
               }
             },
-            "description_kind": "plain"
+            "description": "The annotation resource for the 'tagAnnotation' class",
+            "description_kind": "markdown"
           }
         },
         "aci_any": {
@@ -7148,6 +7146,185 @@
             "description_kind": "plain"
           }
         },
+        "aci_external_management_network_instance_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "priority": {
+                "type": "string",
+                "description": "The QoS priority class identifier.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "relation_to_consumed_out_of_band_contracts": {
+                "nested_type": {
+                  "attributes": {
+                    "annotation": {
+                      "type": "string",
+                      "description": "The annotation of the Relation To Consumed Out Of Band Contract object.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "out_of_band_contract_name": {
+                      "type": "string",
+                      "description": "The name of the Out Of Band Contract object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "priority": {
+                      "type": "string",
+                      "description": "The Quality of service (QoS) priority class ID. QoS refers to the capability of a network to provide better service to selected network traffic over various technologies. The primary goal of QoS is to provide priority including dedicated bandwidth, controlled jitter and latency (required by some real-time and interactive traffic), and improved loss characteristics. You can configure the bandwidth of each QoS level using QoS profiles.",
+                      "description_kind": "markdown",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description": "An external management entity instance profile to an out-of-band binary contract profile. The instance profiles of external management entities can communicate with nodes that are part of out-of-band management endpoint group. To enable this communication, a contract is required between the instance profile and the out-of-band management endpoint group.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The external_management_network_instance_profile resource for the 'mgmtInstP' class",
+            "description_kind": "markdown"
+          }
+        },
+        "aci_external_management_network_subnet": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "ip": {
+                "type": "string",
+                "description": "The external subnet IP address and subnet mask. This IP address is used for creating an external management entity. The subnet mask for the IP address to be imported from the outside into the fabric. The contracts associated with its parent instance profile (l3ext:InstP) are applied to the subnet.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The external_management_network_subnet resource for the 'mgmtSubnet' class",
+            "description_kind": "markdown"
+          }
+        },
         "aci_external_network_instance_profile": {
           "version": 1,
           "block": {
@@ -10136,6 +10313,104 @@
             "description_kind": "plain"
           }
         },
+        "aci_l3out_consumer_label": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner": {
+                "type": "string",
+                "description": "The owner of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner_key": {
+                "type": "string",
+                "description": "The key for enabling clients to own their data for entity correlation.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner_tag": {
+                "type": "string",
+                "description": "A tag for enabling clients to add their own data. For example, to indicate who created this object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "tag": {
+                "type": "string",
+                "description": "Specifies the color of a policy label.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The l3out_consumer_label resource for the 'l3extConsLbl' class",
+            "description_kind": "markdown"
+          }
+        },
         "aci_l3out_floating_svi": {
           "version": 1,
           "block": {
@@ -10792,6 +11067,68 @@
               }
             },
             "description_kind": "plain"
+          }
+        },
+        "aci_l3out_redistribute_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the L3out Redistribute Policy object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the L3out Redistribute Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "route_control_profile_name": {
+                "type": "string",
+                "description": "The name of the Route Control Profile object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "source": {
+                "type": "string",
+                "description": "The source of the L3out Redistribute Policy object.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The l3out_redistribute_policy resource for the 'l3extRsRedistributePol' class",
+            "description_kind": "markdown"
           }
         },
         "aci_l3out_route_tag_policy": {
@@ -14578,6 +14915,112 @@
             "description_kind": "plain"
           }
         },
+        "aci_out_of_band_contract": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "intent": {
+                "type": "string",
+                "description": "The Install Rules or Estimate Number of Rules.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner_key": {
+                "type": "string",
+                "description": "The key for enabling clients to own their data for entity correlation.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner_tag": {
+                "type": "string",
+                "description": "A tag for enabling clients to add their own data. For example, to indicate who created this object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "priority": {
+                "type": "string",
+                "description": "The priority of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "scope": {
+                "type": "string",
+                "description": "Represents the scope of this contract. If the scope is set as application-profile, the epg can only communicate with epgs in the same application-profile.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "target_dscp": {
+                "type": "string",
+                "description": "The target DSCP value of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The out_of_band_contract resource for the 'vzOOBBrCP' class",
+            "description_kind": "markdown"
+          }
+        },
         "aci_pbr_l1_l2_destination": {
           "version": 1,
           "block": {
@@ -14806,6 +15249,195 @@
               }
             },
             "description_kind": "plain"
+          }
+        },
+        "aci_pim_route_map_entry": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description": "The route action of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "group_ip": {
+                "type": "string",
+                "description": "The group ip of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "PIM route map entry order.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "rendezvous_point_ip": {
+                "type": "string",
+                "description": "The rendezvous point ip of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "source_ip": {
+                "type": "string",
+                "description": "The source ip of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The pim_route_map_entry resource for the 'pimRouteMapEntry' class",
+            "description_kind": "markdown"
+          }
+        },
+        "aci_pim_route_map_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner_key": {
+                "type": "string",
+                "description": "The key for enabling clients to own their data for entity correlation.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "owner_tag": {
+                "type": "string",
+                "description": "A tag for enabling clients to add their own data. For example, to indicate who created this object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The pim_route_map_policy resource for the 'pimRouteMapPol' class",
+            "description_kind": "markdown"
           }
         },
         "aci_pod_maintenance_group": {
@@ -15382,6 +16014,69 @@
               }
             },
             "description_kind": "plain"
+          }
+        },
+        "aci_relation_to_consumed_out_of_band_contract": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Relation To Consumed Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "required": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "required": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Relation To Consumed Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "out_of_band_contract_name": {
+                "type": "string",
+                "description": "The name of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "priority": {
+                "type": "string",
+                "description": "The Quality of service (QoS) priority class ID. QoS refers to the capability of a network to provide better service to selected network traffic over various technologies. The primary goal of QoS is to provide priority including dedicated bandwidth, controlled jitter and latency (required by some real-time and interactive traffic), and improved loss characteristics. You can configure the bandwidth of each QoS level using QoS profiles.",
+                "description_kind": "markdown",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "The relation_to_consumed_out_of_band_contract resource for the 'mgmtRsOoBCons' class",
+            "description_kind": "markdown"
           }
         },
         "aci_rest": {
@@ -19529,45 +20224,36 @@
           }
         },
         "aci_annotation": {
-          "version": 1,
+          "version": 0,
           "block": {
             "attributes": {
-              "annotation": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
-              "description": {
-                "type": "string",
-                "description_kind": "plain",
-                "optional": true,
-                "computed": true
-              },
               "id": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The distinguished name (DN) of the Annotation object.",
+                "description_kind": "markdown",
                 "computed": true
               },
               "key": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The key used to uniquely identify this configuration object.",
+                "description_kind": "markdown",
                 "required": true
               },
               "parent_dn": {
                 "type": "string",
-                "description_kind": "plain",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
                 "required": true
               },
               "value": {
                 "type": "string",
-                "description_kind": "plain",
-                "optional": true,
+                "description": "The value of the property.",
+                "description_kind": "markdown",
                 "computed": true
               }
             },
-            "description_kind": "plain"
+            "description": "The annotation datasource for the 'tagAnnotation' class",
+            "description_kind": "markdown"
           }
         },
         "aci_any": {
@@ -25162,6 +25848,172 @@
             "description_kind": "plain"
           }
         },
+        "aci_external_management_network_instance_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the External Management Network Instance Profile object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "priority": {
+                "type": "string",
+                "description": "The QoS priority class identifier.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "relation_to_consumed_out_of_band_contracts": {
+                "nested_type": {
+                  "attributes": {
+                    "annotation": {
+                      "type": "string",
+                      "description": "The annotation of the Relation To Consumed Out Of Band Contract object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "out_of_band_contract_name": {
+                      "type": "string",
+                      "description": "The name of the Out Of Band Contract object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "priority": {
+                      "type": "string",
+                      "description": "The Quality of service (QoS) priority class ID. QoS refers to the capability of a network to provide better service to selected network traffic over various technologies. The primary goal of QoS is to provide priority including dedicated bandwidth, controlled jitter and latency (required by some real-time and interactive traffic), and improved loss characteristics. You can configure the bandwidth of each QoS level using QoS profiles.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description": "An external management entity instance profile to an out-of-band binary contract profile. The instance profiles of external management entities can communicate with nodes that are part of out-of-band management endpoint group. To enable this communication, a contract is required between the instance profile and the out-of-band management endpoint group.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The external_management_network_instance_profile datasource for the 'mgmtInstP' class",
+            "description_kind": "markdown"
+          }
+        },
+        "aci_external_management_network_subnet": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "ip": {
+                "type": "string",
+                "description": "The external subnet IP address and subnet mask. This IP address is used for creating an external management entity. The subnet mask for the IP address to be imported from the outside into the fabric. The contracts associated with its parent instance profile (l3ext:InstP) are applied to the subnet.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the External Management Network Subnet object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The external_management_network_subnet datasource for the 'mgmtSubnet' class",
+            "description_kind": "markdown"
+          }
+        },
         "aci_external_network_instance_profile": {
           "version": 1,
           "block": {
@@ -27950,6 +28802,96 @@
             "description_kind": "plain"
           }
         },
+        "aci_l3out_consumer_label": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner": {
+                "type": "string",
+                "description": "The owner of the L3out Consumer Label object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner_key": {
+                "type": "string",
+                "description": "The key for enabling clients to own their data for entity correlation.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner_tag": {
+                "type": "string",
+                "description": "A tag for enabling clients to add their own data. For example, to indicate who created this object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "tag": {
+                "type": "string",
+                "description": "Specifies the color of a policy label.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The l3out_consumer_label datasource for the 'l3extConsLbl' class",
+            "description_kind": "markdown"
+          }
+        },
         "aci_l3out_floating_svi": {
           "version": 1,
           "block": {
@@ -28556,6 +29498,66 @@
               }
             },
             "description_kind": "plain"
+          }
+        },
+        "aci_l3out_redistribute_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the L3out Redistribute Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the L3out Redistribute Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "route_control_profile_name": {
+                "type": "string",
+                "description": "The name of the Route Control Profile object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "source": {
+                "type": "string",
+                "description": "The source of the L3out Redistribute Policy object.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The l3out_redistribute_policy datasource for the 'l3extRsRedistributePol' class",
+            "description_kind": "markdown"
           }
         },
         "aci_l3out_route_tag_policy": {
@@ -31925,6 +32927,102 @@
             "description_kind": "plain"
           }
         },
+        "aci_out_of_band_contract": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "intent": {
+                "type": "string",
+                "description": "The Install Rules or Estimate Number of Rules.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner_key": {
+                "type": "string",
+                "description": "The key for enabling clients to own their data for entity correlation.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner_tag": {
+                "type": "string",
+                "description": "A tag for enabling clients to add their own data. For example, to indicate who created this object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "priority": {
+                "type": "string",
+                "description": "The priority of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "scope": {
+                "type": "string",
+                "description": "Represents the scope of this contract. If the scope is set as application-profile, the epg can only communicate with epgs in the same application-profile.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "target_dscp": {
+                "type": "string",
+                "description": "The target DSCP value of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The out_of_band_contract datasource for the 'vzOOBBrCP' class",
+            "description_kind": "markdown"
+          }
+        },
         "aci_pbr_l1_l2_destination": {
           "version": 1,
           "block": {
@@ -32144,6 +33242,180 @@
               }
             },
             "description_kind": "plain"
+          }
+        },
+        "aci_pim_route_map_entry": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description": "The route action of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "group_ip": {
+                "type": "string",
+                "description": "The group ip of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "order": {
+                "type": "string",
+                "description": "PIM route map entry order.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "rendezvous_point_ip": {
+                "type": "string",
+                "description": "The rendezvous point ip of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "source_ip": {
+                "type": "string",
+                "description": "The source ip of the Pim Route Map Entry object.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The pim_route_map_entry datasource for the 'pimRouteMapEntry' class",
+            "description_kind": "markdown"
+          }
+        },
+        "aci_pim_route_map_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "name_alias": {
+                "type": "string",
+                "description": "The name alias of the Pim Route Map Policy object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner_key": {
+                "type": "string",
+                "description": "The key for enabling clients to own their data for entity correlation.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "owner_tag": {
+                "type": "string",
+                "description": "A tag for enabling clients to add their own data. For example, to indicate who created this object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              }
+            },
+            "description": "The pim_route_map_policy datasource for the 'pimRouteMapPol' class",
+            "description_kind": "markdown"
           }
         },
         "aci_pod_maintenance_group": {
@@ -32690,6 +33962,66 @@
               }
             },
             "description_kind": "plain"
+          }
+        },
+        "aci_relation_to_consumed_out_of_band_contract": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "annotation": {
+                "type": "string",
+                "description": "The annotation of the Relation To Consumed Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "annotations": {
+                "nested_type": {
+                  "attributes": {
+                    "key": {
+                      "type": "string",
+                      "description": "The key used to uniquely identify this configuration object.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The value of the property.",
+                      "description_kind": "markdown",
+                      "computed": true
+                    }
+                  },
+                  "nesting_mode": "set"
+                },
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the Relation To Consumed Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "computed": true
+              },
+              "out_of_band_contract_name": {
+                "type": "string",
+                "description": "The name of the Out Of Band Contract object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "parent_dn": {
+                "type": "string",
+                "description": "The distinguished name (DN) of the parent object.",
+                "description_kind": "markdown",
+                "required": true
+              },
+              "priority": {
+                "type": "string",
+                "description": "The Quality of service (QoS) priority class ID. QoS refers to the capability of a network to provide better service to selected network traffic over various technologies. The primary goal of QoS is to provide priority including dedicated bandwidth, controlled jitter and latency (required by some real-time and interactive traffic), and improved loss characteristics. You can configure the bandwidth of each QoS level using QoS profiles.",
+                "description_kind": "markdown",
+                "computed": true
+              }
+            },
+            "description": "The relation_to_consumed_out_of_band_contract datasource for the 'mgmtRsOoBCons' class",
+            "description_kind": "markdown"
           }
         },
         "aci_rest": {

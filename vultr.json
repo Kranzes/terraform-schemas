@@ -44,6 +44,14 @@
                 "optional": true,
                 "computed": true
               },
+              "app_variables": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
               "cpu_count": {
                 "type": "number",
                 "description_kind": "plain",
@@ -122,6 +130,11 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "persistent_pxe": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
               },
               "plan": {
                 "type": "string",
@@ -434,7 +447,8 @@
               "redis_eviction_policy": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "region": {
                 "type": "string",
@@ -983,6 +997,49 @@
                 "required": true
               }
             },
+            "block_types": {
+              "access_control": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "redis_acl_categories": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "redis_acl_channels": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "redis_acl_commands": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "redis_acl_keys": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -1182,6 +1239,14 @@
                 "optional": true,
                 "computed": true
               },
+              "app_variables": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description_kind": "plain",
+                "optional": true
+              },
               "backups": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1202,6 +1267,12 @@
                 "description_kind": "plain",
                 "computed": true,
                 "sensitive": true
+              },
+              "disable_public_ipv4": {
+                "type": "bool",
+                "description": "Don't set up a public IPv4 address when IPv6 is enabled. Will not do anything unless enable_ipv6 is also true.",
+                "description_kind": "plain",
+                "optional": true
               },
               "disk": {
                 "type": "number",
@@ -1591,7 +1662,17 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "enable_firewall": {
+                "type": "bool",
+                "description_kind": "plain",
+                "optional": true
+              },
               "endpoint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "firewall_group_id": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
@@ -3674,6 +3755,103 @@
             "description_kind": "plain"
           }
         },
+        "vultr_instances": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instances": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "allowed_bandwidth": "number",
+                      "app_id": "number",
+                      "backups": "string",
+                      "backups_schedule": [
+                        "map",
+                        "string"
+                      ],
+                      "date_created": "string",
+                      "disk": "number",
+                      "features": [
+                        "list",
+                        "string"
+                      ],
+                      "firewall_group_id": "string",
+                      "gateway_v4": "string",
+                      "hostname": "string",
+                      "id": "string",
+                      "image_id": "string",
+                      "internal_ip": "string",
+                      "kvm": "string",
+                      "label": "string",
+                      "location": "string",
+                      "main_ip": "string",
+                      "netmask_v4": "string",
+                      "os": "string",
+                      "os_id": "number",
+                      "plan": "string",
+                      "power_status": "string",
+                      "private_network_ids": [
+                        "list",
+                        "string"
+                      ],
+                      "ram": "number",
+                      "region": "string",
+                      "server_status": "string",
+                      "status": "string",
+                      "tags": [
+                        "set",
+                        "string"
+                      ],
+                      "v6_main_ip": "string",
+                      "v6_network": "string",
+                      "v6_network_size": "number",
+                      "vcpu_count": "number",
+                      "vpc_ids": [
+                        "list",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "filter": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "name": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "values": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vultr_iso_private": {
           "version": 0,
           "block": {
@@ -3823,6 +4001,11 @@
                 "computed": true
               },
               "endpoint": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "firewall_group_id": {
                 "type": "string",
                 "description_kind": "plain",
                 "computed": true
@@ -4737,7 +4920,6 @@
               "id": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true,
                 "computed": true
               },
               "name": {

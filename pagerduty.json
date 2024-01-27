@@ -449,6 +449,21 @@
                     }
                   },
                   "block_types": {
+                    "escalation_rule_assignment_strategy": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "type": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          }
+                        },
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
                     "target": {
                       "nesting_mode": "list",
                       "block": {
@@ -1130,7 +1145,8 @@
               "enable_event_orchestration_for_service": {
                 "type": "bool",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -2124,6 +2140,64 @@
                     }
                   },
                   "block_types": {
+                    "inline_steps_input": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "name": {
+                            "type": "string",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "block_types": {
+                          "step": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "action": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description_kind": "plain",
+                                  "required": true
+                                }
+                              },
+                              "block_types": {
+                                "input": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "generated": {
+                                        "type": "bool",
+                                        "description_kind": "plain",
+                                        "computed": true
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      },
+                                      "value": {
+                                        "type": "string",
+                                        "description_kind": "plain",
+                                        "required": true
+                                      }
+                                    },
+                                    "description_kind": "plain"
+                                  }
+                                }
+                              },
+                              "description_kind": "plain"
+                            }
+                          }
+                        },
+                        "description_kind": "plain"
+                      }
+                    },
                     "input": {
                       "nesting_mode": "list",
                       "block": {
@@ -3036,6 +3110,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "time_window": {
+                            "type": "number",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
                           "timeout": {
                             "type": "number",
                             "description_kind": "plain",
@@ -3629,6 +3709,7 @@
               "integration_key": {
                 "type": "string",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true,
                 "computed": true
               },
@@ -5105,6 +5186,43 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "pagerduty_team_members": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "members": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "role": "string",
+                      "summary": "string",
+                      "type": "string"
+                    }
+                  ]
+                ],
+                "description": "The set of team memberships associated with the team",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "team_id": {
+                "type": "string",
+                "description": "The ID of the team to find via the PagerDuty API",
+                "description_kind": "plain",
+                "required": true
               }
             },
             "description_kind": "plain"

@@ -484,6 +484,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "vsan_esa_enabled": {
+                "type": "bool",
+                "description": "Whether the vSAN ESA service is enabled for the cluster.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "vsan_network_diagnostic_mode_enabled": {
                 "type": "bool",
                 "description": "Whether the vSAN network diagnostic mode is enabled for the cluster.",
@@ -542,6 +548,85 @@
                   "description": "A list of disk UUIDs to add to the vSAN cluster.",
                   "description_kind": "plain"
                 }
+              },
+              "vsan_fault_domains": {
+                "nesting_mode": "set",
+                "block": {
+                  "block_types": {
+                    "fault_domain": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "host_ids": {
+                            "type": [
+                              "set",
+                              "string"
+                            ],
+                            "description": "The managed object IDs of the hosts to put in the fault domain.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of fault domain.",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "The configuration for single fault domain.",
+                        "description_kind": "plain"
+                      }
+                    }
+                  },
+                  "description": "The configuration for vSAN fault domains.",
+                  "description_kind": "plain"
+                }
+              },
+              "vsan_stretched_cluster": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "preferred_fault_domain_host_ids": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The managed object IDs of the hosts to put in the first fault domain.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "preferred_fault_domain_name": {
+                      "type": "string",
+                      "description": "The name of prepferred fault domain.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "secondary_fault_domain_host_ids": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "The managed object IDs of the hosts to put in the second fault domain.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "secondary_fault_domain_name": {
+                      "type": "string",
+                      "description": "The name of secondary fault domain.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "witness_node": {
+                      "type": "string",
+                      "description": "The managed object IDs of the host selected as witness node when enable stretched cluster.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The configuration for stretched cluster.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -2597,6 +2682,284 @@
             "description_kind": "plain"
           }
         },
+        "vsphere_guest_os_customization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "change_version": {
+                "type": "string",
+                "description": "The number of last changed version to the customization specification.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description for the customization specification.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "last_update_time": {
+                "type": "string",
+                "description": "The time of last modification to the customization specification.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the customization specification is the unique identifier per vCenter Server instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of customization specification: One among: Windows, Linux.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "spec": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "dns_server_list": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "The list of DNS servers for a virtual network adapter with a static IP address.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "dns_suffix_list": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "A list of DNS search domains to add to the DNS configuration on the virtual machine.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ipv4_gateway": {
+                      "type": "string",
+                      "description": "The IPv4 default gateway when using network_interface customization on the virtual machine. This address must be local to a static IPv4 address configured in an interface sub-resource.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ipv6_gateway": {
+                      "type": "string",
+                      "description": "The IPv6 default gateway when using network_interface customization on the virtual machine. This address must be local to a static IPv4 address configured in an interface sub-resource.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "windows_sysprep_text": {
+                      "type": "string",
+                      "description": "Use this option to specify a windows sysprep file directly.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "sensitive": true
+                    }
+                  },
+                  "block_types": {
+                    "linux_options": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "domain": {
+                            "type": "string",
+                            "description": "The domain name for this virtual machine.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "host_name": {
+                            "type": "string",
+                            "description": "The hostname for this virtual machine.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "hw_clock_utc": {
+                            "type": "bool",
+                            "description": "Specifies whether or not the hardware clock should be in UTC or not.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "script_text": {
+                            "type": "string",
+                            "description": "The customization script to run before and or after guest customization",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "sensitive": true
+                          },
+                          "time_zone": {
+                            "type": "string",
+                            "description": "Customize the time zone on the VM. This should be a time zone-style entry, like America/Los_Angeles.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "A list of configuration options specific to Linux virtual machines.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "network_interface": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "dns_domain": {
+                            "type": "string",
+                            "description": "A DNS search domain to add to the DNS configuration on the virtual machine.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "dns_server_list": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "Network-interface specific DNS settings for Windows operating systems. Ignored on Linux.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ipv4_address": {
+                            "type": "string",
+                            "description": "The IPv4 address assigned to this network adapter. If left blank, DHCP is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ipv4_netmask": {
+                            "type": "number",
+                            "description": "The IPv4 CIDR netmask for the supplied IP address. Ignored if DHCP is selected.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ipv6_address": {
+                            "type": "string",
+                            "description": "The IPv6 address assigned to this network adapter. If left blank, default auto-configuration is used.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ipv6_netmask": {
+                            "type": "number",
+                            "description": "The IPv6 CIDR netmask for the supplied IP address. Ignored if auto-configuration is selected.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "A specification of network interface configuration options.",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "windows_options": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "admin_password": {
+                            "type": "string",
+                            "description": "The new administrator password for this virtual machine.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "sensitive": true
+                          },
+                          "auto_logon": {
+                            "type": "bool",
+                            "description": "Specifies whether or not the VM automatically logs on as Administrator.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "auto_logon_count": {
+                            "type": "number",
+                            "description": "Specifies how many times the VM should auto-logon the Administrator account when auto_logon is true.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "computer_name": {
+                            "type": "string",
+                            "description": "The host name for this virtual machine.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "domain_admin_password": {
+                            "type": "string",
+                            "description": "The password of the domain administrator used to join this virtual machine to the domain.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "sensitive": true
+                          },
+                          "domain_admin_user": {
+                            "type": "string",
+                            "description": "The user account of the domain administrator used to join this virtual machine to the domain.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "full_name": {
+                            "type": "string",
+                            "description": "The full name of the user of this virtual machine.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "join_domain": {
+                            "type": "string",
+                            "description": "The domain that the virtual machine should join.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "organization_name": {
+                            "type": "string",
+                            "description": "The organization name this virtual machine is being installed for.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "product_key": {
+                            "type": "string",
+                            "description": "The product key for this virtual machine.",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "sensitive": true
+                          },
+                          "run_once_command_list": {
+                            "type": [
+                              "list",
+                              "string"
+                            ],
+                            "description": "A list of commands to run at first user logon, after guest customization.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "time_zone": {
+                            "type": "number",
+                            "description": "The new time zone for the virtual machine. This is a sysprep-dictated timezone code.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "workgroup": {
+                            "type": "string",
+                            "description": "The workgroup for this virtual machine if not joining a domain.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "A list of configuration options specific to Windows virtual machines.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vsphere_ha_vm_override": {
           "version": 0,
           "block": {
@@ -4401,6 +4764,28 @@
                     }
                   },
                   "block_types": {
+                    "customization_spec": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description": "The unique identifier of the customization specification is its name and is unique per vCenter Server instance.",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "timeout": {
+                            "type": "number",
+                            "description": "The amount of time, in minutes, to wait for guest OS customization to complete before returning with an error. Setting this value to 0 or a negative value skips the waiter. Default: 10.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "The customization specification for the virtual machine post-clone.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
                     "customize": {
                       "nesting_mode": "list",
                       "block": {
@@ -4437,7 +4822,7 @@
                           },
                           "timeout": {
                             "type": "number",
-                            "description": "The amount of time, in minutes, to wait for guest OS customization to complete before returning with an error. Setting this value to 0 or a negative value skips the waiter.",
+                            "description": "The amount of time, in minutes, to wait for guest OS customization to complete before returning with an error. Setting this value to 0 or a negative value skips the waiter. Default: 10.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -4634,7 +5019,7 @@
                             "max_items": 1
                           }
                         },
-                        "description": "The customization spec for this clone. This allows the user to configure the virtual machine post-clone.",
+                        "description": "The customization specification for the virtual machine post-clone.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -4790,7 +5175,7 @@
                   "attributes": {
                     "adapter_type": {
                       "type": "string",
-                      "description": "The controller type. Can be one of e1000, e1000e, vmxnet3, or vrdma.",
+                      "description": "The controller type. Can be one of e1000, e1000e, sriov, vmxnet3, or vrdma.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -4850,6 +5235,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "physical_function": {
+                      "type": "string",
+                      "description": "The ID of the Physical SR-IOV NIC to attach to, e.g. '0000:d8:00.0'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "use_static_mac": {
                       "type": "bool",
                       "description": "If true, the mac_address field is treated as a static MAC address and set accordingly.",
@@ -4860,7 +5251,7 @@
                   "description": "A specification for a virtual NIC on this virtual machine.",
                   "description_kind": "plain"
                 },
-                "max_items": 10
+                "max_items": 20
               },
               "ovf_deploy": {
                 "nesting_mode": "list",
@@ -5609,6 +6000,123 @@
                 "description": "The absolute path of the folder.",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vsphere_guest_os_customization": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "change_version": {
+                "type": "string",
+                "description": "The number of last changed version to the customization specification.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "The description for the customization specification.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "last_update_time": {
+                "type": "string",
+                "description": "The time of last modification to the customization specification.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the customization specification is the unique identifier per vCenter Server instance.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "spec": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "dns_server_list": [
+                        "list",
+                        "string"
+                      ],
+                      "dns_suffix_list": [
+                        "list",
+                        "string"
+                      ],
+                      "linux_options": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "domain": "string",
+                            "host_name": "string",
+                            "hw_clock_utc": "bool",
+                            "script_text": "string",
+                            "time_zone": "string"
+                          }
+                        ]
+                      ],
+                      "network_interface": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "dns_domain": "string",
+                            "dns_server_list": [
+                              "list",
+                              "string"
+                            ],
+                            "ipv4_address": "string",
+                            "ipv4_netmask": "number",
+                            "ipv6_address": "string",
+                            "ipv6_netmask": "number"
+                          }
+                        ]
+                      ],
+                      "windows_options": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "admin_password": "string",
+                            "auto_logon": "bool",
+                            "auto_logon_count": "number",
+                            "computer_name": "string",
+                            "domain_admin_password": "string",
+                            "domain_admin_user": "string",
+                            "join_domain": "string",
+                            "run_once_command_list": [
+                              "list",
+                              "string"
+                            ],
+                            "time_zone": "number",
+                            "workgroup": "string"
+                          }
+                        ]
+                      ],
+                      "windows_sysprep_text": "string"
+                    }
+                  ]
+                ],
+                "description": "Container object for the guest operating system properties to be customized.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "TThe type of customization specification: One among: Windows, Linux.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -6478,7 +6986,8 @@
                       "bandwidth_share_count": "number",
                       "bandwidth_share_level": "string",
                       "mac_address": "string",
-                      "network_id": "string"
+                      "network_id": "string",
+                      "physical_function": "string"
                     }
                   ]
                 ],

@@ -516,6 +516,91 @@
             "description_kind": "plain"
           }
         },
+        "talos_cluster_health": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "client_configuration": {
+                "nested_type": {
+                  "attributes": {
+                    "ca_certificate": {
+                      "type": "string",
+                      "description": "The client CA certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_certificate": {
+                      "type": "string",
+                      "description": "The client certificate",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "client_key": {
+                      "type": "string",
+                      "description": "The client key",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description": "The client configuration data",
+                "description_kind": "plain",
+                "required": true
+              },
+              "control_plane_nodes": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of control plane nodes to check for health.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "endpoints": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "endpoints to use for the health check client. Use at least one control plane endpoint.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeouts": {
+                "nested_type": {
+                  "attributes": {
+                    "read": {
+                      "type": "string",
+                      "description": "A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as \"30s\" or \"2h45m\". Valid time units are \"s\" (seconds), \"m\" (minutes), \"h\" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "nesting_mode": "single"
+                },
+                "description_kind": "plain",
+                "optional": true
+              },
+              "worker_nodes": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of worker nodes to check for health.",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description": "Checks the health of a Talos cluster",
+            "description_kind": "plain"
+          }
+        },
         "talos_cluster_kubeconfig": {
           "version": 0,
           "block": {
@@ -551,7 +636,7 @@
               },
               "endpoint": {
                 "type": "string",
-                "description": "endpoint to use for the talosclient. if not set, the node value will be used",
+                "description": "endpoint to use for the talosclient. If not set, the node value will be used",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -628,6 +713,7 @@
                 "type": "bool",
                 "description": "Wait for the kubernetes api to be available",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true
               }
             },
@@ -1005,7 +1091,7 @@
               },
               "endpoint": {
                 "type": "string",
-                "description": "endpoint to use for the talosclient. if not set, the node value will be used",
+                "description": "endpoint to use for the talosclient. If not set, the node value will be used",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true

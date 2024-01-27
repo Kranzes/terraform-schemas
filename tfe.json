@@ -67,7 +67,8 @@
               "organization": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "optional": true,
+                "computed": true
               },
               "sso_enabled": {
                 "type": "bool",
@@ -446,6 +447,36 @@
                 "type": "number",
                 "description_kind": "plain",
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "tfe_organization_default_settings": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "default_agent_pool_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_execution_mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -880,6 +911,46 @@
             "description_kind": "plain"
           }
         },
+        "tfe_registry_gpg_key": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "ascii_armor": {
+                "type": "string",
+                "description": "ASCII-armored representation of the GPG key.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The time when the GPG key was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "ID of the GPG key.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Name of the organization. If omitted, organization must be defined in the provider config.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The time when the GPG key was last updated.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "Manages a public key of the GPG key pair used to sign releases of private providers in the private registry.",
+            "description_kind": "plain"
+          }
+        },
         "tfe_registry_module": {
           "version": 0,
           "block": {
@@ -920,6 +991,11 @@
                 "optional": true,
                 "computed": true
               },
+              "publishing_mechanism": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "registry_name": {
                 "type": "string",
                 "description_kind": "plain",
@@ -928,10 +1004,28 @@
               }
             },
             "block_types": {
+              "test_config": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "tests_enabled": {
+                      "type": "bool",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description_kind": "plain"
+                }
+              },
               "vcs_repo": {
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "branch": {
+                      "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "display_identifier": {
                       "type": "string",
                       "description_kind": "plain",
@@ -949,6 +1043,11 @@
                     },
                     "oauth_token_id": {
                       "type": "string",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "tags": {
+                      "type": "bool",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -1803,7 +1902,9 @@
               "agent_pool_id": {
                 "type": "string",
                 "description_kind": "plain",
-                "optional": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "allow_destroy_plan": {
                 "type": "bool",
@@ -1833,6 +1934,7 @@
               "execution_mode": {
                 "type": "string",
                 "description_kind": "plain",
+                "deprecated": true,
                 "optional": true,
                 "computed": true
               },
@@ -2197,6 +2299,52 @@
             "description_kind": "plain"
           }
         },
+        "tfe_workspace_settings": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "agent_pool_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "execution_mode": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description": "Service-generated identifier for the variable",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "overwrites": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "agent_pool": "bool",
+                      "execution_mode": "bool"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "workspace_id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Additional Workspace settings that override organization defaults",
+            "description_kind": "plain"
+          }
+        },
         "tfe_workspace_variable_set": {
           "version": 0,
           "block": {
@@ -2436,7 +2584,7 @@
               "name": {
                 "type": "string",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "owners_team_saml_role_id": {
                 "type": "string",
@@ -2825,6 +2973,84 @@
                 "computed": true
               }
             },
+            "description_kind": "plain"
+          }
+        },
+        "tfe_registry_gpg_key": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "ascii_armor": {
+                "type": "string",
+                "description": "ASCII-armored representation of the GPG key.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The time when the GPG key was created.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "required": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Name of the organization. If omitted, organization must be defined in the provider config.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The time when the GPG key was last updated.",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "This data source can be used to retrieve a private registry GPG key.",
+            "description_kind": "plain"
+          }
+        },
+        "tfe_registry_gpg_keys": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "keys": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "ascii_armor": "string",
+                      "created_at": "string",
+                      "id": "string",
+                      "organization": "string",
+                      "updated_at": "string"
+                    }
+                  ]
+                ],
+                "description": "List of GPG keys in the organization.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "organization": {
+                "type": "string",
+                "description": "Name of the organization. If omitted, organization must be defined in the provider config.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description": "This data source can be used to retrieve all private registry GPG keys of an organization.",
             "description_kind": "plain"
           }
         },

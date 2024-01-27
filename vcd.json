@@ -224,13 +224,13 @@
                 "type": "bool",
                 "description": "When destroying use delete_force=True with delete_recursive=True to remove a catalog and any objects it contains, regardless of their state.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "delete_recursive": {
                 "type": "bool",
                 "description": "When destroying use delete_recursive=True to remove the catalog and any objects it contains that are in a state that normally allows removal.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "description": {
                 "type": "string",
@@ -371,7 +371,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -420,7 +420,7 @@
               },
               "everyone_access_level": {
                 "type": "string",
-                "description": "Access level when the Catalog is shared with everyone (only ReadOnly is available). Required when shared_with_everyone is set",
+                "description": "Access level when the catalog is shared with everyone (only ReadOnly is available). Required when shared_with_everyone is set",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -435,6 +435,13 @@
                 "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "read_only_shared_with_all_orgs": {
+                "type": "bool",
+                "description": "If true, the catalog is shared as read-only with all organizations",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "shared_with_everyone": {
                 "type": "bool",
@@ -577,7 +584,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -666,7 +673,7 @@
                 "type": "string",
                 "description": "absolute or relative path to Media file",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "metadata": {
                 "type": [
@@ -722,6 +729,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "upload_any_file": {
+                "type": "bool",
+                "description": "If true, will allow uploading any file type, not only .ISO",
+                "description_kind": "plain",
+                "optional": true
+              },
               "upload_piece_size": {
                 "type": "number",
                 "description": "size of upload file piece size in mega bytes",
@@ -736,7 +749,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -860,13 +873,29 @@
               }
             },
             "block_types": {
+              "lease": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "storage_lease_in_sec": {
+                      "type": "number",
+                      "description": "How long the vApp template is available before being automatically deleted or marked as expired. 0 means never expires (or expires at the maximum limit provided by the parent Org)",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines lease parameters for this vApp template",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "metadata_entry": {
                 "nesting_mode": "set",
                 "block": {
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1887,7 +1916,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -1984,6 +2013,24 @@
           "version": 0,
           "block": {
             "attributes": {
+              "default_firewall_rule_creation_enabled": {
+                "type": "bool",
+                "description": "Flag exposing whether default firewall rule creation should be enabled (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_no_snat_rule_creation_enabled": {
+                "type": "bool",
+                "description": "Flag whether NO SNAT rule creation should be enabled (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "default_snat_rule_creation_enabled": {
+                "type": "bool",
+                "description": "Flag whether SNAT rule creation should be enabled (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Description of IP space",
@@ -2230,7 +2277,7 @@
               },
               "prefix_length": {
                 "type": "string",
-                "description": "Required if 'type' is IP_PREFIX",
+                "description": "Required if 'type' is IP_PREFIX and no custom 'value` is provided",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -2253,6 +2300,12 @@
                 "description": "ID of entity that is using this allocation",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "value": {
+                "type": "string",
+                "description": "IP address or CIDR to use. (VCD 10.4.2+)",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -2937,7 +2990,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3102,7 +3155,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3200,6 +3253,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "guest_vlan_allowed": {
+                "type": "bool",
+                "description": "True if network allows guest VLAN tagging",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3277,7 +3336,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3351,6 +3410,205 @@
                   "description": "IP ranges used for static pool allocation in the network",
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_network_pool": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "backing_selection_constraint": {
+                "type": "string",
+                "description": "Defines how backing components are accepted",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the network pool",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of network pool.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "network_provider_id": {
+                "type": "string",
+                "description": "Id of the network provider (either vCenter or NSX-T manager)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "network_provider_name": {
+                "type": "string",
+                "description": "Name of the network provider",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_provider_type": {
+                "type": "string",
+                "description": "Type of network provider",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "promiscuous_mode": {
+                "type": "bool",
+                "description": "Whether the network pool is in promiscuous mode",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the network pool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_backings_count": {
+                "type": "number",
+                "description": "Total number of backings",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the network pool (one of `GENEVE`, `VLAN`, `PORTGROUP_BACKED`)",
+                "description_kind": "plain",
+                "required": true
+              },
+              "used_backings_count": {
+                "type": "number",
+                "description": "Number of used backings",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "block_types": {
+              "backing": {
+                "nesting_mode": "list",
+                "block": {
+                  "block_types": {
+                    "distributed_switch": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description": "Backing ID",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Backing name",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Backing Type (one of 'Transport Zone', 'Port Group', 'Distributed Switch')",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description": "Backing distributed switches",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
+                    "port_group": {
+                      "nesting_mode": "set",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description": "Backing ID",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Backing name",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Backing Type (one of 'Transport Zone', 'Port Group', 'Distributed Switch')",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description": "Backing port groups",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "range_id": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "end_id": {
+                            "type": "number",
+                            "description": "End of the IDs range",
+                            "description_kind": "plain",
+                            "required": true
+                          },
+                          "start_id": {
+                            "type": "number",
+                            "description": "Start of the IDs range",
+                            "description_kind": "plain",
+                            "required": true
+                          }
+                        },
+                        "description": "Distributed Switch ID ranges (used with VLAN)",
+                        "description_kind": "plain"
+                      }
+                    },
+                    "transport_zone": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "id": {
+                            "type": "string",
+                            "description": "Backing ID",
+                            "description_kind": "plain",
+                            "computed": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Backing name",
+                            "description_kind": "plain",
+                            "optional": true,
+                            "computed": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Backing Type (one of 'Transport Zone', 'Port Group', 'Distributed Switch')",
+                            "description_kind": "plain",
+                            "computed": true
+                          }
+                        },
+                        "description": "Transport Zone Backing",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    }
+                  },
+                  "description": "The components used by the network pool",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
               }
             },
             "description_kind": "plain"
@@ -3496,7 +3754,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3600,6 +3858,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "guest_vlan_allowed": {
+                "type": "bool",
+                "description": "True if network allows guest VLAN tagging",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3675,7 +3939,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -4068,6 +4332,13 @@
                 "description": "Monitors if the traffic is accepted by node (default true)",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "ssl_enabled": {
+                "type": "bool",
+                "description": "Enables SSL - Must be on when CA certificates are used",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "up_member_count": {
                 "type": "number",
@@ -4948,6 +5219,12 @@
                 "optional": true,
                 "computed": true
               },
+              "external_network_allocated_ip_count": {
+                "type": "number",
+                "description": "Total number of IPs allocated for this Gateway from NSX-T Segment backed External Network uplinks",
+                "description_kind": "plain",
+                "computed": true
+              },
               "external_network_id": {
                 "type": "string",
                 "description": "External network ID",
@@ -4993,7 +5270,7 @@
               },
               "total_allocated_ip_count": {
                 "type": "number",
-                "description": "Total number of IP addresses allocated for this gateway. Can be set with 'subnet_with_total_ip_count' definitions only",
+                "description": "Total number of IP addresses allocated for this gateway from Tier0 uplink. Can be set with 'subnet_with_total_ip_count' definitions only",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
@@ -5026,6 +5303,46 @@
               }
             },
             "block_types": {
+              "external_network": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "allocated_ip_count": {
+                      "type": "number",
+                      "description": "Number of allocated IPs",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "external_network_id": {
+                      "type": "string",
+                      "description": "NSX-T Segment backed External Network ID",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "gateway": {
+                      "type": "string",
+                      "description": "Gateway IP Address",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "prefix_length": {
+                      "type": "number",
+                      "description": "Prefix length for a subnet (e.g. 24)",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "primary_ip": {
+                      "type": "string",
+                      "description": "Primary IP address for the Edge Gateway - will be auto-assigned if not defined",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Additional NSX-T Segment Backed networks to attach",
+                  "description_kind": "plain"
+                }
+              },
               "subnet": {
                 "nesting_mode": "set",
                 "block": {
@@ -5486,6 +5803,244 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_edgegateway_dns": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "edge_gateway_id": {
+                "type": "string",
+                "description": "Edge gateway ID for DNS configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Status of the DNS Forwarder. Defaults to `true`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "listener_ip": {
+                "type": "string",
+                "description": "IP on which the DNS forwarder listens.Can be modified only if the Edge Gateway has a dedicated external network.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "snat_rule_enabled": {
+                "type": "bool",
+                "description": "The value is `true` if a SNAT rule exists for the DNS forwarder.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "snat_rule_ip_address": {
+                "type": "string",
+                "description": "The external IP address of the SNAT rule. Can be modified only if the Edge Gateway's external network is using IP spaces. (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "conditional_forwarder_zone": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "domain_names": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Set of domain names on which conditional forwarding is based.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Unique ID of the forwarder zone.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the forwarder zone.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "upstream_servers": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Servers to which DNS requests should be forwarded to.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Conditional forwarder zones",
+                  "description_kind": "plain"
+                },
+                "max_items": 5
+              },
+              "default_forwarder_zone": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique ID of the forwarder zone.",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the forwarder zone.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "upstream_servers": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Servers to which DNS requests should be forwarded to.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "The default forwarder zone.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_edgegateway_l2_vpn_tunnel": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connector_initiation_mode": {
+                "type": "string",
+                "description": "Connector initation mode of the session describing how a connection is made. Needs to be set only if `session_mode` is set to `SERVER`",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the L2 VPN Tunnel session",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "edge_gateway_id": {
+                "type": "string",
+                "description": "Edge Gateway ID for the tunnel",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Status of the L2 VPN Tunnel session. Always set to `true` for CLIENT sessions. Defaults to true.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_endpoint_ip": {
+                "type": "string",
+                "description": "Local endpoint IP of the tunnel session, the IP must be sub-allocated to the Edge Gateway",
+                "description_kind": "plain",
+                "required": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the L2 VPN Tunnel session",
+                "description_kind": "plain",
+                "required": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "peer_code": {
+                "type": "string",
+                "description": "Base64 encoded string of the full configuration of the tunnel provided by the SERVER session. It is a computed field for SERVER sessions and is a required field for CLIENT sessions.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "pre_shared_key": {
+                "type": "string",
+                "description": "Pre-shared key used for authentication, needs to be provided only for`SERVER` sessions.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "remote_endpoint_ip": {
+                "type": "string",
+                "description": "The IP address of the remote endpoint, which corresponds to the deviceon the remote site terminating the VPN tunnel.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "session_mode": {
+                "type": "string",
+                "description": "Mode of the tunnel session, must be CLIENT or SERVER",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tunnel_interface": {
+                "type": "string",
+                "description": "Network CIDR block over which the session interfaces. Only relevant if `session_mode` is set to `SERVER`",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "block_types": {
+              "stretched_network": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "network_id": {
+                      "type": "string",
+                      "description": "ID of the Org VDC network",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "tunnel_id": {
+                      "type": "number",
+                      "description": "Tunnel ID of the network for the tunnel. Read-only for `SERVER` sessions.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    }
+                  },
+                  "description": "Org VDC networks that are attached to the L2 VPN tunnel",
+                  "description_kind": "plain"
+                }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_edgegateway_rate_limiting": {
           "version": 0,
           "block": {
@@ -5731,6 +6286,32 @@
                   "description_kind": "plain"
                 },
                 "min_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_global_default_segment_profile_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vapp_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Global default NSX-T Segment Profile for vApp networks",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Global default NSX-T Segment Profile for Org VDC networks",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -6522,6 +7103,79 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_network_segment_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_discovery_profile_id": {
+                "type": "string",
+                "description": "NSX-T IP Discovery Profile",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "mac_discovery_profile_id": {
+                "type": "string",
+                "description": "NSX-T Mac Discovery Profile",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org_network_id": {
+                "type": "string",
+                "description": "ID of the Organization Network that will have the segment profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "qos_profile_id": {
+                "type": "string",
+                "description": "NSX-T QoS Profile",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "segment_profile_template_id": {
+                "type": "string",
+                "description": "Segment Profile Template ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "segment_profile_template_name": {
+                "type": "string",
+                "description": "Segment Profile Template Name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "segment_security_profile_id": {
+                "type": "string",
+                "description": "NSX-T Segment Security Profile",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "spoof_guard_profile_id": {
+                "type": "string",
+                "description": "NSX-T Spoof Guard Profile",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_route_advertisement": {
           "version": 0,
           "block": {
@@ -6636,6 +7290,68 @@
                 "deprecated": true,
                 "optional": true,
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_profile_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of Segment Profile Template",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_discovery_profile_id": {
+                "type": "string",
+                "description": "Segment IP Discovery Profile ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "mac_discovery_profile_id": {
+                "type": "string",
+                "description": "Segment MAC Discovery Profile ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment Profile Template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "NSX-T Manager ID",
+                "description_kind": "plain",
+                "required": true
+              },
+              "qos_profile_id": {
+                "type": "string",
+                "description": "Segment QoS Profile ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "segment_security_profile_id": {
+                "type": "string",
+                "description": "Segment Security Profile ID",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "spoof_guard_profile_id": {
+                "type": "string",
+                "description": "Segment Spoof Guard Profile ID",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -7455,13 +8171,13 @@
                 "type": "bool",
                 "description": "When destroying use delete_force=True with delete_recursive=True to remove an org and any objects it contains, regardless of their state.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "delete_recursive": {
                 "type": "bool",
                 "description": "When destroying use delete_recursive=True to remove the org and any objects it contains that are in a state that normally allows removal.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "deployed_vm_quota": {
                 "type": "number",
@@ -7491,6 +8207,24 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "list_of_catalogs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of catalogs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "list_of_vdcs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of VDCs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
               "metadata": {
                 "type": [
                   "map",
@@ -7507,6 +8241,18 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "number_of_catalogs": {
+                "type": "number",
+                "description": "Number of catalogs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "number_of_vdcs": {
+                "type": "number",
+                "description": "Number of VDCs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
               "stored_vm_quota": {
                 "type": "number",
                 "description": "Maximum number of virtual machines in vApps or vApp templates that can be stored in an undeployed state by a member of this organization. (0 = unlimited)",
@@ -7521,7 +8267,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -7671,6 +8417,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "custom_user_ou": {
+                "type": "string",
+                "description": "If ldap_mode is SYSTEM, specifies a LDAP attribute=value pair to use for OU (organizational unit)",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -8148,13 +8900,13 @@
                 "type": "bool",
                 "description": "When destroying use delete_force=True to remove a VDC and any objects it contains, regardless of their state.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "delete_recursive": {
                 "type": "bool",
                 "description": "When destroying use delete_recursive=True to remove the VDC and any objects it contains that are in a state that normally allows removal.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "description": {
                 "type": "string",
@@ -8165,7 +8917,9 @@
                 "type": "string",
                 "description": "ID of NSX-T Edge Cluster (provider vApp networking services and DHCP capability for Isolated networks)",
                 "description_kind": "plain",
-                "optional": true
+                "deprecated": true,
+                "optional": true,
+                "computed": true
               },
               "elasticity": {
                 "type": "bool",
@@ -8296,6 +9050,16 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "vm_vgpu_policy_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of VM vGPU Policy IDs",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               }
             },
             "block_types": {
@@ -8384,7 +9148,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -8528,6 +9292,50 @@
                   },
                   "description_kind": "plain"
                 }
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_org_vdc_nsxt_network_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "edge_cluster_id": {
+                "type": "string",
+                "description": "ID of NSX-T Edge Cluster (provider vApp networking services and DHCP capability for Isolated networks)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vapp_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Default NSX-T Segment Profile for vApp networks",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc": {
+                "type": "string",
+                "description": "The name of VDC to use, optional if defined at provider level",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Default NSX-T Segment Profile for Org VDC networks",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -8714,6 +9522,47 @@
                 "required": true
               }
             },
+            "block_types": {
+              "metadata_entry": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "is_system": {
+                      "type": "bool",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL. Defaults to false",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "Key of this metadata entry",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Type of this metadata entry. One of: 'MetadataStringValue', 'MetadataNumberValue', 'MetadataBooleanValue', 'MetadataDateTimeValue'. Defaults to 'MetadataStringValue'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "user_access": {
+                      "type": "string",
+                      "description": "User access level for this metadata entry. One of: 'READWRITE', 'READONLY', 'PRIVATE'. Defaults to 'READWRITE'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of this metadata entry",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Metadata entries for the given Provider VDC",
+                  "description_kind": "plain"
+                }
+              }
+            },
             "description_kind": "plain"
           }
         },
@@ -8805,6 +9654,66 @@
                 "description": "Specifies whether the entity is correctly resolved or not. When created it will be in PRE_CREATED state. If the entity is correctly validated against its RDE Type schema, the state will be RESOLVED,otherwise it will be RESOLUTION_ERROR. If an entity resolution ends in a RESOLUTION_ERROR state, it will require to be updated to a correct JSON to be usable",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "block_types": {
+              "metadata_entry": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "domain": {
+                      "type": "string",
+                      "description": "Only meaningful for providers. Allows them to share entries with their tenants. Currently, accepted values are: `TENANT`, `PROVIDER`",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "ID of the metadata entry",
+                      "description_kind": "plain",
+                      "computed": true
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "Key of this metadata entry. Required if the metadata entry is not empty",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "namespace": {
+                      "type": "string",
+                      "description": "Namespace of the metadata entry",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "persistent": {
+                      "type": "bool",
+                      "description": "Persistent metadata entries can be copied over on some entity operation",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "readonly": {
+                      "type": "bool",
+                      "description": "True if the metadata entry is read only",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Type of this metadata entry. One of: 'StringEntry', 'NumberEntry', 'BoolEntry'",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "Value of this metadata entry. Required if the metadata entry is not empty",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Metadata entries for the given Runtime Defined Entity",
+                  "description_kind": "plain"
+                },
+                "max_items": 50
               }
             },
             "description_kind": "plain"
@@ -8980,6 +9889,29 @@
                 "description": "The version of the Runtime Defined Entity Type. The version string must follow semantic versioning rules. Combination of `vendor`, `nss` and `version` must be unique",
                 "description_kind": "plain",
                 "required": true
+              }
+            },
+            "block_types": {
+              "hook": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "behavior_id": {
+                      "type": "string",
+                      "description": "Existing Behavior that will be automatically invoked when the RDE of this RDE Type triggers the event",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "event": {
+                      "type": "string",
+                      "description": "Event that will invoke the Behavior, one of PostCreate, PostUpdate, PreDelete, PostDelete",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Optional blocks that map RDE lifecycle events to existing Behaviors, that will be automatically invoked when the corresponding event is triggered",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -9654,6 +10586,15 @@
                 "optional": true,
                 "computed": true
               },
+              "inherited_metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map that contains metadata that is automatically added by VCD (10.5.1+) and provides details on the origin of the vApp",
+                "description_kind": "plain",
+                "computed": true
+              },
               "metadata": {
                 "type": [
                   "map",
@@ -9731,7 +10672,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -10505,6 +11446,13 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "firmware": {
+                "type": "string",
+                "description": "Firmware of the VM. Can be either EFI or BIOS, availabilitydepending on the os_type argument. If unset, is set to 'bios' by default. Changing the value when `power_on` is set to true, will cause a reboot of the VM.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "guest_properties": {
                 "type": [
                   "map",
@@ -10532,6 +11480,15 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "inherited_metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map that contains metadata that is automatically added by VCD (10.5.1+) and provides details on the origin of the VM",
+                "description_kind": "plain",
                 "computed": true
               },
               "internal_disk": {
@@ -10726,6 +11683,50 @@
               }
             },
             "block_types": {
+              "boot_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "boot_delay": {
+                      "type": "number",
+                      "description": "Number of milliseconds to wait between powering-on and booting the VM",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "boot_retry_delay": {
+                      "type": "number",
+                      "description": "Delay in milliseconds before a boot retry. Only works if 'boot_retry_enabled' is set to true.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "boot_retry_enabled": {
+                      "type": "bool",
+                      "description": "If set to true, a VM that fails to boot will try again after the 'boot_retry_delay' time period has expired",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "efi_secure_boot": {
+                      "type": "bool",
+                      "description": "If set to true, enables EFI Secure Boot for the VM. Can only be changed when the VM is powered off.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "enter_bios_setup_on_next_boot": {
+                      "type": "bool",
+                      "description": "If set to true, the VM will enter BIOS setup on next boot. If a VM is powered on, the field will be set to `false` by VCD and Terraform will return a non-empty plan",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "A block defining the boot options of a VM",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "customization": {
                 "nesting_mode": "list",
                 "block": {
@@ -10880,7 +11881,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -11052,6 +12053,12 @@
                 "description": "More detailed error message when VDC group has error status",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "force_delete": {
+                "type": "bool",
+                "description": "Forces deletion of VDC Group during destroy",
+                "description_kind": "plain",
+                "optional": true
               },
               "id": {
                 "type": "string",
@@ -11259,6 +12266,13 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "firmware": {
+                "type": "string",
+                "description": "Firmware of the VM. Can be either EFI or BIOS, availabilitydepending on the os_type argument. If unset, is set to 'bios' by default. Changing the value when `power_on` is set to true, will cause a reboot of the VM.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "guest_properties": {
                 "type": [
                   "map",
@@ -11286,6 +12300,15 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "inherited_metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map that contains metadata that is automatically added by VCD (10.5.1+) and provides details on the origin of the VM",
+                "description_kind": "plain",
                 "computed": true
               },
               "internal_disk": {
@@ -11481,6 +12504,50 @@
               }
             },
             "block_types": {
+              "boot_options": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "boot_delay": {
+                      "type": "number",
+                      "description": "Number of milliseconds to wait between powering-on and booting the VM",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "boot_retry_delay": {
+                      "type": "number",
+                      "description": "Delay in milliseconds before a boot retry. Only works if 'boot_retry_enabled' is set to true.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "boot_retry_enabled": {
+                      "type": "bool",
+                      "description": "If set to true, a VM that fails to boot will try again after the 'boot_retry_delay' time period has expired",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "efi_secure_boot": {
+                      "type": "bool",
+                      "description": "If set to true, enables EFI Secure Boot for the VM. Can only be changed when the VM is powered off.",
+                      "description_kind": "plain",
+                      "optional": true,
+                      "computed": true
+                    },
+                    "enter_bios_setup_on_next_boot": {
+                      "type": "bool",
+                      "description": "If set to true, the VM will enter BIOS setup on next boot. If a VM is powered on, the field will be set to `false` by VCD and Terraform will return a non-empty plan",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "A block defining the boot options of a VM",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "customization": {
                 "nesting_mode": "list",
                 "block": {
@@ -11635,7 +12702,7 @@
                   "attributes": {
                     "is_system": {
                       "type": "bool",
-                      "description": "Domain for this metadata entry. true if it belongs to SYSTEM, false if it belongs to GENERAL",
+                      "description": "Domain for this metadata entry. true, if it belongs to SYSTEM. false, if it belongs to GENERAL",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -12087,6 +13154,167 @@
             },
             "description_kind": "plain"
           }
+        },
+        "vcd_vm_vgpu_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of the vGPU policy.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The unique name of the vGPU policy.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "cpu": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "cores_per_socket": {
+                      "type": "string",
+                      "description": "The number of cores per socket for a VM. This is a VM hardware configuration. The number of vCPUs that is defined in the VM sizing policy must be divisible by the number of cores per socket. If the number of vCPUs is not divisible by the number of cores per socket, the number of cores per socket becomes invalid.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "count": {
+                      "type": "string",
+                      "description": "Defines the number of vCPUs configured for a VM. This is a VM hardware configuration. When a tenant assigns the VM sizing policy to a VM, this count becomes the configured number of vCPUs for the VM.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "limit_in_mhz": {
+                      "type": "string",
+                      "description": "Defines the CPU limit in MHz for a VM. If not defined in the VDC compute policy, CPU limit is equal to the vCPU speed multiplied by the number of vCPUs.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "reservation_guarantee": {
+                      "type": "string",
+                      "description": "Defines how much of the CPU resources of a VM are reserved. The allocated CPU for a VM equals the number of vCPUs times the vCPU speed in MHz. The value of the attribute ranges between 0 and one. Value of 0 CPU reservation guarantee defines no CPU reservation. Value of 1 defines 100% of CPU reserved.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "shares": {
+                      "type": "string",
+                      "description": "Defines the number of CPU shares for a VM. Shares specify the relative importance of a VM within a virtual data center. If a VM has twice as many shares of CPU as another VM, it is entitled to consume twice as much CPU when these two virtual machines are competing for resources. If not defined in the VDC compute policy, normal shares are applied to the VM.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "speed_in_mhz": {
+                      "type": "string",
+                      "description": "Defines the vCPU speed of a core in MHz.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Configuration options for CPU resources.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "memory": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "limit_in_mb": {
+                      "type": "string",
+                      "description": "Defines the memory limit in MB for a VM. If not defined in the VM sizing policy, memory limit is equal to the allocated memory for the VM.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "reservation_guarantee": {
+                      "type": "string",
+                      "description": "Defines the reserved amount of memory that is configured for a VM. The value of the attribute ranges between 0 and one. Value of 0 memory reservation guarantee defines no memory reservation. Value of 1 defines 100% of memory reserved.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "shares": {
+                      "type": "string",
+                      "description": "Defines the number of memory shares for a VM. Shares specify the relative importance of a VM within a virtual data center. If a VM has twice as many shares of memory as another VM, it is entitled to consume twice as much memory when these two virtual machines are competing for resources. If not defined in the VDC compute policy, normal shares are applied to the VM.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "size_in_mb": {
+                      "type": "string",
+                      "description": "Defines the memory configured for a VM in MB. This is a VM hardware configuration. When a tenant assigns the VM sizing policy to a VM, the VM receives the amount of memory defined by this attribute.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Memory resource configuration settings.",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "provider_vdc_scope": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "cluster_names": {
+                      "type": [
+                        "set",
+                        "string"
+                      ],
+                      "description": "Set of cluster names within the provider virtual data center.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "provider_vdc_id": {
+                      "type": "string",
+                      "description": "Identifier for the provider virtual data center.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "vm_group_id": {
+                      "type": "string",
+                      "description": "Optional identifier for a VM group within the provider VDC scope.",
+                      "description_kind": "plain",
+                      "optional": true
+                    }
+                  },
+                  "description": "Defines the scope of the policy within provider virtual data centers.",
+                  "description_kind": "plain"
+                }
+              },
+              "vgpu_profile": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "count": {
+                      "type": "number",
+                      "description": "Specifies the number of vGPU profiles. Must be at least 1.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The identifier of the vGPU profile.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the vGPU profile configuration. Only one profile is allowed.",
+                  "description_kind": "plain"
+                },
+                "min_items": 1,
+                "max_items": 1
+              }
+            },
+            "description_kind": "plain"
+          }
         }
       },
       "data_source_schemas": {
@@ -12521,6 +13749,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "download_to_file": {
+                "type": "string",
+                "description": "Will download the contents of the media item into the given file",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -12709,6 +13943,20 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "lease": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "storage_lease_in_sec": "number"
+                    }
+                  ]
+                ],
+                "description": "Defines lease parameters for this vApp template",
+                "description_kind": "plain",
                 "computed": true
               },
               "metadata": {
@@ -13398,6 +14646,24 @@
           "version": 0,
           "block": {
             "attributes": {
+              "default_firewall_rule_creation_enabled": {
+                "type": "bool",
+                "description": "Flag exposing whether default firewall rule creation should be enabled (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default_no_snat_rule_creation_enabled": {
+                "type": "bool",
+                "description": "Flag whether NO SNAT rule creation should be enabled (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default_snat_rule_creation_enabled": {
+                "type": "bool",
+                "description": "Flag whether SNAT rule creation should be enabled (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description": "Description of IP space",
@@ -14573,6 +15839,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "guest_vlan_allowed": {
+                "type": "bool",
+                "description": "True if network allows guest VLAN tagging",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -14720,6 +15992,62 @@
           "version": 0,
           "block": {
             "attributes": {
+              "backing": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "distributed_switch": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "id": "string",
+                            "name": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "port_groups": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "id": "string",
+                            "name": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ],
+                      "range_id": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "end_id": "number",
+                            "start_id": "number"
+                          }
+                        ]
+                      ],
+                      "transport_zone": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "id": "string",
+                            "name": "string",
+                            "type": "string"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ],
+                "description": "The components used by the network pool",
+                "description_kind": "plain",
+                "computed": true
+              },
               "description": {
                 "type": "string",
                 "description": "Description of the network pool",
@@ -14734,13 +16062,55 @@
               },
               "name": {
                 "type": "string",
-                "description": "Name of NSX-T manager.",
+                "description": "Name of network pool.",
                 "description_kind": "plain",
                 "required": true
               },
+              "network_provider_id": {
+                "type": "string",
+                "description": "Id of the network provider (either vCenter or NSX-T manager)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_provider_name": {
+                "type": "string",
+                "description": "Name of the network provider",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "network_provider_type": {
+                "type": "string",
+                "description": "Type of network provider",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "promiscuous_mode": {
+                "type": "bool",
+                "description": "Whether the network pool is in promiscuous mode",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the network pool",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "total_backings_count": {
+                "type": "number",
+                "description": "Total number of backings",
+                "description_kind": "plain",
+                "computed": true
+              },
               "type": {
                 "type": "string",
-                "description": "Type of the network pool",
+                "description": "Type of the network pool (one of `GENEVE`, `VLAN`, `PORTGROUP_BACKED`)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "used_backings_count": {
+                "type": "number",
+                "description": "Number of used backings",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -15009,6 +16379,12 @@
               "gateway": {
                 "type": "string",
                 "description": "Gateway IP address",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "guest_vlan_allowed": {
+                "type": "bool",
+                "description": "True if network allows guest VLAN tagging",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -15561,6 +16937,12 @@
                     }
                   ]
                 ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ssl_enabled": {
+                "type": "bool",
+                "description": "Enables SSL - Necessary when CA certificates are used",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -16276,6 +17658,30 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "external_network": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "allocated_ip_count": "number",
+                      "external_network_id": "string",
+                      "gateway": "string",
+                      "prefix_length": "number",
+                      "primary_ip": "string"
+                    }
+                  ]
+                ],
+                "description": "Additional NSX-T Segment Backed networks",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_network_allocated_ip_count": {
+                "type": "number",
+                "description": "Total number of IPs allocated for this Gateway from NSX-T Segment backed External Network uplinks",
+                "description_kind": "plain",
+                "computed": true
+              },
               "external_network_id": {
                 "type": "string",
                 "description": "External network ID",
@@ -16721,6 +18127,199 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_edgegateway_dns": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "conditional_forwarder_zone": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "domain_names": [
+                        "set",
+                        "string"
+                      ],
+                      "id": "string",
+                      "name": "string",
+                      "upstream_servers": [
+                        "set",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "Conditional forwarder zone",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "default_forwarder_zone": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "id": "string",
+                      "name": "string",
+                      "upstream_servers": [
+                        "set",
+                        "string"
+                      ]
+                    }
+                  ]
+                ],
+                "description": "The default forwarder zone.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "edge_gateway_id": {
+                "type": "string",
+                "description": "Edge gateway ID for DNS configuration",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Status of the DNS Forwarder.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "listener_ip": {
+                "type": "string",
+                "description": "IP on which the DNS forwarder listens.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "snat_rule_enabled": {
+                "type": "bool",
+                "description": "The value is `true` if a SNAT rule exists for the DNS forwarder.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "snat_rule_ip_address": {
+                "type": "string",
+                "description": "The external IP address of the SNAT rule. (VCD 10.5.0+)",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_edgegateway_l2_vpn_tunnel": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "connector_initiation_mode": {
+                "type": "string",
+                "description": "Connector initation mode of the session describing how a connection is made. Only populated for `SERVER` sessions",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the L2 VPN Tunnel session",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "edge_gateway_id": {
+                "type": "string",
+                "description": "Edge Gateway ID for the tunnel",
+                "description_kind": "plain",
+                "required": true
+              },
+              "enabled": {
+                "type": "bool",
+                "description": "Status of the L2 VPN Tunnel session",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "local_endpoint_ip": {
+                "type": "string",
+                "description": "Local endpoint IP of the tunnel session, the IP is sub-allocated to the Edge Gateway",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the L2 VPN Tunnel session",
+                "description_kind": "plain",
+                "required": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "peer_code": {
+                "type": "string",
+                "description": "Base64 encoded string of the full configuration of the tunnel, only populated for `SERVER` sessions",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "pre_shared_key": {
+                "type": "string",
+                "description": "Pre-shared key used for authentication, the field is only populated for `SERVER` sessions",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "remote_endpoint_ip": {
+                "type": "string",
+                "description": "The IP address of the remote endpoint, which corresponds to the deviceon the remote site terminating the VPN tunnel.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "session_mode": {
+                "type": "string",
+                "description": "Mode of the tunnel session, either CLIENT or SERVER",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "stretched_network": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "network_id": "string",
+                      "tunnel_id": "number"
+                    }
+                  ]
+                ],
+                "description": "Org VDC networks that are attached to this L2 VPN tunnel",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tunnel_interface": {
+                "type": "string",
+                "description": "Network CIDR block over which the session interfaces. Only populated for `SERVER` sessions",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_edgegateway_qos_profile": {
           "version": 0,
           "block": {
@@ -16940,6 +18539,32 @@
                 "description_kind": "plain",
                 "deprecated": true,
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_global_default_segment_profile_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "vapp_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Global default NSX-T Segment Profile for vApp networks",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vdc_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Global default NSX-T Segment Profile for Org VDC networks",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -17694,6 +19319,74 @@
             "description_kind": "plain"
           }
         },
+        "vcd_nsxt_network_segment_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_discovery_profile_id": {
+                "type": "string",
+                "description": "NSX-T IP Discovery Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac_discovery_profile_id": {
+                "type": "string",
+                "description": "NSX-T Mac Discovery Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "org_network_id": {
+                "type": "string",
+                "description": "ID of the Organization Network that uses the Segment Profile Template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "qos_profile_id": {
+                "type": "string",
+                "description": "NSX-T QoS Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "segment_profile_template_id": {
+                "type": "string",
+                "description": "Segment Profile Template ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "segment_profile_template_name": {
+                "type": "string",
+                "description": "Segment Profile Template Name",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "segment_security_profile_id": {
+                "type": "string",
+                "description": "NSX-T Segment Security Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "spoof_guard_profile_id": {
+                "type": "string",
+                "description": "NSX-T Spoof Guard Profile",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_nsxt_route_advertisement": {
           "version": 0,
           "block": {
@@ -17806,6 +19499,549 @@
                 "description": "The name of VDC to use, optional if defined at provider level",
                 "description_kind": "plain",
                 "deprecated": true,
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_ip_discovery_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "arp_binding_limit": {
+                "type": "number",
+                "description": "Indicates the number of ARP snooped IP addresses to be remembered per logical port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "arp_binding_timeout": {
+                "type": "number",
+                "description": "Indicates ARP and ND cache timeout (in minutes)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of Segment IP Discovery Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_arp_snooping_enabled": {
+                "type": "bool",
+                "description": "Defines whether ARP snooping is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_dhcp_snooping_v4_enabled": {
+                "type": "bool",
+                "description": "Defines whether DHCP snooping for IPv4 is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_dhcp_snooping_v6_enabled": {
+                "type": "bool",
+                "description": "Defines whether DHCP snooping for IPv6 is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_duplicate_ip_detection_enabled": {
+                "type": "bool",
+                "description": "Indicates whether duplicate IP detection is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_nd_snooping_enabled": {
+                "type": "bool",
+                "description": "Indicates whether neighbor discovery (ND) snooping is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_tofu_enabled": {
+                "type": "bool",
+                "description": "Defines whether 'Trust on First Use (TOFU)' paradigm is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_vmtools_v4_enabled": {
+                "type": "bool",
+                "description": "Indicates whether fetching IPv4 address using vm-tools is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_vmtools_v6_enabled": {
+                "type": "bool",
+                "description": "Indicates whether fetching IPv6 address using vm-tools is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment IP Discovery Profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nd_snooping_limit": {
+                "type": "number",
+                "description": "Maximum number of Neighbor Discovery (ND) snooped IPv6 addresses",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "ID of NSX-T Manager",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_group_id": {
+                "type": "string",
+                "description": "ID of VDC Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "ID of VDC",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_mac_discovery_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of Segment MAC Discovery Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_mac_change_enabled": {
+                "type": "bool",
+                "description": "Indcates whether source MAC address change is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_mac_learning_enabled": {
+                "type": "bool",
+                "description": "Indicates whether source MAC address learning is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_unknown_unicast_flooding_enabled": {
+                "type": "bool",
+                "description": "Indicates whether unknown unicast flooding rule is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac_learning_aging_time": {
+                "type": "number",
+                "description": "Indicates aging time in seconds for learned MAC address",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac_limit": {
+                "type": "number",
+                "description": "Indicates the maximum number of MAC addresses that can be learned on this port",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac_policy": {
+                "type": "string",
+                "description": "Defines the policy after MAC Limit is exceeded. It can be either 'ALLOW' or 'DROP'",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment MAC Discovery Profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "ID of NSX-T Manager",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_group_id": {
+                "type": "string",
+                "description": "ID of VDC Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "ID of VDC",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_profile_template": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of Segment Profile Template",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ip_discovery_profile_id": {
+                "type": "string",
+                "description": "Segment IP Discovery Profile ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "mac_discovery_profile_id": {
+                "type": "string",
+                "description": "Segment MAC Discovery Profile ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment Profile Template",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "NSX-T Manager ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "qos_profile_id": {
+                "type": "string",
+                "description": "Segment QoS Profile ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "segment_security_profile_id": {
+                "type": "string",
+                "description": "Segment Security Profile ID",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "spoof_guard_profile_id": {
+                "type": "string",
+                "description": "Segment Spoof Guard Profile ID",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_qos_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "class_of_service": {
+                "type": "number",
+                "description": "Groups similar types of traffic in the network and each type of traffic is treated as a class with its own level of service priority",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of Segment QoS Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dscp_priority": {
+                "type": "number",
+                "description": "Differentiated Services Code Point priority",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "dscp_trust_mode": {
+                "type": "string",
+                "description": "Differentiated Services Code Point trust mode",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "egress_rate_limiter_avg_bandwidth": {
+                "type": "number",
+                "description": "Average bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "egress_rate_limiter_burst_size": {
+                "type": "number",
+                "description": "Burst size in bytes",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "egress_rate_limiter_peak_bandwidth": {
+                "type": "number",
+                "description": "Peak bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "ingress_broadcast_rate_limiter_avg_bandwidth": {
+                "type": "number",
+                "description": "Average bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ingress_broadcast_rate_limiter_burst_size": {
+                "type": "number",
+                "description": "Burst size in bytes",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ingress_broadcast_rate_limiter_peak_bandwidth": {
+                "type": "number",
+                "description": "Peak bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ingress_rate_limiter_avg_bandwidth": {
+                "type": "number",
+                "description": "Average bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ingress_rate_limiter_burst_size": {
+                "type": "number",
+                "description": "Burst size in bytes",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "ingress_rate_limiter_peak_bandwidth": {
+                "type": "number",
+                "description": "Peak bandwidth in Mb/s",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment QoS Profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "ID of NSX-T Manager",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_group_id": {
+                "type": "string",
+                "description": "ID of VDC Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "ID of VDC",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_security_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "bpdu_filter_allow_list": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Indicates pre-defined list of allowed MAC addresses to be excluded from BPDU filtering",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of Segment Security Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_bpdu_filter_enabled": {
+                "type": "bool",
+                "description": "Indicates whether BPDU filter is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_dhcp_v4_client_block_enabled": {
+                "type": "bool",
+                "description": "Indicates whether DHCP Client block IPv4 is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_dhcp_v4_server_block_enabled": {
+                "type": "bool",
+                "description": "Indicates whether DHCP Server block IPv4 is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_dhcp_v6_client_block_enabled": {
+                "type": "bool",
+                "description": "Indicates whether DHCP Client block IPv6 is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_dhcp_v6_server_block_enabled": {
+                "type": "bool",
+                "description": "Indicates whether DHCP Server block IPv6 is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_non_ip_traffic_block_enabled": {
+                "type": "bool",
+                "description": "Indicates whether non IP traffic block is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_ra_guard_enabled": {
+                "type": "bool",
+                "description": "Indicates whether Router Advertisement Guard is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "is_rate_limitting_enabled": {
+                "type": "bool",
+                "description": "Indicates whether Rate Limiting is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment Security Profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "ID of NSX-T Manager",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rx_broadcast_limit": {
+                "type": "number",
+                "description": "Incoming broadcast traffic limit in packets per second",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "rx_multicast_limit": {
+                "type": "number",
+                "description": "Incoming multicast traffic limit in packets per second",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tx_broadcast_limit": {
+                "type": "number",
+                "description": "Outgoing broadcast traffic limit in packets per second",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tx_multicast_limit": {
+                "type": "number",
+                "description": "Outgoing multicast traffic limit in packets per second",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vdc_group_id": {
+                "type": "string",
+                "description": "ID of VDC Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "ID of VDC",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_nsxt_segment_spoof_guard_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "description": {
+                "type": "string",
+                "description": "Description of Segment Spoof Guard Profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "is_address_binding_whitelist_enabled": {
+                "type": "bool",
+                "description": "Indicates whether Spoof Guard is enabled",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of Segment Spoof Guard Profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "nsxt_manager_id": {
+                "type": "string",
+                "description": "ID of NSX-T Manager",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_group_id": {
+                "type": "string",
+                "description": "ID of VDC Group",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_id": {
+                "type": "string",
+                "description": "ID of VDC",
+                "description_kind": "plain",
                 "optional": true
               }
             },
@@ -18629,6 +20865,24 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "list_of_catalogs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of catalogs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "list_of_vdcs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of VDCs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
               "metadata": {
                 "type": [
                   "map",
@@ -18662,6 +20916,18 @@
                 "description": "Organization name for lookup",
                 "description_kind": "plain",
                 "required": true
+              },
+              "number_of_catalogs": {
+                "type": "number",
+                "description": "Number of catalogs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "number_of_vdcs": {
+                "type": "number",
+                "description": "Number of VDCs, owned or shared, available to this organization",
+                "description_kind": "plain",
+                "computed": true
               },
               "stored_vm_quota": {
                 "type": "number",
@@ -18808,6 +21074,12 @@
                   ]
                 ],
                 "description": "Custom settings when `ldap_mode` is CUSTOM",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "custom_user_ou": {
+                "type": "string",
+                "description": "If ldap_mode is SYSTEM, specifies a LDAP attribute=value pair to use for OU (organizational unit)",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -19305,6 +21577,59 @@
                 "description": "Set of VM Sizing policy IDs",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "vm_vgpu_policy_ids": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Set of VM vGPU policy IDs",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_org_vdc_nsxt_network_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "edge_cluster_id": {
+                "type": "string",
+                "description": "ID of NSX-T Edge Cluster (provider vApp networking services and DHCP capability for Isolated networks)",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "org": {
+                "type": "string",
+                "description": "The name of organization to use, optional if defined at provider level. Useful when connected as sysadmin working across different organizations",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vapp_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Default NSX-T Segment Profile for vApp networks",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vdc": {
+                "type": "string",
+                "description": "The name of VDC to use, optional if defined at provider level",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "vdc_networks_default_segment_profile_template_id": {
+                "type": "string",
+                "description": "Default NSX-T Segment Profile for Org VDC networks",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"
@@ -19569,6 +21894,27 @@
                 "optional": true,
                 "computed": true
               },
+              "metadata_entry": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "domain": "string",
+                      "id": "string",
+                      "key": "string",
+                      "namespace": "string",
+                      "persistent": "bool",
+                      "readonly": "bool",
+                      "type": "string",
+                      "value": "string"
+                    }
+                  ]
+                ],
+                "description": "Metadata entries from the given Runtime Defined Entity",
+                "description_kind": "plain",
+                "computed": true
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the Runtime Defined Entity",
@@ -19602,6 +21948,62 @@
               "state": {
                 "type": "string",
                 "description": "Specifies whether the entity is correctly resolved or not. One of PRE_CREATED, RESOLVED or RESOLUTION_ERROR",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_rde_behavior_invocation": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "arguments": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "The arguments to be passed to the invoked Behavior",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "behavior_id": {
+                "type": "string",
+                "description": "The ID of either a RDE Interface Behavior or RDE Type Behavior to be invoked",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "invoke_on_refresh": {
+                "type": "bool",
+                "description": "If 'true', invokes the Behavior on every refresh",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Metadata to be passed to the invoked Behavior",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rde_id": {
+                "type": "string",
+                "description": "The ID of the RDE for which the Behavior will be invoked",
+                "description_kind": "plain",
+                "required": true
+              },
+              "result": {
+                "type": "string",
+                "description": "The raw result of the Behavior invocation",
                 "description_kind": "plain",
                 "computed": true
               }
@@ -19713,6 +22115,21 @@
               "external_id": {
                 "type": "string",
                 "description": "An external entity's ID that this definition may apply to",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "hook": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "behavior_id": "string",
+                      "event": "string"
+                    }
+                  ]
+                ],
+                "description": "Blocks that map RDE lifecycle events to existing Behaviors, that areautomatically invoked when the corresponding event is triggered",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -19875,6 +22292,12 @@
                 "optional": true,
                 "computed": true
               },
+              "import_file_name": {
+                "type": "string",
+                "description": "File where to store the import info - Only used with 'import' list mode ",
+                "description_kind": "plain",
+                "optional": true
+              },
               "list": {
                 "type": [
                   "list",
@@ -19899,6 +22322,12 @@
               "name_id_separator": {
                 "type": "string",
                 "description": "Separator for name_id combination",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "name_regex": {
+                "type": "string",
+                "description": "Optional regular expression filter on the resource names - Only the matching resources will be fetched",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -19934,6 +22363,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "cluster_moref": {
+                "type": "string",
+                "description": "The managed object reference of the Cluster in which the resource pool exists.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "hardware_version": {
                 "type": "string",
                 "description": "Default hardware version for this resource pool",
@@ -20851,6 +23286,15 @@
                 "optional": true,
                 "computed": true
               },
+              "inherited_metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map that contains metadata that is automatically added by VCD (10.5.1+) and provides details on the origin of the vApp",
+                "description_kind": "plain",
+                "computed": true
+              },
               "lease": {
                 "type": [
                   "list",
@@ -21113,6 +23557,24 @@
           "version": 0,
           "block": {
             "attributes": {
+              "boot_options": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "boot_delay": "number",
+                      "boot_retry_delay": "number",
+                      "boot_retry_enabled": "bool",
+                      "efi_secure_boot": "bool",
+                      "enter_bios_setup_on_next_boot": "bool"
+                    }
+                  ]
+                ],
+                "description": "A block defining the boot options of a VM",
+                "description_kind": "plain",
+                "computed": true
+              },
               "computer_name": {
                 "type": "string",
                 "description": "Computer name assigned to this virtual machine",
@@ -21217,6 +23679,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "firmware": {
+                "type": "string",
+                "description": "Firmware of the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
               "guest_properties": {
                 "type": [
                   "map",
@@ -21242,6 +23710,15 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "inherited_metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map that contains metadata that is automatically added by VCD (10.5.1+) and provides details on the origin of the VM",
+                "description_kind": "plain",
                 "computed": true
               },
               "internal_disk": {
@@ -21613,10 +24090,60 @@
             "description_kind": "plain"
           }
         },
+        "vcd_vgpu_profile": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description": "ID of the vGPU profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "instructions": {
+                "type": "string",
+                "description": "The instructions for the vGPU profile",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the vGPU profile",
+                "description_kind": "plain",
+                "required": true
+              },
+              "tenant_facing_name": {
+                "type": "string",
+                "description": "The tenant facing name of the vGPU profile",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "vcd_vm": {
           "version": 0,
           "block": {
             "attributes": {
+              "boot_options": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "boot_delay": "number",
+                      "boot_retry_delay": "number",
+                      "boot_retry_enabled": "bool",
+                      "efi_secure_boot": "bool",
+                      "enter_bios_setup_on_next_boot": "bool"
+                    }
+                  ]
+                ],
+                "description": "A block defining the boot options of a VM",
+                "description_kind": "plain",
+                "computed": true
+              },
               "computer_name": {
                 "type": "string",
                 "description": "Computer name assigned to this virtual machine",
@@ -21721,6 +24248,12 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "firmware": {
+                "type": "string",
+                "description": "Firmware of the VM",
+                "description_kind": "plain",
+                "computed": true
+              },
               "guest_properties": {
                 "type": [
                   "map",
@@ -21746,6 +24279,15 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "inherited_metadata": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "A map that contains metadata that is automatically added by VCD (10.5.1+) and provides details on the origin of the VM",
+                "description_kind": "plain",
                 "computed": true
               },
               "internal_disk": {
@@ -22173,6 +24715,99 @@
                 "description_kind": "plain",
                 "deprecated": true,
                 "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vcd_vm_vgpu_policy": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "cpu": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "cores_per_socket": "string",
+                      "count": "string",
+                      "limit_in_mhz": "string",
+                      "reservation_guarantee": "string",
+                      "shares": "string",
+                      "speed_in_mhz": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the vGPU policy.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "memory": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "limit_in_mb": "string",
+                      "reservation_guarantee": "string",
+                      "shares": "string",
+                      "size_in_mb": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "The unique name of the vGPU policy.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "provider_vdc_scope": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "cluster_names": [
+                        "set",
+                        "string"
+                      ],
+                      "provider_vdc_id": "string",
+                      "vm_group_id": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "computed": true
+              },
+              "vgpu_profile": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "count": "number",
+                      "id": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the vGPU profile configuration.",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "description_kind": "plain"

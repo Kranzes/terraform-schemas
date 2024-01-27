@@ -310,7 +310,8 @@
               }
             },
             "description": "The Account Authentication resource allows the creation and management of an Aiven Account Authentications.",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_account_team": {
@@ -390,7 +391,8 @@
               }
             },
             "description": "The Account Team resource allows the creation and management of an Account Team.",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_account_team_member": {
@@ -435,7 +437,7 @@
               },
               "user_email": {
                 "type": "string",
-                "description": "Is a user email address that first will be invited, and after accepting an invitation, he or she becomes a member of a team. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "Is a user email address that first will be invited, and after accepting an invitation, he or she becomes a member of a team. Should be lowercase. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -476,7 +478,8 @@
               }
             },
             "description": "\nThe Account Team Member resource allows the creation and management of an Aiven Account Team Member.\n\nDuring the creation of `aiven_account_team_member`resource, an email invitation will be sent\nto a user using `user_email` address. If the user accepts an invitation, he or she will become\na member of the account team. The deletion of `aiven_account_team_member` will not only\ndelete the invitation if one was sent but not yet accepted by the user, it will also \neliminate an account team member if one has accepted an invitation previously.\n",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_account_team_project": {
@@ -1195,6 +1198,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -1404,6 +1408,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -1551,6 +1561,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -1723,6 +1748,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -1908,6 +1934,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -1960,6 +1992,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "clickhouse_mysql": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to clickhouse_mysql with a DNS name that always resolves to the service's private IP addresses. Only available in certain network locations.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "prometheus": {
                             "type": "bool",
                             "description": "Allow clients to connect to prometheus with a DNS name that always resolves to the service's private IP addresses. Only available in certain network locations.",
@@ -1988,6 +2026,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "clickhouse_mysql": {
+                            "type": "bool",
+                            "description": "Enable clickhouse_mysql.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "prometheus": {
                             "type": "bool",
                             "description": "Enable prometheus.",
@@ -2013,6 +2057,12 @@
                           "clickhouse_https": {
                             "type": "bool",
                             "description": "Allow clients to connect to clickhouse_https from the public internet for service nodes that are in a project VPC or another type of private network.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "clickhouse_mysql": {
+                            "type": "bool",
+                            "description": "Allow clients to connect to clickhouse_mysql from the public internet for service nodes that are in a project VPC or another type of private network.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -2073,6 +2123,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -2593,6 +2658,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -2764,6 +2830,15 @@
                 "nesting_mode": "list",
                 "block": {
                   "attributes": {
+                    "additional_backup_regions": {
+                      "type": [
+                        "list",
+                        "string"
+                      ],
+                      "description": "Additional Cloud Regions for Backup Replication.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "flink_version": {
                       "type": "string",
                       "description": "Flink major version.",
@@ -2792,6 +2867,18 @@
                     "number_of_task_slots": {
                       "type": "number",
                       "description": "Task slots per node. For a 3 node plan, total number of task slots is 3x this value.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "static_ips": {
+                      "type": "bool",
+                      "description": "Use static public IP addresses.",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -2886,6 +2973,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -3591,6 +3693,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -3765,7 +3868,7 @@
                     },
                     "alerting_enabled": {
                       "type": "bool",
-                      "description": "Enable or disable Grafana alerting functionality.",
+                      "description": "Enable or disable Grafana legacy alerting functionality. This should not be enabled with unified_alerting_enabled.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -3902,6 +4005,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -3911,6 +4020,12 @@
                     "static_ips": {
                       "type": "bool",
                       "description": "Use static public IP addresses.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "unified_alerting_enabled": {
+                      "type": "bool",
+                      "description": "Enable or disable Grafana unified alerting functionality. By default this is enabled and any legacy alerts will be migrated on upgrade to Grafana 9+. To stay on legacy alerting, set unified_alerting_enabled to false and alerting_enabled to true. See https://grafana.com/docs/grafana/latest/alerting/set-up/migrating-alerts/ for more details.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -4484,6 +4599,21 @@
                   "description_kind": "plain"
                 }
               },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                  "description_kind": "plain"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -4545,6 +4675,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -4756,6 +4887,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -4937,6 +5074,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -5171,6 +5323,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -5362,6 +5515,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "aiven_kafka_topic_messages": {
+                      "type": "bool",
+                      "description": "Allow access to read Kafka topic messages in the Aiven Console and REST API.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "custom_domain": {
                       "type": "string",
                       "description": "Serve the web frontend using a custom CNAME pointing to the Aiven DNS name.",
@@ -5414,6 +5573,12 @@
                     "schema_registry": {
                       "type": "bool",
                       "description": "Enable Schema-Registry service. The default value is `false`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -5547,6 +5712,18 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "log_local_retention_bytes": {
+                            "type": "number",
+                            "description": "The maximum size of local log segments that can grow for a partition before it gets eligible for deletion. If set to -2, the value of log.retention.bytes is used. The effective value should always be less than or equal to log.retention.bytes value.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "log_local_retention_ms": {
+                            "type": "number",
+                            "description": "The number of milliseconds to keep the local log segments before it gets eligible for deletion. If set to -2, the value of log.retention.ms is used. The effective value should always be less than or equal to log.retention.ms value.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "log_message_downconversion_enable": {
                             "type": "bool",
                             "description": "This configuration controls whether down-conversion of message formats is enabled to satisfy consume requests. .",
@@ -5667,9 +5844,39 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "sasl_oauthbearer_expected_audience": {
+                            "type": "string",
+                            "description": "The (optional) comma-delimited setting for the broker to use to verify that the JWT was issued for one of the expected audiences.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "sasl_oauthbearer_expected_issuer": {
+                            "type": "string",
+                            "description": "Optional setting for the broker to use to verify that the JWT was created by the expected issuer.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "sasl_oauthbearer_jwks_endpoint_url": {
+                            "type": "string",
+                            "description": "OIDC JWKS endpoint URL. By setting this the SASL SSL OAuth2/OIDC authentication is enabled. See also other options for SASL OAuth2/OIDC. .",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "sasl_oauthbearer_sub_claim_name": {
+                            "type": "string",
+                            "description": "Name of the scope from which to extract the subject claim from the JWT. Defaults to sub.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "socket_request_max_bytes": {
                             "type": "number",
                             "description": "The maximum number of bytes in a socket request (defaults to 104857600).",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "transaction_partition_verification_enable": {
+                            "type": "bool",
+                            "description": "Enable verification that checks that the partition has been added to the transaction before writing transactional records to the partition.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -5838,6 +6045,12 @@
                           "consumer_request_timeout_ms": {
                             "type": "number",
                             "description": "The maximum total time to wait for messages for a request if the maximum number of messages has not yet been reached. The default value is `1000`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "name_strategy_validation": {
+                            "type": "bool",
+                            "description": "If true, validate that given schema is registered under expected subject name by the used name strategy when producing messages. The default value is `true`.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -6024,6 +6237,40 @@
                         "description_kind": "plain"
                       },
                       "max_items": 1
+                    },
+                    "tiered_storage": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Whether to enable the tiered storage functionality.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "local_cache": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "attributes": {
+                                "size": {
+                                  "type": "number",
+                                  "description": "Local cache size in bytes.",
+                                  "description_kind": "plain",
+                                  "optional": true
+                                }
+                              },
+                              "description": "Local cache configuration.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
+                          }
+                        },
+                        "description": "Tiered storage configuration.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
                     }
                   },
                   "description": "Kafka user configurable settings",
@@ -6070,6 +6317,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -6220,6 +6482,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -6408,6 +6671,12 @@
                         "string"
                       ],
                       "description": "Allow incoming connections from CIDR address block, e.g. '10.20.0.0/16'.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -6667,6 +6936,21 @@
                   "description_kind": "plain"
                 }
               },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                  "description_kind": "plain"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -6856,6 +7140,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -7047,6 +7332,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "static_ips": {
                       "type": "bool",
                       "description": "Use static public IP addresses.",
@@ -7192,6 +7483,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -7573,6 +7879,18 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "local_retention_bytes": {
+                      "type": "string",
+                      "description": "local.retention.bytes value. This field is temporarily disabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "local_retention_ms": {
+                      "type": "string",
+                      "description": "local.retention.ms value. This field is temporarily disabled.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "max_compaction_lag_ms": {
                       "type": "string",
                       "description": "max.compaction.lag.ms value",
@@ -7630,6 +7948,12 @@
                     "preallocate": {
                       "type": "bool",
                       "description": "preallocate value",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "remote_storage_enable": {
+                      "type": "bool",
+                      "description": "remote.storage.enable value",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -7860,6 +8184,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -8061,6 +8386,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "static_ips": {
                       "type": "bool",
                       "description": "Use static public IP addresses.",
@@ -8139,6 +8470,21 @@
                   "description_kind": "plain"
                 }
               },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                  "description_kind": "plain"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -8200,6 +8546,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -8419,6 +8766,12 @@
                     "project_to_fork_from": {
                       "type": "string",
                       "description": "Name of another project to fork a service from. This has effect only when a new service is being created.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
                       "description_kind": "plain",
                       "optional": true
                     },
@@ -8822,6 +9175,21 @@
                   "description_kind": "plain"
                 }
               },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                  "description_kind": "plain"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -8946,9 +9314,15 @@
           "version": 0,
           "block": {
             "attributes": {
+              "emit_backward_heartbeats_enabled": {
+                "type": "bool",
+                "description": "Whether to emit heartbeats to the direction opposite to the flow, i.e. to the source cluster. The default value is `false`.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "emit_heartbeats_enabled": {
                 "type": "bool",
-                "description": "Emit heartbeats enabled. The default value is `false`.",
+                "description": "Whether to emit heartbeats to the target cluster. The default value is `false`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -9093,6 +9467,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -9333,6 +9708,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -9393,7 +9774,7 @@
                           },
                           "method": {
                             "type": "string",
-                            "description": "The migration method to be used (currently supported only by Redis, MySQL and PostgreSQL service types).",
+                            "description": "The migration method to be used (currently supported only by Redis, Dragonfly, MySQL and PostgreSQL service types).",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -9750,6 +10131,21 @@
                   "description_kind": "plain"
                 }
               },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                  "description_kind": "plain"
+                }
+              },
               "timeouts": {
                 "nesting_mode": "single",
                 "block": {
@@ -9987,6 +10383,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -10224,6 +10621,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -10342,7 +10745,7 @@
                             "type": "bool",
                             "description": "Enables or disables OpenID Connect authentication for OpenSearch. When enabled, users can authenticate using OpenID Connect with an Identity Provider. The default value is `true`.",
                             "description_kind": "plain",
-                            "optional": true
+                            "required": true
                           },
                           "header": {
                             "type": "string",
@@ -10445,6 +10848,12 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "enable_security_audit": {
+                            "type": "bool",
+                            "description": "Enable/Disable security audit. The default value is `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "http_max_content_length": {
                             "type": "number",
                             "description": "Maximum content length for HTTP requests to the OpenSearch HTTP API, in bytes.",
@@ -10475,6 +10884,18 @@
                             "description_kind": "plain",
                             "optional": true
                           },
+                          "indices_memory_max_index_buffer_size": {
+                            "type": "number",
+                            "description": "Absolute value. Default is unbound. Doesn't work without indices.memory.index_buffer_size. Maximum amount of heap used for query cache, an absolute indices.memory.index_buffer_size maximum hard limit.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "indices_memory_min_index_buffer_size": {
+                            "type": "number",
+                            "description": "Absolute value. Default is 48mb. Doesn't work without indices.memory.index_buffer_size. Minimum amount of heap used for query cache, an absolute indices.memory.index_buffer_size minimal hard limit.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
                           "indices_queries_cache_size": {
                             "type": "number",
                             "description": "Percentage value. Default is 10%. Maximum amount of heap used for query cache. This is an expert setting. Too low value will decrease query performance and increase performance for other operations; too high value will cause issues with other OpenSearch functionality.",
@@ -10496,6 +10917,42 @@
                           "indices_recovery_max_concurrent_file_chunks": {
                             "type": "number",
                             "description": "Number of file chunks sent in parallel for each recovery. Defaults to 2.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ism_enabled": {
+                            "type": "bool",
+                            "description": "Specifies whether ISM is enabled or not. The default value is `true`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ism_history_enabled": {
+                            "type": "bool",
+                            "description": "Specifies whether audit history is enabled or not. The logs from ISM are automatically indexed to a logs document. The default value is `true`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ism_history_max_age": {
+                            "type": "number",
+                            "description": "The maximum age before rolling over the audit history index in hours. The default value is `24`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ism_history_max_docs": {
+                            "type": "number",
+                            "description": "The maximum number of documents before rolling over the audit history index. The default value is `2500000`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ism_history_rollover_check_period": {
+                            "type": "number",
+                            "description": "The time between rollover checks for the audit history index in hours. The default value is `8`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "ism_history_rollover_retention_period": {
+                            "type": "number",
+                            "description": "How long audit history indices are kept in days. The default value is `30`.",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -10591,6 +11048,116 @@
                             "description": "Size for the thread pool. See documentation for exact details. Do note this may have maximum value depending on CPU count - value is automatically lowered if set to higher than maximum value.",
                             "description_kind": "plain",
                             "optional": true
+                          }
+                        },
+                        "block_types": {
+                          "auth_failure_listeners": {
+                            "nesting_mode": "list",
+                            "block": {
+                              "block_types": {
+                                "internal_authentication_backend_limiting": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "allowed_tries": {
+                                        "type": "number",
+                                        "description": "The number of login attempts allowed before login is blocked.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "authentication_backend": {
+                                        "type": "string",
+                                        "description": "The internal backend. Enter `internal`.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "block_expiry_seconds": {
+                                        "type": "number",
+                                        "description": "The duration of time that login remains blocked after a failed login.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "max_blocked_clients": {
+                                        "type": "number",
+                                        "description": "The maximum number of blocked IP addresses.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "max_tracked_clients": {
+                                        "type": "number",
+                                        "description": "The maximum number of tracked IP addresses that have failed login.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "time_window_seconds": {
+                                        "type": "number",
+                                        "description": "The window of time in which the value for `allowed_tries` is enforced.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "description": "The type of rate limiting.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": ".",
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                },
+                                "ip_rate_limiting": {
+                                  "nesting_mode": "list",
+                                  "block": {
+                                    "attributes": {
+                                      "allowed_tries": {
+                                        "type": "number",
+                                        "description": "The number of login attempts allowed before login is blocked.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "block_expiry_seconds": {
+                                        "type": "number",
+                                        "description": "The duration of time that login remains blocked after a failed login.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "max_blocked_clients": {
+                                        "type": "number",
+                                        "description": "The maximum number of blocked IP addresses.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "max_tracked_clients": {
+                                        "type": "number",
+                                        "description": "The maximum number of tracked IP addresses that have failed login.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "time_window_seconds": {
+                                        "type": "number",
+                                        "description": "The window of time in which the value for `allowed_tries` is enforced.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      },
+                                      "type": {
+                                        "type": "string",
+                                        "description": "The type of rate limiting.",
+                                        "description_kind": "plain",
+                                        "optional": true
+                                      }
+                                    },
+                                    "description": "IP address rate limiting settings.",
+                                    "description_kind": "plain"
+                                  },
+                                  "max_items": 1
+                                }
+                              },
+                              "description": "Opensearch Security Plugin Settings.",
+                              "description_kind": "plain"
+                            },
+                            "max_items": 1
                           }
                         },
                         "description": "OpenSearch settings.",
@@ -10807,6 +11374,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -11252,6 +11834,7 @@
                 "type": "bool",
                 "description": "This is a boolean flag that determines whether an invitation was accepted or not by the user. `false` value means that the invitation was sent to the user but not yet accepted. `true` means that the user accepted the invitation and now a member of an organization.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "create_time": {
@@ -11270,6 +11853,7 @@
                 "type": "string",
                 "description": "The email address of the user who sent an invitation to the user.",
                 "description_kind": "plain",
+                "deprecated": true,
                 "computed": true
               },
               "organization_id": {
@@ -11280,9 +11864,15 @@
               },
               "user_email": {
                 "type": "string",
-                "description": "This is a user email address that first will be invited, and after accepting an invitation, they become a member of the organization. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "This is a user email address that first will be invited, and after accepting an invitation, they become a member of the organization. Should be lowercase. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
+              },
+              "user_id": {
+                "type": "string",
+                "description": "The unique organization user ID",
+                "description_kind": "plain",
+                "computed": true
               }
             },
             "block_types": {
@@ -11321,7 +11911,8 @@
               }
             },
             "description": "\nThe Organization User resource allows the creation and management of an Aiven Organization User.\n\nDuring the creation of `aiven_organization_user`resource, an email invitation will be sent\nto a user using `user_email` address. If the user accepts an invitation, they will become\na member of the organization. The deletion of `aiven_organization_user` will not only\ndelete the invitation if one was sent but not yet accepted by the user, it will also \neliminate the member from the organization if one has accepted an invitation previously.\n",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_organization_user_group": {
@@ -11339,6 +11930,12 @@
                 "description": "The organization user group description. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "group_id": {
+                "type": "string",
+                "description": "The unique organization user group ID",
+                "description_kind": "plain",
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -11507,6 +12104,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -11823,6 +12421,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -11907,7 +12511,7 @@
                           },
                           "method": {
                             "type": "string",
-                            "description": "The migration method to be used (currently supported only by Redis, MySQL and PostgreSQL service types).",
+                            "description": "The migration method to be used (currently supported only by Redis, Dragonfly, MySQL and PostgreSQL service types).",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -12246,6 +12850,46 @@
                       },
                       "max_items": 1
                     },
+                    "pg_qualstats": {
+                      "nesting_mode": "list",
+                      "block": {
+                        "attributes": {
+                          "enabled": {
+                            "type": "bool",
+                            "description": "Enable / Disable pg_qualstats. The default value is `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "min_err_estimate_num": {
+                            "type": "number",
+                            "description": "Error estimation num threshold to save quals. The default value is `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "min_err_estimate_ratio": {
+                            "type": "number",
+                            "description": "Error estimation ratio threshold to save quals. The default value is `0`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "track_constants": {
+                            "type": "bool",
+                            "description": "Enable / Disable pg_qualstats constants tracking. The default value is `true`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          },
+                          "track_pg_catalog": {
+                            "type": "bool",
+                            "description": "Track quals on system catalogs too. The default value is `false`.",
+                            "description_kind": "plain",
+                            "optional": true
+                          }
+                        },
+                        "description": "System-wide settings for the pg_qualstats extension.",
+                        "description_kind": "plain"
+                      },
+                      "max_items": 1
+                    },
                     "pgbouncer": {
                       "nesting_mode": "list",
                       "block": {
@@ -12324,7 +12968,7 @@
                             "optional": true
                           }
                         },
-                        "description": "PGLookout settings.",
+                        "description": "System-wide settings for pglookout.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -12419,12 +13063,12 @@
                         "attributes": {
                           "max_background_workers": {
                             "type": "number",
-                            "description": "The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time.",
+                            "description": "The number of background workers for timescaledb operations. You should configure this setting to the sum of your number of databases and the total number of concurrent background workers you want running at any given point in time. The default value is `16`.",
                             "description_kind": "plain",
                             "optional": true
                           }
                         },
-                        "description": "TimescaleDB extension configuration values.",
+                        "description": "System-wide settings for the timescaledb extension.",
                         "description_kind": "plain"
                       },
                       "max_items": 1
@@ -12474,6 +13118,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -12787,7 +13446,7 @@
                   "set",
                   "string"
                 ],
-                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability. It is  good practice to keep this up-to-date to be aware of any potential issues with your project.",
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability. It is a good practice to keep this up-to-date to be aware of any potential issues with your project.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -12871,7 +13530,7 @@
               },
               "email": {
                 "type": "string",
-                "description": "Email address of the user. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "Email address of the user. Should be lowercase. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -12930,7 +13589,8 @@
               }
             },
             "description": "The Project User resource allows the creation and management of Aiven Project Users.",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_project_vpc": {
@@ -13030,6 +13690,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -13299,6 +13960,12 @@
                       "description_kind": "plain",
                       "optional": true
                     },
+                    "service_log": {
+                      "type": "bool",
+                      "description": "Store logs for the service so that they are available in the HTTP API and console.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
                     "service_to_fork_from": {
                       "type": "string",
                       "description": "Name of another service to fork from. This has effect only when a new service is being created.",
@@ -13359,7 +14026,7 @@
                           },
                           "method": {
                             "type": "string",
-                            "description": "The migration method to be used (currently supported only by Redis, MySQL and PostgreSQL service types).",
+                            "description": "The migration method to be used (currently supported only by Redis, Dragonfly, MySQL and PostgreSQL service types).",
                             "description_kind": "plain",
                             "optional": true
                           },
@@ -13505,6 +14172,21 @@
                     }
                   },
                   "description": "Tags are key-value pairs that allow you to categorize services.",
+                  "description_kind": "plain"
+                }
+              },
+              "tech_emails": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "email": {
+                      "type": "string",
+                      "description": "An email address to contact for technical issues",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                   "description_kind": "plain"
                 }
               },
@@ -14428,7 +15110,7 @@
               },
               "endpoint_type": {
                 "type": "string",
-                "description": "Type of the service integration endpoint. Possible values: `datadog`, `prometheus`, `rsyslog`, `external_elasticsearch_logs`, `external_opensearch_logs`, `external_aws_cloudwatch_logs`, `external_google_cloud_logging`, `external_kafka`, `jolokia`, `external_schema_registry`, `external_aws_cloudwatch_metrics`",
+                "description": "Type of the service integration endpoint. Possible values: `datadog`, `prometheus`, `rsyslog`, `external_elasticsearch_logs`, `external_opensearch_logs`, `external_aws_cloudwatch_logs`, `external_google_cloud_logging`, `external_kafka`, `jolokia`, `external_schema_registry`, `external_aws_cloudwatch_metrics`, `external_google_cloud_bigquery`, `external_postgresql`",
                 "description_kind": "plain",
                 "required": true
               },
@@ -14625,6 +15307,28 @@
                 },
                 "max_items": 1
               },
+              "external_google_cloud_bigquery": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "project_id": {
+                      "type": "string",
+                      "description": "GCP project id.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "service_account_credentials": {
+                      "type": "string",
+                      "description": "This is a JSON object with the fields documented in https://cloud.google.com/iam/docs/creating-managing-service-account-keys .",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "ExternalGoogleCloudBigquery user configurable settings",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
               "external_google_cloud_logging_user_config": {
                 "nesting_mode": "list",
                 "block": {
@@ -14754,6 +15458,53 @@
                     }
                   },
                   "description": "ExternalOpensearchLogs user configurable settings",
+                  "description_kind": "plain"
+                },
+                "max_items": 1
+              },
+              "external_postgresql": {
+                "nesting_mode": "list",
+                "block": {
+                  "attributes": {
+                    "host": {
+                      "type": "string",
+                      "description": "Hostname or IP address of the server.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Password.",
+                      "description_kind": "plain",
+                      "required": true,
+                      "sensitive": true
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Port number of the server.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "ssl_mode": {
+                      "type": "string",
+                      "description": "SSL Mode. The default value is `verify-full`.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "ssl_root_cert": {
+                      "type": "string",
+                      "description": "SSL Root Cert.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "User name.",
+                      "description_kind": "plain",
+                      "required": true
+                    }
+                  },
+                  "description": "ExternalPostgresql user configurable settings",
                   "description_kind": "plain"
                 },
                 "max_items": 1
@@ -15329,7 +16080,8 @@
               }
             },
             "description": "The Account Authentication data source provides information about the existing Aiven Account Authentication.",
-            "description_kind": "plain"
+            "description_kind": "plain",
+            "deprecated": true
           }
         },
         "aiven_account_team": {
@@ -15419,7 +16171,7 @@
               },
               "user_email": {
                 "type": "string",
-                "description": "Is a user email address that first will be invited, and after accepting an invitation, he or she becomes a member of a team. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "Is a user email address that first will be invited, and after accepting an invitation, he or she becomes a member of a team. Should be lowercase. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
               }
@@ -15908,6 +16660,7 @@
                           }
                         ]
                       ],
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "service_to_join_with": "string",
                       "static_ips": "bool"
@@ -15931,6 +16684,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -16096,6 +16850,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -16227,6 +16995,7 @@
                           {
                             "clickhouse": "bool",
                             "clickhouse_https": "bool",
+                            "clickhouse_mysql": "bool",
                             "prometheus": "bool"
                           }
                         ]
@@ -16238,6 +17007,7 @@
                           {
                             "clickhouse": "bool",
                             "clickhouse_https": "bool",
+                            "clickhouse_mysql": "bool",
                             "prometheus": "bool"
                           }
                         ]
@@ -16250,10 +17020,12 @@
                           {
                             "clickhouse": "bool",
                             "clickhouse_https": "bool",
+                            "clickhouse_mysql": "bool",
                             "prometheus": "bool"
                           }
                         ]
                       ],
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -16276,6 +17048,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -16441,6 +17214,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -16633,6 +17420,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -16699,6 +17487,10 @@
                   [
                     "object",
                     {
+                      "additional_backup_regions": [
+                        "list",
+                        "string"
+                      ],
                       "flink_version": "string",
                       "ip_filter": [
                         "list",
@@ -16728,7 +17520,9 @@
                             "prometheus": "bool"
                           }
                         ]
-                      ]
+                      ],
+                      "service_log": "bool",
+                      "static_ips": "bool"
                     }
                   ]
                 ],
@@ -16858,6 +17652,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -17180,6 +17988,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -17439,6 +18248,7 @@
                         ]
                       ],
                       "recovery_basebackup_name": "string",
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "smtp_server": [
                         "list",
@@ -17457,6 +18267,7 @@
                         ]
                       ],
                       "static_ips": "bool",
+                      "unified_alerting_enabled": "bool",
                       "user_auto_assign_org": "bool",
                       "user_auto_assign_org_role": "string",
                       "viewers_can_edit": "bool"
@@ -17592,6 +18403,20 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "termination_protection": {
                 "type": "bool",
                 "description": "Prevents the service from being deleted. It is recommended to set this to `true` for all production services to prevent unintentional service deletion. This does not shield against deleting databases or topics but for services with backups much of the content can at least be restored from backup in case accidental deletion is done.",
@@ -17626,6 +18451,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -17762,6 +18588,7 @@
                         ]
                       ],
                       "recovery_basebackup_name": "string",
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -17887,6 +18714,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -18023,6 +18864,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -18106,6 +18948,7 @@
                         "list",
                         "string"
                       ],
+                      "aiven_kafka_topic_messages": "bool",
                       "custom_domain": "string",
                       "ip_filter": [
                         "list",
@@ -18146,6 +18989,8 @@
                             "log_flush_interval_ms": "number",
                             "log_index_interval_bytes": "number",
                             "log_index_size_max_bytes": "number",
+                            "log_local_retention_bytes": "number",
+                            "log_local_retention_ms": "number",
                             "log_message_downconversion_enable": "bool",
                             "log_message_timestamp_difference_max_ms": "number",
                             "log_message_timestamp_type": "string",
@@ -18166,7 +19011,12 @@
                             "producer_purgatory_purge_interval_requests": "number",
                             "replica_fetch_max_bytes": "number",
                             "replica_fetch_response_max_bytes": "number",
+                            "sasl_oauthbearer_expected_audience": "string",
+                            "sasl_oauthbearer_expected_issuer": "string",
+                            "sasl_oauthbearer_jwks_endpoint_url": "string",
+                            "sasl_oauthbearer_sub_claim_name": "string",
                             "socket_request_max_bytes": "number",
+                            "transaction_partition_verification_enable": "bool",
                             "transaction_remove_expired_transaction_cleanup_interval_ms": "number",
                             "transaction_state_log_segment_bytes": "number"
                           }
@@ -18217,6 +19067,7 @@
                             "consumer_enable_auto_commit": "bool",
                             "consumer_request_max_bytes": "number",
                             "consumer_request_timeout_ms": "number",
+                            "name_strategy_validation": "bool",
                             "producer_acks": "string",
                             "producer_compression_type": "string",
                             "producer_linger_ms": "number",
@@ -18277,7 +19128,26 @@
                           }
                         ]
                       ],
-                      "static_ips": "bool"
+                      "service_log": "bool",
+                      "static_ips": "bool",
+                      "tiered_storage": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "enabled": "bool",
+                            "local_cache": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "size": "number"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
                     }
                   ]
                 ],
@@ -18410,6 +19280,20 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "termination_protection": {
                 "type": "bool",
                 "description": "Prevents the service from being deleted. It is recommended to set this to `true` for all production services to prevent unintentional service deletion. This does not shield against deleting databases or topics but for services with backups much of the content can at least be restored from backup in case accidental deletion is done.",
@@ -18495,6 +19379,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -18639,6 +19524,7 @@
                           }
                         ]
                       ],
+                      "service_log": "bool",
                       "static_ips": "bool"
                     }
                   ]
@@ -18763,6 +19649,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -18893,6 +19793,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -19000,6 +19901,7 @@
                           }
                         ]
                       ],
+                      "service_log": "bool",
                       "static_ips": "bool"
                     }
                   ]
@@ -19124,6 +20026,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -19320,6 +20236,8 @@
                       "flush_messages": "string",
                       "flush_ms": "string",
                       "index_interval_bytes": "string",
+                      "local_retention_bytes": "string",
+                      "local_retention_ms": "string",
                       "max_compaction_lag_ms": "string",
                       "max_message_bytes": "string",
                       "message_downconversion_enable": "bool",
@@ -19330,6 +20248,7 @@
                       "min_compaction_lag_ms": "string",
                       "min_insync_replicas": "string",
                       "preallocate": "bool",
+                      "remote_storage_enable": "bool",
                       "retention_bytes": "string",
                       "retention_ms": "string",
                       "segment_bytes": "string",
@@ -19489,6 +20408,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -19577,6 +20497,7 @@
                       ],
                       "m3_version": "string",
                       "m3aggregator_version": "string",
+                      "service_log": "bool",
                       "static_ips": "bool"
                     }
                   ]
@@ -19704,6 +20625,20 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "termination_protection": {
                 "type": "bool",
                 "description": "Prevents the service from being deleted. It is recommended to set this to `true` for all production services to prevent unintentional service deletion. This does not shield against deleting databases or topics but for services with backups much of the content can at least be restored from backup in case accidental deletion is done.",
@@ -19738,6 +20673,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -19967,6 +20903,7 @@
                           }
                         ]
                       ],
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -20095,6 +21032,20 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "termination_protection": {
                 "type": "bool",
                 "description": "Prevents the service from being deleted. It is recommended to set this to `true` for all production services to prevent unintentional service deletion. This does not shield against deleting databases or topics but for services with backups much of the content can at least be restored from backup in case accidental deletion is done.",
@@ -20156,9 +21107,15 @@
           "version": 0,
           "block": {
             "attributes": {
+              "emit_backward_heartbeats_enabled": {
+                "type": "bool",
+                "description": "Whether to emit heartbeats to the direction opposite to the flow, i.e. to the source cluster. The default value is `false`.",
+                "description_kind": "plain",
+                "computed": true
+              },
               "emit_heartbeats_enabled": {
                 "type": "bool",
-                "description": "Emit heartbeats enabled. The default value is `false`.",
+                "description": "Whether to emit heartbeats to the target cluster. The default value is `false`.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20268,6 +21225,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -20464,6 +21422,7 @@
                         ]
                       ],
                       "recovery_target_time": "string",
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -20577,6 +21536,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -20719,6 +21692,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -20875,20 +21849,66 @@
                           {
                             "action_auto_create_index_enabled": "bool",
                             "action_destructive_requires_name": "bool",
+                            "auth_failure_listeners": [
+                              "list",
+                              [
+                                "object",
+                                {
+                                  "internal_authentication_backend_limiting": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "allowed_tries": "number",
+                                        "authentication_backend": "string",
+                                        "block_expiry_seconds": "number",
+                                        "max_blocked_clients": "number",
+                                        "max_tracked_clients": "number",
+                                        "time_window_seconds": "number",
+                                        "type": "string"
+                                      }
+                                    ]
+                                  ],
+                                  "ip_rate_limiting": [
+                                    "list",
+                                    [
+                                      "object",
+                                      {
+                                        "allowed_tries": "number",
+                                        "block_expiry_seconds": "number",
+                                        "max_blocked_clients": "number",
+                                        "max_tracked_clients": "number",
+                                        "time_window_seconds": "number",
+                                        "type": "string"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ],
                             "cluster_max_shards_per_node": "number",
                             "cluster_routing_allocation_node_concurrent_recoveries": "number",
                             "email_sender_name": "string",
                             "email_sender_password": "string",
                             "email_sender_username": "string",
+                            "enable_security_audit": "bool",
                             "http_max_content_length": "number",
                             "http_max_header_size": "number",
                             "http_max_initial_line_length": "number",
                             "indices_fielddata_cache_size": "number",
                             "indices_memory_index_buffer_size": "number",
+                            "indices_memory_max_index_buffer_size": "number",
+                            "indices_memory_min_index_buffer_size": "number",
                             "indices_queries_cache_size": "number",
                             "indices_query_bool_max_clause_count": "number",
                             "indices_recovery_max_bytes_per_sec": "number",
                             "indices_recovery_max_concurrent_file_chunks": "number",
+                            "ism_enabled": "bool",
+                            "ism_history_enabled": "bool",
+                            "ism_history_max_age": "number",
+                            "ism_history_max_docs": "number",
+                            "ism_history_rollover_check_period": "number",
+                            "ism_history_rollover_retention_period": "number",
                             "override_main_response_version": "bool",
                             "reindex_remote_whitelist": [
                               "list",
@@ -20972,6 +21992,7 @@
                           }
                         ]
                       ],
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -21085,6 +22106,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -21324,12 +22359,6 @@
           "version": 0,
           "block": {
             "attributes": {
-              "accepted": {
-                "type": "bool",
-                "description": "This is a boolean flag that determines whether an invitation was accepted or not by the user. `false` value means that the invitation was sent to the user but not yet accepted. `true` means that the user accepted the invitation and now a member of an organization.",
-                "description_kind": "plain",
-                "computed": true
-              },
               "create_time": {
                 "type": "string",
                 "description": "Time of creation",
@@ -21342,23 +22371,23 @@
                 "optional": true,
                 "computed": true
               },
-              "invited_by": {
-                "type": "string",
-                "description": "The email address of the user who sent an invitation to the user.",
-                "description_kind": "plain",
-                "computed": true
-              },
               "organization_id": {
                 "type": "string",
-                "description": "The unique organization ID. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "The unique organization ID.",
                 "description_kind": "plain",
                 "required": true
               },
               "user_email": {
                 "type": "string",
-                "description": "This is a user email address that first will be invited, and after accepting an invitation, they become a member of the organization. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "This is a user email address",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
+              },
+              "user_id": {
+                "type": "string",
+                "description": "The unique organization user ID",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description": "The Organization User data source provides information about the existing Aiven Organization User.",
@@ -21378,6 +22407,12 @@
               "description": {
                 "type": "string",
                 "description": "The organization user group description. This property cannot be changed, doing so forces recreation of the resource.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "group_id": {
+                "type": "string",
+                "description": "The unique organization user group ID",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -21478,6 +22513,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -21667,6 +22703,19 @@
                           }
                         ]
                       ],
+                      "pg_qualstats": [
+                        "list",
+                        [
+                          "object",
+                          {
+                            "enabled": "bool",
+                            "min_err_estimate_num": "number",
+                            "min_err_estimate_ratio": "number",
+                            "track_constants": "bool",
+                            "track_pg_catalog": "bool"
+                          }
+                        ]
+                      ],
                       "pg_read_replica": "bool",
                       "pg_service_to_fork_from": "string",
                       "pg_stat_monitor_enable": "bool",
@@ -21735,6 +22784,7 @@
                         ]
                       ],
                       "recovery_target_time": "string",
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "shared_buffers_percentage": "number",
                       "static_ips": "bool",
@@ -21861,6 +22911,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -22089,7 +23153,7 @@
                   "set",
                   "string"
                 ],
-                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability. It is  good practice to keep this up-to-date to be aware of any potential issues with your project.",
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability. It is a good practice to keep this up-to-date to be aware of any potential issues with your project.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -22116,7 +23180,7 @@
               },
               "email": {
                 "type": "string",
-                "description": "Email address of the user. This property cannot be changed, doing so forces recreation of the resource.",
+                "description": "Email address of the user. Should be lowercase. This property cannot be changed, doing so forces recreation of the resource.",
                 "description_kind": "plain",
                 "required": true
               },
@@ -22211,6 +23275,7 @@
                     "object",
                     {
                       "component": "string",
+                      "connection_uri": "string",
                       "host": "string",
                       "kafka_authentication_method": "string",
                       "port": "number",
@@ -22389,6 +23454,7 @@
                       "redis_pubsub_client_output_buffer_limit": "number",
                       "redis_ssl": "bool",
                       "redis_timeout": "number",
+                      "service_log": "bool",
                       "service_to_fork_from": "string",
                       "static_ips": "bool"
                     }
@@ -22484,6 +23550,20 @@
                   ]
                 ],
                 "description": "Tags are key-value pairs that allow you to categorize services.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "tech_emails": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "email": "string"
+                    }
+                  ]
+                ],
+                "description": "Defines the email addresses that will receive alerts about upcoming maintenance updates or warnings about service instability.",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -23065,7 +24145,7 @@
               },
               "endpoint_type": {
                 "type": "string",
-                "description": "Type of the service integration endpoint. Possible values: `datadog`, `prometheus`, `rsyslog`, `external_elasticsearch_logs`, `external_opensearch_logs`, `external_aws_cloudwatch_logs`, `external_google_cloud_logging`, `external_kafka`, `jolokia`, `external_schema_registry`, `external_aws_cloudwatch_metrics`",
+                "description": "Type of the service integration endpoint. Possible values: `datadog`, `prometheus`, `rsyslog`, `external_elasticsearch_logs`, `external_opensearch_logs`, `external_aws_cloudwatch_logs`, `external_google_cloud_logging`, `external_kafka`, `jolokia`, `external_schema_registry`, `external_aws_cloudwatch_metrics`, `external_google_cloud_bigquery`, `external_postgresql`",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -23118,6 +24198,21 @@
                   ]
                 ],
                 "description": "ExternalElasticsearchLogs user configurable settings",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_google_cloud_bigquery": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "project_id": "string",
+                      "service_account_credentials": "string"
+                    }
+                  ]
+                ],
+                "description": "ExternalGoogleCloudBigquery user configurable settings",
                 "description_kind": "plain",
                 "computed": true
               },
@@ -23174,6 +24269,25 @@
                   ]
                 ],
                 "description": "ExternalOpensearchLogs user configurable settings",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "external_postgresql": {
+                "type": [
+                  "list",
+                  [
+                    "object",
+                    {
+                      "host": "string",
+                      "password": "string",
+                      "port": "number",
+                      "ssl_mode": "string",
+                      "ssl_root_cert": "string",
+                      "username": "string"
+                    }
+                  ]
+                ],
+                "description": "ExternalPostgresql user configurable settings",
                 "description_kind": "plain",
                 "computed": true
               },

@@ -878,6 +878,11 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "etag": {
+                "type": "string",
+                "description_kind": "plain",
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -1839,6 +1844,61 @@
                 "description": "The URL to the issue label.",
                 "description_kind": "plain",
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "github_issue_labels": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "repository": {
+                "type": "string",
+                "description": "The GitHub repository.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "block_types": {
+              "label": {
+                "nesting_mode": "set",
+                "block": {
+                  "attributes": {
+                    "color": {
+                      "type": "string",
+                      "description": "A 6 character hex code, without the leading '#', identifying the color of the label.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A short description of the label.",
+                      "description_kind": "plain",
+                      "optional": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the label.",
+                      "description_kind": "plain",
+                      "required": true
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The URL to the issue label.",
+                      "description_kind": "plain",
+                      "computed": true
+                    }
+                  },
+                  "description": "List of labels",
+                  "description_kind": "plain"
+                }
               }
             },
             "description_kind": "plain"
@@ -3130,6 +3190,12 @@
                 "description": "Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "web_commit_signoff_required": {
+                "type": "bool",
+                "description": "Require contributors to sign off on web-based commits. Defaults to 'false'.",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "block_types": {
@@ -3560,6 +3626,12 @@
           "version": 0,
           "block": {
             "attributes": {
+              "can_admins_bypass": {
+                "type": "bool",
+                "description": "Can Admins bypass deployment protections",
+                "description_kind": "plain",
+                "optional": true
+              },
               "environment": {
                 "type": "string",
                 "description": "The name of the environment.",

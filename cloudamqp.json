@@ -29,6 +29,32 @@
         }
       },
       "resource_schemas": {
+        "cloudamqp_account_action": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "action": {
+                "type": "string",
+                "description": "The action to perform on the node",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "Instance identifier",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "cloudamqp_alarm": {
           "version": 0,
           "block": {
@@ -800,6 +826,18 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep time in seconds between retries for plugins",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time in seconds for plugins",
+                "description_kind": "plain",
+                "optional": true
+              },
               "version": {
                 "type": "string",
                 "description": "The version of the plugin",
@@ -849,6 +887,18 @@
                 "description": "Required version of RabbitMQ",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep time in seconds between retries for plugins",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time in seconds for plugins",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -1210,6 +1260,92 @@
             "description_kind": "plain"
           }
         },
+        "cloudamqp_vpc_connect": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "active_zones": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Covering availability zones used when creating an endpoint from other VPC. [AWS]",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "allowed_principals": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of allowed prinicpals used by AWS",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_projects": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of allowed projects used by GCP",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "approved_subscriptions": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of approved subscriptions used by Azure",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "instance_id": {
+                "type": "number",
+                "description": "The CloudAMQP instance identifier",
+                "description_kind": "plain",
+                "required": true
+              },
+              "region": {
+                "type": "string",
+                "description": "The region where the CloudAMQP instance is hosted",
+                "description_kind": "plain",
+                "required": true
+              },
+              "service_name": {
+                "type": "string",
+                "description": "Service name (alias for Azure) of the PrivateLink.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep in seconds between retries when enable PrivateLink",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "status": {
+                "type": "string",
+                "description": "Status of the Private Service Connect [enabled, pending, disabled]",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout in seconds when enable PrivateLink",
+                "description_kind": "plain",
+                "optional": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
         "cloudamqp_vpc_gcp_peering": {
           "version": 0,
           "block": {
@@ -1238,6 +1374,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep in seconds between retries when requesting or reading peering",
+                "description_kind": "plain",
+                "optional": true
+              },
               "state": {
                 "type": "string",
                 "description": "VPC peering state",
@@ -1249,6 +1391,12 @@
                 "description": "VPC peering state details",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time (seconds) before retries times out",
+                "description_kind": "plain",
+                "optional": true
               },
               "vpc_id": {
                 "type": "string",
@@ -1804,6 +1952,8 @@
                       "description": "string",
                       "enabled": "bool",
                       "name": "string",
+                      "sleep": "number",
+                      "timeout": "number",
                       "version": "string"
                     }
                   ]
@@ -1839,7 +1989,9 @@
                     {
                       "description": "string",
                       "name": "string",
-                      "require": "string"
+                      "require": "string",
+                      "sleep": "number",
+                      "timeout": "number"
                     }
                   ]
                 ],
@@ -1909,6 +2061,18 @@
                 "description": "VPC network uri",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "sleep": {
+                "type": "number",
+                "description": "Configurable sleep in seconds between retries when reading peering",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Configurable timeout time (seconds) before retries times out",
+                "description_kind": "plain",
+                "optional": true
               },
               "vpc_id": {
                 "type": "string",

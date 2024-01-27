@@ -151,15 +151,15 @@
               "optional": true,
               "sensitive": true
             },
-            "okta_url": {
-              "type": "string",
-              "description": "The URL of the Okta server. e.g. https://example.okta.com. Can also be sourced from the `SNOWFLAKE_OKTA_URL` environment variable.",
+            "ocsp_fail_open": {
+              "type": "bool",
+              "description": "True represents OCSP fail open mode. False represents OCSP fail closed mode. Fail open true by default. Can also be sourced from the `SNOWFLAKE_OCSP_FAIL_OPEN` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
-            "oscp_fail_open": {
-              "type": "bool",
-              "description": "True represents OCSP fail open mode. False represents OCSP fail closed mode. Fail open true by default. Can also be sourced from the `SNOWFLAKE_OCSP_FAIL_OPEN` environment variable.",
+            "okta_url": {
+              "type": "string",
+              "description": "The URL of the Okta server. e.g. https://example.okta.com. Can also be sourced from the `SNOWFLAKE_OKTA_URL` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
@@ -282,7 +282,7 @@
             },
             "validate_default_parameters": {
               "type": "bool",
-              "description": "If true, disables the validation checks for Database, Schema, Warehouse and Role at the time a connection is established. Can also be sourced from the `SNOWFLAKE_VALIDATE_DEFAULT_PARAMETERS` environment variable.",
+              "description": "True by default. If false, disables the validation checks for Database, Schema, Warehouse and Role at the time a connection is established. Can also be sourced from the `SNOWFLAKE_VALIDATE_DEFAULT_PARAMETERS` environment variable.",
               "description_kind": "plain",
               "optional": true
             },
@@ -1101,7 +1101,7 @@
                 ],
                 "description": "List of email addresses that should receive notifications.",
                 "description_kind": "plain",
-                "required": true
+                "optional": true
               },
               "comment": {
                 "type": "string",
@@ -2468,7 +2468,7 @@
                     },
                     "object_type": {
                       "type": "string",
-                      "description": "The object type of the account object on which privileges will be granted. Valid values are: USER | RESOURCE MONITOR | WAREHOUSE | DATABASE | INTEGRATION | FAILOVER GROUP | REPLICATION GROUP",
+                      "description": "The object type of the account object on which privileges will be granted. Valid values are: USER | RESOURCE MONITOR | WAREHOUSE | DATABASE | INTEGRATION | FAILOVER GROUP | REPLICATION GROUP | EXTERNAL VOLUME",
                       "description_kind": "plain",
                       "required": true
                     }
@@ -2518,7 +2518,7 @@
                     },
                     "object_type": {
                       "type": "string",
-                      "description": "The object type of the schema object on which privileges will be granted. Valid values are: ALERT | DYNAMIC TABLE | EVENT TABLE | FILE FORMAT | FUNCTION | PROCEDURE | SECRET | SEQUENCE | PIPE | MASKING POLICY | PASSWORD POLICY | ROW ACCESS POLICY | SESSION POLICY | TAG | STAGE | STREAM | TABLE | EXTERNAL TABLE | TASK | VIEW | MATERIALIZED VIEW",
+                      "description": "The object type of the schema object on which privileges will be granted. Valid values are: ALERT | DYNAMIC TABLE | EVENT TABLE | FILE FORMAT | FUNCTION | ICEBERG TABLE | PROCEDURE | SECRET | SEQUENCE | PIPE | MASKING POLICY | PASSWORD POLICY | ROW ACCESS POLICY | SESSION POLICY | TAG | STAGE | STREAM | TABLE | EXTERNAL TABLE | TASK | VIEW | MATERIALIZED VIEW",
                       "description_kind": "plain",
                       "optional": true
                     }
@@ -2542,7 +2542,7 @@
                           },
                           "object_type_plural": {
                             "type": "string",
-                            "description": "The plural object type of the schema object on which privileges will be granted. Valid values are: ALERTS | DYNAMIC TABLES | EVENT TABLES | FILE FORMATS | FUNCTIONS | PROCEDURES | SECRETS | SEQUENCES | PIPES | MASKING POLICIES | PASSWORD POLICIES | ROW ACCESS POLICIES | SESSION POLICIES | TAGS | STAGES | STREAMS | TABLES | EXTERNAL TABLES | TASKS | VIEWS | MATERIALIZED VIEWS",
+                            "description": "The plural object type of the schema object on which privileges will be granted. Valid values are: ALERTS | DYNAMIC TABLES | EVENT TABLES | FILE FORMATS | FUNCTIONS | ICEBERG TABLES | PROCEDURES | SECRETS | SEQUENCES | PIPES | MASKING POLICIES | PASSWORD POLICIES | ROW ACCESS POLICIES | SESSION POLICIES | TAGS | STAGES | STREAMS | TABLES | EXTERNAL TABLES | TASKS | VIEWS | MATERIALIZED VIEWS",
                             "description_kind": "plain",
                             "required": true
                           }
@@ -2570,7 +2570,7 @@
                           },
                           "object_type_plural": {
                             "type": "string",
-                            "description": "The plural object type of the schema object on which privileges will be granted. Valid values are: ALERTS | DYNAMIC TABLES | EVENT TABLES | FILE FORMATS | FUNCTIONS | PROCEDURES | SECRETS | SEQUENCES | PIPES | MASKING POLICIES | PASSWORD POLICIES | ROW ACCESS POLICIES | SESSION POLICIES | TAGS | STAGES | STREAMS | TABLES | EXTERNAL TABLES | TASKS | VIEWS | MATERIALIZED VIEWS",
+                            "description": "The plural object type of the schema object on which privileges will be granted. Valid values are: ALERTS | DYNAMIC TABLES | EVENT TABLES | FILE FORMATS | FUNCTIONS | ICEBERG TABLES | PROCEDURES | SECRETS | SEQUENCES | PIPES | MASKING POLICIES | PASSWORD POLICIES | ROW ACCESS POLICIES | SESSION POLICIES | TAGS | STAGES | STREAMS | TABLES | EXTERNAL TABLES | TASKS | VIEWS | MATERIALIZED VIEWS",
                             "description_kind": "plain",
                             "required": true
                           }
@@ -3455,6 +3455,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "history": {
+                "type": "number",
+                "description": "Specifies the number of the most recent passwords that Snowflake stores. These stored passwords cannot be repeated when a user updates their password value. The current password value does not count towards the history. When you increase the history value, Snowflake saves the previous values. When you decrease the value, Snowflake saves the stored values up to that value that is set. For example, if the history value is 8 and you change the history value to 3, Snowflake stores the most recent 3 passwords and deletes the 5 older password values from the history. Default: 0 Max: 24",
+                "description_kind": "plain",
+                "optional": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -3488,6 +3494,12 @@
               "max_retries": {
                 "type": "number",
                 "description": "Specifies the maximum number of attempts to enter a password before being locked out. Supported range: 1 to 10, inclusive. Default: 5",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "min_age_days": {
+                "type": "number",
+                "description": "Specifies the number of days the user must wait before a recently changed password can be changed again. Supported range: 0 to 999, inclusive. Default: 0",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -6170,6 +6182,12 @@
                 "description_kind": "plain",
                 "required": true
               },
+              "suspend_task_after_num_failures": {
+                "type": "number",
+                "description": "Specifies the number of consecutive failed task runs after which the current task is suspended automatically. The default is 0 (no automatic suspension).",
+                "description_kind": "plain",
+                "optional": true
+              },
               "user_task_managed_initial_warehouse_size": {
                 "type": "string",
                 "description": "Specifies the size of the compute resources to provision for the first run of the task, before a task history is available for Snowflake to determine an ideal size. Once a task has successfully completed a few runs, Snowflake ignores this parameter setting. (Conflicts with warehouse)",
@@ -6272,6 +6290,52 @@
                 "optional": true
               }
             },
+            "description_kind": "plain",
+            "deprecated": true
+          }
+        },
+        "snowflake_unsafe_execute": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "execute": {
+                "type": "string",
+                "description": "SQL statement to execute. Forces recreation of resource on change.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "query": {
+                "type": "string",
+                "description": "Optional SQL statement to do a read. Invoked after creation and every time it is changed.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "query_results": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of key-value maps (text to text) retrieved after executing read query. Will be empty if the query results in an error.",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "revert": {
+                "type": "string",
+                "description": "SQL statement to revert the execute statement. Invoked when resource is being destroyed.",
+                "description_kind": "plain",
+                "required": true
+              }
+            },
+            "description": "Experimental resource used for testing purposes only. Allows to execute ANY SQL statement.",
             "description_kind": "plain",
             "deprecated": true
           }

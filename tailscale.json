@@ -124,7 +124,7 @@
               },
               "key_expiry_disabled": {
                 "type": "bool",
-                "description": "Determines whether or not the device's key will expire",
+                "description": "Determines whether or not the device's key will expire. Defaults to `false`.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -274,13 +274,13 @@
               },
               "description": {
                 "type": "string",
-                "description": "A description of the key consisting of alphanumeric characters.",
+                "description": "A description of the key consisting of alphanumeric characters. Defaults to `\"\"`.",
                 "description_kind": "plain",
                 "optional": true
               },
               "ephemeral": {
                 "type": "bool",
-                "description": "Indicates if the key is ephemeral.",
+                "description": "Indicates if the key is ephemeral. Defaults to `false`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -292,7 +292,7 @@
               },
               "expiry": {
                 "type": "number",
-                "description": "The expiry of the key in seconds",
+                "description": "The expiry of the key in seconds. Defaults to `7776000` (90 days).",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -300,6 +300,12 @@
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
+                "computed": true
+              },
+              "invalid": {
+                "type": "bool",
+                "description": "Indicates whether the key is invalid (e.g. expired, revoked or has been deleted).",
+                "description_kind": "plain",
                 "computed": true
               },
               "key": {
@@ -311,13 +317,19 @@
               },
               "preauthorized": {
                 "type": "bool",
-                "description": "Determines whether or not the machines authenticated by the key will be authorized for the tailnet by default.",
+                "description": "Determines whether or not the machines authenticated by the key will be authorized for the tailnet by default. Defaults to `false`.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "recreate_if_invalid": {
+                "type": "string",
+                "description": "Determines whether the key should be created again if it becomes invalid. By default, reusable keys will be recreated, but single-use keys will not. Possible values: 'always', 'never'.",
                 "description_kind": "plain",
                 "optional": true
               },
               "reusable": {
                 "type": "bool",
-                "description": "Indicates if the key is reusable or single-use.",
+                "description": "Indicates if the key is reusable or single-use. Defaults to `false`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -367,6 +379,27 @@
               }
             },
             "description": "The 4via6 data source is calculates an IPv6 prefix for a given site ID and IPv4 CIDR. See Tailscale documentation for [4via6 subnets](https://tailscale.com/kb/1201/4via6-subnets/) for more details.",
+            "description_kind": "plain"
+          }
+        },
+        "tailscale_acl": {
+          "version": 0,
+          "block": {
+            "attributes": {
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "json": {
+                "type": "string",
+                "description": "The contents of Tailscale ACL as JSON",
+                "description_kind": "plain",
+                "computed": true
+              }
+            },
+            "description": "The acl data source gets the Tailscale ACL for a tailnet",
             "description_kind": "plain"
           }
         },
